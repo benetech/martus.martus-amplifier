@@ -725,9 +725,9 @@ public class MartusAmplifier
 	private static final String SERVERS_WHO_WE_CALL_DIRIRECTORY = "serversWhoWeCall";
 	private static final String KEYPAIR_FILENAME = "keypair.dat";
 	private static final String ACCOUNTS_NOT_AMPLIFIED_FILE = "accountsNotAmplified.txt";
-	private static final String EXIT_AMP_FILE = "exitamp";
-	private static final String AMP_RUNNING_FILE = "runningamp";
-	private static final String AMP_WAITING_FILE = "waitingamp";
+	private static final String EXIT_AMP_FILE = "exit";
+	private static final String AMP_RUNNING_FILE = "running";
+	private static final String AMP_WAITING_FILE = "waiting";
 	
 
 	private static final int MAX_IDLE_TIME_MS = 30000;
