@@ -423,7 +423,7 @@ public class MartusAmplifier
 		String dataDirectory = null;
 		if(System.getProperty("os.name").indexOf("Windows") >= 0)
 		{
-			dataDirectory = "C:/MartusAmp/";
+			dataDirectory = "C:/MartusAmplifier/";
 		}
 		else
 		{
