@@ -1,5 +1,10 @@
 package org.martus.amplifier.main;
 
+
+import java.util.logging.Logger;
+
+import org.martus.amplifier.service.datasynch.DataSynchManager;
+
 /**
  * @author SKoneru
  *
@@ -17,10 +22,23 @@ public class MartusAmplifierDataSynch {
 		super();
 	}
 
-	public static void execute() {
+	public static void execute() 
+	{
 		
-		//Get an instance of DataSynchManager and trigger everything
-		
-		
+		try
+		{
+			DataSynchManager dataManager = DataSynchManager.getInstance();
+			dataManager.getAllNewBulletins();
+			dataManager.indexBulletins();
+		}
+		catch(Exception e)
+		{
+			logger.severe("MartusAmplifierDataSynch.execute()" + e.getMessage());
+		}
+					
 	}
+	
+	
+	private static Logger logger = Logger.getLogger("MainTask");
+	
 }
