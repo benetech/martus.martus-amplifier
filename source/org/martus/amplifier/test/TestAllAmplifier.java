@@ -8,6 +8,7 @@ import org.martus.amplifier.service.search.TestAllSearch;
 import org.martus.amplifier.test.configuration.TestAllConfiguration;
 import org.martus.amplifier.test.datasynch.TestAllDataSynch;
 import org.martus.amplifier.test.i18n.TestAllI18N;
+import org.martus.amplifier.test.presentation.TestAllPresentation;
 
 public class TestAllAmplifier extends TestSuite
 {
@@ -35,6 +36,7 @@ public class TestAllAmplifier extends TestSuite
 		suite.addTest(TestAllConfiguration.suite());
 		suite.addTest(TestAllDataSynch.suite());
 		suite.addTest(TestAllI18N.suite());
+		suite.addTest(TestAllPresentation.suite());
 	    return suite;
 	}
 }

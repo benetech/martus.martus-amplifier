@@ -30,7 +30,6 @@ import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.Vector;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.velocity.context.Context;
@@ -45,7 +44,7 @@ public class SearchResults extends AmplifierServlet
 		return new GregorianCalendar(year, month, day).getTime();
 	}	
 	
-	private void handleAdvancedSearchParams(HttpServletRequest request, SearchBean searcher) 
+	private void handleAdvancedSearchParams(AmplifierServletRequest request, SearchBean searcher) 
 			throws Exception
 	{
 		
@@ -76,8 +75,8 @@ public class SearchResults extends AmplifierServlet
 		searcher.setEndDate(endDate);	
 	}
 	
-	public String selectTemplate( HttpServletRequest request,
-					HttpServletResponse response, Context ctx ) 
+	public String selectTemplate(AmplifierServletRequest request,
+					HttpServletResponse response, Context ctx) 
 					throws Exception
 	{
 
