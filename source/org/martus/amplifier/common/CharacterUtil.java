@@ -29,27 +29,16 @@ package org.martus.amplifier.common;
 public class CharacterUtil
 {	
 	public static String removeRestrictCharacters(String str)
-	{
-		if (str.length() == 1 && !forceValidChar(str.charAt(0)))
-			return "";
-		
-		StringBuffer newString = new StringBuffer();		
-		for (int j=0; j<str.length();j++)
-		{
-			char ch = str.charAt(j);
-			if (isAllowed(ch))
-				newString.append(ch);
-			else 			
-				newString.append(SPACE);										
-		}																			
-		return newString.toString();
+	{			
+		char[] strArray = str.toCharArray();		
+		for (int j=0; j<strArray.length;j++)
+		{							
+			if (!isAllowed(strArray[j]))
+				strArray[j] = ' ';													
+		}																		
+		return new String(strArray).trim();
 	}
 	
-	private static boolean forceValidChar(char ch)
-	{								
-		return (isAllowed(ch));
-	}	
-
 	public static boolean isAllowed(char ch)
 	{
 		if ((ch >= 48 && ch <= 57) ||
@@ -60,6 +49,4 @@ public class CharacterUtil
 			
 		return false;	
 	}
-
-	final static char SPACE	= ' ';	
 }
