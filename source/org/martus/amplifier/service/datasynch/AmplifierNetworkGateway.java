@@ -114,6 +114,26 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
 	}
 	
 	
+	public Vector getAccountUniversalIds(String accountId) throws ServerErrorException
+	{
+		Vector result = new Vector();
+		try
+		{
+			NetworkResponse response = gateway.getAccountUniversalIds(security, accountId);
+			String resultCode = response.getResultCode();
+			if( !resultCode.equals(NetworkInterfaceConstants.OK) )	
+					throw new ServerErrorException(resultCode);
+			result = response.getResultVector();		
+		}	
+		catch(Exception e)
+		{
+			logger.severe("AmplifierNetworkGateway.getAccountUniversalIds(): unable to retrieve UniversalIds for AccountID = "+accountId);
+		}
+		return result;
+	}
+	
+	
+	
 	/*
 	
 	public List getAccountBulletinIds(String accountId)

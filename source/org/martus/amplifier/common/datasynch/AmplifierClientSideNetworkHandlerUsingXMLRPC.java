@@ -47,24 +47,35 @@ public class AmplifierClientSideNetworkHandlerUsingXMLRPC
 	}
 
 				
+		
+	public Vector getAccountIds(String myAccountId, Vector parameters, String signature)
+	{
+		Vector params = new Vector();
+		params.add(myAccountId);
+		params.add(parameters);
+		params.add(signature);
+		return (Vector)callServer(server, cmdGetAccountIds, params);
+	}			
+	
+	
+	public Vector getAccountUniversalIds(String myAccountId, Vector parameters, String signature)
+	{
+		Vector params = new Vector();
+		params.add(myAccountId);
+		params.add(parameters);
+		params.add(signature);
+		return (Vector)callServer(server, cmdGetAccountUniversalIds, params);
+		
+	}
+	
 	public Vector getBulletinChunk(String myAccountId, Vector parameters, String signature)
 	{
 		Vector params = new Vector();
 		params.add(myAccountId);
 		params.add(parameters);
 		params.add(signature);
-		return (Vector)callServer(server, cmdGetBulletinChunk, params);
+		return (Vector)callServer(server, cmdGetAmplifierBulletinChunk, params);
 	}
-		
-	public Vector getAccountIds(String myAccountId, Vector parameters, String signature)
-	{
-		Vector params = new Vector();
-		params.add(myAccountId);
-		//to check if we need this
-		params.add(parameters);
-		params.add(signature);
-		return (Vector)callServer(server, cmdGetAccountIds, params);
-	}			
 	
 	public Object callServer(String serverName, String method, Vector params)
 	{

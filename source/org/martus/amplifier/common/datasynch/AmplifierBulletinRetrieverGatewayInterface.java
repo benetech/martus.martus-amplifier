@@ -19,4 +19,7 @@ public interface AmplifierBulletinRetrieverGatewayInterface extends BulletinRetr
 	public NetworkResponse getAccountIds(MartusCrypto signer) throws 
 			MartusCrypto.MartusSignatureException;
 			
+	public NetworkResponse getAccountUniversalIds(MartusCrypto signer, String accountId) throws 
+			MartusCrypto.MartusSignatureException;
+			
 }

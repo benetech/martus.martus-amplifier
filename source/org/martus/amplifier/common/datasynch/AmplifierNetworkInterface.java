@@ -10,9 +10,10 @@ import java.util.Vector;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-public interface AmplifierNetworkInterface {
+public interface AmplifierNetworkInterface { 
 	
-	public Vector getBulletinChunk(String myAccountId, Vector parameters, String signature);
 	public Vector getAccountIds(String myAccountId, Vector parameters, String signature);
+	public Vector getAccountUniversalIds(String myAccountId, Vector parameters, String signature);
+	public Vector getBulletinChunk(String myAccountId, Vector parameters, String signature);
 
 }
