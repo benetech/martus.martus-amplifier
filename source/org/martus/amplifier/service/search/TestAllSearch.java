@@ -1,9 +1,9 @@
 package org.martus.amplifier.service.search;
 
-import org.martus.amplifier.service.search.lucene.TestLuceneSearcher;
-
 import junit.framework.Test;
 import junit.framework.TestSuite;
+
+import org.martus.amplifier.service.search.lucene.TestLuceneSearcher;
 
 public class TestAllSearch extends TestSuite
 {
