@@ -180,15 +180,15 @@ public class SearchBean implements Serializable
 				if (query != null) {
 					results = searcher.search(field, query);
 				} else {
-					results = searcher.searchDateRange(field, startDate, endDate);
+//					results = searcher.searchDateRange(field, startDate, endDate);
 				}
 				cache.clear();
-				numResults = results.getCount();
+//				numResults = results.getCount();
 				for (int i = 0; 
 					(i < maxCacheSize) && ((i + startIndex) < numResults); 
 					i++)
 				{
-					cache.add(results.getBulletinInfo(i + startIndex));
+//					cache.add(results.getBulletinInfo(i + startIndex));
 				}
 			} finally {
 				searcher.close();
