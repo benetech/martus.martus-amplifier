@@ -1,0 +1,12 @@
+Set up BerkeleyDB Instructions
+------------------------------
+
+1. Point the berkeleydb and berkeleydb_examples variables to db.jar and dbexamples.jar 
+in the buildfiles\jars folder.
+
+STOP HERE IF YOU JUST WANT TO BUILD THE PROJECT
+
+2. Anything that uses the BerkeleyDB needs to have the dll's in the java.library.path VM variable
+
+3. Add the following parameter to a new Run configuration for any BerkeleyDB test class:
+	-Djava.library.path=<path to the berkeleydb_binary folder on your computer>
