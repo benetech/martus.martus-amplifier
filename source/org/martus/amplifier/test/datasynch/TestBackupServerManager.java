@@ -1,9 +1,12 @@
 package org.martus.amplifier.test.datasynch;
 
+import java.io.File;
 import java.util.List;
 
 import org.martus.amplifier.service.datasynch.BackupServerInfo;
 import org.martus.amplifier.service.datasynch.BackupServerManager;
+import org.martus.common.MartusUtilities;
+import org.martus.common.crypto.MockMartusSecurity;
 import org.martus.common.test.TestCaseEnhanced;
 
 public class TestBackupServerManager extends TestCaseEnhanced
@@ -13,22 +16,36 @@ public class TestBackupServerManager extends TestCaseEnhanced
 		super(name);
 	}
 	
-	public void setUp() throws Exception
+	public void testGetBackupServersList() throws Exception
 	{
-		List serverList = BackupServerManager.getBackupServersList();
-		testInfo = (BackupServerInfo) serverList.get(0);
-	}
-	
-	public void testGetBackupServersList()
-	{		
+		MockMartusSecurity security = MockMartusSecurity.createServer();
+		File dir = createTempFile();
+		dir.delete();
+		dir.mkdirs();
+		
+		List noServers = BackupServerManager.loadServersWeWillCall(dir, security);
+		assertEquals(0, noServers.size());
+		
+		String ip = "2.4.6.8";
+		File keyFile = new File(dir, "ip=" + ip);
+		MartusUtilities.exportServerPublicKey(security, keyFile);
+		
+		List oneServer = BackupServerManager.loadServersWeWillCall(dir, security);
+		assertEquals(1, oneServer.size());
+
+		BackupServerInfo testInfo = (BackupServerInfo)oneServer.get(0);
 		String result = testInfo.getAddress();
-		assertEquals("127.0.0.1", result);
+		assertEquals("ip", ip, result);
 		
 		result = testInfo.getName();
-		assertEquals("127.0.0.1", result);
+		assertEquals("name", ip, result);
 		
 		int intResult = testInfo.getPort();
-		assertEquals(985, intResult);		
+		assertEquals(985, intResult);
+		
+		keyFile.delete();
+		dir.delete();
+		assertFalse(dir.getPath() + " still exists?", dir.exists());	
 	}
 	
 	BackupServerInfo testInfo;

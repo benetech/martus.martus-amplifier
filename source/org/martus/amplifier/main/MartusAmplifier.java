@@ -15,6 +15,7 @@ import org.martus.amplifier.service.datasynch.DataSynchManager;
 import org.martus.amplifier.service.search.BulletinIndexException;
 import org.martus.amplifier.service.search.BulletinIndexer;
 import org.martus.amplifier.service.search.lucene.LuceneBulletinIndexer;
+import org.martus.common.crypto.MartusSecurity;
 import org.mortbay.http.SocketListener;
 import org.mortbay.jetty.Server;
 
@@ -22,9 +23,11 @@ public class MartusAmplifier
 {
 	public static void main(String[] args) throws Exception
 	{
-		//File configDirectory = new File(AmplifierConfiguration.getInstance().getBasePath());
-		//File backupServersFile = new File(configDirectory, "pullfrom.txt");
-		backupServersList = BackupServerManager.getBackupServersList();
+		MartusSecurity security = new MartusSecurity();
+
+		File configDirectory = new File(AmplifierConfiguration.getInstance().getBasePath());
+		File backupServersDirectory = new File(configDirectory, "serversWhoWeCall");
+		backupServersList = BackupServerManager.loadServersWeWillCall(backupServersDirectory, security);
 		timer.scheduleAtFixedRate(timedTask, IMMEDIATELY, dataSynchIntervalMillis);
 
 		SocketListener listener = new SocketListener();
@@ -71,6 +74,9 @@ public class MartusAmplifier
 	static public void pullNewBulletinsFromServers(List backupServersList) 
 	{
 		Logger logger = Logger.getLogger("MainTask");
+		
+		if(backupServersList.size() == 0)
+			return;
 				
 		BulletinIndexer indexer = null;
 		AttachmentManager attachmentManager = null;

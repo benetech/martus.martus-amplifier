@@ -1,46 +1,50 @@
 package org.martus.amplifier.service.datasynch;
 
+import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
-import java.util.logging.Logger;
+import java.util.Vector;
+
+import org.martus.amplifier.common.datasynch.AmplifierClientSideNetworkHandlerUsingXMLRPC.SSLSocketSetupException;
+import org.martus.common.MartusUtilities;
+import org.martus.common.MartusUtilities.InvalidPublicKeyFileException;
+import org.martus.common.MartusUtilities.PublicInformationInvalidException;
+import org.martus.common.crypto.MartusCrypto;
 
 public class BackupServerManager implements IDataSynchConstants
 {
-	public static List getBackupServersList() 
+	public static List loadServersWeWillCall(File directory, MartusCrypto security) throws 
+			IOException, InvalidPublicKeyFileException, PublicInformationInvalidException, SSLSocketSetupException
 	{
-		Logger logger = Logger.getLogger(DATASYNC_LOGGER);
-		Properties backupServerProperties = new Properties();
-		try
+		List serversWeWillCall = new Vector();
+
+		File[] toCallFiles = directory.listFiles();
+		if(toCallFiles != null)
 		{
-			backupServerProperties.load(BackupServerManager.class.getResourceAsStream(BACKUP_SERVER_PROPERTIES));
-		}
-		catch(IOException ioe)
-		{
-			logger.severe("Unable to load backup server configuration file.");
+			for (int i = 0; i < toCallFiles.length; i++)
+			{
+				File toCallFile = toCallFiles[i];
+				serversWeWillCall.add(getServerToCall(toCallFile, security));
+				System.out.println("We will call: " + toCallFile.getName());
+			}
 		}
 
-		String currentServerIP = null;
-		String currentServerName = null;
-		String currentServerPortString = null;
-		String serverPublicKey = null;
-		int currentServerPort = 0;
-		
-		List backupServersList = new ArrayList();
-		currentServerName = backupServerProperties.getProperty(NAME_PROPERTY);
-		currentServerIP = backupServerProperties.getProperty(IP_PROPERTY);
-		currentServerPortString = backupServerProperties.getProperty(PORT_PROPERTY);
-		serverPublicKey = backupServerProperties.getProperty(SERVERPUBLICKEY_PROPERTY);
-		if(currentServerPortString != null)
-			currentServerPort = Integer.parseInt(currentServerPortString);
-		backupServersList.add(new BackupServerInfo(currentServerName,
-			currentServerIP, currentServerPort, serverPublicKey));
-		return backupServersList;
+		System.out.println("Configured to call " + serversWeWillCall.size() + " servers");
+		return serversWeWillCall;
 	}
 	
-	private static final String NAME_PROPERTY = "serverName";
-	private static final String IP_PROPERTY = "serverIP";
-	private static final String PORT_PROPERTY = "serverPort";
-	private static final String SERVERPUBLICKEY_PROPERTY = "serverPublicKey";
+	static BackupServerInfo getServerToCall(File publicKeyFile, MartusCrypto security) throws
+			IOException, 
+			InvalidPublicKeyFileException, 
+			PublicInformationInvalidException, 
+			SSLSocketSetupException
+	{
+		String ip = MartusUtilities.extractIpFromFileName(publicKeyFile.getName());
+		int port = 985;
+		Vector publicInfo = MartusUtilities.importServerPublicKeyFromFile(publicKeyFile, security);
+		String publicKey = (String)publicInfo.get(0);
+
+		return new BackupServerInfo(ip, ip, port, publicKey);		
+	}
+
 }
