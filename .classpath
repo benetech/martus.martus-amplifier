@@ -3,7 +3,6 @@
     <classpathentry kind="src" path="source"/>
     <classpathentry exported="true" kind="var" path="JRE_LIB" sourcepath="JRE_SRC"/>
     <classpathentry kind="var" path="jsse"/>
-    <classpathentry kind="src" path="/martus"/>
     <classpathentry kind="lib" path="thirdparty/jarsNeededToRunAmp/org.mortbay.jetty.jar"/>
     <classpathentry kind="lib" path="thirdparty/jarsNeededToRunAmp/servlet.jar"/>
     <classpathentry kind="lib" path="thirdparty/jarsNeededToRunAmp/velocity-dep-1.4-rc1.jar"/>
@@ -13,5 +12,6 @@
     <classpathentry kind="lib" path="thirdparty/jarsNeededToRunAmp/xmlrpc-1.1.jar"/>
     <classpathentry kind="var" path="junit"/>
     <classpathentry kind="src" path="/martus-utils"/>
+    <classpathentry kind="src" path="/martus-common"/>
     <classpathentry kind="output" path="classes"/>
 </classpath>
