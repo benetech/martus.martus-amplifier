@@ -151,7 +151,7 @@ public class SearchResults extends AmplifierServlet implements SearchResultConst
 	static class BulletinSorter implements Comparator
 	{
 		private final String field;
-		private BulletinSorter(String field)
+		BulletinSorter(String field)
 		{
 			super();
 			this.field = field;
