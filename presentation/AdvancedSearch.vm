@@ -7,7 +7,8 @@
     #set ($days = [1..31])
 
     <body>
-		<img src="../images/big_logo.gif" width="184" height="126" alt="Martus Amplifier"/>
+		    <img src="../images/MartusLogo.gif" 
+		    	alt="Martus Amplifier"/>
 		<table cellSpacing=0 cellPadding=1 width="100%" bgColor=#3366cc border=0>
 			<tbody>
 		        <tr>
