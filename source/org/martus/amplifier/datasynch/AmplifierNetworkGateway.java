@@ -272,7 +272,9 @@ public class AmplifierNetworkGateway
 	
 	private void log(String message)
 	{
-		logger.log("Amp calling " + serverToPullFrom.getAddress() + ": " + message);
+		String serversPublicCodeWeAreCalling = MartusCrypto.formatAccountIdForLog(serverToPullFrom.getServerPublicKey());
+		String serversIPAddressWeAreCalling = serverToPullFrom.getAddress();
+		logger.log("Amp calling " + serversIPAddressWeAreCalling + ": " + serversPublicCodeWeAreCalling +": " + message);
 	}
 	
 	private AmplifierBulletinRetrieverGatewayInterface gateway;
