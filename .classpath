@@ -13,5 +13,6 @@
     <classpathentry kind="var" path="xmlrpc"/>
     <classpathentry kind="var" path="TOMCAT_HOME/common/lib/servlet.jar"/>
     <classpathentry kind="var" path="TOMCAT_HOME/common/lib/jasper-runtime.jar"/>
+    <classpathentry kind="var" path="jstl_standard"/>
     <classpathentry kind="output" path="presentation\WEB-INF\classes"/>
 </classpath>

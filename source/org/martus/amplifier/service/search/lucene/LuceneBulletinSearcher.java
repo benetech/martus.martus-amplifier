@@ -157,7 +157,7 @@ public class LuceneBulletinSearcher
 					if (field.isDateField()) {
 						value = DATE_FORMAT.format(DateField.stringToDate(value));
 					}
-					info.put(field.getIndexId(), value);
+					info.set(field.getIndexId(), value);
 				}
 			}
 		}
@@ -174,7 +174,6 @@ public class LuceneBulletinSearcher
 						"Invalid attachments string found: " + 
 						attachmentsString);
 				}
-				UniversalId bulletinId = getBulletinId(doc);
 				for (int i = 0; i < attachmentsAssocList.length; i += 2) {
 					info.addAttachment(new AttachmentInfo(
 						attachmentsAssocList[i],

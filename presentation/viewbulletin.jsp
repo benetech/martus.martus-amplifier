@@ -40,23 +40,43 @@
                 <td>
                     <table width="800" border="1" cellspacing="0" cellpadding="0">
                         <tr>
-                            <td>Title:</td><td><c:out value="${bulletin.title}"/></td>
+                            <td>Title:</td><td><c:out value="${bulletin.fields.title}"/></td>
                         </tr>
-                            <td>Author:</td><td><c:out value="${bulletin.author}"/></td>
+                            <td>Author:</td><td><c:out value="${bulletin.fields.author}"/></td>
                         </tr>
-                            <td>Event Date:</td><td><c:out value="${bulletin.eventDate}"/></td>
+                            <td>Event Date:</td><td><c:out value="${bulletin.fields.eventDate}"/></td>
                         </tr>
-                            <td>Public Info:</td><td><c:out value="${bulletin.publicInfo}"/></td>
+                            <td>Public Info:</td><td><c:out value="${bulletin.fields.publicInfo}"/></td>
                         </tr>
-                            <td>Summary:</td><td><c:out value="${bulletin.summary}"/></td>
+                            <td>Summary:</td><td><c:out value="${bulletin.fields.summary}"/></td>
                         </tr>
-                            <td>Location:</td><td><c:out value="${bulletin.location}"/></td>
+                            <td>Location:</td><td><c:out value="${bulletin.fields.location}"/></td>
                         </tr>
-                            <td>Entry Date:</td><td><c:out value="${bulletin.entryDate}"/></td>
+                            <td>Entry Date:</td><td><c:out value="${bulletin.fields.entryDate}"/></td>
                         </tr>
                     </table>
                 </td>
             </tr>
+            <c:if test="${!empty bulletin.attachments}">
+                <tr>
+                    <td><img src="images/spacer.gif" width="40"/></td>
+                    <td>Attachments:</td>
+                </tr>
+                <tr>
+                    <td><img src="images/spacer.gif" width="40"/></td>
+                    <td>
+                        <ul>
+                            <c:forEach items="${bulletin.attachments}" var="attachment">
+                                <c:url value="downloadattachment.jsp" var="download">
+                                    <c:param name="accountId" value="${bulletin.accountId}"/>
+                                    <c:param name="localId" value="${attachment.localId}"/>
+                                </c:url>
+                                <li><a href="<c:out value="${download}" />"><c:out value="${attachment.label}"/></a></li>
+                            </c:forEach>
+                        </ul>
+                    </td>    
+                </tr>
+            </c:if>
         </table>
         <br>
         <jsp:include page="footer.jsp"/>

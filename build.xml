@@ -20,7 +20,7 @@
   
   <property name="web-app-dir" value="presentation/WEB-INF"/>
   <property name="web-app-lib" value="${web-app-dir}/lib"/>
-  
+  <property name="custom-tlds" value="presentation/tld"/>
   
 <!-- ================================================================== -->
 <!-- I N I T                                                            -->
@@ -73,6 +73,11 @@
 	
 	<copy todir="${web-app-lib}">
 		<fileset dir="${jstl}/lib" includes="*.jar"/>
+	</copy>
+	
+	<!-- Move custom taglib files to web app dir. -->
+	<copy todir="${web-app-dir}">
+		<fileset dir="${custom-tlds}" includes="*.tld"/>
 	</copy>
 	
   </target>

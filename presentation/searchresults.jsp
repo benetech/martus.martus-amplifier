@@ -70,12 +70,12 @@
                 <c:forEach begin="${search.startIndex}" end="${search.lastIndexInCurrentPage}" var="i">
                     <tr>
                         <td>&nbsp;</td>
-                        <td><c:out value="${search.results[i].author}"/></td>
-                        <td><c:out value="${search.results[i].eventDate}"/></td>
+                        <td><c:out value="${search.results[i].fields.author}"/></td>
+                        <td><c:out value="${search.results[i].fields.eventDate}"/></td>
                         <c:url value="viewbulletin.jsp" var="resultDetail">
                             <c:param name="index" value="${i}"/>
                         </c:url>
-                        <td><a href="<c:out value="${resultDetail}"/>"><c:out value="${search.results[i].title}"/></a></td>
+                        <td><a href="<c:out value="${resultDetail}"/>"><c:out value="${search.results[i].fields.title}"/></a></td>
                     </tr>
                 </c:forEach>
                 <c:if test="${!search.atEnd}">

@@ -11,7 +11,7 @@ import java.util.Set;
 
 import org.martus.common.UniversalId;
 
-public class BulletinInfo extends AbstractMap implements Serializable
+public class BulletinInfo implements Serializable
 {
 	public BulletinInfo(UniversalId bulletinId)
 	{
@@ -20,24 +20,14 @@ public class BulletinInfo extends AbstractMap implements Serializable
 		this.bulletinId = bulletinId;
 	}
 	
-	public Set entrySet() 
+	public void set(String field, Object value)
 	{
-		return data.entrySet();
+		data.put(field, value);
 	}
 	
-	public Object put(Object key, Object value)
+	public String get(String field)
 	{
-		return data.put(key, value);
-	}
-	
-	public Object get(Object key)
-	{
-		return data.get(key);
-	}
-	
-	public boolean containsKey(Object key) 
-	{
-		return data.containsKey(key);
+		return (String) data.get(field);
 	}
 	
 	public void addAttachment(AttachmentInfo attachment)
@@ -45,14 +35,24 @@ public class BulletinInfo extends AbstractMap implements Serializable
 		attachments.add(attachment);
 	}
 	
+	public Map getFields()
+	{
+		return data;
+	}
+	
 	public List getAttachments()
 	{
-		return Collections.unmodifiableList(attachments);
+		return attachments;
 	}
 	
 	public UniversalId getBulletinId()
 	{
 		return bulletinId;
+	}
+	
+	public String getAccountId()
+	{
+		return bulletinId.getAccountId();
 	}
 
 	private Map data;

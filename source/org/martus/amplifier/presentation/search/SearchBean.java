@@ -159,6 +159,7 @@ public class SearchBean implements Serializable
 						"Unable to read results", e);
 				}
 			}
+			
 			return cache.get(index - startIndex);
 		}
 	
