@@ -168,7 +168,7 @@
 	        <fileset dir="${push-dir}" includes="*.md5"/>
 	    </delete>
         <tar destfile="${tar-filename}" basedir="${push-dir}"/>
-        <checksum file="${tar-filename}" fileext="md5"/>
+        <checksum file="${tar-filename}" fileext=".md5"/>
     </target>
     
 <!-- ================================================================== -->
