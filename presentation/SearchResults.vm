@@ -25,8 +25,7 @@ Boston, MA 02111-1307, USA.
 <html>
 	#set ($pageTitle= "Searched for: $searchedFor")
     <head>
-		<meta HTTP-EQUIV="Pragma" CONTENT="no-cache"> 
-		<meta HTTP-EQUIV="Expires" CONTENT="-1"> 
+    	#parse("NoCache.vm")
    		#parse("Meta.vm")            
     </head>
     <body>
@@ -91,8 +90,7 @@ Boston, MA 02111-1307, USA.
 		#parse ("ResultFooter.vm")
     </body>
 	<head>
-		<meta HTTP-EQUIV="Pragma" CONTENT="no-cache">
-		<meta HTTP-EQUIV="Expires" CONTENT="-1">
-	</head>
+    	#parse("NoCache.vm")
+   	</head>
     
 </html>
