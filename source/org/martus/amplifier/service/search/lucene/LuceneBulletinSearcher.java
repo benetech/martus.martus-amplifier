@@ -101,6 +101,7 @@ public class LuceneBulletinSearcher
 		}
 		
 		booleanQuery.add(query, true, false);	
+		//System.out.println(booleanQuery.toString());		
 		
 		try {
 			return new LuceneResults(searcher.search(booleanQuery));
@@ -115,27 +116,20 @@ public class LuceneBulletinSearcher
 	public Results searchDateRange(String field, Date startDate, Date endDate)
 		throws BulletinIndexException
 	{
-		try{
-											
-			Date endDefaultDate = SearchConstants.DATE_FORMAT.parse("2038-12-31");	
-														
+																				
 			String startDateString = 
 				((startDate == null) ? "*" : DateField.dateToString(startDate));
 			String endDateString = 
-				((endDate == null) ?  DateField.dateToString(endDefaultDate): DateField.dateToString(endDate));
+				((endDate == null) ?  "?": DateField.dateToString(endDate));
 					
 			if (field.equals(SearchConstants.ENTRY_DATE_INDEX_FIELD))		
 				return search(field, "[ " + startDateString + " TO " + endDateString + " ]");
 																				
-			String startQuery = "[ " +  "*" + " TO " + endDateString + " ]";			
-			String endQuery = "[ " + startDateString + " TO " + DateField.dateToString(endDefaultDate) + " ]";			
+			String startQuery = "[ " +  "*" + " TO " + endDateString + " ]";				
+			String endQuery = "[ " + startDateString + " TO " + "?" + " ]";						
 			
 			return searchFlexiDateRange(field, startQuery, endQuery);
-													
-		} catch(java.text.ParseException pe) {
-			throw new BulletinIndexException(
-				"Default SearchConstants error: " + "[startDate TO 2038-12-31]", pe);
-		}				
+														
 	}
 
 	public BulletinInfo lookup(UniversalId bulletinId)

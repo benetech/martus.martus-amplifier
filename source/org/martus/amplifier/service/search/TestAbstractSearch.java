@@ -324,15 +324,7 @@ public abstract class TestAbstractSearch
 			endDate = SearchConstants.DATE_FORMAT.parse("2003-07-10");
 			results = searcher.searchDateRange(EVENT_DATE_INDEX_FIELD, null, endDate);
 			assertEquals("Eventdate with a valid after start date (open started)?", 1, results.getCount());			
-			
-			try 
-			{
-				results = searcher.searchDateRange(ENTRY_DATE_INDEX_FIELD, null, null);
-//				fail("Should not have been able to specify null for both ends of range query");
-			} 
-			catch (IllegalArgumentException expected) 
-			{
-			}
+
 		} 
 		finally 
 		{
@@ -386,14 +378,6 @@ public abstract class TestAbstractSearch
 			results = searcher.searchDateRange(EVENT_DATE_INDEX_FIELD, startDate, null);
 			assertEquals("Eventdate with an invalid after start date(open ended)?", 0, results.getCount());
 			
-			try 
-			{
-//				results = searcher.searchDateRange(ENTRY_DATE_INDEX_FIELD, null, null);
-//				fail("Should not have been able to specify null for both ends of range query");
-			} 
-			catch (IllegalArgumentException expected) 
-			{
-			}
 		} 
 		finally 
 		{
