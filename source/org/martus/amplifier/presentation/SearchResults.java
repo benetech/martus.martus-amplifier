@@ -76,7 +76,7 @@ public class SearchResults extends AmplifierServlet
 	}
 	
 	public String selectTemplate(AmplifierServletRequest request,
-					HttpServletResponse response, Context ctx) 
+					HttpServletResponse response, Context context) 
 					throws Exception
 	{
 
@@ -101,7 +101,7 @@ searcher.setField("author");
 				BulletinInfo element = (BulletinInfo) iter.next();
 				bulletins.add(element);
 			}
-			ctx.put("foundBulletins", bulletins);
+			context.put("foundBulletins", bulletins);
 		}
 		return templateName;
 	}
