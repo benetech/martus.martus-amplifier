@@ -9,5 +9,5 @@
 	<classpathentry kind="lib" path="/martus-thirdparty/server/Velocity/bin/velocity-dep-1.4-rc1.jar"/>
 	<classpathentry kind="lib" path="/martus-thirdparty/server/Jetty/bin/javax.servlet.jar"/>
 	<classpathentry kind="lib" path="/martus-thirdparty/libext/JUnit/bin/junit.jar"/>
-	<classpathentry kind="output" path="classes"/>
+	<classpathentry kind="output" path="bin"/>
 </classpath>

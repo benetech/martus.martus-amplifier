@@ -35,7 +35,9 @@ Boston, MA 02111-1307, USA.
 		#parse ("ResultHeader.vm")
 		
 		<br/><br/><br/>
-        No bulletins matched your search terms
+        No bulletins were found that matched your search terms.
+        <br/><br/>
+        Note: The current version of the Martus Search Engine cannot perform a search using characters from a non-Latin alphabet, such as Russian, Thai, or Arabic.
 		<br/><br/><br/>
 
 		#set ($showSearchForm = true)
