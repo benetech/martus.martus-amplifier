@@ -10,7 +10,10 @@ import org.martus.amplifier.attachment.AttachmentManager;
 import org.martus.amplifier.attachment.AttachmentStorageException;
 import org.martus.amplifier.attachment.FileSystemAttachmentManager;
 import org.martus.common.crypto.MockMartusSecurity;
+import org.martus.common.database.FileDatabase.MissingAccountMapException;
+import org.martus.common.database.FileDatabase.MissingAccountMapSignatureException;
 import org.martus.common.packet.UniversalId;
+import org.martus.util.DirectoryTreeRemover;
 import org.martus.util.StringInputStream;
 
 public class TestFileSystemAttachmentManager 
@@ -29,6 +32,53 @@ public class TestFileSystemAttachmentManager
 		security.createKeyPair();
 		attachmentManager = 
 			new FileSystemAttachmentManager(getTestBasePath(), security);
+	}
+	
+	public void testMissingAccountMap() throws Exception
+	{
+		File missingAccountMap = null;
+		File emptyAccount = null;
+		try
+		{
+			missingAccountMap = createTempDirectory();
+			emptyAccount = new File(missingAccountMap.getAbsolutePath() + "\\ab00");
+			emptyAccount.deleteOnExit();
+			emptyAccount.mkdir();
+			new FileSystemAttachmentManager(missingAccountMap.getAbsolutePath());
+			fail("Should have thrown");
+		}
+		catch (MissingAccountMapException expectedException)
+		{
+		}		
+		finally
+		{
+			DirectoryTreeRemover.deleteEntireDirectoryTree(missingAccountMap);
+		}
+	}
+
+	public void testInvalidAccountMap() throws Exception
+	{
+		File baseDir = null;
+		File accountDir = null;
+		try
+		{
+			baseDir = createTempDirectory();
+			accountDir = new File(baseDir.getAbsolutePath() + "\\ab00");
+			accountDir.deleteOnExit();
+			accountDir.mkdir();
+			File accountMap = new File(baseDir.getAbsolutePath() + "\\acctmap.txt");
+			accountMap.deleteOnExit();
+			accountMap.createNewFile();
+			new FileSystemAttachmentManager(baseDir.getAbsolutePath());
+			fail("Should have thrown");
+		}
+		catch (MissingAccountMapSignatureException expectedException)
+		{
+		}		
+		finally
+		{
+			DirectoryTreeRemover.deleteEntireDirectoryTree(baseDir);
+		}
 	}
 
 	public void testFileSystemClearAllAttachments() 

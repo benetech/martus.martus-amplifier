@@ -40,33 +40,15 @@ import org.martus.common.packet.UniversalId;
 
 public class FileSystemAttachmentManager implements AttachmentManager
 {
-	public FileSystemAttachmentManager(String baseDir)
+	public FileSystemAttachmentManager(String baseDir) throws FileVerificationException, MissingAccountMapException, MissingAccountMapSignatureException
 	{
 		this(baseDir, MartusAmplifier.security);
 	}
 	
-	public FileSystemAttachmentManager(String baseDir, MartusCrypto crypto)
+	public FileSystemAttachmentManager(String baseDir, MartusCrypto crypto) throws FileVerificationException, MissingAccountMapException, MissingAccountMapSignatureException
 	{
 		db = new ServerFileDatabase(new File(baseDir), crypto);
-		try
-		{
-			db.initialize();
-		}
-		catch (FileVerificationException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (MissingAccountMapException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (MissingAccountMapSignatureException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		db.initialize();
 	}
 	public InputStream getAttachment(UniversalId attachmentId) throws AttachmentStorageException
 	{
