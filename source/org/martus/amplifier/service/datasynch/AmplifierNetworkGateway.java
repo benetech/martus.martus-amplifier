@@ -51,6 +51,7 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
 		try
 		{
 			security = new MartusSecurity();
+			security.createKeyPair();
 		}
 		catch(Exception e)
 		{
