@@ -39,30 +39,32 @@ import org.apache.lucene.search.Query;
 import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.search.SearchConstants;
 
-public class ComplexQuery
+public class QueryBuilder
 {
-	ComplexQuery(String queryString, String field) throws Exception
+	QueryBuilder(String queryString, String[] fields) throws Exception
 	{
-		query = queryParser(queryString, field, ERROR_PARSING_QUERY);
+		query = parseMultiFieldQuery(queryString, fields, ERROR_PARSING_MULTIQUERY);
 	}
 
-	ComplexQuery(String queryString, String[] fields) throws Exception
+	QueryBuilder(HashMap fields) throws Exception
 	{
-		query = multiFieldQueryParser(queryString, fields, ERROR_PARSING_MULTIQUERY);
-	}
-
-	ComplexQuery(HashMap fields) throws Exception
-	{
-		query = complexSearch(fields);
+		query = parseAdvancedQuery(fields);
 	}
 	
+	// This method is ONLY used by tests. 
+	// We should find a way to get rid of it! 
+	QueryBuilder(String queryString, String field) throws Exception
+	{
+		query = parseSingleFieldQuery(queryString, field, ERROR_PARSING_QUERY);
+	}
+
 	public Query getQuery()
 	{
 		return query;
 	}
 	
 
-	static Query queryEventDate(HashMap fields)
+	static Query parseEventDateQuery(HashMap fields)
 			throws Exception 
 	{
 		Date startDate	= (Date) fields.get(SearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD);
@@ -74,11 +76,11 @@ public class ComplexQuery
 		String queryString = getFieldQuery(SearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD, startDateString);
 		queryString += AND+ getFieldQuery(SearchConstants.SEARCH_EVENT_END_DATE_INDEX_FIELD,endDateString);
 		
-		return queryParser(queryString,SearchConstants.SEARCH_EVENT_DATE_INDEX_FIELD, ERROR_PARSING_QUERY);
+		return parseSingleFieldQuery(queryString,SearchConstants.SEARCH_EVENT_DATE_INDEX_FIELD, ERROR_PARSING_QUERY);
 	
 	}
 	
-	static Query queryEntryDate(HashMap fields)
+	static Query parseEntryDateQuery(HashMap fields)
 			throws Exception 
 	{		
 		Date startDate	= (Date) fields.get(SearchConstants.SEARCH_ENTRY_DATE_INDEX_FIELD);
@@ -89,94 +91,94 @@ public class ComplexQuery
 		String startDateString = DateField.dateToString(startDate);
 		String endDateString = DateField.dateToString(new GregorianCalendar().getTime());
 						
-		return queryParser(setRangeQuery(startDateString, endDateString), SearchConstants.SEARCH_ENTRY_DATE_INDEX_FIELD,
+		return parseSingleFieldQuery(setRangeQuery(startDateString, endDateString), SearchConstants.SEARCH_ENTRY_DATE_INDEX_FIELD,
 			"Improperly formed advanced find entry date type in bulletin query: ");		
 	}	
 	
-	static Query queryLanguage(HashMap fields)
+	static Query parseLanguageQuery(HashMap fields)
 			throws Exception
 	{
 		Query query = null;
 		String fieldString = (String) fields.get(SearchResultConstants.RESULT_LANGUAGE_KEY);
 
 		if (fieldString != null)				
-			query = queryParser(fieldString,SearchConstants.SEARCH_LANGUAGE_INDEX_FIELD, "Improperly formed advanced find language type in bulletin query: ");
+			query = parseSingleFieldQuery(fieldString,SearchConstants.SEARCH_LANGUAGE_INDEX_FIELD, "Improperly formed advanced find language type in bulletin query: ");
 		
 		return query;
 	} 	
 
-	static Query queryAnyWords(HashMap fields) throws Exception
+	static Query parseAnyWordsQuery(HashMap fields) throws Exception
 	{
 		String fieldString = (String) fields.get(SearchResultConstants.RESULT_FIELDS_KEY);
 		String queryString = (String) fields.get(SearchResultConstants.ANYWORD_TAG);
 
-		return queryEachField(queryString, fieldString);
+		return parseEachFieldQuery(queryString, fieldString);
 	}
 
-	static Query queryTheseWords(HashMap fields) throws Exception
+	static Query parseTheseWordsQuery(HashMap fields) throws Exception
 	{
 		String fieldString = (String) fields.get(SearchResultConstants.RESULT_FIELDS_KEY);
 		String queryString = (String) fields.get(SearchResultConstants.THESE_WORD_TAG);
 
-		return queryEachField(queryString, fieldString);
+		return parseEachFieldQuery(queryString, fieldString);
 	}
 
-	static Query queryExactPhrase(HashMap fields) throws Exception
+	static Query parseExactPhraseQuery(HashMap fields) throws Exception
 	{
 		String fieldString = (String) fields.get(SearchResultConstants.RESULT_FIELDS_KEY);
 		String queryString = (String) fields.get(SearchResultConstants.EXACTPHRASE_TAG);
 
-		return queryEachField(queryString, fieldString);
+		return parseEachFieldQuery(queryString, fieldString);
 	}	
 
-	static Query queryWithoutWords(HashMap fields) throws Exception
+	static Query parseWithoutWordsQuery(HashMap fields) throws Exception
 	{
 		String fieldString = (String) fields.get(SearchResultConstants.RESULT_FIELDS_KEY);
 		String queryString = (String) fields.get(SearchResultConstants.WITHOUTWORDS_TAG);
 
-		return queryEachField(queryString, fieldString);
+		return parseEachFieldQuery(queryString, fieldString);
 	}	
 
-	static Query queryEachField(String queryString, String fieldString)
+	static Query parseEachFieldQuery(String queryString, String fieldString)
 		throws Exception
 	{
 		if (queryString == null || queryString.length() <= 1)
 			return null;
 			
 		if (fieldString.equals(SearchResultConstants.IN_ALL_FIELDS))
-			return multiFieldQueryParser(queryString, SearchConstants.SEARCH_ALL_TEXT_FIELDS, "Improperly formed advanced find bulletin multiquery: ");
+			return parseMultiFieldQuery(queryString, SearchConstants.SEARCH_ALL_TEXT_FIELDS, "Improperly formed advanced find bulletin multiquery: ");
 						
-		return queryParser(queryString, fieldString, "Improperly formed advanced find bulletin query: ");
+		return parseSingleFieldQuery(queryString, fieldString, "Improperly formed advanced find bulletin query: ");
 	}				
 	
-	static Query complexSearch(HashMap fields) throws Exception
+	static Query parseAdvancedQuery(HashMap fields) throws Exception
 	{
 		BooleanQuery query = new BooleanQuery();
 		
-		Query foundEventDateQuery = queryEventDate(fields);					
+		Query foundEventDateQuery = parseEventDateQuery(fields);					
 		query.add(foundEventDateQuery, true, false);
 		
-		Query foudAnywordsQuery = queryAnyWords(fields);
+		Query foudAnywordsQuery = parseAnyWordsQuery(fields);
 		if (foudAnywordsQuery != null)
 			query.add(foudAnywordsQuery, true, false);
 
-		Query foudThesewordsQuery = queryTheseWords(fields);
+		Query foudThesewordsQuery = parseTheseWordsQuery(fields);
 		if (foudThesewordsQuery != null)
 			query.add(foudThesewordsQuery, true, false);
 
-		Query foudExactPhraseQuery = queryExactPhrase(fields);
+		Query foudExactPhraseQuery = parseExactPhraseQuery(fields);
 		if (foudExactPhraseQuery != null)
 			query.add(foudExactPhraseQuery, true, false);
 
-		Query foudWithoutWordsQuery = queryWithoutWords(fields);
+		Query foudWithoutWordsQuery = parseWithoutWordsQuery(fields);
 		if (foudWithoutWordsQuery != null)
 			query.add(foudWithoutWordsQuery, true, false);
 			
-		Query foundLanguageQuery = queryLanguage(fields);
+		Query foundLanguageQuery = parseLanguageQuery(fields);
 		if (foundLanguageQuery != null)
 			query.add(foundLanguageQuery, true, false);
 			
-		Query foudEntryDateQuery = queryEntryDate(fields);
+		Query foudEntryDateQuery = parseEntryDateQuery(fields);
 
 		if (foudEntryDateQuery != null)
 			query.add(foudEntryDateQuery, true, false);			
@@ -184,13 +186,13 @@ public class ComplexQuery
 		return query;	
 	}			
 
-	static Query multiFieldQueryParser(String query, String[] fields, String msg)
+	static Query parseMultiFieldQuery(String query, String[] fields, String msg)
 			throws Exception 
 	{
 		return MultiFieldQueryParser.parse(query, fields, getAnalyzer());
 	}
 	
-	static Query queryParser(String query, String field, String msg)
+	static Query parseSingleFieldQuery(String query, String field, String msg)
 			throws Exception 
 	{
 		return QueryParser.parse(query, field, getAnalyzer());

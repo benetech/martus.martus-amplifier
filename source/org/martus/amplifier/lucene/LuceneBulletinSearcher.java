@@ -84,7 +84,7 @@ public class LuceneBulletinSearcher implements BulletinSearcher
 	// We should find a way to get rid of it! 
 	public Results search(String field, String queryString) throws Exception 
 	{
-		ComplexQuery query = new ComplexQuery(queryString, field);
+		QueryBuilder query = new QueryBuilder(queryString, field);
 		return new LuceneResults(searcher, query.getQuery());
 	}
 
@@ -97,7 +97,7 @@ public class LuceneBulletinSearcher implements BulletinSearcher
 	private Results getComplexSearchResults(HashMap fields)
 		throws Exception, IOException
 	{
-		ComplexQuery query = new ComplexQuery(fields);
+		QueryBuilder query = new QueryBuilder(fields);
 		return new LuceneResults(searcher, query.getQuery());
 	}
 
@@ -105,7 +105,7 @@ public class LuceneBulletinSearcher implements BulletinSearcher
 		throws Exception, IOException
 	{
 		String queryString = (String) fields.get(SearchResultConstants.RESULT_BASIC_QUERY_KEY);
-		ComplexQuery query = new ComplexQuery(queryString, SEARCH_ALL_TEXT_FIELDS);				
+		QueryBuilder query = new QueryBuilder(queryString, SEARCH_ALL_TEXT_FIELDS);				
 		return new LuceneResults(searcher, query.getQuery());
 	}
 	
