@@ -1,4 +1,3 @@
-
 /*
 
 The Martus(tm) free, social justice documentation and
