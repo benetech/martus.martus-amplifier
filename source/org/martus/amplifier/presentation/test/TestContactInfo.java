@@ -41,7 +41,6 @@ import org.martus.amplifier.velocity.AmplifierServletRequest;
 import org.martus.common.crypto.MockMartusSecurity;
 import org.martus.common.packet.UniversalId;
 import org.martus.common.test.TestCaseEnhanced;
-import org.martus.server.forclients.MartusServer;
 import org.martus.util.DirectoryUtils;
 
 
@@ -65,7 +64,7 @@ public class TestContactInfo extends TestCaseEnhanced
 	{
 		MockMartusSecurity client = new MockMartusSecurity();
 		client.createKeyPair();
-		MartusServer.setStaticSecurity(client);
+		MartusAmplifier.setStaticSecurity(client);
 		
 		File basePath = createTempDirectory();
 		MartusAmplifier.dataManager = new FileSystemDataManager(basePath.getAbsolutePath());

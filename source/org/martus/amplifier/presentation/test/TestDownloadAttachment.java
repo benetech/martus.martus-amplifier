@@ -40,7 +40,6 @@ import org.martus.amplifier.search.BulletinInfo;
 import org.martus.common.crypto.MockMartusSecurity;
 import org.martus.common.packet.UniversalId;
 import org.martus.common.test.TestCaseEnhanced;
-import org.martus.server.forclients.MartusServer;
 import org.martus.util.StringInputStream;
 
 
@@ -54,7 +53,7 @@ public class TestDownloadAttachment extends TestCaseEnhanced
 	public void setUp() throws Exception
 	{
 		File testBasePath = createTempDirectory();
-		MartusServer.setStaticSecurity(new MockMartusSecurity());
+		MartusAmplifier.setStaticSecurity(new MockMartusSecurity());
 		MartusAmplifier.getSecurity().createKeyPair();
 		MartusAmplifier.dataManager = new FileSystemDataManager(testBasePath.getAbsolutePath());
 	}

@@ -48,7 +48,6 @@ import org.martus.common.bulletin.AttachmentProxy;
 import org.martus.common.crypto.MockMartusSecurity;
 import org.martus.common.packet.FieldDataPacket;
 import org.martus.common.packet.UniversalId;
-import org.martus.server.forclients.MartusServer;
 import org.martus.util.DirectoryUtils;
 
 public abstract class CommonSearchTest 
@@ -62,7 +61,7 @@ public abstract class CommonSearchTest
 	public void setUp() throws Exception
 	{
 		super.setUp();
-		MartusServer.setStaticSecurity(new MockMartusSecurity());
+		MartusAmplifier.setStaticSecurity(new MockMartusSecurity());
 		MartusAmplifier.getSecurity().createKeyPair();
 		MartusAmplifier.dataManager = new FileSystemDataManager(getTestBasePath());
 		LanguagesIndexedList.languagesIndexedSingleton = new LanguagesIndexedList(new File(getTestBasePath(),"langIndex"));

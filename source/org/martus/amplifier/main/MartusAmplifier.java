@@ -32,6 +32,7 @@ import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Vector;
 
+import org.martus.amplifier.ServerCallbackInterface;
 import org.martus.amplifier.attachment.DataManager;
 import org.martus.amplifier.attachment.FileSystemDataManager;
 import org.martus.amplifier.datasynch.BackupServerInfo;
@@ -43,7 +44,6 @@ import org.martus.common.MartusUtilities;
 import org.martus.common.crypto.MartusCrypto;
 import org.martus.common.crypto.MartusCrypto.CryptoInitializationException;
 import org.martus.common.network.MartusXmlrpcClient.SSLSocketSetupException;
-import org.martus.server.forclients.MartusServer;
 import org.martus.util.UnicodeReader;
 import org.mortbay.http.HttpContext;
 import org.mortbay.http.SunJsseListener;
@@ -53,10 +53,11 @@ import org.mortbay.util.MultiException;
 
 public class MartusAmplifier
 {
-	public MartusAmplifier(MartusServer serverToUse) throws CryptoInitializationException
+	public MartusAmplifier(ServerCallbackInterface serverToUse) throws CryptoInitializationException
 	{
 		coreServer = serverToUse;
-
+		setStaticSecurity(coreServer.getSecurity());
+		
 	}
 
 	public void initalizeAmplifier(char[] password) throws Exception
@@ -132,6 +133,16 @@ public class MartusAmplifier
 		addPasswordAuthentication(sslServer);
 		sslServer.addListener(sslListener);
 		sslServer.start();
+	}
+
+	public static MartusCrypto getStaticSecurity()
+	{
+		return staticSecurity;
+	}
+	
+	public static void setStaticSecurity(MartusCrypto staticSecurityToUse)
+	{
+		staticSecurity = staticSecurityToUse;
 	}
 
 	void deleteAmplifierStartupFiles()
@@ -217,7 +228,7 @@ public class MartusAmplifier
 		BulletinIndexer indexer = null;
 		try
 		{
-			DataSynchManager dataSyncManager = new DataSynchManager(this, backupServerToCall, coreServer.logger, getSecurity());
+			DataSynchManager dataSyncManager = new DataSynchManager(this, backupServerToCall, coreServer.getLogger(), getSecurity());
 			indexer = new LuceneBulletinIndexer(MartusAmplifier.getStaticAmplifierDataPath());
 		
 			dataSyncManager.getAllNewData(dataManager, indexer, getListOfAccountsWeWillNotAmplify());
@@ -311,11 +322,16 @@ public class MartusAmplifier
 		coreServer.log(message);
 	}
 	
-
+	//TODO:This should be moved to common
+	public static boolean isRunningUnderWindows()
+	{
+		return System.getProperty("os.name").indexOf("Windows") >= 0;
+	}
+	
 	public static String getPresentationBasePath()
 	{
 		String presentationBasePath = null;
-		if(MartusServer.isRunningUnderWindows())
+		if(isRunningUnderWindows())
 		{	
 			File amplifierPath = new File(MartusAmplifier.class.getResource("MartusAmplifier.class").getPath());
 			File amplifierBasePath = amplifierPath.getParentFile().getParentFile().getParentFile().getParentFile().getParentFile();
@@ -338,7 +354,7 @@ public class MartusAmplifier
 	
 	static public MartusCrypto getSecurity()
 	{
-		return MartusServer.getStaticSecurity();
+		return staticSecurity;
 	}
 
 	private File getServersWhoWeCallDirectory()
@@ -358,7 +374,7 @@ public class MartusAmplifier
 
 	private InetAddress getAmpIpAddress() throws UnknownHostException
 	{
-		return InetAddress.getByName(coreServer.ampIpAddress);
+		return InetAddress.getByName(coreServer.getAmpIpAddress());
 	}
 
 	private void deleteLuceneLockFile() throws BulletinIndexException
@@ -389,7 +405,7 @@ public class MartusAmplifier
 	boolean isSyncing;
 	public List backupServersList;
 	List notAmplifiedAccountsList;
-	MartusServer coreServer;
+	ServerCallbackInterface coreServer;
 
 	static final long IMMEDIATELY = 0;
 	public static final long DEFAULT_HOURS_TO_SYNC = 24;
@@ -407,4 +423,6 @@ public class MartusAmplifier
 	// USE THEM CAREFULLY!
 	public static DataManager dataManager;
 	public static File staticAmplifierDirectory;
+	private static MartusCrypto staticSecurity;
+
 }

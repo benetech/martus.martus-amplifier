@@ -9,7 +9,6 @@ import org.martus.common.LoggerForTesting;
 import org.martus.common.MartusUtilities;
 import org.martus.common.crypto.MockMartusSecurity;
 import org.martus.common.test.TestCaseEnhanced;
-import org.martus.server.forclients.MartusServer;
 import org.martus.util.DirectoryUtils;
 import org.martus.util.UnicodeWriter;
 
@@ -27,8 +26,8 @@ public class TestMartusAmplifier extends TestCaseEnhanced
 		dir.delete();
 		dir.mkdirs();
 		
-		MartusServer server = new MartusServer(dir, new LoggerForTesting(), security);
-		MartusAmplifier amp = server.amp;
+		MockMartusServer server = new MockMartusServer(dir, new LoggerForTesting(), security);
+		MartusAmplifier amp =  new MartusAmplifier(server); 
 		
 		List noServers = amp.loadServersWeWillCall(dir, security);
 		assertEquals(0, noServers.size());
@@ -60,8 +59,10 @@ public class TestMartusAmplifier extends TestCaseEnhanced
 		File unamplified = createTempFile();
 
 		MockMartusSecurity security = MockMartusSecurity.createServer();
-		MartusServer server = new MartusServer(unamplified, new LoggerForTesting(), security);
-		MartusAmplifier amp = server.amp;
+
+		MockMartusServer server = new MockMartusServer(unamplified, new LoggerForTesting(), security);
+		MartusAmplifier amp =  new MartusAmplifier(server); 
+		
 		assertNull("List should be null", amp.getListOfAccountsWeWillNotAmplify());
 		
 		amp.loadAccountsWeWillNotAmplify(null);
