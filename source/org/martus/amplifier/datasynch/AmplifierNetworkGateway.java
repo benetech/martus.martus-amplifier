@@ -54,13 +54,15 @@ public class AmplifierNetworkGateway
 	
 	public Vector getAllAccountIds() //throws ServerErrorException
 	{
+		class NotAuthorizedException extends Exception {}
+		
 		Vector result = new Vector();
 		try
 		{
 			NetworkResponse response = gateway.getAccountIds(security);
 			String resultCode = response.getResultCode();
 			if(!resultCode.equals(NetworkInterfaceConstants.OK))
-				throw new ServerErrorException(resultCode);
+				throw new NotAuthorizedException();
 			result= response.getResultVector();
 		}
 		catch(IOException e)
@@ -69,10 +71,14 @@ public class AmplifierNetworkGateway
 			//logger.info("No server available");
 			System.out.println("No server available");
 		}
+		catch(NotAuthorizedException e)
+		{
+			logger.severe("AmplifierNetworkGateway.getAllAccountIds() NOT AUTHORIZED");
+		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			logger.severe("AmplifierNetworkGateway.getAllAccountIds(): Unable to retrieve AccountIds: " + e.getMessage());
+			logger.severe("AmplifierNetworkGateway.getAllAccountIds(): ERROR: " + e.getMessage());
 		}
 		return result;
 	}
@@ -91,7 +97,7 @@ public class AmplifierNetworkGateway
 		}	
 		catch(Exception e)
 		{
-			logger.severe("AmplifierNetworkGateway.getAccountUniversalIds(): unable to retrieve UniversalIds for AccountID = "+accountId);
+			logger.severe("AmplifierNetworkGateway.getAccountUniversalIds(): ERROR " + e.getMessage() + ": " + accountId);
 		}
 		return result;
 	}

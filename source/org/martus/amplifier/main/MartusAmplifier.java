@@ -31,6 +31,7 @@ import org.martus.common.crypto.MartusSecurity;
 import org.martus.common.crypto.MartusCrypto.AuthorizationFailedException;
 import org.martus.common.crypto.MartusCrypto.CryptoInitializationException;
 import org.martus.common.crypto.MartusCrypto.InvalidKeyPairFileVersionException;
+import org.martus.util.Base64.InvalidBase64Exception;
 import org.mortbay.http.HttpContext;
 import org.mortbay.jetty.Server;
 
@@ -54,6 +55,7 @@ public class MartusAmplifier
 		if(passphrase == null)
 			passphrase = getPassphraseFromConsole(amp);
 		amp.loadAccount(passphrase);
+		amp.displayStatistics();
 		amp.start();
 	}
 	
@@ -105,6 +107,34 @@ public class MartusAmplifier
 			System.out.println("***RUNNING IN INSECURE MODE***");
 	}
 
+	private void displayStatistics() throws InvalidBase64Exception
+	{
+		displayServerAccountId();
+		displayServerPublicCode();
+	}
+	
+	private String displayServerAccountId()
+	{
+		String accountId = getAccountId();
+		System.out.println("Server Account: " + accountId);
+		System.out.println();
+		return accountId;
+	}
+
+	private void displayServerPublicCode() throws InvalidBase64Exception
+	{
+		System.out.print("Server Public Code: ");
+		String accountId = getAccountId();
+		String publicCode = MartusCrypto.computePublicCode(accountId);
+		System.out.println(MartusCrypto.formatPublicCode(publicCode));
+		System.out.println();
+	}
+
+	public String getAccountId()
+	{
+		return security.getPublicKeyString();
+	}
+	
 	private void deleteRunningFile()
 	{
 		getRunningFile().delete();
