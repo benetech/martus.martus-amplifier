@@ -3,10 +3,14 @@ package org.martus.amplifier.service.attachment.api;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.apache.xalan.transformer.KeyIterator;
+import org.martus.amplifier.service.attachment.IAttachmentConstants;
+import org.martus.amplifier.service.attachment.api.AttachmentInfo.InvalidAttachmentInfoException;
 
 public class AttachmentInfoListFactory
+implements IAttachmentConstants
 {
 
 	private AttachmentInfoListFactory(List initialInfoList)
@@ -26,9 +30,18 @@ public class AttachmentInfoListFactory
 		AttachmentInfo currentInfo = null;
 		while(idIterator.hasNext() && keyIterator.hasNext() && labelIterator.hasNext())
 		{
-			currentInfo = new AttachmentInfo((String) idIterator.next(), (String) keyIterator.next(), (String) labelIterator.next());	
-			attachmentInfoList.add(currentInfo);
+			try
+			{
+				currentInfo = new AttachmentInfo((String) idIterator.next(), (String) keyIterator.next(), (String) labelIterator.next());	
+				attachmentInfoList.add(currentInfo);
+			}
+			catch(InvalidAttachmentInfoException iaie)
+			{
+				logger.severe("Invalid Attachment Info: " + iaie.getMessage());
+			}
 		}
 		return attachmentInfoList;
 	}
+	
+	private static Logger logger = Logger.getLogger(ATTACHMENT_LOGGER);
 }
