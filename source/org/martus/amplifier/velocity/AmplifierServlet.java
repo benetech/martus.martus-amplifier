@@ -119,19 +119,12 @@ abstract public class AmplifierServlet extends VelocityServlet
 		catch( Exception e )
 		{
 			displayError("Unknown error", e);
+			e.printStackTrace();
 		}
 		
 		try
 		{
 			return getTemplate("InternalError.vm");
-		}
-		catch (ResourceNotFoundException e1)
-		{
-			e1.printStackTrace();
-		}
-		catch (ParseErrorException e1)
-		{
-			e1.printStackTrace();
 		}
 		catch (Exception e1)
 		{
