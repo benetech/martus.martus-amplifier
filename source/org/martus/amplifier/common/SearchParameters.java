@@ -93,23 +93,6 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 		FormatterForAllWordsSearch decorator = new FormatterForAllWordsSearch();
 		decorator.addFormattedStringIfNotEmpty(searchFields, inputParameters);
 	}
-
-	// TODO: This method is only used by tests. 
-	// Find a way to remove it!
-	public static String convertToQueryString(String text, String filterType)
-	{
-		String newString = null;
-		if (filterType.equals(WITHOUTWORDS_TAG))
-			newString = insertBeforeEachWord(NOT, text);			
-		else if (filterType.equals(EXACTPHRASE_TAG))
-			newString = "\""+text+"\"";
-		else if (filterType.equals(THESE_WORD_TAG))
-			newString = insertBeforeEachWord(PLUS, text);
-		else
-			newString = "("+text+")";
-	
-		return newString;
-	}
 	
 	static String insertBeforeEachWord(String sign, String queryString)
 	{

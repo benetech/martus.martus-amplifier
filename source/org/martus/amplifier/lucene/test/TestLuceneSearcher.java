@@ -805,42 +805,34 @@ public class TestLuceneSearcher extends CommonSearchTest
 			fields.put(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, defaultEndDate);
 			fields.put(RESULT_FIELDS_KEY, IN_ALL_FIELDS);
 			
-			String query = SearchParameters.convertToQueryString("root sandwich", THESE_WORD_TAG);						
+			SearchParameters.FormatterForAllWordsSearch d = 
+				new SearchParameters.FormatterForAllWordsSearch();
+			SearchParameters.FormatterForExactPhraseSearch ed = 
+				new SearchParameters.FormatterForExactPhraseSearch();				
+
+			String query = d.getFormattedString("root sandwich");						
 			fields.put(THESE_WORD_TAG, query);
 			results = searcher.search(fields);
 			assertEquals("search for all of these words? ", 2, results.getCount());
 						
-			query = SearchParameters.convertToQueryString("Paul", THESE_WORD_TAG);	
+			query = d.getFormattedString("Paul");	
 			clear4Fields(fields);
 			fields.put(THESE_WORD_TAG, query);
 			results = searcher.search(fields);
 			assertEquals("search for all of these words? ", 1, results.getCount());
 										
-			query = SearchParameters.convertToQueryString("egg salad sandwich", EXACTPHRASE_TAG);
+			query = ed.getFormattedString("egg salad sandwich");
 			clear4Fields(fields);		
 			fields.put(EXACTPHRASE_TAG, query);			
 			results = searcher.search(fields);
 			assertEquals("search for exact phrase? ", 1, results.getCount());
 						
 			clear4Fields(fields);
-			query = SearchParameters.convertToQueryString("for lunch.", EXACTPHRASE_TAG);		
+			query = ed.getFormattedString("for lunch.");		
 			fields.put(EXACTPHRASE_TAG, query);
 			
 			results = searcher.search(fields);
-			assertEquals("search for exact phrase? ", 2, results.getCount());
-			
-			clear4Fields(fields);				
-			query = SearchParameters.convertToQueryString("salad2", WITHOUTWORDS_TAG);			
-			fields.put(WITHOUTWORDS_TAG, query);			
-			results = searcher.search(fields);
-//			assertEquals("search for without of those words? ", 1, results.getCount());
-			
-			clear4Fields(fields);
-			query = SearchParameters.convertToQueryString("Paul", WITHOUTWORDS_TAG);			
-			fields.put(WITHOUTWORDS_TAG, query);			
-			results = searcher.search(fields);
-//			assertEquals("search for without of those words? ", 1, results.getCount());
-										
+			assertEquals("search for exact phrase? ", 2, results.getCount());											
 		}
 		finally 
 		{
@@ -879,11 +871,16 @@ public class TestLuceneSearcher extends CommonSearchTest
 			fields.put(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, defaultEndDate);
 			fields.put(RESULT_FIELDS_KEY, IN_ALL_FIELDS);
 			
+			SearchParameters.FormatterForAllWordsSearch d = 
+				new SearchParameters.FormatterForAllWordsSearch();
+			SearchParameters.FormatterForExactPhraseSearch ed = 
+				new SearchParameters.FormatterForExactPhraseSearch();	
+			
 			//combined these words and exactphrase
-			String query = SearchParameters.convertToQueryString("root sandwich", THESE_WORD_TAG);						
+			String query = d.getFormattedString("root sandwich");						
 			fields.put(THESE_WORD_TAG, query);		
 						
-			query = SearchParameters.convertToQueryString("Paul", EXACTPHRASE_TAG);				
+			query = ed.getFormattedString("Paul");				
 			fields.put(EXACTPHRASE_TAG, query);
 			
 			results = searcher.search(fields);
@@ -891,10 +888,10 @@ public class TestLuceneSearcher extends CommonSearchTest
 			
 			clear4Fields(fields);
 			//test again with all match
-			query = SearchParameters.convertToQueryString("root sandwich", THESE_WORD_TAG);						
+			query = d.getFormattedString("root sandwich");						
 			fields.put(THESE_WORD_TAG, query);		
 						
-			query = SearchParameters.convertToQueryString("Today", EXACTPHRASE_TAG);				
+			query = ed.getFormattedString("Today");				
 			fields.put(EXACTPHRASE_TAG, query);
 			
 			results = searcher.search(fields);
