@@ -122,8 +122,12 @@ public class SearchResults extends AmplifierServlet implements SearchResultConst
 			results = searcher.search(field, fields);
 						
 			int numResults = results.getCount();
-			for (int i = 0; i < numResults; i++)				
-				list.add(results.getBulletinInfo(i));
+			for (int i = 0; i < numResults; i++)
+			{
+				BulletinInfo bulletinInfo = results.getBulletinInfo(i);
+				formatDataForHtmlDisplay(bulletinInfo.getFields());
+				list.add(bulletinInfo);
+			}
 			
 			String sortField = (String) fields.get(RESULT_SORTBY_KEY);
 			if (sortField != null)

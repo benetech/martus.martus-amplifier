@@ -11,6 +11,7 @@ import org.martus.amplifier.main.test.TestAllMain;
 import org.martus.amplifier.network.test.TestAllNetwork;
 import org.martus.amplifier.presentation.test.TestAllPresentation;
 import org.martus.amplifier.search.test.TestAllSearch;
+import org.martus.amplifier.velocity.test.TestAllVelocity;
 
 public class TestAllAmplifier extends TestSuite
 {
@@ -41,7 +42,7 @@ public class TestAllAmplifier extends TestSuite
 		suite.addTest(TestAllCommon.suite());
 		suite.addTest(TestAllSearch.suite());
 		suite.addTest(TestAllNetwork.suite());
-		
+		suite.addTest(TestAllVelocity.suite());
 	    return suite;
 	}
 }

@@ -27,7 +27,10 @@ package org.martus.amplifier.velocity;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -118,6 +121,20 @@ abstract public class AmplifierServlet extends VelocityServlet
 	protected void displayError(String message, Exception e)
 	{
 		System.out.println(getClass().getName() + ": " + message + " " + e);
+	}
+	
+	static public void formatDataForHtmlDisplay(Map mapToFormat)
+	{
+		Set tags = mapToFormat.keySet();
+		for (Iterator iter = tags.iterator(); iter.hasNext();)
+		{
+			String fieldTag = (String) iter.next();
+			String fieldData = (String)mapToFormat.get(fieldTag);
+			fieldData = fieldData.replaceAll("&", "&amp;");
+			fieldData = fieldData.replaceAll("<", "&lt;");
+			fieldData = fieldData.replaceAll("\n", "<BR/>");
+			mapToFormat.put(fieldTag, fieldData);
+		}
 	}
 
 
