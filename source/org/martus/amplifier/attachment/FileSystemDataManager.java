@@ -31,6 +31,7 @@ import java.io.InputStream;
 import java.util.Vector;
 
 import org.martus.amplifier.main.MartusAmplifier;
+import org.martus.common.ContactInfo;
 import org.martus.common.MartusUtilities.FileVerificationException;
 import org.martus.common.crypto.MartusCrypto;
 import org.martus.common.database.DatabaseKey;
@@ -134,7 +135,7 @@ public class FileSystemDataManager implements DataManager
 		if(!contactFile.exists())
 			return null;
 		
-		Vector info = MartusServerUtilities.getContactInfo(contactFile);
+		Vector info = ContactInfo.loadFromFile(contactFile);
 		if(!MartusAmplifier.getSecurity().verifySignatureOfVectorOfStrings(info, accountId))
 			return null;
 		removeContactInfoNonDataElements(info);		
