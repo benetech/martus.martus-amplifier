@@ -10,9 +10,99 @@
 		#parse ("ResultHeader.vm")
 		<br/>
 
-		For technical support, write to <a href='mailto:help@martus.org'>help@martus.org</a><br/>
 
-		<br/>
+<h2>Using Martus Search</h2>
+To enter a query into Martus Search, type in a few descriptive words 
+and hit the 'enter' key (or click on the Martus Search button)
+for a list of relevant bulletins. Martus only returns bulletins that 
+contain all the words in your query, so refining or narrowing your 
+search is as simple as adding more words to the search terms you have 
+already entered. Your new query will return a smaller subset of the 
+pages Martus found for your original query. 
+
+<h3>Choosing Keywords</h3>
+For best results, choose your keywords wisely. Keep these tips in mind: 
+<ul>
+<li>Try the obvious first. If you're looking for information on a particular regime dictator, enter "Pinochet" rather than "dictator".</li> 
+<li>Use words likely to appear in a bulletin with the information you want.</li>
+<li>Make keywords as specific as possible. </li>
+</ul>
+
+<h3>Automatic "and" Queries</h3>
+By default, Martus only returns pages that include all of your search terms. 
+There is no need to include "and" between terms. 
+Keep in mind that the order in which the terms are typed will affect the search results.
+ 
+<h3>Automatic Exclusion of Common Words</h3>
+Martus Search may ignore certain very common words and characters, 
+as well as certain single digits and single letters, 
+because they could slow down your search without improving the results.  
+<br/>
+If a common word is essential to getting the results you want, 
+you can include it by putting a "+" sign in front of it. 
+(Be sure to include a space before the "+" sign.)
+
+##ISSUE:  if I type in the term: test martus, I will get only bulletins 
+##with that exact phrase – not bulletins that have both terms. 
+##No different than “test martus”, but should be.
+
+Another method for doing this is conducting a phrase search, 
+which simply means putting quotation marks around two or more words. 
+Common words in a phrase search (e.g., "in the yard") are included in the search. 
+
+<h3>Capitalization</h3>
+Martus searches are NOT case sensitive. 
+All letters, regardless of how you type them, will be understood as lower case. 
+For example, searches for "augusto pinochet", "Augusto Pinochet", and 
+"aGuSto PinOcHeT" will all return the same results.
+
+<h3>Word Variations</h3>
+To provide the most accurate results, Martus does not support "wildcard" searches. 
+In other words, Martus searches for exactly the words that you enter in the search box. 
+Searching for "kid" or "kid*" will not yield "kidnap" or "kidnapper".
+
+<h2>Advanced Search</h2>
+You can increase the accuracy of your searches by adding operators 
+that fine-tune your keywords. Most of the options listed on this page 
+can be entered directly into the Martus search box or selected from 
+the <a href='AdvancedSearch'>Martus Advanced Search</a> page.
+
+<h3>" - " Searches</h3>
+You can exclude a word from your search by putting a minus sign ("-") 
+immediately in front of the term you want to avoid. 
+(Be sure to include a space before the minus sign.)
+
+<h3>Phrase Searches</h3>
+Search for complete phrases by enclosing them in quotation marks. 
+Words enclosed in double quotes ("like this") will appear together 
+in all results exactly as you have entered them. 
+Phrase searches are especially useful when searching for proper names.
+
+<h3>"OR" Searches</h3>
+Martus Search supports the logical "OR" operator. 
+To retrieve pages that include either word A or word B, 
+use an uppercase OR between terms. 
+
+<h3>Other Advanced Search Features</h3>
+<ul>
+<li><strong>Event Date:</strong> restrict your results to events that occurred within any time frame 
+	after February 1, 1970.  Martus Search does not retrieve bulletins past that date. </li>
+<li><strong>Bulletin Date:</strong> restrict your results to bulletins published 
+	in the past week, month, 3 month, 6 month, or year time period.</li>
+<li><strong>Occurrences:</strong> specify where your search terms occur in the bulletin - anywhere 
+	in the bulletin, in the title, or in the author field, for example. </li>
+<li><strong>Language:</strong> specify which language you would like your results returned in.  
+	If an author assigned a language to a bulletin, 
+	that language will be offered as a search option.</li>
+<li><strong>Display order:</strong>  specify how to sort your results – by author, 
+	title, event date, event location or by organization sponsoring the author.</li>
+</ul>
+
+<br/><br/>
+Still have questions?  
+For technical support, write to <a href='mailto:help@martus.org'>help@martus.org</a>.  
+We'll do our best to address your inquiry.
+		<br/><br/>
 		#parse ("ResultFooter.vm")
     </body>
 </html>
