@@ -46,7 +46,7 @@ public class TestLuceneBulletinIndexer  extends CommonSearchTest
 	public void testClearIndex() throws Exception
 	{
 		UniversalId bulletinId = UniversalId.createDummyUniversalId();
-		FieldDataPacket fdp = generateFieldDataPacket(bulletinId);
+		FieldDataPacket fdp = generateEmptyFieldDataPacket(bulletinId);
 		BulletinIndexer indexer = openBulletinIndexer();
 		try 
 		{

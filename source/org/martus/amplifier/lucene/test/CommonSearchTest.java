@@ -28,6 +28,9 @@ package org.martus.amplifier.lucene.test;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 
 import junit.framework.Assert;
 
@@ -194,8 +197,7 @@ public abstract class CommonSearchTest
 	
 	private FieldDataPacket createFieldDataPacket(UniversalId bulletinId, String author, String keywords, String title, String eventdate, String entrydate, String publicInfo, String summary, String location, String attachment1LocalId, String attachment1Label, String attachment2LocalId, String attachment2Label, String language, String organization)
 	{
-		FieldDataPacket fdp = generateFieldDataPacket(
-			bulletinId, new String[] { 
+		String[] fields = new String[] { 
 				SEARCH_AUTHOR_INDEX_FIELD, author, 
 				SEARCH_KEYWORDS_INDEX_FIELD, keywords, 
 				SEARCH_TITLE_INDEX_FIELD, title,
@@ -206,14 +208,18 @@ public abstract class CommonSearchTest
 				SEARCH_LOCATION_INDEX_FIELD, location,
 				SEARCH_LANGUAGE_INDEX_FIELD, language,
 				SEARCH_ORGANIZATION_INDEX_FIELD, organization
-			}, new String[] {
+			};
+		String[] attachmentLabels = new String[] {
 				attachment1LocalId, attachment1Label, 
 				attachment2LocalId, attachment2Label
-			});
+			};
+		
+		FieldDataPacket fdp = generateFieldDataPacket(
+			bulletinId, fields, attachmentLabels);
 		return fdp;
 	}
 
-	protected FieldDataPacket generateFieldDataPacket(UniversalId bulletinId)
+	protected FieldDataPacket generateEmptyFieldDataPacket(UniversalId bulletinId)
 	{
 		return generateFieldDataPacket(bulletinId, new String[0]);
 	}
@@ -230,31 +236,61 @@ public abstract class CommonSearchTest
 		UniversalId bulletinId, String[] fieldsAssocList,
 		String[] attachmentsAssocList)
 	{
-		FieldSpec[] fieldSpecs = BulletinField.getDefaultSearchFieldSpecs();
+		Assert.assertEquals(
+				"Uneven assoc list: " + Arrays.asList(fieldsAssocList), 
+				0, fieldsAssocList.length % 2);
+
+		HashMap fieldPairs = new HashMap();
+		for (int i = 0; i < fieldsAssocList.length; i += 2) 
+		{
+			String tag = fieldsAssocList[i];
+			String value = fieldsAssocList[i + 1];
+			fieldPairs.put(tag, value);
+		}
+
 		UniversalId fieldUid = UniversalId.createFromAccountAndLocalId(
 			bulletinId.getAccountId(), "TestField");
+		FieldDataPacket fdp = new FieldDataPacket(fieldUid, getSampleFieldSpecs());
 		
-		FieldDataPacket fdp = new FieldDataPacket(fieldUid, fieldSpecs);
-		Assert.assertEquals(
-			"Uneven assoc list: " + Arrays.asList(fieldsAssocList), 
-			0, fieldsAssocList.length % 2);
-		for (int i = 0; i < fieldsAssocList.length; i += 2) {
-			fdp.set(fieldsAssocList[i], fieldsAssocList[i + 1]);
-		}
-		Assert.assertEquals(
-			"Uneven assoc list: " + Arrays.asList(attachmentsAssocList), 
-			0, attachmentsAssocList.length % 2);
-		for (int i = 0; i < attachmentsAssocList.length; i += 2) {
-			fdp.addAttachment(new AttachmentProxy(
-				UniversalId.createFromAccountAndLocalId(
-					bulletinId.getAccountId(), attachmentsAssocList[i]),
-				attachmentsAssocList[i + 1],
-				null));
-		}
+		addFields(fdp, fieldPairs);
+		addAttachments(fdp, attachmentsAssocList);
 					
 		return fdp;
 	}
 	
+	private FieldSpec[] getSampleFieldSpecs()
+	{
+		return BulletinField.getDefaultSearchFieldSpecs();
+	}
+
+	private void addFields(FieldDataPacket fdp, HashMap fieldPairs)
+	{
+		Set keys = fieldPairs.keySet();
+		Iterator iterator = keys.iterator(); 
+		while(iterator.hasNext())
+		{
+			String tag = (String)iterator.next();
+			String value = (String)fieldPairs.get(tag);
+			fdp.set(tag, value);
+		}
+	}
+
+	private void addAttachments(FieldDataPacket fdp, String[] attachmentsAssocList)
+	{
+		Assert.assertEquals(
+			"Uneven assoc list: " + Arrays.asList(attachmentsAssocList), 
+			0, attachmentsAssocList.length % 2);
+
+		for (int i = 0; i < attachmentsAssocList.length; i += 2) 
+		{
+			String localId = attachmentsAssocList[i];
+			UniversalId uid = UniversalId.createFromAccountAndLocalId(fdp.getAccountId(), localId);
+			String label = attachmentsAssocList[i + 1];
+			AttachmentProxy proxy = new AttachmentProxy(uid, label, null);
+			fdp.addAttachment(proxy);
+		}
+	}
+
 	protected void deleteIndexDir() throws BulletinIndexException
 	{
 		File indexDir = 
