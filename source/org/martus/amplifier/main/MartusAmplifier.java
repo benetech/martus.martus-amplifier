@@ -121,6 +121,9 @@ public class MartusAmplifier
 		server.addWebApplication("/","presentation/");
 		addPasswordAuthentication(server);
 		server.start();
+
+		writeSyncFile(getRunningFile());
+		System.out.println("Waiting for connection...");
 	}
 
 	private void processCommandLine(String[] args)
