@@ -4,6 +4,10 @@
         <title>Martus Amplifier Search Query</title>
         <link rel="stylesheet" href="stylesheets/style.css" type="text/css">
 </head>
+<%
+//clear cached hits
+        request.getSession().setAttribute("CACHED_HITS", null);
+%>
 <center>
 	<table border="0" cellspacing="0" cellpadding="0">
 	<tr>
@@ -36,6 +40,10 @@
 				%>
 				</select>
 			</p>
+                        <p>
+                                <input type="checkbox" name="case_sensitive"/> Case Sensitive
+                                <input type="checkbox" name="whole_word"/> Whole Word Only
+                        </p>
 	        </form>
         </td>
         </tr>
