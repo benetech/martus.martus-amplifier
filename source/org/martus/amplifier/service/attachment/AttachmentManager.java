@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.martus.common.UniversalId;
+import org.martus.amplifier.common.configuration.AmplifierConfiguration;
+import org.martus.amplifier.service.attachment.api.AttachmentInfo;
 import org.martus.amplifier.service.attachment.api.IAttachmentManager;
 
 import com.sleepycat.db.Db;
@@ -185,11 +187,34 @@ public class AttachmentManager implements IAttachmentConstants, IAttachmentManag
 		}
 		return returnValue.getFile(filePath);
 	}
+	
+	public void putAttachmentInfoList(UniversalId universalBulletinId, List attachmentInfoList)
+	{
+		if(attachmentInfoList == null)
+			return;
+		Iterator attachmentInfoIterator = attachmentInfoList.iterator();
+		AttachmentInfo currentInfo = null;
+		String attachmentPath = null;
+		UniversalId attachmentId = null;
+			
+		while(attachmentInfoIterator.hasNext());
+		{
+			currentInfo = (AttachmentInfo) attachmentInfoIterator.next();
+			attachmentId = currentInfo.getId();
+			putAttachmentId(universalBulletinId, attachmentId);
+			attachmentPath = 
+				AmplifierConfiguration.getInstance().buildAmplifierWorkingPath(TEMP_ATTACHMENT_FOLDER, currentInfo.getId().toString());
+			File attachmentFile = new File(attachmentPath);
+			putAttachmentFile(attachmentId, attachmentFile);
+			putAttachmentName(attachmentId, currentInfo.getLabel());
+		}
+	}
 		
 	private static AttachmentManager instance = new AttachmentManager();
 	private Db attachmentFileTable =  null;
 	private Db attachmentIdTable =  null;
 	private Db attachmentNameTable =  null;
+	private static final String TEMP_ATTACHMENT_FOLDER = "temp_attachment_folder";
 	private static final String ATTACHMENT_FILE_DATABASE_FILENAME = "attachments_file.db";
 	private static final String ATTACHMENT_ID_DATABASE_FILENAME = "attachments_id.db";
 	private static final String ATTACHMENT_NAME_DATABASE_FILENAME = "attachments_name.db";
