@@ -1,0 +1,63 @@
+<!-- Ant build.xml - Need Ant v1.5 or later -->
+
+<!-- 
+	 The purpose of this build script is to place the appropriate
+	 jars in the web app lib directory.
+-->
+
+<project name="martus-amplifier" default="build" basedir=".">
+
+  <!-- set global properties for this build -->
+  <property file="build.properties" />
+  <property environment="env"/>
+
+  <property name="martus-dir" value="../martus-readonly"/>
+  
+  <property name="common-dir" value="org/martus/common"/>
+  
+  <property name="built-jars" value="buildfiles/jars"/>
+  
+  <property name="web-app-dir" value="presentation/WEB-INF"/>
+  <property name="web-app-lib" value="${web-app-dir}/lib"/>
+  
+  
+<!-- ================================================================== -->
+<!-- I N I T                                                            -->
+<!-- ================================================================== -->  
+  <target name="init">
+    <!-- tstamp task initializes ${DSTAMP} etc -->
+    <tstamp/>
+  </target>
+
+<!-- ================================================================== -->
+<!-- C L E A N                                                          -->
+<!-- ================================================================== -->
+  <target name="clean">
+  
+    <!-- Remove web app jars -->
+    <delete verbose="true">
+        <fileset dir="${web-app-lib}" includes="**/*.jar"/>
+    </delete>
+    
+  </target>
+
+<!-- ================================================================== -->
+<!-- B U I L D                                                          -->
+<!-- ================================================================== -->
+  <target name="build" depends="init">
+    
+    <!-- Jar up martus-common and throw it in the web app dir -->
+    <jar jarfile="${web-app-lib}/martus-common.jar"
+   		basedir="${martus-dir}"
+   		includes="${common-dir}/**/*.class"/>
+	
+	<!-- Move necessary pre-built jars to web app dir. -->
+	<copy todir="${web-app-lib}">
+		<fileset dir="${built-jars}" 
+			includes="db.jar,lucene-1.2.jar,junit.jar"/>
+	</copy>
+
+  </target>
+
+</project>
+

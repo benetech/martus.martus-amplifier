@@ -61,11 +61,9 @@ Martus Eclipse Setup (Oct. 31, 2002)
 	Using "Add variables / New" create new variables pointing to the following Jars, which can be found in martus-amplifier/buildfiles/jars.
 		
 		berkeleydb (See Set up BerkeleyDB Instructions)
-		JasperRuntime (jasper-runtime.jar)
 		jsse (jsse.jar)
 		JUnit (junit.jar)
 		LuceneEngine (lucene-1.2.jar)
-		Servlet (servlet.jar)
 		Xerces (xerces.jar)
 		xmlrpc (xmlrpc-1.1.jar)
 
@@ -79,7 +77,6 @@ Martus Eclipse Setup (Oct. 31, 2002)
 		xmlrpc (xmlrpc-1.1.jar)
 	
 
-	Note0: Is it necessary to include servlet.jar and jasper-runtime.jar in the martus-amplifier project? These should already be in the Tomcat installation, and one could point the variables there instead.	
 	Note1: If these already exist without the correct location beside it,
 	delete them first then create new variables,
 	they should come back with the jar file's location beside it.
@@ -87,5 +84,3 @@ Martus Eclipse Setup (Oct. 31, 2002)
 	Note3: The JRE_LIB must point to the Java1.4 rt.jar file NOT 1.3 to do this see Step #6
     	Note4: Is there a way to just have a variable for the user's local jars directory? 	Then we could set up all these variables in advance and have them all refer to that one variable. For example, if we had a variable BUILD_PATH, could we then define JUnit to point to $BUILD_PATH/junit.jar or something like that? Does Eclipse allow this?
 
-8. Set up linked libraries
-Add the path to the linkedlibraries folder on your computer to your PATH environment variable. The linkedlibraries folder is in your workspace at martus-amplifier\buildfiles\linkedlibraries_win32
