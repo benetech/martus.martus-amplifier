@@ -9,7 +9,7 @@
             <table border="0" cellspacing="0" cellpadding="0">
             <tr>
             <td> 
-                <form name="search" action="SimpleSearch" method="post">
+                <form name="search" action="SearchResults" method="post">
                     <p>
                         <input name="query" size="44"/>&nbsp;
                         <input type="submit" value="Search"/>

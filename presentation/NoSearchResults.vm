@@ -1,0 +1,13 @@
+<html>
+    <head>
+        <title>Martus Amplifier Search Query</title>
+    </head>
+    
+    <body>
+#include ("header.vm")
+        <center>
+        No search results found.
+        </center>
+#include ("footer.vm")
+    </body>
+</html>

@@ -180,11 +180,11 @@ public class SimpleSearch extends VelocityServlet
         }
         catch( ParseErrorException pee )
         {
-            System.out.println("SampleServlet : parse error for template " + pee);
+            System.out.println("SimpleSearch : parse error for template " + pee);
         }
         catch( ResourceNotFoundException rnfe )
         {
-            System.out.println("SampleServlet : template not found " + rnfe);
+            System.out.println("SimpleSearch : template not found " + rnfe);
         }
         catch( Exception e )
         {

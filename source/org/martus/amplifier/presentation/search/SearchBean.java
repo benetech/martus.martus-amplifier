@@ -143,7 +143,7 @@ public class SearchBean implements Serializable
 	private String indexPath;
 	private SearchResultsBean results;
 	
-	private class SearchResultsBean extends AbstractList
+	public class SearchResultsBean extends AbstractList
 		implements Serializable
 	{
 		public Object get(int index) 
@@ -168,7 +168,7 @@ public class SearchBean implements Serializable
 			return numResults;
 		}
 		
-		private SearchResultsBean()
+		SearchResultsBean()
 			throws BulletinIndexException
 		{
 			cache = new ArrayList(maxCacheSize);
