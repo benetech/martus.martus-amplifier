@@ -32,6 +32,7 @@ public interface IBulletinConstants
 	public static final String VISIBLE_LOCATION_FIELD = "Location";
 	public static final String ENTRY_DATE_FIELD = "entry_date";
 	public static final String VISIBLE_ENTRY_DATE_FIELD = "Entry Date";	
+	public static final String UNIVERSAL_ID_FIELD = "universal_id";
 	
 	public static final String[] BULLETIN_FIELDS = 
 		{AUTHOR_FIELD, KEYWORDS_FIELD, TITLE_FIELD, EVENT_DATE_FIELD, 

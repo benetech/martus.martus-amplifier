@@ -27,6 +27,7 @@ public class TestAllSearch extends TestSuite
 		suite.addTest(new TestSuite(BulletinDocumentTest.class));
 		suite.addTest(new TestSuite(BulletinIndexerTest.class));
 		suite.addTest(new TestSuite(BulletinSearcherTest.class));
+		suite.addTest(new TestSuite(BulletinCatalogTest.class));
 
 	    return suite;
 	}

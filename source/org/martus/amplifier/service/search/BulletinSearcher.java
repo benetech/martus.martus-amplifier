@@ -20,6 +20,7 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.PrefixQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.RangeQuery;
+import org.apache.lucene.search.TermQuery;
 import org.martus.amplifier.service.search.api.IBulletinSearcher;
 
 /**
@@ -154,6 +155,32 @@ implements IBulletinSearcher, IBulletinConstants, ISearchConstants
 			logger.severe("Unable to parse query:" + pe.getMessage());
 		}
 		
+		try
+		{
+			searcher = new IndexSearcher(IndexReader.open(DEFAULT_INDEX_LOCATION));
+			hits = searcher.search(query);
+		}
+		catch(IOException ioe)
+		{
+			logger.severe("Unable to search index:" + ioe.getMessage());
+		}
+		
+		return hits;
+	}
+	
+	public Hits searchKeywordField(String field, String queryString)
+	{
+		Hits hits = null;
+		IndexSearcher searcher = null;
+		
+		Assert.assertTrue(queryString != null);
+		
+		TermQuery query = null;
+		Term term = null;
+		
+		term = new Term(field, queryString);
+		query = new TermQuery(term);
+				
 		try
 		{
 			searcher = new IndexSearcher(IndexReader.open(DEFAULT_INDEX_LOCATION));
