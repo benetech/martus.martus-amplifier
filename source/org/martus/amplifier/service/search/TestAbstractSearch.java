@@ -9,6 +9,7 @@ import java.util.List;
 
 import junit.framework.Assert;
 
+import org.martus.amplifier.presentation.SearchFields;
 import org.martus.amplifier.test.TestAbstractAmplifier;
 import org.martus.common.FieldSpec;
 import org.martus.common.bulletin.AttachmentProxy;
@@ -347,24 +348,45 @@ public abstract class TestAbstractSearch
 			searcher.close();
 		}
 	}
-
-	public void testDateBoundary() 
-		throws BulletinIndexException, ParseException
+	
+	public void testAdvancedSearch() throws BulletinIndexException,ParseException
 	{
-		UniversalId bulletinId = UniversalId.createDummyUniversalId();
-		FieldDataPacket fdp = generateSampleData(bulletinId);		
+		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
+		FieldDataPacket fdp1 = generateSampleData(bulletinId1);		
+		UniversalId bulletinId2 = UniversalId.createDummyUniversalId();
+		FieldDataPacket fdp2 = generateSampleFlexiData(bulletinId2);		
 		BulletinIndexer indexer = openBulletinIndexer();
 		try 
 		{
 			indexer.clearIndex();
-			indexer.indexFieldData(bulletinId, fdp);
+			indexer.indexFieldData(bulletinId1, fdp1);
+			indexer.indexFieldData(bulletinId2, fdp2);
 		} 
 		finally 
 		{
 			indexer.close();
-		}		
+		}
+		
+		BulletinSearcher searcher = openBulletinSearcher();
+		BulletinSearcher.Results results = null;				
+		
+		try 
+		{
+			Date startDate 	= SearchConstants.SEARCH_DATE_FORMAT.parse("2003-08-01");
+			Date endDate 	= SearchConstants.SEARCH_DATE_FORMAT.parse("2003-08-25");
+		
+			SearchFields fields = new SearchFields();
+			fields.add(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, startDate);
+			fields.add(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, endDate);
+			
+			results = searcher.advancedSercher(null, fields);
+			assertEquals("Should have found 1 match? ", 1, results.getCount());
+		}
+		finally 
+		{
+			searcher.close();
+		}
 	}
-	
 		
 	protected FieldDataPacket generateSampleData(UniversalId bulletinId)
 	{
