@@ -161,6 +161,7 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
 			for(int i= 0; i< result.size(); i++)
 			{
 				tempFile = (File)result.get(i);	
+				tempFile.deleteOnExit();
 				if( tempFile.getName().startsWith(bulletinPrefix) )
 				{
 					dir = bulletinWorkingDirectory;
