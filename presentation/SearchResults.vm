@@ -67,6 +67,12 @@ Boston, MA 02111-1307, USA.
 			            	<strong>Location</strong>: <br/>  
 						#end
 						
+						#if($bulletin.fields.entrydate != "")
+			                <strong>Entry Date</strong>: $bulletin.fields.entrydate<br/>
+			            #else
+			            	<strong>Entry Date</strong>: <br/>  
+						#end
+						
 		                <strong>Event Date</strong>: 
 						#parse("DateRange.vm")
 						<br/>
