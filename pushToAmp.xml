@@ -77,10 +77,13 @@
 <!-- B U I L D                                                          -->
 <!-- ================================================================== -->
   <target name="build" depends="init">
+
+    <!-- Remove all jar files from main push dir. -->
+    <delete verbose="true">
+        <fileset dir="${push-dir}" includes="*.jar"/>
+    </delete>
     
     <!-- Jar up martus-common and throw it in the push dir -->
-    <delete verbose="true" file="${ampjar-filename}"/>
-
     <jar jarfile="${ampjar-filename}"
         update="false"
    		basedir="${martus-dir}"
@@ -139,7 +142,10 @@
                         />
                         
         <property name="tar-filename"  value="${push-dir}/martus_amp-${DSTAMP}.tar"/>
-	    <delete verbose="true" file="${tar-filename}"/>
+	    <!-- Remove all tar files from main push dir. -->
+	    <delete verbose="true">
+	        <fileset dir="${push-dir}" includes="*.tar"/>
+	    </delete>
         <tar destfile="${tar-filename}" basedir="${push-dir}"/>
 
   </target>
