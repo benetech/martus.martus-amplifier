@@ -1,7 +1,7 @@
 /*
 
 The Martus(tm) free, social justice documentation and
-monitoring software. Copyright (C) 2001-2004, Beneficent
+monitoring software. Copyright (C) 2001-2005, Beneficent
 Technology, Inc. (Benetech).
 
 Martus is free software; you can redistribute it and/or
@@ -23,41 +23,33 @@ Software Foundation, Inc., 59 Temple Place - Suite 330,
 Boston, MA 02111-1307, USA.
 
 */
-package org.martus.amplifier.lucene.test;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+package org.martus.amplifier.lucene;
+
+import java.io.Reader;
+
+import org.apache.lucene.analysis.CharTokenizer;
 
 
-public class TestAllLucene extends TestSuite
+public class AlphanumericTokenizer extends CharTokenizer
 {
-
-	public TestAllLucene()
+	public AlphanumericTokenizer(Reader reader)
 	{
-		super();
+		super(reader);
 	}
 
-	public static void main(String[] args)
+	public boolean isTokenChar(char c)
 	{
-		runTests();
+		if(Character.isLetterOrDigit(c))
+			return true;
+		return false;
 	}
 
-	public static void runTests()
+	public char normalize(char c)
 	{
-		junit.textui.TestRunner.run(suite());
-	}
-
-	public static Test suite()
-	{
-		TestSuite suite =
-			new TestSuite("All Martus Amplifier Lucene Tests");
+		if(Character.isUpperCase(c))
+			return Character.toLowerCase(c);
 		
-		suite.addTest(new TestSuite(TestAlphanumericTokenizer.class));
-		suite.addTest(new TestSuite(TestLuceneSearcher.class));
-		suite.addTest(new TestSuite(TestLuceneBulletinIndexer.class));
-		suite.addTest(new TestSuite(TestRawLuceneSearching.class));
-		
-		return suite;
+		return c;
 	}
-
 }

@@ -27,11 +27,12 @@ package org.martus.amplifier.lucene;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Reader;
 import java.util.Collection;
 import java.util.Iterator;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.SimpleAnalyzer;
+import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexReader;
@@ -244,9 +245,18 @@ public class LuceneBulletinIndexer
 		doc.add(Field.Text(field.getIndexId(), value));				
 	}
 	
+	static class AlphanumericAnalyzer extends Analyzer
+	{
+		public TokenStream tokenStream(String fieldNameUNUSED, Reader reader)
+		{
+			return new AlphanumericTokenizer(reader);
+		}
+	}
+	
+	
 	private File indexDir;
 	private IndexWriter writer;
-	private final static Analyzer ANALYZER = new SimpleAnalyzer();
+	private final static Analyzer ANALYZER = new AlphanumericAnalyzer();
 	
 	private static final String INDEX_DIR_NAME = "ampIndex";
 	private static final String ALL_FIELD_VALUE_SEPARATOR = "    |    ";

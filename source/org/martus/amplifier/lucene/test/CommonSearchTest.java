@@ -86,7 +86,7 @@ public abstract class CommonSearchTest
 		HashMap fieldPairs = new HashMap();
 		fieldPairs.put(SEARCH_AUTHOR_INDEX_FIELD, "Paul"); 
 		fieldPairs.put(SEARCH_KEYWORDS_INDEX_FIELD, "ate egg salad root beer"); 
-		fieldPairs.put(SEARCH_TITLE_INDEX_FIELD, "ZZZ for Lunch?");
+		fieldPairs.put(SEARCH_TITLE_INDEX_FIELD, "ZZZ for 2nd Lunch?");
 		fieldPairs.put(SEARCH_ENTRY_DATE_INDEX_FIELD, "2003-05-11"); 
 		fieldPairs.put(SEARCH_EVENT_DATE_INDEX_FIELD, "2003-04-10");
 		fieldPairs.put(SEARCH_DETAILS_INDEX_FIELD, "menu");
@@ -153,7 +153,7 @@ public abstract class CommonSearchTest
 	{
 		HashMap fieldPairs = new HashMap();
 		fieldPairs.put(SEARCH_AUTHOR_INDEX_FIELD, "Charles"); 
-		fieldPairs.put(SEARCH_KEYWORDS_INDEX_FIELD, "foreign"); 
+		fieldPairs.put(SEARCH_KEYWORDS_INDEX_FIELD, "foreign b" + UnicodeConstants.ACCENT_E_LOWER); 
 		fieldPairs.put(SEARCH_TITLE_INDEX_FIELD, "Foreign Chars ni" + UnicodeConstants.TILDE_N_LOWER + "os");
 		fieldPairs.put(SEARCH_ENTRY_DATE_INDEX_FIELD, "2003-09-15"); 
 		fieldPairs.put(SEARCH_EVENT_DATE_INDEX_FIELD, "2003-08-20,20030820+3");

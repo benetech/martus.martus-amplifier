@@ -109,38 +109,15 @@ public class TestLuceneSearcher extends CommonSearchTest
 	}
 	
 	
-	public void testFindBulletin() throws Exception
+	public void testLookup() throws Exception
 	{
 		indexBulletin1();
 		BulletinSearcher searcher = openBulletinSearcher();
-		try {
-			Assert.assertNotNull(
-				"Didn't find indexed bulletin", 
-				searcher.lookup(bulletinId1));
-		} finally {
-			searcher.close();
-		}
-	}
-	
-	public void testIndexAndSearch() throws Exception
-	{
-		indexBulletin1();
-		BulletinSearcher searcher = openBulletinSearcher();
-		try {
+
+		try 
+		{
 			BulletinInfo found = searcher.lookup(bulletinId1);
 			Assert.assertNotNull("Didn't find indexed bulletin", found);
-				
-			HashMap fields = new HashMap();			
-			fields.put(RESULT_BASIC_QUERY_KEY, fdp1.get(SEARCH_AUTHOR_INDEX_FIELD) );
-			Assert.assertEquals(1, searcher.search(fields).getCount());
-			
-			fields = new HashMap();	
-			fields.put(RESULT_BASIC_QUERY_KEY, fdp1.get(SEARCH_KEYWORDS_INDEX_FIELD));
-			Assert.assertEquals(1,searcher.search(fields).getCount());
-			
-			fields = new HashMap();
-			fields.put(RESULT_BASIC_QUERY_KEY, fdp1.get(SEARCH_DETAILS_INDEX_FIELD));											
-			Assert.assertEquals(1, searcher.search(fields).getCount());
 		} 
 		finally 
 		{
@@ -149,6 +126,61 @@ public class TestLuceneSearcher extends CommonSearchTest
 		
 	}
 	
+	public void testIndexAndSearch() throws Exception
+	{
+		indexBulletin1();
+
+		Results foundAuthors = simpleSearch(fdp1.get(SEARCH_AUTHOR_INDEX_FIELD));
+		Assert.assertEquals(1, foundAuthors.getCount());
+		
+		Results foundKeywords = simpleSearch(fdp1.get(SEARCH_KEYWORDS_INDEX_FIELD));
+		Assert.assertEquals(1,foundKeywords.getCount());
+		
+		Results foundDetails = simpleSearch(fdp1.get(SEARCH_DETAILS_INDEX_FIELD));
+		Assert.assertEquals(1, foundDetails.getCount());
+	}
+	
+	public void testSearchForWords() throws Exception
+	{
+		indexBulletin1();
+		
+		verifyWordFoundCount(1, "lunch");
+		verifyWordFoundCount(0, "blowout");
+		verifyWordFoundCount(1, "2nd");
+		verifyWordFoundCount(0, "nd");
+		verifyWordFoundCount(0, "2");
+	}
+	
+	public void testSearchForeignWords() throws Exception
+	{
+		indexBulletinForeign();
+		verifyWordFoundCount(1, "ni" + UnicodeConstants.TILDE_N_LOWER + "os");
+		verifyWordFoundCount(1, "b" + UnicodeConstants.ACCENT_E_LOWER);		
+		verifyWordFoundCount(1, "b" + UnicodeConstants.ACCENT_E_UPPER);		
+	}
+	
+	private void verifyWordFoundCount(int expectedCount, String searchWord) throws Exception, BulletinIndexException
+	{
+		Results foundWord = simpleSearch(searchWord);
+		Assert.assertEquals(expectedCount, foundWord.getCount());
+	}
+
+	private Results simpleSearch(String searchValue) throws Exception
+	{
+		HashMap fields = new HashMap();			
+		fields.put(RESULT_BASIC_QUERY_KEY, searchValue );
+		BulletinSearcher searcher = openBulletinSearcher();
+		try 
+		{
+			Results results = searcher.search(fields);
+			return results;
+		} 
+		finally 
+		{
+			searcher.close();
+		}
+	}
+
 	public void testHistory() throws Exception
 	{
 		indexBulletin1And2();
@@ -726,7 +758,7 @@ public class TestLuceneSearcher extends CommonSearchTest
 			results = searcher.search(fields);
 			assertEquals("search for all of these words? ", 1, results.getCount());
 										
-			query = ed.getFormattedString("ZZZ for Lunch?");
+			query = ed.getFormattedString("ZZZ for 2nd Lunch?");
 			clear4Fields(fields);		
 			fields.put(EXACTPHRASE_TAG, query);			
 			results = searcher.search(fields);
