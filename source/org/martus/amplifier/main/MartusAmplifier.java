@@ -40,7 +40,7 @@ import java.util.Vector;
 
 import org.martus.amplifier.attachment.DataManager;
 import org.martus.amplifier.attachment.FileSystemDataManager;
-import org.martus.amplifier.common.AmplifierConstants;
+import org.martus.amplifier.common.MarketingVersionNumber;
 import org.martus.amplifier.datasynch.BackupServerInfo;
 import org.martus.amplifier.datasynch.DataSynchManager;
 import org.martus.amplifier.lucene.LuceneBulletinIndexer;
@@ -50,6 +50,7 @@ import org.martus.amplifier.search.BulletinIndexer;
 import org.martus.common.LoggerInterface;
 import org.martus.common.LoggerToConsole;
 import org.martus.common.MartusUtilities;
+import org.martus.common.VersionBuildDate;
 import org.martus.common.crypto.MartusCrypto;
 import org.martus.common.crypto.MartusSecurity;
 import org.martus.common.crypto.MartusCrypto.AuthorizationFailedException;
@@ -636,8 +637,8 @@ public class MartusAmplifier
 	private static void displayVersion()
 	{
 		System.out.println("MartusAmplifier");
-		System.out.println("Version " + AmplifierConstants.marketingVersionNumber);
-		String versionInfo = MartusUtilities.getVersionDate();
+		System.out.println("Version " + MarketingVersionNumber.marketingVersionNumber);
+		String versionInfo = VersionBuildDate.getVersionBuildDate();
 		System.out.println("Build Date " + versionInfo);
 	}
 

@@ -25,14 +25,14 @@ Boston, MA 02111-1307, USA.
 */
 package org.martus.amplifier.tools;
 
-import org.martus.amplifier.common.AmplifierConstants;
+import org.martus.amplifier.common.MarketingVersionNumber;
 
 
 public class Version
 {
 	public static void main(String[] args)
 	{
-		System.out.println(AmplifierConstants.marketingVersionNumber);
+		System.out.println(MarketingVersionNumber.marketingVersionNumber);
 	}
 }
 
