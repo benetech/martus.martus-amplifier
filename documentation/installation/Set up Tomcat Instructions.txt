@@ -48,3 +48,10 @@ Please adjust the docBase attribute for the Martus Amplifier context for your Ec
 
 Add TOMCAT_HOME to your computer's Environment variables pointing to eg. C:\Program Files\Apache Group\Tomcat 4.1
 
+3. Before running Tomcat you need to run the build.xml file at the root of the martus-amplifier (Not the one under source)
+To run it in eclipse select the build.xml file right click and use Run Ant, and then Run.
+This creates a martus-common.jar file from the martus directory needed for the amp, and also copies other needed files into the
+presentation directory.
+NOTE you will need to run this build file any time files get updated in martus-common
+
+

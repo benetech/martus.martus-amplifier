@@ -11,7 +11,7 @@
   <property file="build.properties" />
   <property environment="env"/>
 
-  <property name="martus-dir" value="../martus-readonly"/>
+  <property name="martus-dir" value="../martus"/>
   
   <property name="common-dir" value="org/martus/common"/>
   
