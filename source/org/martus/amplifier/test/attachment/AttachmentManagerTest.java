@@ -27,11 +27,7 @@ public class AttachmentManagerTest extends AbstractAttachmentTest
 		File testDoc = 
 			new File(AmplifierConfiguration.getInstance().buildAmplifierWorkingPath(ATTACHMENT_TEST_FOLDER, "test.doc"));
 		manager.putAttachmentFile(id, testDoc);
-		StringBuffer docPath = new StringBuffer(200);
-		docPath.append(AmplifierConfiguration.getInstance().buildAmplifierWorkingPath(ATTACHMENT_TEST_FOLDER));
-		docPath.append(File.separator);
-		docPath.append("testoutput.doc");
-		File returnDoc = manager.getAttachmentFile(id, docPath.toString());
+		File returnDoc = manager.getAttachmentFile(id, AmplifierConfiguration.getInstance().buildAmplifierWorkingPath(ATTACHMENT_TEST_FOLDER, "testoutput.doc"));
 		assertNotNull(returnDoc);
 	}
 	
