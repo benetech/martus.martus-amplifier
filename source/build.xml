@@ -1,0 +1,84 @@
+<!-- Ant build.xml - Need Ant v1.5 or later -->
+<project name="martus" default="build" basedir=".">
+
+  <!-- set global properties for this build -->
+  <property file="build.properties" />
+  <property environment="env"/>
+
+  <property name="dist"  value="dist"/>
+
+  <property name="martus-dir" value="org/martus"/>
+  <property name="martus-package" value="org.martus"/>
+  
+  <property name="common-dir" value="${martus-dir}/common"/>
+  <property name="common-jar" value= "${dist}/martus-common.jar"/>
+  <property name="common-package" value="${martus-package}.common"/>
+  <property name="BuildDateFile" value="${common-dir}/BuildDate.txt"/>
+  <property name="common-files" value="${common-dir}/*.class,
+  					${BuildDateFile}
+  					"/>
+
+  <property name="amp-dir" value="${martus-dir}/amplifier"/>
+  <property name="amp-jar" value= "${dist}/martus-amplifier.jar"/>
+  <property name="amp-package" value="${martus-package}.amplifier"/>
+  <property name="amp-files" value="${amp-dir}/*.class,
+  					${amp-dir}/**/*.class,
+  					*.properties
+  					"/>
+
+
+  
+<!-- ================================================================== -->
+<!-- I N I T                                                            -->
+<!-- ================================================================== -->  
+  <target name="init">
+    <!-- tstamp task initializes ${DSTAMP} etc -->
+    <tstamp/>
+  </target>
+
+<!-- ================================================================== -->
+<!-- C L E A N                                                          -->
+<!-- ================================================================== -->
+  <target name="clean">
+  
+    <!-- Remove dis jars & folder -->
+    <delete verbose="true" includeEmptyDirs="true">
+        <fileset dir="${dist}" includes="*.jar"/>
+    </delete>
+    <delete dir="${dist}"/>
+    
+    <delete file="${BuildDateFile}"/>
+    
+    <!-- Remove common class files -->
+    <delete>
+        <fileset dir="${common-dir}" includes="*.class"/>
+    </delete>
+    
+    <!-- Remove amp class files -->
+    <delete>
+        <fileset dir="${amp-dir}/**" includes="*.class"/>
+    </delete>
+  </target>
+
+<!-- ================================================================== -->
+<!-- B U I L D                                                          -->
+<!-- ================================================================== -->
+  <target name="build" depends="init">
+
+    <echo message="${DSTAMP}" file="${BuildDateFile}"/>
+    <javac srcdir="${common-dir}" failonerror="true"/>
+
+    <javac srcdir="${amp-dir}" classpath="${common-dir}" failonerror="true">
+    		<include name="**/*.java"/>
+    </javac>
+
+
+    <mkdir dir="${dist}"/>
+
+    <jar jarfile="${amp-jar}" basedir="." 
+    		includes="${amp-files}, 
+    				${common-files}"/>
+  </target>
+
+</project>
+
