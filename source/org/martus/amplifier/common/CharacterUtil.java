@@ -30,6 +30,8 @@ public class CharacterUtil
 {	
 	public static String removeRestrictCharacters(String str)
 	{	
+		if(str == null)
+			return "";
 		insideQuotes = false;
 		char[] strArray = str.toCharArray();		
 		for (int j=0; j<strArray.length;j++)

@@ -47,7 +47,8 @@ public class TestCharacterUtil extends TestCaseEnhanced
 		String test7 = "*";		
 		String test8 = "tést";
 		String test9 = "\"?\"";		
-		String test10 = "*\"*\"*";		
+		String test10 = "*\"*\"*";	
+		String test11 = null;
 		
 		try
 		{
@@ -71,11 +72,12 @@ public class TestCharacterUtil extends TestCaseEnhanced
 			assertEquals("should not removed ? inside quotes", test9, outStr);
 			outStr = CharacterUtil.removeRestrictCharacters(test10);		
 			assertEquals("should not removed * inside quotes but strip * ouside of quotes", "\"*\"", outStr);
-
 		}
 		catch(Exception e)
 		{
 			assertTrue("UTF8 not supported", false);
 		}			
+		String empty = CharacterUtil.removeRestrictCharacters(test11);
+		assertEquals("Should return an empty string", "", empty);
 	}			
 }
