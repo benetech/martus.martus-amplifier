@@ -70,7 +70,7 @@ public class MartusAmplifier
 		String basePath = AmplifierConfiguration.getInstance().getBasePath();
 		String packetsDirectory = AmplifierConfiguration.getInstance().getPacketsDirectory();
 
-		attachmentManager = new FileSystemAttachmentManager(packetsDirectory, security);
+		attachmentManager = new FileSystemAttachmentManager(packetsDirectory);
 		
 		File configDirectory = new File(basePath);
 		File backupServersDirectory = new File(configDirectory, "serversWhoWeCall");
