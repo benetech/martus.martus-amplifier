@@ -64,11 +64,20 @@ public class SearchResults extends AmplifierServlet
 					HttpServletResponse response, Context context) 
 					throws Exception
 	{
-
-		List results = getSearchResults(request);
-		int resultCount = results.size();
-
 		String templateName = "NoSearchResults.vm";
+
+		List results = null;
+		int resultCount = 0;
+		try
+		{
+			results = getSearchResults(request);
+			resultCount = results.size();
+		}
+		catch (Exception e)
+		{
+//			e.printStackTrace();
+		}
+
 		if(resultCount > 0)
 		{
 			templateName ="SearchResults.vm";

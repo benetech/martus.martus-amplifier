@@ -45,6 +45,8 @@ public class TestSearchResults extends TestCaseEnhanced
 			public List getSearchResults(AmplifierServletRequest request)
 				throws Exception, BulletinIndexException
 			{
+				if(request.getParameter("query")==null)
+					throw new Exception("malformed query");
 				Vector infos = new Vector();
 				infos.add(new BulletinInfo(uid1));
 				infos.add(new BulletinInfo(uid2));
@@ -52,6 +54,7 @@ public class TestSearchResults extends TestCaseEnhanced
 			}
 		}
 		SearchResultsForTesting sr = new SearchResultsForTesting();
+		request.putParameter("query", "owiefijweofiejoifoiwjefoiwef");
 		String templateName = sr.selectTemplate(request, response, context);
 		assertEquals("SearchResults.vm", templateName);
 
@@ -60,5 +63,10 @@ public class TestSearchResults extends TestCaseEnhanced
 		assertEquals(expectedFoundCount, foundBulletins.size());
 		BulletinInfo info = (BulletinInfo)foundBulletins.get(0);
 		assertEquals(uid1, info.getBulletinId());
+
+		request.putParameter("query", null); 
+		templateName = sr.selectTemplate(request, response, context);
+		assertEquals("NoSearchResults.vm", templateName);
+
 	}
 }
