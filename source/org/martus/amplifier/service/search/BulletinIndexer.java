@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.index.IndexWriter;
-import org.martus.amplifier.LoggerConstants;
+import org.martus.amplifier.common.logging.LoggerConstants;
 
 /**
  * @author Daniel Chu
@@ -40,7 +40,7 @@ public class BulletinIndexer implements BulletinConstants, LoggerConstants
 		}
 		catch(java.io.IOException ioe)
 		{
-			logger.severe("Unable to index bulletins: " + ioe.getMessage());
+			logger.severe("Unable to index bulletins:" + ioe.getMessage());
 		}
 	}
 	

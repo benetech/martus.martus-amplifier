@@ -1,6 +1,7 @@
 package org.martus.amplifier.service.search;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import junit.framework.Assert;
 
@@ -12,6 +13,7 @@ import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
+import org.martus.amplifier.common.logging.LoggerConstants;
 
 /**
  * @author Daniel Chu
@@ -20,7 +22,7 @@ import org.apache.lucene.search.Query;
  * functionality needed by the Amplifier application. If this class
  * gets too unwieldy we may need to break it up.
  */
-public class BulletinSearcher implements BulletinConstants
+public class BulletinSearcher implements BulletinConstants, LoggerConstants
 {
 	protected BulletinSearcher()
 	{}
@@ -30,7 +32,7 @@ public class BulletinSearcher implements BulletinConstants
 		return instance;
 	}
    
-	public Hits fieldSearch(String field, String queryString)
+	public Hits searchField(String field, String queryString)
 	{
 		Hits hits = null;
 		Analyzer analyzer = null;
@@ -55,15 +57,18 @@ public class BulletinSearcher implements BulletinConstants
 			hits = searcher.search(query);
 		}
 		catch(IOException ioe)
-		{}
+		{
+			logger.severe("Unable to search index:" + ioe.getMessage());
+		}
 		
 		return hits;
 	}
 	
-	public Hits textSearch(String queryString)
+	public Hits searchText(String queryString)
 	{
-		return fieldSearch("contents", queryString);
+		return searchField(null, queryString);
 	}
 	
 	private static BulletinSearcher instance = new BulletinSearcher();
+	private static Logger logger = Logger.getLogger(SEARCH_LOGGER);
 }
