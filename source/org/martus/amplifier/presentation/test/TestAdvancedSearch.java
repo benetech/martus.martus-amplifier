@@ -44,11 +44,11 @@ public class TestAdvancedSearch extends TestCaseEnhanced
 		servlet.selectTemplate(request, response, context);
 		AdvancedSearchInfo defaultInfo = (AdvancedSearchInfo) context.get("defaultAdvancedSearch");
 		
-		assertEquals("Get exphrase query string", "amp test", (String) defaultInfo.get(SearchResultConstants.EXACTPHRASE_TAG));	
-		assertEquals("Get anyword query string", "amp", (String) defaultInfo.get(SearchResultConstants.ANYWORD_TAG));
-		assertEquals("Get these query string", "my test", (String) defaultInfo.get(SearchResultConstants.THESE_WORD_TAG));
-		assertEquals("Get bulletin field string", "title", (String) defaultInfo.get(SearchResultConstants.RESULT_FIELDS_KEY));
-		assertEquals("Get language string", "english", (String) defaultInfo.get(SearchResultConstants.RESULT_LANGUAGE_KEY));				
+		assertEquals("Get exphrase query string", "amp test", defaultInfo.get(SearchResultConstants.EXACTPHRASE_TAG));	
+		assertEquals("Get anyword query string", "amp", defaultInfo.get(SearchResultConstants.ANYWORD_TAG));
+		assertEquals("Get these query string", "my test", defaultInfo.get(SearchResultConstants.THESE_WORD_TAG));
+		assertEquals("Get bulletin field string", "title", defaultInfo.get(SearchResultConstants.RESULT_FIELDS_KEY));
+		assertEquals("Get language string", "english", defaultInfo.get(SearchResultConstants.RESULT_LANGUAGE_KEY));				
 					
 	}	
 	
