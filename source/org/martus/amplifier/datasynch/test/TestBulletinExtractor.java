@@ -16,6 +16,7 @@ import org.martus.amplifier.attachment.AttachmentManager;
 import org.martus.amplifier.attachment.AttachmentStorageException;
 import org.martus.amplifier.attachment.FileSystemAttachmentManager;
 import org.martus.amplifier.common.AmplifierConfiguration;
+import org.martus.amplifier.common.DateUtilities;
 import org.martus.amplifier.datasynch.BulletinExtractor;
 import org.martus.amplifier.lucene.LuceneBulletinIndexer;
 import org.martus.amplifier.lucene.LuceneBulletinSearcher;
@@ -242,8 +243,8 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 				String startDateRetrieved = retrievedData.get(field.getIndexId()+"-start");
 				String endDateRetrieved = retrievedData.get(field.getIndexId()+"-end");
 				String dateOfBulletin = bulletin.get(field.getXmlId());
-				String startDate = LuceneBulletinSearcher.getStartDateRange(dateOfBulletin);
-				String endDate = LuceneBulletinSearcher.getEndDateRange(dateOfBulletin);
+				String startDate = DateUtilities.getStartDateRange(dateOfBulletin);
+				String endDate = DateUtilities.getEndDateRange(dateOfBulletin);
 				assertEquals(startDate, startDateRetrieved);
 				assertEquals(endDate, endDateRetrieved);
 				continue;

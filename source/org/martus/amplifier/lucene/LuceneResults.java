@@ -36,6 +36,7 @@ import org.martus.amplifier.attachment.AttachmentManager;
 import org.martus.amplifier.attachment.AttachmentStorageException;
 import org.martus.amplifier.attachment.FileSystemAttachmentManager;
 import org.martus.amplifier.common.AmplifierConfiguration;
+import org.martus.amplifier.common.DateUtilities;
 import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.amplifier.search.AttachmentInfo;
 import org.martus.amplifier.search.BulletinField;
@@ -119,9 +120,9 @@ public class LuceneResults implements Results, LuceneSearchConstants, SearchCons
 			 	
 				if (field.isDateRangeField())
 				{
-					String startDate = LuceneBulletinSearcher.getStartDateRange(value);
+					String startDate = DateUtilities.getStartDateRange(value);
 					info.set(field.getIndexId()+"-start", startDate);
-					String endDate = LuceneBulletinSearcher.getEndDateRange(value);
+					String endDate = DateUtilities.getEndDateRange(value);
 					if(endDate != null)
 						info.set(field.getIndexId()+"-end", endDate);
 					continue;
