@@ -33,7 +33,7 @@ import org.martus.amplifier.common.AmplifierLocalization;
 import org.martus.amplifier.common.ChoiceEntry;
 import org.martus.amplifier.common.FindBulletinsFields;
 import org.martus.amplifier.common.RawSearchParameters;
-import org.martus.amplifier.main.MartusAmplifier;
+import org.martus.amplifier.main.LanguagesIndexedList;
 import org.martus.amplifier.velocity.AmplifierServlet;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
 import org.martus.amplifier.velocity.AmplifierServletResponse;
@@ -72,7 +72,8 @@ public class AdvancedSearch extends AmplifierServlet
 	
 	Vector getAvailableLanguageChoices()
 	{
-		Vector languageCodes = MartusAmplifier.languagesIndexed.getListOfLanguagesIndexed();
+		LanguagesIndexedList indexedLanguages = LanguagesIndexedList.languagesIndexedSingleton;
+		Vector languageCodes = indexedLanguages.getListOfLanguagesIndexed();
 		Vector fields = new Vector();
 		for(int i = 0; i < languageCodes.size(); ++i)
 		{

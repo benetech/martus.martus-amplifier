@@ -3,7 +3,7 @@ package org.martus.amplifier.search;
 import java.util.logging.Logger;
 
 import org.martus.amplifier.lucene.LuceneBulletinSearcher;
-import org.martus.amplifier.main.StubServer;
+import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.common.packet.UniversalId;
 
 /**
@@ -29,7 +29,7 @@ public class BulletinCatalog
 		BulletinSearcher searcher = null;
 		try
 		{
-			searcher = new LuceneBulletinSearcher(StubServer.getBasePath());
+			searcher = new LuceneBulletinSearcher(MartusAmplifier.getStaticAmplifierDataPath());
 			return (searcher.lookup(universalId) != null);
 		}
 		catch (Exception e)

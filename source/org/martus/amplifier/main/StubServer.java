@@ -64,9 +64,9 @@ public class StubServer
 			System.out.println("***** Key pair file not found *****");
 			serverExit(2);
 		}
-		char[] passphrase = insecurePassword;
+		char[] passphrase = server.insecurePassword;
 		if(passphrase == null)
-			passphrase = StubServer.getPassphraseFromConsole();
+			passphrase = server.getPassphraseFromConsole();
 		server.loadAccount(passphrase);
 		server.displayStatistics();
 		server.initalizeAmplifier(passphrase);
@@ -169,7 +169,7 @@ public class StubServer
 
 	File getRunningFile()
 	{
-		File runningFile = new File(StubServer.getTriggerDirectory(), AMP_RUNNING_FILE);
+		File runningFile = new File(getTriggerDirectory(), AMP_RUNNING_FILE);
 		return runningFile;
 	}
 
@@ -180,7 +180,7 @@ public class StubServer
 	
 	File getKeyPairFile()
 	{
-		return new File(StubServer.getStartupConfigDirectory(), KEYPAIR_FILENAME);
+		return new File(getStartupConfigDirectory(), KEYPAIR_FILENAME);
 	}
 
 	void loadAccount(char[] passphrase) throws AuthorizationFailedException, InvalidKeyPairFileVersionException, IOException
@@ -248,9 +248,9 @@ public class StubServer
 		MartusUtilities.startTimer(new ShutdownRequestMonitor(), shutdownRequestIntervalMillis);
 	}
 	
-	static public boolean isShutdownRequested()
+	public boolean isShutdownRequested()
 	{
-		return(StubServer.getShutdownFile().exists());
+		return(getShutdownFile().exists());
 	}
 	
 	public boolean canExitNow()
@@ -278,7 +278,7 @@ public class StubServer
 			if( isShutdownRequested() && canExitNow() )
 			{
 				log("Shutdown request received.");
-				StubServer.getShutdownFile().delete();
+				getShutdownFile().delete();
 				log("Server has exited.");
 				try
 				{
@@ -302,28 +302,23 @@ public class StubServer
 		amp.initalizeAmplifier(keystorePassword);
 	}
 		
-	static public File getShutdownFile()
+	public File getShutdownFile()
 	{
-		return new File(StubServer.getTriggerDirectory(), EXIT_AMP_FILE);
+		return new File(getTriggerDirectory(), EXIT_AMP_FILE);
 	}
 
-	static File getTriggerDirectory()
+	File getTriggerDirectory()
 	{
-		return new File(StubServer.getBasePath(), ADMIN_TRIGGER_DIRECTORY);
+		return new File(getDataDirectory(), ADMIN_TRIGGER_DIRECTORY);
 			
 	}
 
-	public static String getBasePath()
+	public File getStartupConfigDirectory()
 	{
-		return StubServer.getDataDirectory().getPath();
+		return new File(getDataDirectory(), ADMIN_STARTUP_CONFIG_DIRECTORY);
 	}
 
-	static public File getStartupConfigDirectory()
-	{
-		return new File(getBasePath(), ADMIN_STARTUP_CONFIG_DIRECTORY);
-	}
-
-	static char[] getPassphraseFromConsole()
+	char[] getPassphraseFromConsole()
 	{
 		System.out.print("Enter passphrase: ");
 		System.out.flush();
@@ -389,7 +384,7 @@ public class StubServer
 		return file;
 	}
 
-	public static File getDataDirectory()
+	public File getDataDirectory()
 	{
 		return dataDirectory;
 	}
@@ -406,10 +401,14 @@ public class StubServer
 
 	long dataSynchIntervalMillis;
 	boolean secureMode;
-	public static File dataDirectory;
+	public File dataDirectory;
 	LoggerInterface logger;
-	public static MartusSecurity security;
 	public MartusAmplifier amp;
-	static char[] insecurePassword;
+	char[] insecurePassword;
 	String ampIpAddress;
+
+	// NOTE: The following members *MUST* be static because they are 
+	// used by servlets that do not have access to a server object! 
+	// USE THEM CAREFULLY!
+	public static MartusSecurity security;
 }

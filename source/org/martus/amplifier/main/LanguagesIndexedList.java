@@ -37,6 +37,12 @@ import org.martus.util.UnicodeWriter;
 
 public class LanguagesIndexedList
 {
+	static public void initialize(File languagesIndexedFile) throws IOException
+	{
+		LanguagesIndexedList.languagesIndexedSingleton = new LanguagesIndexedList(languagesIndexedFile);
+		LanguagesIndexedList.languagesIndexedSingleton.loadLanguagesAlreadyIndexed();
+	}
+		
 
 	public LanguagesIndexedList(File languagesIndexedFileToUse)
 	{
@@ -90,8 +96,10 @@ public class LanguagesIndexedList
 	{
 		return languagesIndexed;
 	}
-		
+
 	File languagesIndexedFile;
 	private Vector languagesIndexed;
+
+	public static LanguagesIndexedList languagesIndexedSingleton;
 	
 }

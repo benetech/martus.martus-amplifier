@@ -48,9 +48,10 @@ public class DataSynchManager
 	private static Logger logger = Logger.getLogger("DATASYNC_LOGGER");
 	boolean isIndexingNeeded;
 
-	public DataSynchManager(BackupServerInfo backupServerToCall, LoggerInterface loggerToUse, MartusCrypto securityToUse)
+	public DataSynchManager(MartusAmplifier ampToUse, BackupServerInfo backupServerToCall, LoggerInterface loggerToUse, MartusCrypto securityToUse)
 	{
 		super();
+		amp = ampToUse;
 		amplifierGateway = new AmplifierNetworkGateway(backupServerToCall, loggerToUse, securityToUse);
 	}
 	
@@ -66,7 +67,7 @@ public class DataSynchManager
 		
 		for(int index=0; index <accountsToBeAmplified.size();index++)
 		{
-			if(MartusAmplifier.isShutdownRequested())
+			if(amp.isShutdownRequested())
 				return;
 			String accountId = (String) accountsToBeAmplified.get(index);
 			pullContactInfoForAccount(accountId);
@@ -111,7 +112,7 @@ public class DataSynchManager
 		Vector response = amplifierGateway.getAccountPublicBulletinLocalIds(accountId);
 		for(int i = 0; i < response.size(); i++)
 		{
-			if(MartusAmplifier.isShutdownRequested())
+			if(amp.isShutdownRequested())
 				return;
 			UniversalId uid = null;
 			try
@@ -132,4 +133,6 @@ public class DataSynchManager
 			}
 		}
 	}
+	
+	MartusAmplifier amp;
 }

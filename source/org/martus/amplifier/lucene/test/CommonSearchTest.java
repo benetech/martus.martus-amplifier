@@ -65,7 +65,7 @@ public abstract class CommonSearchTest
 		StubServer.security = new MockMartusSecurity();
 		MartusAmplifier.getSecurity().createKeyPair();
 		MartusAmplifier.dataManager = new FileSystemDataManager(getTestBasePath());
-		MartusAmplifier.languagesIndexed = new LanguagesIndexedList(new File(getTestBasePath(),"langIndex"));
+		LanguagesIndexedList.languagesIndexedSingleton = new LanguagesIndexedList(new File(getTestBasePath(),"langIndex"));
 	}
 	
 	public void tearDown() throws Exception

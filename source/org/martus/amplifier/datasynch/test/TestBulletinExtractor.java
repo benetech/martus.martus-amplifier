@@ -64,7 +64,7 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 			new FileSystemDataManager(getTestBasePath(), security);
 		MartusAmplifier.dataManager = attachmentManager;
 		db = new MockServerDatabase();
-		MartusAmplifier.languagesIndexed = new LanguagesIndexedList(new File(getTestBasePath(),"langIndex"));
+		LanguagesIndexedList.languagesIndexedSingleton = new LanguagesIndexedList(new File(getTestBasePath(),"langIndex"));
 
 	}
 

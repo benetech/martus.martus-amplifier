@@ -56,12 +56,14 @@ public class MartusAmplifier
 	public MartusAmplifier(StubServer serverToUse) throws CryptoInitializationException
 	{
 		coreServer = serverToUse;
+
 	}
 
 	void initalizeAmplifier(char[] password) throws Exception
 	{
+		staticAmplifierDirectory = coreServer.getDataDirectory();
 		deleteLuceneLockFile();
-		String packetsDirectory = new File(StubServer.getBasePath(), "ampPackets").getPath();
+		String packetsDirectory = getAmplifierPacketsDirectory().getPath();
 
 		dataManager = new FileSystemDataManager(packetsDirectory);
 		
@@ -72,21 +74,24 @@ public class MartusAmplifier
 		loadAccountsWeWillNotAmplify(notAmplifiedAccountsFile);
 		log(notAmplifiedAccountsList.size() + " account(s) will not get amplified");
 
-		
-		//Code.setDebug(true);
-		File indexDir = LuceneBulletinIndexer.getIndexDir(StubServer.getBasePath());
-		File languages = new File(indexDir, "languagesIndexed.txt");
-		languagesIndexed = new LanguagesIndexedList(languages);
+		File indexDir = LuceneBulletinIndexer.getIndexDir(getStaticAmplifierDataPath());
+		File languagesIndexedFile = new File(indexDir, "languagesIndexed.txt");
 		try
 		{
-			languagesIndexed.loadLanguagesAlreadyIndexed();
+			LanguagesIndexedList.initialize(languagesIndexedFile);
 		}
-		catch (IOException e)
+		catch (Exception e)
 		{
 			log("Error: LanguagesIndex" + e);
 		}
 		
+		//Code.setDebug(true);
 		startServers(password);
+	}
+
+	private File getAmplifierPacketsDirectory()
+	{
+		return new File(coreServer.getDataDirectory(), "ampPackets");
 	}
 
 	private void startServers(char[] password) throws IOException, MultiException
@@ -170,7 +175,7 @@ public class MartusAmplifier
 			}
 		}
 
-		File jettyconfig = new File(StubServer.getStartupConfigDirectory(), "jettyConfiguration.xml");
+		File jettyconfig = new File(coreServer.getStartupConfigDirectory(), "jettyConfiguration.xml");
 		if(jettyconfig.exists())
 		{	
 			if(!jettyconfig.delete())
@@ -200,7 +205,7 @@ public class MartusAmplifier
 	{
 		for(int i=0; i < backupServersList.size(); ++i)
 		{
-			if(StubServer.isShutdownRequested())
+			if(coreServer.isShutdownRequested())
 				return;
 			BackupServerInfo backupServerToCall = (BackupServerInfo)backupServersList.get(i);
 			pullNewDataFromOneServer(backupServerToCall);
@@ -212,8 +217,8 @@ public class MartusAmplifier
 		BulletinIndexer indexer = null;
 		try
 		{
-			DataSynchManager dataSyncManager = new DataSynchManager(backupServerToCall, coreServer.logger, getSecurity());
-			indexer = new LuceneBulletinIndexer(StubServer.getBasePath());
+			DataSynchManager dataSyncManager = new DataSynchManager(this, backupServerToCall, coreServer.logger, getSecurity());
+			indexer = new LuceneBulletinIndexer(MartusAmplifier.getStaticAmplifierDataPath());
 		
 			dataSyncManager.getAllNewData(dataManager, indexer, getListOfAccountsWeWillNotAmplify());
 		}
@@ -318,9 +323,9 @@ public class MartusAmplifier
 		
 	}
 
-	static public boolean isShutdownRequested()
+	public boolean isShutdownRequested()
 	{
-		return StubServer.isShutdownRequested();
+		return coreServer.isShutdownRequested();
 	}
 	
 	static public MartusSecurity getSecurity()
@@ -330,17 +335,17 @@ public class MartusAmplifier
 
 	private File getServersWhoWeCallDirectory()
 	{
-		return new File(StubServer.getStartupConfigDirectory(), SERVERS_WHO_WE_CALL_DIRIRECTORY);
+		return new File(coreServer.getStartupConfigDirectory(), SERVERS_WHO_WE_CALL_DIRIRECTORY);
 	}
 
 	private File getAccountsNotAmplifiedFile()
 	{
-		return new File(StubServer.getStartupConfigDirectory(), ACCOUNTS_NOT_AMPLIFIED_FILE);
+		return new File(coreServer.getStartupConfigDirectory(), ACCOUNTS_NOT_AMPLIFIED_FILE);
 	}
 
 	private File getKeystoreFile()
 	{
-		return new File(StubServer.getStartupConfigDirectory(), "keystore");
+		return new File(coreServer.getStartupConfigDirectory(), "keystore");
 	}
 
 	private InetAddress getAmpIpAddress() throws UnknownHostException
@@ -350,7 +355,7 @@ public class MartusAmplifier
 
 	private void deleteLuceneLockFile() throws BulletinIndexException
 	{
-		File indexDirectory = LuceneBulletinIndexer.getIndexDir(StubServer.getBasePath());
+		File indexDirectory = LuceneBulletinIndexer.getIndexDir(MartusAmplifier.getStaticAmplifierDataPath());
 		File lockFile = new File(indexDirectory, "write.lock");
 		if(lockFile.exists())
 		{
@@ -365,20 +370,21 @@ public class MartusAmplifier
 		HttpContext context = server.getContext("/");
 		context.addHandler(handler);
 	}
+	
+	public static String getStaticAmplifierDataPath()
+	{
+		return staticAmplifierDirectory.getPath();
+	}
 
+
+
+	boolean isSyncing;
+	List backupServersList;
+	List notAmplifiedAccountsList;
+	StubServer coreServer;
 
 	static final long IMMEDIATELY = 0;
 	static final long DEFAULT_HOURS_TO_SYNC = 24;
-
-	boolean isSyncing;
-	
-	List backupServersList;
-	List notAmplifiedAccountsList;
-	
-	StubServer coreServer;
-	public static LanguagesIndexedList languagesIndexed;
-	public static DataManager dataManager;
-
 	
 	private static final String SERVERS_WHO_WE_CALL_DIRIRECTORY = "serversWhoWeCall";
 	private static final String ACCOUNTS_NOT_AMPLIFIED_FILE = "accountsNotAmplified.txt";
@@ -388,4 +394,9 @@ public class MartusAmplifier
 	private static final int MIN_THREADS = 5;
 	private static final int MAX_THREADS = 255;
 
+	// NOTE: The following members *MUST* be static because they are 
+	// used by servlets that do not have access to an amplifier object! 
+	// USE THEM CAREFULLY!
+	public static DataManager dataManager;
+	public static File staticAmplifierDirectory;
 }

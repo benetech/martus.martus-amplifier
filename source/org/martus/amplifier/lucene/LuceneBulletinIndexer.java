@@ -36,7 +36,7 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
-import org.martus.amplifier.main.MartusAmplifier;
+import org.martus.amplifier.main.LanguagesIndexedList;
 import org.martus.amplifier.search.BulletinField;
 import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinIndexer;
@@ -158,7 +158,7 @@ public class LuceneBulletinIndexer
 			BulletinField field = (BulletinField) iter.next();
 			String value = fdp.get(field.getXmlId());
 			if(field.isLanguageField())
-				MartusAmplifier.languagesIndexed.updateLanguagesIndexed(value);
+				LanguagesIndexedList.languagesIndexedSingleton.updateLanguagesIndexed(value);
 			if ((value != null) && (value.length() > 0)) 
 			{
 				addField(doc, field, value);
