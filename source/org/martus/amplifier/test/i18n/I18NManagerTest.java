@@ -7,6 +7,11 @@ import org.martus.amplifier.test.AbstractAmplifierTest;
 
 public class I18NManagerTest extends AbstractAmplifierTest
 {
+	public I18NManagerTest(String name)
+	{
+		super(name);
+	}
+	
 	public void testGetServerLocale()
 	{
 		Locale locale = I18NManager.getInstance().getServerLocale();

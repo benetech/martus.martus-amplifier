@@ -13,6 +13,11 @@ import org.martus.amplifier.service.search.ISearchConstants;
 public class BulletinDocumentTest extends AbstractAmplifierSearchTest
 implements ISearchConstants
 {
+	public BulletinDocumentTest(String name)
+	{
+		super(name);
+	}
+	
 	public void testConvertXmlToDocument()
 	{
 		File file = new File(DEFAULT_FILES_LOCATION + "\\OxfamBulletin");

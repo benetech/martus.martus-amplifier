@@ -4,5 +4,8 @@ import org.martus.amplifier.test.AbstractAmplifierTest;
 
 public class AbstractAttachmentTest extends AbstractAmplifierTest
 {
-
+	public AbstractAttachmentTest(String name)
+	{
+		super(name);
+	}
 }

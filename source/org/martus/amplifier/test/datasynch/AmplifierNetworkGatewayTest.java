@@ -1,12 +1,10 @@
 package org.martus.amplifier.test.datasynch;
 
 import java.io.File;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Vector;
 
-import org.martus.common.UniversalId;
 import org.martus.amplifier.service.datasynch.AmplifierNetworkGateway;
+import org.martus.common.UniversalId;
 
 public class AmplifierNetworkGatewayTest extends AbstractAmplifierDataSynchTest
 {

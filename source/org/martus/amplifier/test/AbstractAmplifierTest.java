@@ -11,4 +11,9 @@ import junit.framework.TestCase;
  * Window>Preferences>Java>Code Generation.
  */
 public abstract class AbstractAmplifierTest extends TestCase
-{}
+{
+	public AbstractAmplifierTest(String name)
+	{
+		super(name);
+	}
+}

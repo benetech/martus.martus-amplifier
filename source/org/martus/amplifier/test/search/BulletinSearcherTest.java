@@ -1,14 +1,13 @@
 package org.martus.amplifier.test.search;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
 import junit.framework.Assert;
 
 import org.apache.lucene.search.Hits;
 import org.martus.amplifier.service.search.BulletinSearcher;
-
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import org.apache.lucene.document.DateField;
 
 
 /**
@@ -17,7 +16,13 @@ import org.apache.lucene.document.DateField;
  * Unit Test for basic bulletin text searching
  *  
  */
-public class BulletinSearcherTest extends AbstractAmplifierSearchTest {
+public class BulletinSearcherTest extends AbstractAmplifierSearchTest
+{
+	public BulletinSearcherTest(String name)
+	{
+		super(name);
+	}
+	
 	public void testBasicTextSearch()
 	{
 //		BulletinSearcher bulletinSearch = BulletinSearcher.getInstance();

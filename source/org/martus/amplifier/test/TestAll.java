@@ -1,13 +1,13 @@
 package org.martus.amplifier.test;
 
+import junit.framework.Test;
+import junit.framework.TestSuite;
+
 import org.martus.amplifier.test.attachment.TestAllAttachment;
 import org.martus.amplifier.test.configuration.TestAllConfiguration;
 import org.martus.amplifier.test.datasynch.TestAllDataSynch;
 import org.martus.amplifier.test.i18n.TestAllI18N;
 import org.martus.amplifier.test.search.TestAllSearch;
-
-import junit.framework.Test;
-import junit.framework.TestSuite;
 
 public class TestAll extends TestSuite
 {

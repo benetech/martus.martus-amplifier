@@ -11,6 +11,11 @@ import org.martus.common.Base64.InvalidBase64Exception;
 
 public class AttachmentManagerTest extends AbstractAttachmentTest
 {
+	public AttachmentManagerTest(String name)
+	{
+		super(name);
+	}
+	
 	public void testExtractAttachment()
 	{		
 		AttachmentManager manager = AttachmentManager.getInstance();

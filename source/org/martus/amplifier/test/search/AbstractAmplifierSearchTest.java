@@ -1,9 +1,13 @@
 package org.martus.amplifier.test.search;
 
-import org.martus.amplifier.test.AbstractAmplifierTest;
 import org.martus.amplifier.service.search.IBulletinConstants;
-import junit.framework.TestCase;
+import org.martus.amplifier.test.AbstractAmplifierTest;
 
 public abstract class AbstractAmplifierSearchTest 
 extends AbstractAmplifierTest implements IBulletinConstants
-{}
+{
+	public AbstractAmplifierSearchTest(String name)
+	{
+		super(name);
+	}
+}
