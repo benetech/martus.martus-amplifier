@@ -34,9 +34,9 @@ import org.martus.amplifier.main.LanguagesIndexedList;
 import org.martus.util.TestCaseEnhanced;
 
 
-public class TestLanguagesIndexList extends TestCaseEnhanced
+public class TestLanguagesIndexedList extends TestCaseEnhanced
 {
-	public TestLanguagesIndexList(String name)
+	public TestLanguagesIndexedList(String name)
 	{
 		super(name);
 	}

@@ -52,7 +52,8 @@ public class TestAllMain extends TestSuite
 
 			suite.addTest(new TestSuite(TestMartusAmplifier.class));
 			suite.addTest(new TestSuite(TestIndexedValuesList.class));
-			suite.addTest(new TestSuite(TestLanguagesIndexList.class));
+			suite.addTest(new TestSuite(TestLanguagesIndexedList.class));
+			suite.addTest(new TestSuite(TestEventDatesIndexedList.class));
 
 			return suite;
 		}

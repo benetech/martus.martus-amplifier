@@ -119,6 +119,16 @@ public class MartusAmplifier
 		{
 			log("Error: LanguagesIndex" + e);
 		}
+
+		File eventDatesIndexedFile = new File(indexDir, "eventDatesIndexed.txt");
+		try
+		{
+			EventDatesIndexedList.initialize(eventDatesIndexedFile);
+		}
+		catch (Exception e)
+		{
+			log("Error: EventDatesIndex" + e);
+		}
 		
 		//Code.setDebug(true);
 		startServers(password);

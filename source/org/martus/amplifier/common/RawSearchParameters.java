@@ -30,6 +30,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.martus.amplifier.main.EventDatesIndexedList;
 import org.martus.amplifier.search.SearchConstants;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
 import org.martus.amplifier.velocity.AmplifierServletSession;
@@ -122,14 +123,15 @@ public class RawSearchParameters
 		defaultMap.put(SearchResultConstants.RESULT_LANGUAGE_KEY, SearchResultConstants.LANGUAGE_ANYLANGUAGE_LABEL);
 		defaultMap.put(SearchResultConstants.RESULT_SORTBY_KEY, SearchConstants.SEARCH_ENTRY_DATE_INDEX_FIELD);
 
+		EventDatesIndexedList eventDatesIndexedList = EventDatesIndexedList.eventDatesIndexedSingleton;
 
 		defaultMap.put(SearchResultConstants.RESULT_START_DAY_KEY, "1");
 		defaultMap.put(SearchResultConstants.RESULT_START_MONTH_KEY, "1");
-		defaultMap.put(SearchResultConstants.RESULT_START_YEAR_KEY, "1970");
+		defaultMap.put(SearchResultConstants.RESULT_START_YEAR_KEY, Integer.toString(eventDatesIndexedList.getEarliestYear()));
 		
 		defaultMap.put(SearchResultConstants.RESULT_END_DAY_KEY, Today.getDayString());
 		defaultMap.put(SearchResultConstants.RESULT_END_MONTH_KEY, Today.getMonth());
-		defaultMap.put(SearchResultConstants.RESULT_END_YEAR_KEY, Today.getYearString());
+		defaultMap.put(SearchResultConstants.RESULT_END_YEAR_KEY, Integer.toString(eventDatesIndexedList.getLatestYear()));
 				
 		return defaultMap;	
 	}

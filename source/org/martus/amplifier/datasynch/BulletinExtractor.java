@@ -35,6 +35,7 @@ import java.util.zip.ZipFile;
 
 import org.martus.amplifier.attachment.AttachmentStorageException;
 import org.martus.amplifier.attachment.DataManager;
+import org.martus.amplifier.main.EventDatesIndexedList;
 import org.martus.amplifier.main.LanguagesIndexedList;
 import org.martus.amplifier.search.BulletinField;
 import org.martus.amplifier.search.BulletinIndexException;
@@ -114,6 +115,7 @@ public class BulletinExtractor
 			
 		bulletinIndexer.indexFieldData(bhp.getUniversalId(), fdp, bhp.getHistory());
 		indexLanguage(fdp.get(BulletinConstants.TAGLANGUAGE));
+		indexEventDate(fdp.get(BulletinConstants.TAGEVENTDATE));
 		
 		return fdp;
 	}
@@ -121,6 +123,11 @@ public class BulletinExtractor
 	public void indexLanguage(String languageCode) throws IOException
 	{
 		LanguagesIndexedList.languagesIndexedSingleton.addValue(languageCode);
+	}
+	
+	public void indexEventDate(String flexidateString) throws IOException
+	{
+		EventDatesIndexedList.eventDatesIndexedSingleton.addValue(flexidateString);
 	}
 	
 	private void storeAttachments(

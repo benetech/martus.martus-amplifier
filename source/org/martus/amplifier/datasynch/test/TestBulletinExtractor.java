@@ -46,6 +46,7 @@ import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.datasynch.BulletinExtractor;
 import org.martus.amplifier.lucene.LuceneBulletinIndexer;
 import org.martus.amplifier.lucene.LuceneBulletinSearcher;
+import org.martus.amplifier.main.EventDatesIndexedList;
 import org.martus.amplifier.main.LanguagesIndexedList;
 import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.amplifier.search.AttachmentInfo;
@@ -92,7 +93,7 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 		MartusAmplifier.dataManager = attachmentManager;
 		store = new MockBulletinStore(this);
 		LanguagesIndexedList.languagesIndexedSingleton = new LanguagesIndexedList(new File(getTestBasePath(),"langIndex"));
-
+		EventDatesIndexedList.eventDatesIndexedSingleton = new EventDatesIndexedList(new File(getTestBasePath(), "dateIndex"));
 	}
 
 	protected void tearDown() throws Exception 
@@ -134,7 +135,7 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 		assertTrue("Should contain esperanto", languages.contains(language));
 		
 	}
-
+	
 	public void testSimpleExtraction() 
 		throws Exception
 	{

@@ -33,6 +33,7 @@ import org.martus.amplifier.common.AmplifierLocalization;
 import org.martus.amplifier.common.ChoiceEntry;
 import org.martus.amplifier.common.FindBulletinsFields;
 import org.martus.amplifier.common.RawSearchParameters;
+import org.martus.amplifier.main.EventDatesIndexedList;
 import org.martus.amplifier.main.LanguagesIndexedList;
 import org.martus.amplifier.velocity.AmplifierServlet;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
@@ -58,6 +59,13 @@ public class AdvancedSearch extends AmplifierServlet
 		
 		Vector sortByFields = FindBulletinsFields.getSortByFieldDisplayNames();
 		context.put("sortByFields", sortByFields);
+		
+		EventDatesIndexedList eventDates = EventDatesIndexedList.eventDatesIndexedSingleton;
+		Vector years = new Vector();
+		int earliestIndexedYear = eventDates.getEarliestYear();
+		for(int y = eventDates.getLatestYear(); y >= earliestIndexedYear; --y)
+			years.add(new Integer(y));
+		context.put("years", years);
 		
 		AdvancedSearchInfo defaultFields = (AdvancedSearchInfo) request.getSession().getAttribute("defaultAdvancedSearch");
 		if (defaultFields == null)

@@ -32,6 +32,7 @@ import java.util.HashMap;
 import org.apache.velocity.context.Context;
 import org.martus.amplifier.common.AdvancedSearchInfo;
 import org.martus.amplifier.common.SearchResultConstants;
+import org.martus.amplifier.main.EventDatesIndexedList;
 import org.martus.amplifier.main.LanguagesIndexedList;
 import org.martus.amplifier.presentation.AdvancedSearch;
 import org.martus.util.TestCaseEnhanced;
@@ -47,7 +48,9 @@ public class TestAdvancedSearch extends TestCaseEnhanced
 	{
 		super.setUp();
 		File empty = createTempFileWithData("");
+		File emptyDates = createTempFile();
 		LanguagesIndexedList.initialize(empty);
+		EventDatesIndexedList.initialize(emptyDates);
 	}
 	
 	public void testBasics() throws Exception
@@ -84,7 +87,7 @@ public class TestAdvancedSearch extends TestCaseEnhanced
 		assertEquals("Get these query string", "my test", defaultInfo.get(SearchResultConstants.THESE_WORD_TAG));
 		assertEquals("Get bulletin field string", "title", defaultInfo.get(SearchResultConstants.RESULT_FIELDS_KEY));
 		assertEquals("Get language string", "english", defaultInfo.get(SearchResultConstants.RESULT_LANGUAGE_KEY));				
-					
+		
 	}	
 	
 	private AdvancedSearchInfo defaultAdvancedSearchInfo()
