@@ -5,6 +5,7 @@
 		</p>
 		<p>
 			<input name="maxresults" size="4" value="100"/>&nbsp;Results Per Page&nbsp;
+			&nbsp;Field:&nbsp;<input name="field" size="20" value="title"/>
 			<input type="submit" value="Search"/>
 		</p>
         </form>
