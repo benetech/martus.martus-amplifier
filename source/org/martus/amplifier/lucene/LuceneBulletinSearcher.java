@@ -94,26 +94,18 @@ public class LuceneBulletinSearcher
 		} catch(ParseException pe) {
 			throw new BulletinIndexException( msg + query, pe);
 		}
-	}			
-	
-	private Query loadEventDateQuery(String startQuery, String endQuery)
-			throws BulletinIndexException 
-	{
-		String queryString = getFieldQuery(SearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD, startQuery);
-		queryString += AND+ getFieldQuery(SearchConstants.SEARCH_EVENT_END_DATE_INDEX_FIELD,endQuery);
-		
-		return queryParser(queryString,SEARCH_EVENT_DATE_INDEX_FIELD, "Improperly formed query: ");
-		
-	}
+	}				
 		
 	private Query getEventDateQuery(Date startDate, Date endDate)
 			throws BulletinIndexException
 	{
-		String startDateString = ((startDate == null) ? "*" : DateField.dateToString(startDate));
-		String endDateString   = ((endDate == null) ?  "?": DateField.dateToString(endDate));
-														
-		return loadEventDateQuery(setRangeQuery("*", endDateString),
-					setRangeQuery(startDateString, "?"));
+		String startDateString = setRangeQuery("*", DateField.dateToString(endDate));
+		String endDateString   = setRangeQuery(DateField.dateToString(startDate), "?");
+
+		String queryString = getFieldQuery(SearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD, startDateString);
+		queryString += AND+ getFieldQuery(SearchConstants.SEARCH_EVENT_END_DATE_INDEX_FIELD,endDateString);
+		
+		return queryParser(queryString,SEARCH_EVENT_DATE_INDEX_FIELD, "Improperly formed query: ");
 	}
 	
 	private Query handleEventDateQuery(HashMap fields)
