@@ -29,7 +29,7 @@ public class BulletinSearcher implements BulletinConstants
 		return instance;
 	}
    
-	public Hits textSearch(String queryString)
+	public Hits fieldSearch(String field, String queryString)
 	{
 		Hits hits = null;
 		Analyzer analyzer = null;
@@ -41,7 +41,7 @@ public class BulletinSearcher implements BulletinConstants
 		
 		try
 		{
-			query = QueryParser.parse(queryString, "contents", analyzer);
+			query = QueryParser.parse(queryString, field, analyzer);
 		}
 		catch(ParseException pe)
 		{
@@ -56,5 +56,10 @@ public class BulletinSearcher implements BulletinConstants
 		{}
 		
 		return hits;
+	}
+	
+	public Hits textSearch(String queryString)
+	{
+		return fieldSearch("contents", queryString);
 	}
 }
