@@ -53,27 +53,9 @@ import org.mortbay.util.MultiException;
 
 public class MartusAmplifier
 {
-	
-	
-	
 	public MartusAmplifier(StubServer serverToUse) throws CryptoInitializationException
 	{
 		coreServer = serverToUse;
-	}
-
-	static public boolean isShutdownRequested()
-	{
-		return StubServer.isShutdownRequested();
-	}
-	
-	private File getServersWhoWeCallDirectory()
-	{
-		return new File(StubServer.getStartupConfigDirectory(), SERVERS_WHO_WE_CALL_DIRIRECTORY);
-	}
-
-	private File getAccountsNotAmplifiedFile()
-	{
-		return new File(StubServer.getStartupConfigDirectory(), ACCOUNTS_NOT_AMPLIFIED_FILE);
 	}
 
 	void initalizeAmplifier(char[] password) throws Exception
@@ -107,11 +89,45 @@ public class MartusAmplifier
 		startServers(password);
 	}
 
-	private File getKeystoreFile()
+	private void startServers(char[] password) throws IOException, MultiException
 	{
-		return new File(StubServer.getStartupConfigDirectory(), "keystore");
+		startSSLServer(password);
+		startNonSSLServer();
 	}
 
+	private void startNonSSLServer() throws IOException, MultiException
+	{
+		Server nonsslServer = new Server();
+		nonsslServer.addWebApplication("", getPresentationBasePath() + "presentationNonSSL");
+		InetAddrPort nonssllistener = new InetAddrPort(80);
+		nonssllistener.setInetAddress(getAmpIpAddress());
+		nonsslServer.addListener(nonssllistener);
+		
+		nonsslServer.start();
+	}
+
+	private void startSSLServer(char[] password) throws IOException, MultiException
+	{
+		SunJsseListener sslListener = new SunJsseListener(new InetAddrPort(443));
+		sslListener.setInetAddress(getAmpIpAddress());
+		sslListener.setPassword(new String(password));
+		sslListener.setKeyPassword(new String(password));
+		sslListener.setMaxIdleTimeMs(MAX_IDLE_TIME_MS);
+		sslListener.setMaxThreads(MAX_THREADS);
+		sslListener.setMinThreads(MIN_THREADS);
+		sslListener.setLowResourcePersistTimeMs(LOW_RESOURCE_PERSIST_TIME_MS);
+		File jettyKeystore = getKeystoreFile();
+		sslListener.setKeystore(jettyKeystore.getAbsolutePath());
+
+		//File jettyXmlFile = new File(getStartupConfigDirectory(), "jettyConfiguration.xml");
+		//Server sslServer = new Server(jettyXmlFile.getAbsolutePath());
+		Server sslServer = new Server();
+
+		sslServer.addWebApplication("", getPresentationBasePath() + "presentation");
+		addPasswordAuthentication(sslServer);
+		sslServer.addListener(sslListener);
+		sslServer.start();
+	}
 
 	void deleteAmplifierStartupFiles()
 	{
@@ -163,75 +179,6 @@ public class MartusAmplifier
 				System.exit(9);
 			}
 		}
-	}
-
-	private void startServers(char[] password) throws IOException, MultiException
-	{
-		startSSLServer(password);
-		startNonSSLServer();
-	}
-
-	private void startNonSSLServer() throws IOException, MultiException
-	{
-		Server nonsslServer = new Server();
-		nonsslServer.addWebApplication("", getPresentationBasePath() + "presentationNonSSL");
-		InetAddrPort nonssllistener = new InetAddrPort(80);
-		nonssllistener.setInetAddress(getAmpIpAddress());
-		nonsslServer.addListener(nonssllistener);
-		
-		nonsslServer.start();
-	}
-
-	private void startSSLServer(char[] password) throws IOException, MultiException
-	{
-		SunJsseListener sslListener = new SunJsseListener(new InetAddrPort(443));
-		sslListener.setInetAddress(getAmpIpAddress());
-		sslListener.setPassword(new String(password));
-		sslListener.setKeyPassword(new String(password));
-		sslListener.setMaxIdleTimeMs(MAX_IDLE_TIME_MS);
-		sslListener.setMaxThreads(MAX_THREADS);
-		sslListener.setMinThreads(MIN_THREADS);
-		sslListener.setLowResourcePersistTimeMs(LOW_RESOURCE_PERSIST_TIME_MS);
-		File jettyKeystore = getKeystoreFile();
-		sslListener.setKeystore(jettyKeystore.getAbsolutePath());
-
-		//File jettyXmlFile = new File(getStartupConfigDirectory(), "jettyConfiguration.xml");
-		//Server sslServer = new Server(jettyXmlFile.getAbsolutePath());
-		Server sslServer = new Server();
-
-		sslServer.addWebApplication("", getPresentationBasePath() + "presentation");
-		addPasswordAuthentication(sslServer);
-		sslServer.addListener(sslListener);
-		sslServer.start();
-	}
-
-	
-	private InetAddress getAmpIpAddress() throws UnknownHostException
-	{
-		return InetAddress.getByName(coreServer.ampIpAddress);
-	}
-
-	void deleteLuceneLockFile() throws BulletinIndexException
-	{
-		File indexDirectory = LuceneBulletinIndexer.getIndexDir(StubServer.getBasePath());
-		File lockFile = new File(indexDirectory, "write.lock");
-		if(lockFile.exists())
-		{
-			log("Deleting lucene lock file: " + lockFile.getPath());
-			lockFile.delete();
-		}
-	}
-
-	void addPasswordAuthentication(Server server)
-	{
-		PasswordAuthenticationHandler handler = new PasswordAuthenticationHandler();
-		HttpContext context = server.getContext("/");
-		context.addHandler(handler);
-	}
-	
-	static public MartusSecurity getSecurity()
-	{
-		return StubServer.security;
 	}
 
 	public boolean isAmplifierSyncing()
@@ -370,6 +317,55 @@ public class MartusAmplifier
 		return presentationBasePath;
 		
 	}
+
+	static public boolean isShutdownRequested()
+	{
+		return StubServer.isShutdownRequested();
+	}
+	
+	static public MartusSecurity getSecurity()
+	{
+		return StubServer.security;
+	}
+
+	private File getServersWhoWeCallDirectory()
+	{
+		return new File(StubServer.getStartupConfigDirectory(), SERVERS_WHO_WE_CALL_DIRIRECTORY);
+	}
+
+	private File getAccountsNotAmplifiedFile()
+	{
+		return new File(StubServer.getStartupConfigDirectory(), ACCOUNTS_NOT_AMPLIFIED_FILE);
+	}
+
+	private File getKeystoreFile()
+	{
+		return new File(StubServer.getStartupConfigDirectory(), "keystore");
+	}
+
+	private InetAddress getAmpIpAddress() throws UnknownHostException
+	{
+		return InetAddress.getByName(coreServer.ampIpAddress);
+	}
+
+	private void deleteLuceneLockFile() throws BulletinIndexException
+	{
+		File indexDirectory = LuceneBulletinIndexer.getIndexDir(StubServer.getBasePath());
+		File lockFile = new File(indexDirectory, "write.lock");
+		if(lockFile.exists())
+		{
+			log("Deleting lucene lock file: " + lockFile.getPath());
+			lockFile.delete();
+		}
+	}
+
+	private void addPasswordAuthentication(Server server)
+	{
+		PasswordAuthenticationHandler handler = new PasswordAuthenticationHandler();
+		HttpContext context = server.getContext("/");
+		context.addHandler(handler);
+	}
+
 
 	static final long IMMEDIATELY = 0;
 	static final long DEFAULT_HOURS_TO_SYNC = 24;
