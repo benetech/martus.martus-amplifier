@@ -101,11 +101,13 @@ public class BulletinExtractor
 			SignatureVerificationException, InvalidPacketException, 
 			InvalidBase64Exception, AttachmentStorageException
 	{
-		for (int i = 0; i < proxies.length; i++) {
+		for (int i = 0; i < proxies.length; i++) 
+		{
 			AttachmentProxy proxy = proxies[i];
 			UniversalId attachmentId = proxy.getUniversalId();
 			ZipEntry attachmentEntry = bulletinZipFile.getEntry(attachmentId.getLocalId());
-			if (attachmentEntry == null) {
+			if (attachmentEntry == null) 
+			{
 				throw new IOException(
 					"No entry " + attachmentId.getLocalId() + 
 					" found for account " + attachmentId.getAccountId());
@@ -114,10 +116,14 @@ public class BulletinExtractor
 				new ZipEntryInputStream(bulletinZipFile, attachmentEntry), 
 				proxy, verifier);
 			InputStream attachmentData = new FileInputStream(proxy.getFile());
-			try {
+			try 
+			{
 				attachmentManager.putAttachment(attachmentId, attachmentData);
-			} finally {
+			} 
+			finally 
+			{
 				attachmentData.close();
+				proxy.getFile().delete();
 			}
 		}
 	}

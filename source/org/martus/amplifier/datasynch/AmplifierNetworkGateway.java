@@ -131,9 +131,11 @@ public class AmplifierNetworkGateway
 			AttachmentStorageException, InvalidBase64Exception
 	{
 		File bulletinFile = getBulletin(uid);
+		bulletinFile.deleteOnExit();
 		try
 		{
-			bulletinExtractor.extractAndStoreBulletin(bulletinFile);	
+			bulletinExtractor.extractAndStoreBulletin(bulletinFile);
+			bulletinFile.delete();	
 		}
 		catch(DecryptionException e)
 		{
