@@ -22,7 +22,7 @@ public class AmplifierNetworkGatewayTest extends AbstractAmplifierDataSynchTest
 		Iterator testBulletinIterator = testBulletinsList.iterator();
 		String currentBulletinId = null;
 		String[] correctData = {"11", "12", "21", "22"};
-		System.out.println("in testGetAllBuletinIds");
+		System.out.println("in testGetAllBulletinIds");
 		int counter = 0;
 		while(testBulletinIterator.hasNext())
 		{
