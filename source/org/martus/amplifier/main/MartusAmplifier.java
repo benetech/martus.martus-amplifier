@@ -40,9 +40,9 @@ import org.martus.amplifier.datasynch.DataSynchManager;
 import org.martus.amplifier.lucene.LuceneBulletinIndexer;
 import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinIndexer;
+import org.martus.common.EnglishCommonStrings;
 import org.martus.common.MartusUtilities;
 import org.martus.common.Version;
-import org.martus.common.analyzerhelper.EnglishStrings;
 import org.martus.common.clientside.Localization;
 import org.martus.common.clientside.UiBasicLocalization;
 import org.martus.common.crypto.MartusCrypto;
@@ -63,7 +63,7 @@ public class MartusAmplifier
 	{
 		coreServer = serverToUse;
 		setStaticSecurity(coreServer.getSecurity());
-		localization = new UiBasicLocalization(getDefaultAmpDirectory(), EnglishStrings.strings);
+		localization = new UiBasicLocalization(getDefaultAmpDirectory(), EnglishCommonStrings.strings);
 		localization.setCurrentLanguageCode(AMP_DEFAULT_LANGUAGE);
 		localization.setCurrentDateFormatCode(Localization.getDefaultDateFormatForLanguage(AMP_DEFAULT_LANGUAGE));
 		
