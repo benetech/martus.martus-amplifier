@@ -123,7 +123,5 @@ public class SearchResults extends AmplifierServlet implements SearchResultConst
 			searcher.close();
 		}
 		return list;	
-	}
-	
-	boolean advancedSearch=false;
+	}	
 }
