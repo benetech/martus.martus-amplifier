@@ -5,9 +5,7 @@ import java.io.InputStream;
 import java.io.FileOutputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
-
 import java.util.Vector;
-
 import java.util.Enumeration;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipEntry;
@@ -25,8 +23,7 @@ public class AmplifierUtilities{
 	        {
 	        	ZipEntry entry = (ZipEntry)entries.nextElement();
 	        	if(entry.isDirectory()) 
-	        	{	// Assume directories are stored parents first then children.
-         			// This is not robust
+	        	{	//ignore directories
 	          		(new File(entry.getName())).mkdir();
 	          		continue;
 	        	}

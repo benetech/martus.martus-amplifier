@@ -34,21 +34,21 @@ public class AmplifierNetworkGatewayTest extends AbstractAmplifierDataSynchTest
 		}			
 	}	
 	*/
-	public void testGetBulletin()
+	public void testRetrieveAndManageBulletin()
 	{
 		System.out.println("in testGetBulletin");
 		AmplifierNetworkGateway amplifierGateway = AmplifierNetworkGateway.getInstance();		
 		UniversalId uid = UniversalId.createFromAccountAndLocalId(sampleAccountId, sampleLocalId);
-		Vector list = amplifierGateway.getBulletin(uid);				
+		Vector list = amplifierGateway.retrieveAndManageBulletin(uid);				
 		assertEquals(list.size(), 3);			
 	}	
 	
-	public void testRetrieveBulletin()
+	public void testgetBulletin()
 	{
 		System.out.println("in testRetrieveBulletin");
 		AmplifierNetworkGateway amplifierGateway = AmplifierNetworkGateway.getInstance();
 		UniversalId uid = UniversalId.createFromAccountAndLocalId(sampleAccountId, sampleLocalId);
-		//File file = amplifierGateway.retrieveOneBulletin(uid);
+		//File file = amplifierGateway.getBulletin(uid);
 		//assertTrue(file.length() >0);		
 	}
 	
