@@ -102,8 +102,30 @@ public class MartusAmplifier
 			log("Error: LanguagesIndex" + e);
 		}
 		
-		//Code.setDebug(true);
-		startServers(password);
+		try
+		{
+			//Code.setDebug(true);
+			startServers(password);
+		} catch (MultiException multi)
+		{
+			int realExceptionCount = 0;
+			for(int i = 0; i < multi.size(); ++i)
+			{
+				Exception e = multi.getException(i);
+				if(isExceptionWeCareAbout(e))
+				{
+					e.printStackTrace();
+					++realExceptionCount;
+				}
+			}
+			if(realExceptionCount > 0)
+				throw new Exception();
+		}
+	}
+
+	private boolean isExceptionWeCareAbout(Exception e)
+	{
+		return e.getMessage().indexOf("jasper") < 0;
 	}
 
 	private File getAmplifierPacketsDirectory()
