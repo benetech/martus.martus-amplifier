@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Logger;
 
 
@@ -118,7 +119,7 @@ public class BulletinDocument implements IBulletinConstants, ISearchConstants
 	   
 	   	// store the attachments as well
 	   	// dan: not sure this is the best place for it
-	   	AttachmentInfoListFactory attachmentList = 
+	   	List attachmentList = 
 	   		AttachmentInfoListFactory.createList(handler.getBulletinAttachmentIds(), 
 	   			handler.getBulletinAttachmentSessionKeys(),
 	   			handler.getBulletinAttachmentLabels());
