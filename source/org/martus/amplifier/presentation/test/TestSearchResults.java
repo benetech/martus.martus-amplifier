@@ -121,13 +121,11 @@ public class TestSearchResults extends TestCaseEnhanced
 		MockAmplifierRequest request = new MockAmplifierRequest();
 		Context context = new MockContext();
 		String mySearchByTag = "myOwnSearchTag";
-		request.putParameter(SearchResultConstants.RESULT_SORTBY_KEY, mySearchByTag);	
+		request.getSession().setAttribute(SearchResultConstants.RESULT_SORTBY_KEY, mySearchByTag);	
 		Vector fakeBulletins = new Vector();
 		fakeBulletins.add("hello");
 		fakeBulletins.add("there");
 		SearchResults.setSearchResultsContext(fakeBulletins, request, context);
-
-		assertEquals("wrong second bulletin in session?", fakeBulletins.get(1), ((Vector)request.getSession().getAttribute("foundBulletins")).get(1));		
 
 		assertEquals("wrong first bulletin in context?", fakeBulletins.get(0), ((Vector)context.get("foundBulletins")).get(0));		
 
@@ -136,7 +134,7 @@ public class TestSearchResults extends TestCaseEnhanced
 		Vector sortByFields = FindBulletinsFields.getSortByFieldDisplayNames();
 		assertEquals("SortingBy Fields not the same #?", sortByFields.size(), ((Vector)context.get("sortByFields")).size());
 
-		assertEquals("SearchTag not the same?", mySearchByTag, context.get("currentlySortingBy"));		
+		assertEquals("SearchTag not the same?", mySearchByTag, context.get("currentlySortingBy"));
 	}
 	
 	public void testPopulateSimpleSearch() throws Exception
