@@ -72,11 +72,7 @@
 						<td></td>
 					#end
 					<td valign='top'>
-						<a 	href=DownloadAttachment
-							?bulletinIndex=$currentBulletin&
-							attachmentIndex=$velocityCount>
-							$thisAttachments.label
-						</a>
+						<a 	href=DownloadAttachment?bulletinIndex=$currentBulletin&attachmentIndex=$velocityCount>$thisAttachments.label</a>
 						&nbsp;($thisAttachments.size Kb)
 					</td>
 					<td></td>
