@@ -21,7 +21,6 @@ import org.martus.amplifier.search.BulletinIndexer;
 import org.martus.common.MartusUtilities.ServerErrorException;
 import org.martus.common.bulletin.BulletinZipUtilities;
 import org.martus.common.crypto.MartusCrypto;
-import org.martus.common.crypto.MartusSecurity;
 import org.martus.common.crypto.MockMartusSecurity;
 import org.martus.common.crypto.MartusCrypto.DecryptionException;
 import org.martus.common.crypto.MartusCrypto.NoKeyPairException;
@@ -35,14 +34,14 @@ import org.martus.util.Base64.InvalidBase64Exception;
 
 public class AmplifierNetworkGateway
 {
-	public AmplifierNetworkGateway(List backupServersToCall)
+	public AmplifierNetworkGateway(List backupServersToCall, MartusCrypto securityToUse)
 	{
-		this(backupServersToCall, null, null);
+		this(null, backupServersToCall, securityToUse);
 	}
 	
-	public AmplifierNetworkGateway(List backupServersToCall, 
-				AmplifierBulletinRetrieverGatewayInterface gatewayToUse,
-				MartusSecurity securityToUse)
+	public AmplifierNetworkGateway(AmplifierBulletinRetrieverGatewayInterface gatewayToUse, 
+				List backupServersToCall,
+				MartusCrypto securityToUse)
 	{
 		super();
 	

@@ -41,7 +41,7 @@ public class MartusAmplifier
 
 	void start() throws Exception
 	{
-		MartusSecurity security = new MartusSecurity();
+		security = new MartusSecurity();
 		
 		File configDirectory = new File(AmplifierConfiguration.getInstance().getBasePath());
 		File backupServersDirectory = new File(configDirectory, "serversWhoWeCall");
@@ -72,7 +72,7 @@ public class MartusAmplifier
 	
 	boolean isShutdownRequested()
 	{
-		String ampDir = AmplifierConfiguration.getInstance().getWorkingPath();
+		File ampDir = getWorkingDirectory();
 		File shutdownFile = new File(ampDir, "shutdown");
 		boolean doShutdown = false;
 		if(shutdownFile.exists() && ! isAmplifierSyncing() )
@@ -81,6 +81,16 @@ public class MartusAmplifier
 			doShutdown = true;
 		}
 		return doShutdown;
+	}
+	
+	MartusSecurity getSecurity()
+	{
+		return security;
+	}
+
+	private File getWorkingDirectory()
+	{
+		return new File(AmplifierConfiguration.getInstance().getWorkingPath());
 	}
 	
 	public boolean isAmplifierSyncing()
@@ -109,7 +119,7 @@ public class MartusAmplifier
 		AttachmentManager attachmentManager = null;
 		try
 		{
-			DataSynchManager dataManager = new DataSynchManager(backupServersList);
+			DataSynchManager dataManager = new DataSynchManager(backupServersList, getSecurity());
 			AmplifierConfiguration config = 
 				AmplifierConfiguration.getInstance();
 			indexer = new LuceneBulletinIndexer(
@@ -158,8 +168,11 @@ public class MartusAmplifier
 			for (int i = 0; i < toCallFiles.length; i++)
 			{
 				File toCallFile = toCallFiles[i];
-				serversWeWillCall.add(getServerToCall(toCallFile, security));
-				log("We will call: " + toCallFile.getName());
+				if(!toCallFile.isDirectory())
+				{
+					serversWeWillCall.add(getServerToCall(toCallFile, security));
+					log("We will call: " + toCallFile.getName());
+				}
 			}
 		}
 
@@ -208,6 +221,7 @@ public class MartusAmplifier
 		}
 	}
 
+	MartusSecurity security;
 	static final long IMMEDIATELY = 0;
 	static final long dataSynchIntervalMillis = 100000;
 

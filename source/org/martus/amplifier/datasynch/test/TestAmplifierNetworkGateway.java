@@ -23,7 +23,7 @@ public class TestAmplifierNetworkGateway extends TestAbstractAmplifierDataSynch
 		//System.out.println("AmplifierNetworkGatewayTest:testGetAllAccountIds");
 		AmplifierBulletinRetrieverGatewayInterface abrgi = new MockGatewayInterface();
 		Vector emptyList = new Vector();
-		AmplifierNetworkGateway amplifierGateway = new AmplifierNetworkGateway(emptyList, abrgi, MockMartusSecurity.createOtherServer());
+		AmplifierNetworkGateway amplifierGateway = new AmplifierNetworkGateway(abrgi, emptyList, MockMartusSecurity.createOtherServer());
 		Vector list = amplifierGateway.getAllAccountIds();
 		for(int i =0; i<list.size(); i++)
 		{
@@ -37,7 +37,7 @@ public class TestAmplifierNetworkGateway extends TestAbstractAmplifierDataSynch
 		//System.out.println("AmplifierNetworkGatewayTest:testGetAccountUniversalIds");
 		AmplifierBulletinRetrieverGatewayInterface abrgi = new MockGatewayInterface();
 		Vector emptyList = new Vector();
-		AmplifierNetworkGateway amplifierGateway = new AmplifierNetworkGateway(emptyList, abrgi,  MockMartusSecurity.createOtherServer());
+		AmplifierNetworkGateway amplifierGateway = new AmplifierNetworkGateway(abrgi, emptyList,  MockMartusSecurity.createOtherServer());
 		
 		Vector list = amplifierGateway.getAccountUniversalIds(sampleAccountId);
 		//.out.println("AccountId2 = "+ sampleAccountId +"  Number of Universal IDs = "+ list.size());
