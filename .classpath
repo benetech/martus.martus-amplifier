@@ -8,5 +8,7 @@
 	<classpathentry kind="lib" path="/martus-thirdparty/server/Lucene/bin/lucene-1.3-rc1.jar"/>
 	<classpathentry kind="lib" path="/martus-thirdparty/server/Servlet/bin/servlet.jar"/>
 	<classpathentry kind="lib" path="/martus-thirdparty/server/Velocity/bin/velocity-dep-1.4-rc1.jar"/>
+	<classpathentry kind="lib" path="/martus-thirdparty/server/Jasper/bin/jasper-compiler.jar"/>
+	<classpathentry kind="lib" path="/martus-thirdparty/server/Jasper/bin/jasper-runtime.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>
