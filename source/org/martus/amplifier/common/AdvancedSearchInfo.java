@@ -25,13 +25,12 @@ Boston, MA 02111-1307, USA.
 */
 package org.martus.amplifier.common;
 
-import java.util.HashMap;
 import java.util.Map;
 
 
 public class AdvancedSearchInfo
 {
-	public AdvancedSearchInfo(HashMap defaultFields)
+	public AdvancedSearchInfo(Map defaultFields)
 	{
 		fields = defaultFields;		
 	}

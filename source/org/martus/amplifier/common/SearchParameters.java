@@ -33,83 +33,37 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.martus.amplifier.search.SearchConstants;
-import org.martus.amplifier.velocity.AmplifierServletRequest;
-import org.martus.amplifier.velocity.AmplifierServletSession;
 import org.martus.util.MartusFlexidate;
 
 public class SearchParameters implements SearchResultConstants, SearchConstants
 {
-	public SearchParameters(AmplifierServletRequest request)
+	public SearchParameters(RawSearchParameters rawParameters)
 	{
-		searchRequest = request;
-		inputParameters = new HashMap();
+		inputParameters = rawParameters;
+
 		searchFields = new HashMap();
-
-		loadFromRequest();		
+		setEventDate();
+		setNormalFields();		
+		copyFormattedQueryString(new FormatterForAllWordsSearch());
+		copyFormattedQueryString(new FormatterForExactPhraseSearch());
+		copyFormattedQueryString(new FormatterForAnyWordSearch());
 	}
 
-	public void saveSearchInSession(AmplifierServletSession session)
-	{
-		AdvancedSearchInfo info = new AdvancedSearchInfo(inputParameters);
-		session.setAttribute("defaultAdvancedSearch", info);	
-	}
-	
 	public Map getSearchFields()
 	{
 		return searchFields;
 	}
 	
-	private void loadFromRequest()
-	{
-		for(int i=0; i< ADVANCED_KEYS.length; i++)
-		{
-			String value = getParameterValue(ADVANCED_KEYS[i]);
-			if (value != null)
-			{				
-				inputParameters.put(ADVANCED_KEYS[i], value);				
-			}
-		}
-		setEventDate();
-		setAllWordsSearch();
-		setExactPhraseSearch();
-		setAnyWordSearch();
-		setNormalFields();																
-	}	
-
 	private void addField(String key, Object value)
 	{
 		searchFields.put(key, value);
 	}
 	
-	private void setAnyWordSearch()
+	private void copyFormattedQueryString(LuceneQueryFormatter formatter)
 	{
-		FormatterForAnyWordSearch decorator = new FormatterForAnyWordSearch();
-		decorator.addFormattedString(searchFields, inputParameters);
+		String decoratedString = inputParameters.getFormattedString(formatter);
+		searchFields.put(formatter.getTag(), decoratedString);
 	}
-
-	private void setExactPhraseSearch()
-	{
-		FormatterForExactPhraseSearch decorator = new FormatterForExactPhraseSearch();
-		decorator.addFormattedString(searchFields, inputParameters);
-	}
-
-	private void setAllWordsSearch()
-	{
-		FormatterForAllWordsSearch decorator = new FormatterForAllWordsSearch();
-		decorator.addFormattedString(searchFields, inputParameters);
-	}
-	
-	static String insertBeforeEachWord(String sign, String queryString)
-	{
-		String[] words = queryString.split(" ");
-		String query = "(";		
-
-		for (int i=0;i<words.length;i++)		
-			query += sign + words[i]+ " ";
-
-		return query + ")";
-	}
-
 	
 	private void setEventDate()
 	{
@@ -155,11 +109,6 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 		return MartusFlexidate.toStoredDateFormat(today.getTime());
 	}
 	
-	private String getParameterValue(String param)
-	{
-		return searchRequest.getParameter(param);
-	}
-	
 	public String getValue(String key)
 	{
 		return (String) inputParameters.get(key);
@@ -195,37 +144,6 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 		return new GregorianCalendar(year, month, day).getTime();
 	}	
 	
-	public static void clearAdvancedSearch(AmplifierServletSession session)
-	{
-		AdvancedSearchInfo info = new AdvancedSearchInfo(getDefaultAdvancedFields());
-		session.setAttribute("defaultAdvancedSearch", info);	
-	}
-	
-	public static void clearSimpleSearch(AmplifierServletRequest request)
-	{
-		request.getSession().setAttribute("simpleQuery", "");
-		request.getSession().setAttribute("defaultSimpleSearch", "");
-	}
-	
-	public static HashMap getDefaultAdvancedFields()
-	{
-		HashMap defaultMap = new HashMap();
-		defaultMap.put(SearchResultConstants.EXACTPHRASE_TAG, "");
-		defaultMap.put(SearchResultConstants.ANYWORD_TAG, "");
-		defaultMap.put(SearchResultConstants.THESE_WORD_TAG, "");	
-		defaultMap.put(SearchResultConstants.WITHOUTWORDS_TAG, "");
-		defaultMap.put(SearchResultConstants.RESULT_FIELDS_KEY, SearchResultConstants.IN_ALL_FIELDS);
-		defaultMap.put(SearchResultConstants.RESULT_ENTRY_DATE_KEY, SearchResultConstants.ENTRY_ANYTIME_TAG);
-		defaultMap.put(SearchResultConstants.RESULT_LANGUAGE_KEY, SearchResultConstants.LANGUAGE_ANYLANGUAGE_LABEL);
-		defaultMap.put(SearchResultConstants.RESULT_SORTBY_KEY, SearchResultConstants.SORT_BY_TITLE_TAG);
-		
-		defaultMap.put(SearchResultConstants.RESULT_END_DAY_KEY, Today.getDayString());
-		defaultMap.put(SearchResultConstants.RESULT_END_MONTH_KEY, Today.getMonth());
-		defaultMap.put(SearchResultConstants.RESULT_END_YEAR_KEY, Today.getYearString());
-				
-		return defaultMap;	
-	}
-
 	abstract static class LuceneQueryFormatter
 	{
 		public LuceneQueryFormatter(String tagToUse)
@@ -233,14 +151,25 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 			tag = tagToUse;
 		}
 		
+		public String getTag()
+		{
+			return tag;
+		}
+		
 		public void addFormattedString(Map destination, Map source)
+		{
+			String decoratedString = getFormattedString(source);
+			destination.put(tag, decoratedString);
+		}
+
+		public String getFormattedString(Map source)
 		{
 			String rawString = (String)source.get(tag);
 			rawString = CharacterUtil.removeRestrictCharacters(rawString);
 			String decoratedString = "";
 			if(rawString.length() > 0)
 				decoratedString = getFormattedString(rawString);
-			destination.put(tag, decoratedString);
+			return decoratedString;
 		}
 		
 		abstract String getFormattedString(String rawString);
@@ -283,13 +212,16 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 		
 		public String getFormattedString(String rawString)
 		{
-			return insertBeforeEachWord(PLUS, rawString);
+			String[] words = rawString.split(" ");
+			String query = "(";		
+			
+			for (int i=0;i<words.length;i++)		
+				query += "+" + words[i]+ " ";
+			
+			return query + ")";
 		}
 	}
 	
-	AmplifierServletRequest searchRequest;
-	HashMap inputParameters;
+	RawSearchParameters inputParameters;
 	HashMap	searchFields;
-	final static String PLUS 	= "+";
-	final static String NOT 	= "-";	
 }

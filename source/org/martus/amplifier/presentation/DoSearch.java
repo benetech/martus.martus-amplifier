@@ -33,6 +33,7 @@ import java.util.Map;
 import org.martus.amplifier.common.AmplifierConfiguration;
 import org.martus.amplifier.common.AmplifierLocalization;
 import org.martus.amplifier.common.CharacterUtil;
+import org.martus.amplifier.common.RawSearchParameters;
 import org.martus.amplifier.common.SearchParameters;
 import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.lucene.LuceneBulletinSearcher;
@@ -97,9 +98,13 @@ public class DoSearch extends AbstractSearchResultsServlet
 	private List getComplexSearchResults(AmplifierServletRequest request)
 		throws Exception
 	{
-		SearchParameters sp = new SearchParameters(request);
-		sp.saveSearchInSession(request.getSession());
-		SearchParameters.clearSimpleSearch(request);								
+		AmplifierServletSession session = request.getSession();
+
+		RawSearchParameters raw = new RawSearchParameters(request);
+		raw.saveSearchInSession(session);
+		RawSearchParameters.clearSimpleSearch(session);								
+
+		SearchParameters sp = new SearchParameters(raw);
 		Map fields = sp.getSearchFields();
 		return getResults(fields);
 	}
@@ -113,7 +118,7 @@ public class DoSearch extends AbstractSearchResultsServlet
 			return new ArrayList();
 		Map fields = new HashMap();				
 		fields.put(SearchResultConstants.RESULT_BASIC_QUERY_KEY, simpleQueryString);
-		SearchParameters.clearAdvancedSearch(session);			
+		RawSearchParameters.clearAdvancedSearch(session);			
 		return getResults(fields);
 	}	
 		
