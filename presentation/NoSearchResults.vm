@@ -4,7 +4,26 @@
     </head>
     
     <body>
-#include ("header.vm")
+		<table border='0'>
+			<tr>
+				<td>
+					<img src="../images/big_logo.gif" width="184" height="126" alt="Martus Amplifier"/>
+				</td>
+				<td>
+		        	<font size='-1'>
+		        		<a href='AdvancedSearch'>Advanced Search</a>
+		        		&nbsp;-&nbsp;
+		        		<a href='http://martus.org'>Search Tips</a>
+		        	</font>
+		            <form name="search" action="SearchResults" method="post">
+		                <p>
+		                    <input name="query" size="44"/>&nbsp;
+		                    <input type="submit" value="Search"/>
+		                </p>
+		            </form>
+				</td>
+			</tr>
+		</table>
 		<table cellSpacing=0 cellPadding=1 width="100%" bgColor=#3366cc border=0>
 			<tbody>
 		        <tr>
@@ -38,6 +57,24 @@
 				</font>
 			</p>
 		</center>
-#include ("footer.vm")
+		<table cellSpacing='0' cellPadding='1' width="100%" bgColor='#3366cc' border='0'>
+			<tbody>
+		        <tr>
+					<td noWrap bgColor='#3366cc' align='center'>
+		        		<a href='http://martus.org'><font color='#ffffff' size='-1'>About Benetech</font></a>
+		        		<a href='http://martus.org'><font color='#ffffff' size='-1'>Partner with Us</font></a>
+		        		<a href='http://martus.org'><font color='#ffffff' size='-1'>Volunteers</font></a>
+		        		<a href='http://martus.org'><font color='#ffffff' size='-1'>News & Press</font></a>
+		        		<a href='http://martus.org'><font color='#ffffff' size='-1'>Help</font></a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<br/>
+		<center>
+			<font size='-2'>
+		        ©2003 Benetech - Technology serving humanity
+		    </font>
+		</center>
     </body>
 </html>
