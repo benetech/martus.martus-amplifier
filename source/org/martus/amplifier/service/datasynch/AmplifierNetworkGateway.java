@@ -13,12 +13,8 @@ import java.util.zip.ZipEntry;
 public class AmplifierNetworkGateway
 {
 
-	public AmplifierNetworkGateway()
-	{
-		super();
-	}
 
-	private List getAllAccountIds()
+	private static List getAllAccountIds()
 	{
 		//fake data
 		List fakeAccountIds = new ArrayList();
@@ -27,7 +23,7 @@ public class AmplifierNetworkGateway
 		return fakeAccountIds;
 	}
 	
-	private List getAccountBulletinIds(String accountId)
+	private static List getAccountBulletinIds(String accountId)
 	{
 		if(accountId == null)
 			return null;
@@ -46,7 +42,7 @@ public class AmplifierNetworkGateway
 		return fakeBulletinIds;
 	}
 	
-	public List getAllBulletinIds()
+	public static List getAllBulletinIds()
 	{
 		List allBulletinIds = new ArrayList();
 		List allAccountIds = getAllAccountIds();
@@ -65,7 +61,7 @@ public class AmplifierNetworkGateway
 	}
 	
 	
-	public Vector getBulletin(String BulletinId)
+	public static Vector getBulletin(String BulletinId)
 	{
 		Vector result = new Vector();
 		File tempFile = null;
@@ -89,14 +85,14 @@ public class AmplifierNetworkGateway
 	}
 
 
-	private Vector getBulletinChunk(int chunkOffset, int maxChunkSize)
+	private static Vector getBulletinChunk(int chunkOffset, int maxChunkSize)
 	{
 		Vector result = new Vector();
 		return result;	
 	}
 	
 	
-	private Object callServer(String serverName, String method, Vector Params)
+	private static Object callServer(String serverName, String method, Vector Params)
 	{
 		Object result = null;	
 		return result;	
