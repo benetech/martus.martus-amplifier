@@ -200,7 +200,14 @@ public abstract class CommonSearchTest
 	
 	private FieldSpec[] getSampleFieldSpecs()
 	{
-		return BulletinField.getDefaultSearchFieldSpecs();
+		FieldSpec[] normalFields = BulletinField.getDefaultSearchFieldSpecs();
+		int normalFieldCount = normalFields.length + 1;
+		
+		FieldSpec[] withCustom = new FieldSpec[normalFieldCount];
+		System.arraycopy(normalFields, 0, withCustom, 0, normalFields.length);
+		withCustom[normalFields.length] = FieldSpec.createCustomField(SAMPLE_CUSTOM_TAG, SAMPLE_CUSTOM_LABEL, FieldSpec.TYPE_NORMAL);
+		
+		return withCustom;
 	}
 
 	private void addFields(FieldDataPacket fdp, HashMap fieldPairs)
@@ -258,4 +265,7 @@ public abstract class CommonSearchTest
 	{
 		return new LuceneBulletinSearcher(getTestBasePath());
 	}
+	
+	public static final String SAMPLE_CUSTOM_TAG = "CustomField1";
+	public static final String SAMPLE_CUSTOM_LABEL = "Neat label!";
 }
