@@ -1,0 +1,36 @@
+		<table border='0'>
+			<tr>
+				<td>
+					<img src="../images/big_logo.gif" width="184" height="126" alt="Martus Amplifier"/>
+				</td>
+				<td>
+		        	<font size='-1'>
+		        		<a href='AdvancedSearch'>Advanced Search</a>
+		        		&nbsp;-&nbsp;
+		        		<a href='http://martus.org'>Search Tips</a>
+		        	</font>
+		            <form name="search" action="SearchResults" method="post">
+		                <p>
+		                    <input name="query" size="44"/>&nbsp;
+		                    <input type="submit" value="Search"/>
+		                </p>
+		            </form>
+				</td>
+			</tr>
+		</table>
+		<table cellSpacing=0 cellPadding=1 width="100%" bgColor=#3366cc border=0>
+			<tbody>
+		        <tr>
+        			<td noWrap bgColor=#3366cc>
+        				<font color=#ffffff size=-1>
+        					Searched Martus for "test". 
+        				</font>
+        			</td>
+					<td noWrap align=right bgColor=#3366cc>
+						<font color=#ffffff size=-1>
+							Results <b>1</b> - <b>10</b> of xxx total results.
+						</font>
+					</td>
+				</tr>
+			</tbody>
+		</table>

@@ -1,0 +1,56 @@
+<html>
+    <head>
+        <title>Martus Amplifier Search Query</title>
+    </head>
+    
+    <body>
+		#include ("ResultHeader.vm")
+		
+		<p><font size='-1'><a href='some url'>Printer Friendly Version</a></font></p>
+		<table>
+			<tr>
+				<td><font size="+1">Title:</font></td>
+				<td><font size="+1"><strong>this would be the title</strong></font></td>
+			
+			</tr>
+			<tr>
+				<td>Location:</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>Event Date:</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>Author:</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>Date Submitted:</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>Summary:</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>Details:</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>Keywords:</td>
+				<td></td>
+			</tr>
+		</table>
+		
+		<br/><br/><br/>
+
+		<center>
+			<a href='some url'>&lt;&lt; Previous</a>
+			&nbsp;&nbsp;&nbsp;
+			<a href='some url'>Next &gt;&gt;</a>
+		</center>
+		#include ("ResultFooter.vm")
+    </body>
+</html>
+		
