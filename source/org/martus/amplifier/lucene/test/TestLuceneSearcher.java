@@ -117,7 +117,8 @@ public class TestLuceneSearcher extends CommonSearchTest
 		try 
 		{
 			BulletinInfo found = searcher.lookup(bulletinId1);
-			Assert.assertNotNull("Didn't find indexed bulletin", found);
+			assertNotNull("Didn't find indexed bulletin", found);
+			assertEquals("Didn't find the fdp id?", fdp1.getUniversalId(), found.getFieldDataPacketUId());
 		} 
 		finally 
 		{
