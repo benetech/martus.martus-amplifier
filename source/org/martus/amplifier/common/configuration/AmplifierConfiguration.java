@@ -6,7 +6,7 @@ import java.io.InputStream;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-public class AmplifierConfiguration implements IConfigurationConstants
+public class AmplifierConfiguration
 {
 
 	protected AmplifierConfiguration()
@@ -110,7 +110,7 @@ public class AmplifierConfiguration implements IConfigurationConstants
 		return instance;
 	}
 	
-	private Logger logger = Logger.getLogger(CONFIGURATION_LOGGER);
+	private Logger logger = Logger.getLogger("CONFIGURATION_LOGGER");
 	private Properties pathProperties = null;
 	
 	//property keys
