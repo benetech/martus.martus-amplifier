@@ -418,10 +418,8 @@ public class TestLuceneSearcher extends CommonSearchTest
 			searcher.close();
 		}
 	}
-
-/*
- * TODO:Add this test back once Exact Prase wildcards are allowed.
- *	public void testSearchForOtherLanguage() throws Exception
+//TODO remove this comment once we can index and search for -other- languages
+/*	public void testSearchForOtherLanguage() throws Exception
 	{
 		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
 		FieldDataPacket fdp1 	= generateOtherLanguageData(bulletinId1);		
@@ -440,8 +438,15 @@ public class TestLuceneSearcher extends CommonSearchTest
 		Results results = null;
 		try 
 		{
+			String defaultStartDate	= "1970-01-01";
+			String todayDate 		= "2003-09-24";
+			
 			HashMap fields = new HashMap();
-			fields.put(RESULT_LANGUAGE_KEY, "\"?\"");						
+			//For a complex search we need the event date added to the search or nothing is returned
+			fields.put(SEARCH_LANGUAGE_INDEX_FIELD, "?");
+			fields.put(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, defaultStartDate);
+			fields.put(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, todayDate);		
+
 			results = searcher.search(fields);
 			assertEquals("Should have found 1 result ?", 1, results.getCount());
 			BulletinInfo info = results.getBulletinInfo(0);
@@ -452,8 +457,8 @@ public class TestLuceneSearcher extends CommonSearchTest
 			searcher.close();
 		}
 	}
-*/
 	
+*/	
 	public void testSearchEmptyField() throws Exception
 	{
 		UniversalId bulletinId 	= UniversalId.createDummyUniversalId();
