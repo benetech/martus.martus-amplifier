@@ -38,28 +38,16 @@ public class LuceneBulletinSearcher
 			throw new BulletinIndexException(
 				"Could not create LuceneBulletinSearcher", e);
 		}
-	}
+	}	
 	
-	public void close() throws BulletinIndexException
-	{
-		try {
-			searcher.close();
-		} catch (IOException e) {
-			throw new BulletinIndexException(
-				"Unable to close the searcher: ", e);
-		}
-	}
-	
-	private Results getLuceneResults(Query query, String field)
+	private Results getLuceneResults(Query query)
 		throws BulletinIndexException 
 	{
 		try {
 			return new LuceneResults(searcher.search(query));
 		} catch (IOException e) {
 			throw new BulletinIndexException(
-				"An error occurred while executing query " + 
-					query.toString(field), 
-				e);
+				"An error occurred while executing query " + query.toString(), e);
 		}		
 	}
 	
@@ -67,24 +55,57 @@ public class LuceneBulletinSearcher
 		throws BulletinIndexException 
 	{
 		Query query = queryParser(queryString, field, "Improperly formed query: ");
-		return getLuceneResults(query, field);
+		return getLuceneResults(query);
 	}
+
+	public Results search(HashMap fields)
+		throws BulletinIndexException 
+	{	
+		String queryString = (String) fields.get(SearchResultConstants.RESULT_BASIC_QUERY_KEY);
+		String fieldString = (String) fields.get(SearchResultConstants.RESULT_FIELDS_KEY);
+
+		if (queryString != null)
+		{
+			Query query = multiFieldQueryParser(queryString, SEARCH_ALL_TEXT_FIELDS, "Improperly formed multiquery: ");				
+			return getLuceneResults(query);	
+		}	
+			
+		queryString = (String) fields.get(SearchResultConstants.RESULT_ADVANCED_QUERY_KEY);												
+		return getLuceneResults(complexSearch(queryString, fields));
+	}
+
+		private Query queryParser(String query, String field, String msg)
+			throws BulletinIndexException 
+	{
+		try {
+			return QueryParser.parse(query, field, 		
+				LuceneBulletinIndexer.getAnalyzer());
+		} catch(ParseException pe) {
+			throw new BulletinIndexException( msg + query, pe);
+		}
+	}
+
+	private Query multiFieldQueryParser(String query, String[] fields, String msg)
+			throws BulletinIndexException 
+	{
+		try {
+			return MultiFieldQueryParser.parse(query, fields, 		
+				LuceneBulletinIndexer.getAnalyzer());
+		} catch(ParseException pe) {
+			throw new BulletinIndexException( msg + query, pe);
+		}
+	}			
 	
 	private Query loadEventDateQuery(String startQuery, String endQuery)
 			throws BulletinIndexException 
 	{
-		BooleanQuery booleanQuery = new BooleanQuery();						
-		Query query = queryParser(startQuery, SearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD,
-						"Improperly formed start query: ");	
-		booleanQuery.add(query, true, false);				
-		query = queryParser(endQuery, SearchConstants.SEARCH_EVENT_END_DATE_INDEX_FIELD, 
-						"Improperly formed end query: ");		
-		booleanQuery.add(query, true, false);
+		String queryString = getFieldQuery(SearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD, startQuery);
+		queryString += AND+ getFieldQuery(SearchConstants.SEARCH_EVENT_END_DATE_INDEX_FIELD,endQuery);
 		
-		return booleanQuery;
+		return queryParser(queryString,SEARCH_EVENT_DATE_INDEX_FIELD, "Improperly formed query: ");
+		
 	}
-	
-	
+		
 	private Query getEventDateQuery(Date startDate, Date endDate)
 			throws BulletinIndexException
 	{
@@ -147,23 +168,7 @@ public class LuceneBulletinSearcher
 		}
 		
 		return fieldQuery;
-	}		
-		
-	public Results search(HashMap fields)
-		throws BulletinIndexException 
-	{	
-		String queryString = (String) fields.get(SearchResultConstants.RESULT_BASIC_QUERY_KEY);
-		String fieldString = (String) fields.get(SearchResultConstants.RESULT_FIELDS_KEY);
-
-		if (queryString != null)
-		{
-			Query query = multiFieldQueryParser(queryString, SEARCH_ALL_TEXT_FIELDS, "Improperly formed multiquery: ");				
-			return getLuceneResults(query, fieldString);	
-		}	
-			
-		queryString = (String) fields.get(SearchResultConstants.RESULT_ADVANCED_QUERY_KEY);												
-		return getLuceneResults(complexSearch(queryString, fields), null);
-	}	
+	}				
 	
 	private Query complexSearch(String queryString, HashMap fields)
 			throws BulletinIndexException 
@@ -186,34 +191,7 @@ public class LuceneBulletinSearcher
 			query.add(foudEntryDateQuery, true, false);			
 			
 		return query;	
-	}
-			
-	private Query queryParser(String query, String field, String msg)
-			throws BulletinIndexException 
-	{
-		try {
-			return QueryParser.parse(query, field, 		
-				LuceneBulletinIndexer.getAnalyzer());
-		} catch(ParseException pe) {
-			throw new BulletinIndexException( msg + query, pe);
-		}
-	}
-
-	private Query multiFieldQueryParser(String query, String[] fields, String msg)
-			throws BulletinIndexException 
-	{
-		try {
-			return MultiFieldQueryParser.parse(query, fields, 		
-				LuceneBulletinIndexer.getAnalyzer());
-		} catch(ParseException pe) {
-			throw new BulletinIndexException( msg + query, pe);
-		}
-	}		
-
-	private String setRangeQuery(String from, String to)
-	{
-		return "[ " + from + " TO " + to + " ]";
-	}
+	}			
 
 	public BulletinInfo lookup(UniversalId bulletinId)
 		throws BulletinIndexException 
@@ -244,6 +222,16 @@ public class LuceneBulletinSearcher
 				bulletinId + "; found " + numResults + " results");
 	}
 
+	public void close() throws BulletinIndexException
+	{
+		try {
+			searcher.close();
+		} catch (IOException e) {
+			throw new BulletinIndexException(
+				"Unable to close the searcher: ", e);
+		}
+	}
+
 	public static String getStartDateRange(String value)
 	{
 		MartusFlexidate mfd = MartusFlexidate.createFromMartusDateString(value);
@@ -257,6 +245,17 @@ public class LuceneBulletinSearcher
 			return null;
 		return MartusFlexidate.toStoredDateFormat(mfd.getEndDate());
 	}
+
+	private String setRangeQuery(String from, String to)
+	{
+		return "[ " + from + " TO " + to + " ]";
+	}
+	
+	private String getFieldQuery(String name, String query)
+	{
+		return name+":"+query;
+	}
 		
 	private IndexSearcher searcher;	
+	final String AND= " AND ";
 }
