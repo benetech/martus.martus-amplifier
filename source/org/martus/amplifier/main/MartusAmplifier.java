@@ -108,7 +108,7 @@ public class MartusAmplifier
 		File jettyKeystore = new File(jettyConfigDirectory, "keystore");
 		Server server = new Server(jettyXmlFile.getAbsolutePath());
 		
-		SunJsseListener sslListener = new SunJsseListener(new InetAddrPort(8443));
+		SunJsseListener sslListener = new SunJsseListener(new InetAddrPort(443));
 		sslListener.setPassword(password);
 		sslListener.setKeyPassword(password);
 		sslListener.setKeystore(jettyKeystore.getAbsolutePath());
