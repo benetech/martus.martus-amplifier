@@ -89,6 +89,68 @@ public class MartusAmplifier
 		amp.start(passphrase);
 	}
 	
+	public void deleteStartupFiles()
+	{
+		if(!isSecureMode())
+			return;
+
+		if(!getKeyPairFile().delete())
+		{
+			System.out.println("Unable to delete keypair");
+			System.exit(5);
+		}
+
+		if(!getKeystoreFile().delete())
+		{
+			System.out.println("Unable to delete keystore");
+			System.exit(6);
+		}
+		
+		File serversWhoWeCallDir = getServersWhoWeCallDirectory();
+		if(serversWhoWeCallDir.exists())
+		{
+			File[] toDeleteFile = serversWhoWeCallDir.listFiles();
+			if(toDeleteFile != null)
+			{
+				for (int i = 0; i < toDeleteFile.length; i++)
+				{
+					File toCallFile = toDeleteFile[i];
+					if(!toCallFile.delete())
+					{
+						System.out.println("Unable to delete file: " + toCallFile.getAbsolutePath());
+						System.exit(7);
+					}
+				}
+			}
+			if(!serversWhoWeCallDir.delete())
+			{
+				System.out.println("Unable to delete Dir: " + serversWhoWeCallDir.getAbsolutePath());
+				System.exit(7);
+			}
+		}
+
+		File notAmplifiedAccountsFile = getAccountsNotAmplifiedFile();
+		if(notAmplifiedAccountsFile.exists())
+		{	
+			if(!notAmplifiedAccountsFile.delete())
+			{
+				System.out.println("Unable to delete File: " + notAmplifiedAccountsFile.getAbsolutePath());
+				System.exit(8);
+			}
+		}
+
+		File jettyconfig = new File(getStartupConfigDirectory(), "jettyConfiguration.xml");
+		if(jettyconfig.exists())
+		{	
+			if(!jettyconfig.delete())
+			{
+				System.out.println("Unable to delete File: " + jettyconfig.getAbsolutePath());
+				System.exit(9);
+			}
+		}
+	}
+	
+	
 	static public void serverExit(int exitCode) 
 	{
 		System.exit(exitCode);
@@ -109,11 +171,10 @@ public class MartusAmplifier
 
 		dataManager = new FileSystemDataManager(packetsDirectory);
 		
-		File configDirectory = getStartupConfigDirectory();
-		File backupServersDirectory = new File(configDirectory, "serversWhoWeCall");
+		File backupServersDirectory = getServersWhoWeCallDirectory();
 		backupServersList = loadServersWeWillCall(backupServersDirectory, security);
 		
-		File notAmplifiedAccountsFile = new File(configDirectory, ACCOUNTSNOTAMPLIFIED_FILE);
+		File notAmplifiedAccountsFile = getAccountsNotAmplifiedFile();
 		loadAccountsWeWillNotAmplify(notAmplifiedAccountsFile);
 		log(notAmplifiedAccountsList.size() + " account(s) will not get amplified");
 
@@ -140,6 +201,7 @@ public class MartusAmplifier
 			e1.printStackTrace();
 			serverExit(3);
 		}
+		deleteStartupFiles();
 
 		timer.scheduleAtFixedRate(timedTask, IMMEDIATELY, dataSynchIntervalMillis);
 		
@@ -149,6 +211,16 @@ public class MartusAmplifier
 		serverExit(0);
 	}
 	
+
+	private File getServersWhoWeCallDirectory()
+	{
+		return new File(getStartupConfigDirectory(), "serversWhoWeCall");
+	}
+
+	private File getAccountsNotAmplifiedFile()
+	{
+		return new File(getStartupConfigDirectory(), ACCOUNTSNOTAMPLIFIED_FILE);
+	}
 
 	private void startServer(String password) throws IOException, MultiException
 	{
@@ -180,7 +252,7 @@ public class MartusAmplifier
 		sslListener.setMaxThreads(MAX_THREADS);
 		sslListener.setMinThreads(MIN_THREADS);
 		sslListener.setLowResourcePersistTimeMs(LOW_RESOURCE_PERSIST_TIME_MS);
-		File jettyKeystore = new File(getStartupConfigDirectory(), "keystore");
+		File jettyKeystore = getKeystoreFile();
 		sslListener.setKeystore(jettyKeystore.getAbsolutePath());
 
 		//File jettyXmlFile = new File(getStartupConfigDirectory(), "jettyConfiguration.xml");
@@ -191,6 +263,11 @@ public class MartusAmplifier
 		addPasswordAuthentication(sslServer);
 		sslServer.addListener(sslListener);
 		sslServer.start();
+	}
+
+	private File getKeystoreFile()
+	{
+		return new File(getStartupConfigDirectory(), "keystore");
 	}
 
 	private void processCommandLine(String[] args)
