@@ -1,5 +1,6 @@
 package org.martus.amplifier.common.datasynch;
 
+import java.io.IOException;
 import java.util.Vector;
 
 import org.martus.common.MartusCrypto;
@@ -23,26 +24,26 @@ public class AmplifierClientSideNetworkGateway implements AmplifierBulletinRetri
 	
 	//to check if we need signature even for no parameters
 	public NetworkResponse getAccountIds(MartusCrypto signer) throws 
-			MartusCrypto.MartusSignatureException
+			MartusCrypto.MartusSignatureException, IOException
 	{
 		Vector parameters = new Vector();
 		String signature = MartusUtilities.sign(parameters, signer);
 		return new NetworkResponse(server.getAccountIds(signer.getPublicKeyString(), parameters, signature));
 	}
 
-	public NetworkResponse getAccountUniversalIds(MartusCrypto signer, String accountId) throws 
-			MartusCrypto.MartusSignatureException
+	public NetworkResponse getPublicBulletinUniversalIds(MartusCrypto signer, String accountId) throws 
+			MartusCrypto.MartusSignatureException, IOException
 	{
 		Vector parameters = new Vector();
 		parameters.add(accountId);
 		String signature = MartusUtilities.sign(parameters, signer);
-		return new NetworkResponse(server.getAccountUniversalIds(signer.getPublicKeyString(), parameters, signature));
+		return new NetworkResponse(server.getPublicBulletinUniversalIds(signer.getPublicKeyString(), parameters, signature));
 			
 	}
 					
 	public NetworkResponse getBulletinChunk(MartusCrypto signer, String authorAccountId, String bulletinLocalId, 
 					int chunkOffset, int maxChunkSize) throws 
-			MartusCrypto.MartusSignatureException
+			MartusCrypto.MartusSignatureException, IOException
 	{
 		Vector parameters = new Vector();
 		parameters.add(authorAccountId);

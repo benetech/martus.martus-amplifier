@@ -1,6 +1,8 @@
 package org.martus.amplifier.common.datasynch;
 
 
+import java.io.IOException;
+
 import org.martus.common.BulletinRetrieverGatewayInterface;
 import org.martus.common.MartusCrypto;
 import org.martus.common.NetworkResponse;
@@ -17,9 +19,9 @@ public interface AmplifierBulletinRetrieverGatewayInterface extends BulletinRetr
 
 
 	public NetworkResponse getAccountIds(MartusCrypto signer) throws 
-			MartusCrypto.MartusSignatureException;
+			MartusCrypto.MartusSignatureException, IOException;
 			
-	public NetworkResponse getAccountUniversalIds(MartusCrypto signer, String accountId) throws 
-			MartusCrypto.MartusSignatureException;
+	public NetworkResponse getPublicBulletinUniversalIds(MartusCrypto signer, String accountId) throws 
+			MartusCrypto.MartusSignatureException, IOException;
 			
 }
