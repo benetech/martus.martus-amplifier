@@ -87,6 +87,9 @@ public class TestRawLuceneSearching extends TestCaseEnhanced
 		verifyTextSearch(searcher, "fun NOT keywords", new String[] {sampleId3});
 		verifyTextSearch(searcher, "+fun-keywords", new String[] {sampleId3});
 		
+		verifyTextSearch(searcher, "-keywords", new String[] {});
+
+
 		verifyDateRangeSearch(searcher, "1995-01-01", "1998-12-31", new String[] {sampleId1});
 		verifyDateRangeSearch(searcher, "1900-01-01", "2037-12-31", 
 					new String[] {sampleId1, sampleId2, sampleId3});
