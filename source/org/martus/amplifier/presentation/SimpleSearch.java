@@ -36,8 +36,15 @@ public class SimpleSearch extends AmplifierServlet
 				AmplifierServletResponse response, 
 				Context context)
 	{
-		context.put("name", request.getParameter("query"));
-		
-		return "SimpleSearch.vm";
+		try
+		{
+			context.put("name", request.getParameter("query"));
+			return "SimpleSearch.vm";
+		}
+		catch (RuntimeException e)
+		{
+			e.printStackTrace();
+			return "InternalError.vm";
+		}
     }
 }

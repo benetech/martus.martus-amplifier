@@ -52,23 +52,13 @@ public class SearchResults extends AmplifierServlet implements SearchResultConst
 			AmplifierServletResponse response, Context context) 
 					throws Exception
 	{
-		String templateName = "NoSearchResults.vm";
-
-		List results = null;
-		int resultCount = 0;
 		try
 		{
+			List results = null;
 			results = getSearchResults(request);
-			resultCount = results.size();	
-		}
-		catch (Exception e)
-		{
-//			e.printStackTrace();
-		}
+			if(results.size() == 0)
+				return "NoSearchResults.vm";
 
-		if(resultCount > 0)
-		{
-			templateName ="SearchResults.vm";
 			Vector bulletins = new Vector();
 			for (Iterator iter = results.iterator(); iter.hasNext();)
 			{
@@ -78,8 +68,12 @@ public class SearchResults extends AmplifierServlet implements SearchResultConst
 			context.put("foundBulletins", bulletins);
 			context.put("totalBulletins", new Integer(bulletins.size()));
 			request.getSession().setAttribute("foundBulletins", bulletins);
+			return "SearchResults.vm";
 		}
-		return templateName;
+		catch (Exception e)
+		{
+			return "InternalError.vm";
+		}
 	}
 
 	public List getSearchResults(AmplifierServletRequest request)

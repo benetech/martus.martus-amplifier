@@ -66,13 +66,23 @@ public class DownloadAttachment extends HttpServlet
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 		throws ServletException, IOException
 	{
-		WrappedServletRequest ampRequest = new WrappedServletRequest(request);
-		WrappedServletResponse ampResponse = new WrappedServletResponse(response);
-
-		internalDoGet(ampRequest, ampResponse);	
+		try
+		{
+			WrappedServletRequest ampRequest = new WrappedServletRequest(request);
+			WrappedServletResponse ampResponse = new WrappedServletResponse(response);
+			internalDoGet(ampRequest, ampResponse);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			OutputStream out = response.getOutputStream();
+			out.write(InternalError.getBytes());
+			out.flush();
+			out.close();
+		}
 	}
 
-	public void internalDoGet(AmplifierServletRequest request, AmplifierServletResponse response) throws IOException
+	public void internalDoGet(AmplifierServletRequest request, AmplifierServletResponse response) throws IOException, AttachmentStorageException
 	{
 		AmplifierServletSession session = request.getSession();
 		List bulletins = (List)session.getAttribute("foundBulletins");
@@ -83,34 +93,28 @@ public class DownloadAttachment extends HttpServlet
 		AttachmentInfo info = (AttachmentInfo)bulletin.getAttachments().get(attachmentIndex-1);
 		if(basePath == null)
 			basePath =	AmplifierConfiguration.getInstance().getBasePath();
-		try
-		{
-			UniversalId uId = UniversalId.createFromAccountAndLocalId(info.getAccountId(), info.getLocalId());
-			AttachmentManager manager = MartusAmplifier.attachmentManager;
-			
-			//MartusAmplifier.attachmentManager is set in tests but live code since
-			//Two different classloaders construct the MartusAmplifier && DownloadAttachment
-			//requesting the static member results in null 
-			if(manager == null) 
-				manager = new FileSystemAttachmentManager(basePath);
-			
-			response.addHeader( "Content-Type", "application/octet-stream" );
-			response.addHeader( "Content-Disposition","attatchment; filename="+info.getLabel());
-			response.addHeader( "Content-Length",Long.toString(manager.getAttachmentSizeInBytes(uId)));
 
-			InputStream in = manager.getAttachment(uId);
-			OutputStream out = response.getOutputStream();
-			new StreamCopier().copyStream(in, out);
-			in.close();
-			out.flush();
-			out.close();
-		}
-		catch (AttachmentStorageException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		UniversalId uId = UniversalId.createFromAccountAndLocalId(info.getAccountId(), info.getLocalId());
+		AttachmentManager manager = MartusAmplifier.attachmentManager;
+		
+		//MartusAmplifier.attachmentManager is set in tests but live code since
+		//Two different classloaders construct the MartusAmplifier && DownloadAttachment
+		//requesting the static member results in null 
+		if(manager == null) 
+			manager = new FileSystemAttachmentManager(basePath);
+		
+		response.addHeader( "Content-Type", "application/octet-stream" );
+		response.addHeader( "Content-Disposition","attatchment; filename="+info.getLabel());
+		response.addHeader( "Content-Length",Long.toString(manager.getAttachmentSizeInBytes(uId)));
+
+		InputStream in = manager.getAttachment(uId);
+		OutputStream out = response.getOutputStream();
+		new StreamCopier().copyStream(in, out);
+		in.close();
+		out.flush();
+		out.close();
 	}
-	
+
+	private String InternalError = "An internal error occured when trying to retrieve this attachment.";
 	private String basePath = null;
 }

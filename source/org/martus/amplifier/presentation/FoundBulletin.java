@@ -38,22 +38,29 @@ public class FoundBulletin extends AmplifierServlet
 {
 	public String selectTemplate(AmplifierServletRequest request, AmplifierServletResponse response, Context context)
 	{
-		AmplifierServletSession session = request.getSession();
-		Vector bulletins = (Vector)session.getAttribute("foundBulletins");
-		int index = Integer.parseInt(request.getParameter("index"));
-		BulletinInfo info = (BulletinInfo)bulletins.get(index - 1);
-		context.put("bulletin", info);
-		int previousIndex = index - 1;
-		int nextIndex = index + 1;
-		if(previousIndex <= 0)
-			previousIndex = -1;
-		if(nextIndex > bulletins.size())
-			nextIndex = -1;
-		context.put("previousBulletin", new Integer(previousIndex));
-		context.put("nextBulletin", new Integer(nextIndex));
-		context.put("currentBulletin", new Integer(index));
-		context.put("totalBulletins", new Integer(bulletins.size()));
-		return "FoundBulletin.vm";
+		try
+		{
+			AmplifierServletSession session = request.getSession();
+			Vector bulletins = (Vector)session.getAttribute("foundBulletins");
+			int index = Integer.parseInt(request.getParameter("index"));
+			BulletinInfo info = (BulletinInfo)bulletins.get(index - 1);
+			context.put("bulletin", info);
+			int previousIndex = index - 1;
+			int nextIndex = index + 1;
+			if(previousIndex <= 0)
+				previousIndex = -1;
+			if(nextIndex > bulletins.size())
+				nextIndex = -1;
+			context.put("previousBulletin", new Integer(previousIndex));
+			context.put("nextBulletin", new Integer(nextIndex));
+			context.put("currentBulletin", new Integer(index));
+			context.put("totalBulletins", new Integer(bulletins.size()));
+			return "FoundBulletin.vm";
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			return "InternalError.vm";
+		}
 	}
-
 }

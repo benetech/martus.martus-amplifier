@@ -1,0 +1,20 @@
+<html>
+    <head>
+     	#include("Meta.vm")
+        <title>Martus Amplifier Internal Error</title>
+    </head>
+    
+    <body>
+    	#set ($pageTitle="Internal Error")
+    	#set ($pageInfo="An internal error occured.")
+		#set ($showSearchForm = false)
+		#parse ("ResultHeader.vm")
+		
+		<br/><br/><br/>
+        Please try again.
+		<br/><br/><br/>
+
+		#set ($showSearchForm = true)
+		#parse ("ResultFooter.vm")
+    </body>
+</html>
