@@ -3,11 +3,11 @@ package org.martus.amplifier.test.i18n;
 import java.util.Locale;
 
 import org.martus.amplifier.common.i18n.I18NManager;
-import org.martus.amplifier.test.AbstractAmplifierTest;
+import org.martus.amplifier.test.TestAbstractAmplifier;
 
-public class I18NManagerTest extends AbstractAmplifierTest
+public class TestI18NManager extends TestAbstractAmplifier
 {
-	public I18NManagerTest(String name)
+	public TestI18NManager(String name)
 	{
 		super(name);
 	}

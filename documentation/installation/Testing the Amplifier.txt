@@ -19,7 +19,7 @@ II. Set up a JUnit Launch Configuration.
 
 	Name: TestAllAmplifier
 	Project: martus-amplifier
-	Main class: org.martus.amplifier.test.TestAll
+	Main class: org.martus.amplifier.test.TestAllAmplifier
 
 4. Run it. Wait for results.
 

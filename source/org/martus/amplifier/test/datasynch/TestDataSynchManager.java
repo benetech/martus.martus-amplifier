@@ -10,9 +10,9 @@ import org.martus.amplifier.service.datasynch.DataSynchManager;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-public class DataSynchManagerTest extends AbstractAmplifierDataSynchTest
+public class TestDataSynchManager extends TestAbstractAmplifierDataSynch
 {
-	public DataSynchManagerTest(String name)
+	public TestDataSynchManager(String name)
 	{
 		super(name);
 	}

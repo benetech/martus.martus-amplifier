@@ -9,9 +9,9 @@ import org.martus.amplifier.test.configuration.TestAllConfiguration;
 import org.martus.amplifier.test.datasynch.TestAllDataSynch;
 import org.martus.amplifier.test.i18n.TestAllI18N;
 
-public class TestAll extends TestSuite
+public class TestAllAmplifier extends TestSuite
 {
-    public TestAll() 
+    public TestAllAmplifier() 
     {
     }
 

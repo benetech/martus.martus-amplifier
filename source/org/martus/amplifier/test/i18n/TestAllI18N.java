@@ -27,7 +27,7 @@ public class TestAllI18N extends TestSuite {
 	{
 		TestSuite suite= new TestSuite("All Martus Amplifier i18n Tests");
 		
-		suite.addTest(new TestSuite(I18NManagerTest.class));
+		suite.addTest(new TestSuite(TestI18NManager.class));
 	
 	    return suite;
 	}

@@ -6,9 +6,9 @@ import org.martus.amplifier.service.datasynch.BackupServerInfo;
 import org.martus.amplifier.service.datasynch.BackupServerManager;
 import org.martus.common.test.TestCaseEnhanced;
 
-public class BackupServerManagerTest extends TestCaseEnhanced
+public class TestBackupServerManager extends TestCaseEnhanced
 {
-	public BackupServerManagerTest(String name)
+	public TestBackupServerManager(String name)
 	{
 		super(name);
 	}

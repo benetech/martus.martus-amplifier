@@ -5,9 +5,9 @@ import java.util.Vector;
 import org.martus.amplifier.service.datasynch.AmplifierNetworkGateway;
 import org.martus.common.packet.UniversalId;
 
-public class AmplifierNetworkGatewayTest extends AbstractAmplifierDataSynchTest
+public class TestAmplifierNetworkGateway extends TestAbstractAmplifierDataSynch
 {	
-	public AmplifierNetworkGatewayTest(String name)
+	public TestAmplifierNetworkGateway(String name)
 	{
 		super(name);
 	}

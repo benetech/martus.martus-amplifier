@@ -24,7 +24,7 @@ import org.martus.amplifier.service.search.BulletinSearcher;
 import org.martus.amplifier.service.search.SearchConstants;
 import org.martus.amplifier.service.search.lucene.LuceneBulletinIndexer;
 import org.martus.amplifier.service.search.lucene.LuceneBulletinSearcher;
-import org.martus.amplifier.test.AbstractAmplifierTest;
+import org.martus.amplifier.test.TestAbstractAmplifier;
 import org.martus.common.bulletin.AttachmentProxy;
 import org.martus.common.bulletin.Bulletin;
 import org.martus.common.bulletin.BulletinForTesting;
@@ -38,7 +38,7 @@ import org.martus.common.database.MockServerDatabase;
 import org.martus.common.packet.UniversalId;
 import org.martus.util.StreamCopier;
 
-public class TestBulletinExtractor extends AbstractAmplifierTest
+public class TestBulletinExtractor extends TestAbstractAmplifier
 	implements SearchConstants
 {
 	public TestBulletinExtractor(String name) 

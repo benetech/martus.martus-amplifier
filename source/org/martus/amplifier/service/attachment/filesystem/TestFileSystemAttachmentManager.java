@@ -6,13 +6,13 @@ import java.io.InputStream;
 
 import junit.framework.Assert;
 
-import org.martus.amplifier.service.attachment.AbstractAttachmentManagerTest;
+import org.martus.amplifier.service.attachment.TestAbstractAttachmentManager;
 import org.martus.amplifier.service.attachment.AttachmentManager;
 import org.martus.amplifier.service.attachment.AttachmentStorageException;
 import org.martus.common.packet.UniversalId;
 
 public class TestFileSystemAttachmentManager 
-	extends AbstractAttachmentManagerTest
+	extends TestAbstractAttachmentManager
 {
 	
 	public TestFileSystemAttachmentManager(String name) 

@@ -26,7 +26,7 @@ public class TestAllConfiguration extends TestSuite
 		TestSuite suite =
 			new TestSuite("All Martus Amplifier Configuration Tests");
 
-		suite.addTest(new TestSuite(AmplifierConfigurationTest.class));
+		suite.addTest(new TestSuite(TestAmplifierConfiguration.class));
 
 		return suite;
 	}

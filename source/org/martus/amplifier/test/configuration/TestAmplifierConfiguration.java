@@ -4,9 +4,9 @@ import junit.framework.TestCase;
 
 import org.martus.amplifier.common.configuration.AmplifierConfiguration;
 
-public class AmplifierConfigurationTest extends TestCase
+public class TestAmplifierConfiguration extends TestCase
 {
-	public AmplifierConfigurationTest(String name)
+	public TestAmplifierConfiguration(String name)
 	{
 		super(name);
 	}

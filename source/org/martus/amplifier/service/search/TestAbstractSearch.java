@@ -9,14 +9,14 @@ import java.util.List;
 
 import junit.framework.Assert;
 
-import org.martus.amplifier.test.AbstractAmplifierTest;
+import org.martus.amplifier.test.TestAbstractAmplifier;
 import org.martus.common.FieldSpec;
 import org.martus.common.bulletin.AttachmentProxy;
 import org.martus.common.packet.FieldDataPacket;
 import org.martus.common.packet.UniversalId;
 
-public abstract class AbstractSearchTest 
-	extends AbstractAmplifierTest implements SearchConstants
+public abstract class TestAbstractSearch 
+	extends TestAbstractAmplifier implements SearchConstants
 {
 	
 	public void testClearIndex() 
@@ -401,7 +401,7 @@ public abstract class AbstractSearchTest
 	}
 	
 	
-	protected AbstractSearchTest(String name) 
+	protected TestAbstractSearch(String name) 
 	{
 		super(name);
 	}

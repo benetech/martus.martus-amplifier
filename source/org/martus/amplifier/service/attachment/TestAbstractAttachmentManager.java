@@ -5,11 +5,11 @@ import java.io.InputStream;
 
 import junit.framework.Assert;
 
-import org.martus.amplifier.test.AbstractAmplifierTest;
+import org.martus.amplifier.test.TestAbstractAmplifier;
 import org.martus.common.packet.UniversalId;
 
-public abstract class AbstractAttachmentManagerTest 
-	extends AbstractAmplifierTest
+public abstract class TestAbstractAttachmentManager 
+	extends TestAbstractAmplifier
 {
 	public void testClearAllAttachments() 
 		throws AttachmentStorageException, IOException
@@ -198,7 +198,7 @@ public abstract class AbstractAttachmentManagerTest
 		}
 	}
 	
-	protected AbstractAttachmentManagerTest(String name)
+	protected TestAbstractAttachmentManager(String name)
 	{
 		super(name);
 	}

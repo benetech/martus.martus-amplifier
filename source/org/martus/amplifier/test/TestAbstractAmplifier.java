@@ -7,9 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
-import junit.framework.TestCase;
-
 import org.martus.amplifier.common.configuration.AmplifierConfiguration;
+import org.martus.common.test.TestCaseEnhanced;
 import org.martus.util.StreamCopier;
 
 /**
@@ -20,9 +19,9 @@ import org.martus.util.StreamCopier;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-public abstract class AbstractAmplifierTest extends TestCase
+public abstract class TestAbstractAmplifier extends TestCaseEnhanced
 {
-	public AbstractAmplifierTest(String name)
+	public TestAbstractAmplifier(String name)
 	{
 		super(name);
 	}
