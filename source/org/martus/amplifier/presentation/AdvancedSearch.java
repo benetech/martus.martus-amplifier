@@ -53,7 +53,10 @@ public class AdvancedSearch extends AmplifierServlet
 		context.put("languageFields", languageFields);		
 		
 		Vector sortByFields = FindBulletinsFields.getSortByFieldDisplayNames();
-		context.put("sortByFields", sortByFields);			
+		context.put("sortByFields", sortByFields);
+
+		// TODO: Remove this line when the new interface is coded		
+		context.put("oldSearchInterface", new Boolean(true));		
 		
 		return "AdvancedSearch.vm";
 	}

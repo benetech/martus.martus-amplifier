@@ -19,6 +19,9 @@
 			<tr>
 			<td bgcolor='#ffffff' color='#000000'>
 			<table cellpadding='10' cellspacing='0'>
+			
+## Remove the old search interface as soon as the new one is implemented
+#if ($oldSearchInterface)
 				<tr bgcolor='#dddddd' color='#000000'>
 					<td><strong>Find bulletins </strong></td>
 					<td>
@@ -33,9 +36,36 @@
 					<td><input name="advancedQuery" size="44"/></td>
 					<td bgcolor='#ffffff' color='#000000'><input type="submit" value="Search"/></td>
 				</tr>
+#else
+				<tr bgcolor='#dddddd' color='#000000'>
+					<td><strong>Find bulletins </strong></td>
+					<td>with <strong>all</strong> of the words</td>
+					<td><input name="allWordsQuery" size="44"/></td>
+					<td bgcolor='#ffffff' color='#000000'><input type="submit" value="Search"/></td>
+				</tr>
+				<tr bgcolor='#dddddd' color='#000000'>
+					<td></td>
+					<td>with <strong>at least one</strong> of the words</td>
+					<td><input name="anyWordsQuery" size="44"/></td>
+					<td bgcolor='#ffffff' ></td>
+				</tr>
+				<tr bgcolor='#dddddd' color='#000000'>
+					<td></td>
+					<td>with the <strong>exact phrase</strong></td>
+					<td><input name="exactPhraseQuery" size="44"/></td>
+					<td bgcolor='#ffffff' ></td>
+				</tr>
+				<tr bgcolor='#dddddd' color='#000000'>
+					<td></td>
+					<td><strong>without</strong> the words</td>
+					<td><input name="excludeWordsQuery" size="44"/></td>
+					<td bgcolor='#ffffff' ></td>
+				</tr>
+#end
 				<tr bgcolor='#dddddd' color='#000000'>
 					<td></td>
 					<td>
+						in the 
 						<select name='fields'>
 							#foreach ($fieldChoice in $bulletinFields)	
 									<option value="$fieldChoice.tag"> 
