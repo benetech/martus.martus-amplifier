@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+    <classpathentry kind="src" path="source"/>
+    <classpathentry exported="true" kind="var" path="JRE_LIB"
+        rootpath="JRE_SRCROOT" sourcepath="JRE_SRC"/>
+    <classpathentry exported="true" kind="var" path="Xerces"/>
+    <classpathentry exported="true" kind="var" path="JUnit"/>
+    <classpathentry exported="true" kind="var" path="LuceneDemo"
+        rootpath="" sourcepath="LuceneSource"/>
+    <classpathentry exported="true" kind="var" path="LuceneEngine"/>
+    <classpathentry exported="true" kind="var" path="LuceneSource"/>
+    <classpathentry exported="true" kind="var" path="LuceneUI"/>
+    <classpathentry exported="true" kind="var" path="LuceneXML"/>
+    <classpathentry kind="output" path="bin"/>
+</classpath>
