@@ -62,6 +62,20 @@
 				#end
 				<td></td>
 			</tr>
+			<tr>
+				#if($bulletin.fields.location != "")
+					<td>Location:</td>
+					<td>$bulletin.fields.location</td>
+				#end
+				<td></td>
+			</tr>
+			<tr>
+				#if($bulletin.fields.language != "")
+					<td>Language:</td>
+					<td>$bulletin.fields.language</td>
+				#end
+				<td></td>
+			</tr>
 		</table>
 		
 		<br/><br/>
