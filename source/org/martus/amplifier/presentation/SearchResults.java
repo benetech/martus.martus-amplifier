@@ -92,9 +92,11 @@ public class SearchResults extends AmplifierServlet implements SearchResultConst
 			return getResults(searcher);
 		}
 
-		queryString = request.getParameter(RESULT_ADVANCED_QUERY_KEY);				
-		new SearchParameters(request, searcher);							
-		searcher.put(RESULT_ADVANCED_QUERY_KEY, queryString);
+		queryString = request.getParameter(RESULT_ADVANCED_QUERY_KEY);
+		if (queryString != null)		
+			searcher.put(RESULT_ADVANCED_QUERY_KEY, queryString);
+				
+		new SearchParameters(request, searcher);									
 										
 		return getResults(searcher);
 	}

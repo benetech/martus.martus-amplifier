@@ -130,13 +130,13 @@ public class LuceneBulletinSearcher
 	private Query handleFindLanguageQuery(HashMap fields)
 			throws BulletinIndexException
 	{
-		Query fieldQuery = null;
+		Query query = null;
 		String fieldString = (String) fields.get(SearchResultConstants.RESULT_LANGUAGE_KEY);
 
 		if (fieldString != null)				
-			fieldQuery = queryParser(fieldString,SEARCH_LANGUAGE_INDEX_FIELD, "Improperly formed advanced find language type in bulletin query: ");
+			query = queryParser(fieldString,SEARCH_LANGUAGE_INDEX_FIELD, "Improperly formed advanced find language type in bulletin query: ");
 		
-		return fieldQuery;
+		return query;
 	} 
 	
 	private Query handleFindBulletinsQuery(String query, HashMap fields)
@@ -144,13 +144,14 @@ public class LuceneBulletinSearcher
 	{		
 		Query fieldQuery = null;
 		String fieldString = (String) fields.get(SearchResultConstants.RESULT_FIELDS_KEY);
-	
+		String queryString = (String) fields.get(SearchResultConstants.RESULT_ADVANCED_QUERY_KEY);
+
 		if (query != null && query.length()>0)
 		{
 			if (fieldString.equals(SearchResultConstants.IN_ALL_FIELDS))
 				return multiFieldQueryParser(query, SEARCH_ALL_TEXT_FIELDS, "Improperly formed advanced find bulletin multiquery: ");
 						
-			fieldQuery = queryParser(query, fieldString, "Improperly formed advanced find bulletin query: ");
+			fieldQuery = queryParser(queryString, fieldString, "Improperly formed advanced find bulletin query: ");
 		}
 		
 		return fieldQuery;
@@ -174,7 +175,7 @@ public class LuceneBulletinSearcher
 		BooleanQuery query = new BooleanQuery();
 		Query foundEventDateQuery = handleEventDateQuery(fields);					
 		query.add(foundEventDateQuery, true, false);
-
+		
 		Query foudBulletinsQuery = handleFindBulletinsQuery(queryString, fields);
 		if (foudBulletinsQuery != null)
 			query.add(foudBulletinsQuery, true, false);
@@ -211,7 +212,7 @@ public class LuceneBulletinSearcher
 		} catch(ParseException pe) {
 			throw new BulletinIndexException( msg + query, pe);
 		}
-	}	
+	}		
 
 	private String setRangeQuery(String from, String to)
 	{

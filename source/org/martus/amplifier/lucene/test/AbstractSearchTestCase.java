@@ -724,6 +724,94 @@ public abstract class AbstractSearchTestCase
 		{
 			searcher.close();
 		}
+	}
+	
+	public void testAdvancedSearchCombineEventDateAndFilterWords() throws BulletinIndexException,ParseException
+	{
+		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
+		FieldDataPacket fdp1 	= generateSampleData(bulletinId1);		
+		UniversalId bulletinId2 = UniversalId.createDummyUniversalId();
+		FieldDataPacket fdp2 	= generateSampleFlexiData(bulletinId2);		
+		BulletinIndexer indexer = openBulletinIndexer();
+		try 
+		{
+			indexer.clearIndex();
+			indexer.indexFieldData(bulletinId1, fdp1);
+			indexer.indexFieldData(bulletinId2, fdp2);
+		} 
+		finally 
+		{
+			indexer.close();
+		}
+		
+		BulletinSearcher searcher = openBulletinSearcher();
+		BulletinSearcher.Results results = null;				
+		
+		try 
+		{
+			Date defaultDate 	= SearchConstants.SEARCH_DATE_FORMAT.parse("1970-01-01");
+			Date defaultEndDate = SearchConstants.SEARCH_DATE_FORMAT.parse("2004-01-01");			
+		
+			HashMap fields = new HashMap();
+			fields.put(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, defaultDate);
+			fields.put(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, defaultEndDate);
+			fields.put(RESULT_FIELDS_KEY, IN_ALL_FIELDS);
+			fields.put(RESULT_FILTER_BY_KEY, THESE_WORD_LABEL);
+			String query = SearchParameters.convertToQueryString("root sandwich", THESE_WORD_LABEL);			
+			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
+			
+			results = searcher.search(null, fields);
+			assertEquals("search for all of these words? ", 2, results.getCount());
+			
+			fields.remove(RESULT_FILTER_BY_KEY);
+			fields.put(RESULT_FILTER_BY_KEY,THESE_WORD_LABEL );
+			fields.remove(RESULT_ADVANCED_QUERY_KEY);	
+			query = SearchParameters.convertToQueryString("Today Paul", THESE_WORD_LABEL);		
+			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
+			results = searcher.search(null, fields);
+			assertEquals("search for all of these words? ", 1, results.getCount());
+			
+			fields.remove(RESULT_FILTER_BY_KEY);
+			fields.put(RESULT_FILTER_BY_KEY, EXACTPHRASE_LABEL);
+			fields.remove(RESULT_ADVANCED_QUERY_KEY);	
+			query = SearchParameters.convertToQueryString("egg2 salad2 sandwich", EXACTPHRASE_LABEL);		
+			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
+			
+			results = searcher.search(null, fields);
+			assertEquals("search for exact phrase? ", 1, results.getCount());
+			
+			fields.remove(RESULT_FILTER_BY_KEY);
+			fields.put(RESULT_FILTER_BY_KEY, EXACTPHRASE_LABEL);
+			fields.remove(RESULT_ADVANCED_QUERY_KEY);	
+			query = SearchParameters.convertToQueryString("sandwich", EXACTPHRASE_LABEL);		
+			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
+			
+			results = searcher.search(null, fields);
+			assertEquals("search for exact phrase? ", 2, results.getCount());
+			
+			fields.remove(RESULT_FILTER_BY_KEY);
+			fields.put(RESULT_FILTER_BY_KEY, WITHOUTWORDS_LABEL);
+			fields.remove(RESULT_ADVANCED_QUERY_KEY);
+			query = SearchParameters.convertToQueryString("egg2 salad2", WITHOUTWORDS_LABEL);			
+			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
+			
+			results = searcher.search(null, fields);
+//			assertEquals("search for without of those words? ", 1, results.getCount());
+			
+			fields.remove(RESULT_FILTER_BY_KEY);
+			fields.put(RESULT_FILTER_BY_KEY, WITHOUTWORDS_LABEL);
+			fields.remove(RESULT_ADVANCED_QUERY_KEY);
+			query = SearchParameters.convertToQueryString("Paul", WITHOUTWORDS_LABEL);			
+			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
+			
+			results = searcher.search(null, fields);
+//			assertEquals("search for without of those words? ", 1, results.getCount());
+										
+		}
+		finally 
+		{
+			searcher.close();
+		}
 	}				
 		
 	protected FieldDataPacket generateSampleData(UniversalId bulletinId)

@@ -66,12 +66,53 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 		}				
 		
 		setEventDate();
+		setFilterKeyWords();
 		setNormalFields();																	
 	}	
 
 	private void addField(String key, Object value)
 	{
 		searchFields.put(key, value);
+	}
+	
+	private void setFilterKeyWords()
+	{
+		String filterString = getValue(RESULT_FILTER_BY_KEY);
+		if (filterString.equals(ANYWORD_LABEL))
+			return;
+
+		addField(RESULT_FILTER_BY_KEY, filterString); 		
+
+		String queryString = (String) searchFields.get(RESULT_ADVANCED_QUERY_KEY);
+		String newString = convertToQueryString(queryString, filterString);
+		
+		searchFields.remove(RESULT_ADVANCED_QUERY_KEY);
+		addField(RESULT_ADVANCED_QUERY_KEY, newString);
+	}
+	
+	public static String convertToQueryString(String text, String filterType)
+	{
+		String newString = null;
+		if (filterType.equals(WITHOUTWORDS_LABEL))
+			newString = addSign(NOT, "(", text, ")");
+		else if (filterType.equals(EXACTPHRASE_LABEL))
+			newString = "\""+text+"\"";
+		else 
+			newString = addSign(PLUS,"(", text, ")");
+
+		return newString;
+			
+	}
+	
+	private static String addSign(String sign, String start, String queryString, String end)
+	{
+		String[] words = queryString.split(" ");
+		String query = start;
+
+		for (int i=0;i<words.length;i++)		
+			query += sign + words[i]+ " ";
+
+		return query + end;
 	}
 	
 	private void setEventDate()
@@ -88,13 +129,13 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 
 	private void setNormalFields()
 	{
-		addField(RESULT_FIELDS_KEY, resultList.get(RESULT_FIELDS_KEY));
-		addField(RESULT_FILTER_BY_KEY, resultList.get(RESULT_FILTER_BY_KEY));
+		addField(RESULT_FIELDS_KEY, getValue(RESULT_FIELDS_KEY));
 		
-		if (!resultList.get(RESULT_LANGUAGE_KEY).equals(LANGUAGE_ANYLANGUAGE_KEY))
-			addField(RESULT_LANGUAGE_KEY, resultList.get(RESULT_LANGUAGE_KEY));
+		String languageString = getValue(RESULT_LANGUAGE_KEY);
+		if (languageString != null && !languageString.equals(LANGUAGE_ANYLANGUAGE_KEY))
+			addField(RESULT_LANGUAGE_KEY, languageString);
 			
-		Date entryDate = getEntryDate((String)resultList.get(RESULT_ENTRY_DATE_KEY));
+		Date entryDate = getEntryDate(getValue(RESULT_ENTRY_DATE_KEY));
 		addField(SEARCH_ENTRY_DATE_INDEX_FIELD, entryDate);	
 	}
 
@@ -162,4 +203,6 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 	HashMap resultList 	= new HashMap();
 	HashMap	searchFields;
 	boolean hasEventFields 	= true;
+	final static String PLUS = "+";
+	final static String NOT = "-";
 }
