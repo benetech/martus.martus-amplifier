@@ -3,6 +3,8 @@ package org.martus.amplifier.test.presentation;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.martus.amplifier.presentation.AmplifierServletRequest;
 
 public class MockAmplifierRequest implements AmplifierServletRequest
@@ -17,6 +19,10 @@ public class MockAmplifierRequest implements AmplifierServletRequest
 		return (String)parameters.get(key);
 	}
 
+	public HttpSession getSession()
+	{
+		return null;
+	}
 
 	Map parameters = new HashMap();
 }

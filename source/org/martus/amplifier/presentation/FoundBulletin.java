@@ -25,14 +25,21 @@ Boston, MA 02111-1307, USA.
 */
 package org.martus.amplifier.presentation;
 
+import java.util.Vector;
+
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.velocity.context.Context;
+import org.martus.amplifier.service.search.BulletinInfo;
 
 public class FoundBulletin extends AmplifierServlet
 {
 	public String selectTemplate(AmplifierServletRequest request, HttpServletResponse response, Context context)
 	{
+		Vector bulletins = (Vector)request.getSession().getAttribute("foundBulletins");
+		int index = Integer.parseInt(request.getParameter("index"));
+		BulletinInfo info = (BulletinInfo)bulletins.get(index -1);
+		context.put("bulletin", info);
 		return "FoundBulletin.vm";
 	}
 

@@ -14,7 +14,7 @@
 	            		$velocityCount. 
 	            	</td>
 	                <td>
-	                	<strong>Title<strong>: <a href="FoundBulletin">$thisBulletin.fields.title</a><br/>
+	                	<strong>Title<strong>: <a href="FoundBulletin?index=$velocityCount">$thisBulletin.fields.title</a><br/>
 		                <strong>Author</strong>: $thisBulletin.fields.author<br/>
 		                <strong>Event Date</strong>: $thisBulletin.fields.eventdate<br/>
 		            </td>

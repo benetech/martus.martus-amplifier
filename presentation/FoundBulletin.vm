@@ -10,35 +10,42 @@
 		<table>
 			<tr>
 				<td><font size="+1">Title:</font></td>
-				<td><font size="+1"><strong>this would be the title</strong></font></td>
+				<td><font size="+1"><strong>$bulletin.fields.title</strong></font></td>
 			
 			</tr>
 			<tr>
 				<td>Location:</td>
+				<td>$bulletin.fields.location</td>
 				<td></td>
 			</tr>
 			<tr>
 				<td>Event Date:</td>
+				<td>$bulletin.fields.eventdate</td>
 				<td></td>
 			</tr>
 			<tr>
 				<td>Author:</td>
+				<td>$bulletin.fields.author</td>
 				<td></td>
 			</tr>
 			<tr>
 				<td>Date Submitted:</td>
+				<td>$bulletin.fields.entrydate</td>
 				<td></td>
 			</tr>
 			<tr>
 				<td>Summary:</td>
+				<td>$bulletin.fields.summary</td>
 				<td></td>
 			</tr>
 			<tr>
 				<td>Details:</td>
+				<td>$bulletin.fields.publicinfo</td>
 				<td></td>
 			</tr>
 			<tr>
 				<td>Keywords:</td>
+				<td>$bulletin.fields.keywords</td>
 				<td></td>
 			</tr>
 		</table>

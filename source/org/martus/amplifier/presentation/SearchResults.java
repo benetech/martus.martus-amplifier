@@ -77,6 +77,7 @@ public class SearchResults extends AmplifierServlet implements SearchResultConst
 				bulletins.add(element);
 			}
 			context.put("foundBulletins", bulletins);
+			request.getSession().setAttribute("foundBulletins", bulletins);
 		}
 		return templateName;
 	}

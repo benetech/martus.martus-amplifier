@@ -1,6 +1,7 @@
 package org.martus.amplifier.presentation;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 public class WrappedServletRequest implements AmplifierServletRequest
 {
@@ -13,6 +14,12 @@ public class WrappedServletRequest implements AmplifierServletRequest
 	{
 		return request.getParameter(key);
 	}
+
+	public HttpSession getSession()
+	{
+		return request.getSession();
+	}
 	
 	HttpServletRequest request;
+
 }
