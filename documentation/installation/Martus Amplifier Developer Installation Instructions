@@ -1,9 +1,0 @@
-Martus Amplifier Developer Installation Instructions
------------------------------------------------------
-
-1. Install Eclipse 2.0.1 (http://www.eclipse.org/downloads/index.php)
-
-2. Set up Eclipse using the "Set up Eclipse" instructions that should be in the same
-folder as this install doc.
-
-3. Install Tomcat 4.1.12

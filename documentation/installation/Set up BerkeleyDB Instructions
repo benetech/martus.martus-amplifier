@@ -1,5 +1,0 @@
-Set up BerkeleyDB Instructions
-------------------------------
-
-1. Point the berkeleydb and berkeleydb_examples variables to db.jar and dbexamples.jar 
-in the buildfiles\jars folder.

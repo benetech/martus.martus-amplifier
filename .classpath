@@ -10,7 +10,6 @@
     <classpathentry kind="var" path="Servlet"/>
     <classpathentry kind="var" path="JasperRuntime"/>
     <classpathentry kind="var" path="berkeleydb"/>
-    <classpathentry kind="var" path="berkeleydb_examples"/>
     <classpathentry kind="src" path="/martus-readonly"/>
     <classpathentry kind="var" path="jsse"/>
     <classpathentry kind="var" path="xmlrpc"/>
