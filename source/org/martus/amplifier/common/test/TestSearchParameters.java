@@ -28,10 +28,13 @@ package org.martus.amplifier.common.test;
 
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
 
 import junit.framework.TestCase;
 
 import org.martus.amplifier.common.SearchParameters;
+import org.martus.amplifier.common.SearchResultConstants;
 
 public class TestSearchParameters extends TestCase
 {
@@ -52,5 +55,43 @@ public class TestSearchParameters extends TestCase
 		assertEquals(year, cal.get(GregorianCalendar.YEAR));
 		assertEquals(month, cal.get(GregorianCalendar.MONTH));
 		assertEquals(day, cal.get(GregorianCalendar.DAY_OF_MONTH));
+	}
+	
+	public void testAllWordsFormatter() throws Exception
+	{
+		SearchParameters.FormatterForAllWordsSearch d = 
+			new SearchParameters.FormatterForAllWordsSearch();
+		assertEquals("(+cat +dog )", d.getFormattedString("cat dog"));		
+	}
+
+	public void testAnyWordFormatter() throws Exception
+	{
+		SearchParameters.FormatterForAnyWordSearch d = 
+			new SearchParameters.FormatterForAnyWordSearch();
+		assertEquals("(cat dog)", d.getFormattedString("cat dog"));		
+	}
+
+	public void testExactPhraseFormatter() throws Exception
+	{
+		SearchParameters.FormatterForExactPhraseSearch d = 
+			new SearchParameters.FormatterForExactPhraseSearch();
+		assertEquals("\"cat dog\"", d.getFormattedString("cat dog"));		
+	}
+	
+	public void testLuceneQueryFormatter() throws Exception
+	{
+		Map destination = new HashMap();
+		Map source = new HashMap();
+		
+		SearchParameters.FormatterForAnyWordSearch d = 
+			new SearchParameters.FormatterForAnyWordSearch();
+
+		source.put(SearchResultConstants.ANYWORD_TAG, "");
+		d.addFormattedStringIfNotEmpty(destination, source);
+		assertNull("Added it when blank?", destination.get(SearchResultConstants.ANYWORD_TAG));		
+		
+		source.put(SearchResultConstants.ANYWORD_TAG, "cat dog");
+		d.addFormattedStringIfNotEmpty(destination, source);
+		assertEquals("(cat dog)", destination.get(SearchResultConstants.ANYWORD_TAG));
 	}
 }

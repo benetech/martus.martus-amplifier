@@ -42,8 +42,9 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 	public SearchParameters(AmplifierServletRequest request)
 	{
 		searchRequest = request;
-		inputParameters 	= new HashMap();
-		searchFields  = new HashMap();
+		inputParameters = new HashMap();
+		searchFields = new HashMap();
+
 		loadFromRequest();		
 		rememberAdvancedFields(request);	
 	}
@@ -64,52 +65,53 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 			}
 		}
 		setEventDate();
-		setFilterKeyWords();
+		setAllWordsSearch();
+		setExactPhraseSearch();
+		setAnyWordSearch();
 		setNormalFields();																
 	}	
 
 	private void addField(String key, Object value)
 	{
 		searchFields.put(key, value);
-	}		
-	
-	private void setFilterKeyWords()
-	{
-		parseAdvancedQuery(THESE_WORD_TAG, true);					
-		parseAdvancedQuery(EXACTPHRASE_TAG, false);	
-		parseAdvancedQuery(ANYWORD_TAG, true);
-//		parseAdvancedQuery(WITHOUTWORDS_TAG);	
-	
 	}
 	
-	private void parseAdvancedQuery(String key, boolean verifyChar)
+	private void setAnyWordSearch()
 	{
-		String str = getValue(key);
+		FormatterForAnyWordSearch decorator = new FormatterForAnyWordSearch();
+		decorator.addFormattedStringIfNotEmpty(searchFields, inputParameters);
+	}
 
-		String subQuery = (verifyChar)?CharacterUtil.removeRestrictCharacters(str):str;
-		if (subQuery.length() >0)
-		{			
-			subQuery = convertToQueryString(subQuery, key);
-			addField(key, subQuery);
-		}
+	private void setExactPhraseSearch()
+	{
+		FormatterForExactPhraseSearch decorator = new FormatterForExactPhraseSearch();
+		decorator.addFormattedStringIfNotEmpty(searchFields, inputParameters);
 	}
-	
+
+	private void setAllWordsSearch()
+	{
+		FormatterForAllWordsSearch decorator = new FormatterForAllWordsSearch();
+		decorator.addFormattedStringIfNotEmpty(searchFields, inputParameters);
+	}
+
+	// TODO: This method is only used by tests. 
+	// Find a way to remove it!
 	public static String convertToQueryString(String text, String filterType)
 	{
 		String newString = null;
 		if (filterType.equals(WITHOUTWORDS_TAG))
-			newString = addSign(NOT, text);			
+			newString = insertBeforeEachWord(NOT, text);			
 		else if (filterType.equals(EXACTPHRASE_TAG))
 			newString = "\""+text+"\"";
 		else if (filterType.equals(THESE_WORD_TAG))
-			newString = addSign(PLUS, text);
+			newString = insertBeforeEachWord(PLUS, text);
 		else
 			newString = "("+text+")";
 	
 		return newString;
 	}
 	
-	private static String addSign(String sign, String queryString)
+	private static String insertBeforeEachWord(String sign, String queryString)
 	{
 		String[] words = queryString.split(" ");
 		String query = "(";		
@@ -247,7 +249,7 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 		defaultMap.put(SearchResultConstants.THESE_WORD_TAG, "");	
 		defaultMap.put(SearchResultConstants.WITHOUTWORDS_TAG, "");
 		defaultMap.put(SearchResultConstants.RESULT_FIELDS_KEY, SearchResultConstants.IN_ALL_FIELDS);
-		defaultMap.put(SearchResultConstants.RESULT_ENTRY_DATE_KEY, SearchResultConstants.ENTRY_ANYTIME_LABEL);
+		defaultMap.put(SearchResultConstants.RESULT_ENTRY_DATE_KEY, SearchResultConstants.ENTRY_ANYTIME_TAG);
 		defaultMap.put(SearchResultConstants.RESULT_LANGUAGE_KEY, SearchResultConstants.LANGUAGE_ANYLANGUAGE_LABEL);
 		defaultMap.put(SearchResultConstants.RESULT_SORTBY_KEY, SearchResultConstants.SORT_BY_TITLE_TAG);
 		
@@ -258,6 +260,67 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 		return defaultMap;	
 	}
 
+	abstract static class LuceneQueryFormatter
+	{
+		public LuceneQueryFormatter(String tagToUse)
+		{
+			tag = tagToUse;
+		}
+		
+		public void addFormattedStringIfNotEmpty(Map destination, Map source)
+		{
+			String rawString = (String)source.get(tag);
+			rawString = CharacterUtil.removeRestrictCharacters(rawString);
+			if(rawString.length() == 0)
+				return;
+			String decoratedString = getFormattedString(rawString);
+			destination.put(tag, decoratedString);
+		}
+		
+		abstract String getFormattedString(String rawString);
+		
+		String tag;
+	}
+	
+	public static class FormatterForAnyWordSearch extends LuceneQueryFormatter
+	{
+		public FormatterForAnyWordSearch()
+		{
+			super(SearchResultConstants.ANYWORD_TAG);
+		}
+		
+		public String getFormattedString(String rawString)
+		{
+			return "(" + rawString + ")";
+		}
+	}
+	
+	public static class FormatterForExactPhraseSearch extends LuceneQueryFormatter
+	{
+		public FormatterForExactPhraseSearch()
+		{
+			super(SearchResultConstants.EXACTPHRASE_TAG);
+		}
+		
+		public String getFormattedString(String rawString)
+		{
+			return "\"" + rawString + "\"";
+		}
+	}
+	
+	public static class FormatterForAllWordsSearch extends LuceneQueryFormatter
+	{
+		public FormatterForAllWordsSearch()
+		{
+			super(SearchResultConstants.THESE_WORD_TAG);
+		}
+		
+		public String getFormattedString(String rawString)
+		{
+			return insertBeforeEachWord(PLUS, rawString);
+		}
+	}
+	
 	AmplifierServletRequest searchRequest;
 	HashMap inputParameters;
 	HashMap	searchFields;
