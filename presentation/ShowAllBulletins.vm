@@ -23,8 +23,9 @@ Boston, MA 02111-1307, USA.
 
 *#
 <center>
-<form name="search" action="DoSearch?typeOfSearch=quickSearchAll" method="post">
+<form name="search" action="DoSearch" method="get">
 	<p>
+		<input type="hidden" name="typeOfSearch" value="quickSearchAll"/>
 		<input type="submit" value="Show All Bulletins"/>  <br/><br/>
 	</p>
 </form>	

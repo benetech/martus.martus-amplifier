@@ -25,7 +25,9 @@ Boston, MA 02111-1307, USA.
 <html>
 	#set ($pageTitle= "Searched for: $searchedFor")
     <head>
-    		#parse("Meta.vm")            
+		<meta HTTP-EQUIV="Pragma" CONTENT="no-cache"> 
+		<meta HTTP-EQUIV="Expires" CONTENT="-1"> 
+   		#parse("Meta.vm")            
     </head>
     <body>
     	#set ($pageTitle="Searched Martus for: $searchedFor")
@@ -88,4 +90,9 @@ Boston, MA 02111-1307, USA.
 		#set ($showSearchForm = true)
 		#parse ("ResultFooter.vm")
     </body>
+	<head>
+		<meta HTTP-EQUIV="Pragma" CONTENT="no-cache">
+		<meta HTTP-EQUIV="Expires" CONTENT="-1">
+	</head>
+    
 </html>

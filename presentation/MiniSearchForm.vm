@@ -23,7 +23,7 @@ Boston, MA 02111-1307, USA.
 
 *#
 
-<form name="search" action="DoSearch?typeOfSearch=quick" method="post">
+<form name="search" action="DoSearch?typeOfSearch=quick" method="get">
     <p>
         <input name="query" size="44" value='$defaultSimpleSearch'></input>&nbsp;
         <input type="submit" value="Search"/>       
