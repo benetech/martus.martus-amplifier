@@ -76,7 +76,7 @@ public class MartusAmplifier
 		if(!amp.hasAccount())
 		{
 			System.out.println("***** Key pair file not found *****");
-			System.exit(2);
+			serverExit(2);
 		}
 		String passphrase = insecurePassword;
 		if(passphrase == null)
@@ -85,6 +85,12 @@ public class MartusAmplifier
 		amp.displayStatistics();
 		amp.start(passphrase);
 	}
+	
+	static public void serverExit(int exitCode) 
+	{
+		System.exit(exitCode);
+	}
+
 	
 	public MartusAmplifier(File dataDirectoryToUse, LoggerInterface loggerToUse) throws CryptoInitializationException
 	{
@@ -123,6 +129,7 @@ public class MartusAmplifier
 		while(! isShutdownRequested() )
 		{
 		}
+		serverExit(0);
 	}
 	
 
@@ -219,6 +226,11 @@ public class MartusAmplifier
 	{
 		File runningFile = new File(getTriggerDirectory(), "running");
 		return runningFile;
+	}
+
+	public File getShutdownFile()
+	{
+		return new File(getTriggerDirectory(), "exit");
 	}
 
 	public boolean isSecureMode()
@@ -322,8 +334,7 @@ public class MartusAmplifier
 	
 	boolean isShutdownRequested()
 	{
-		File ampDir = getWorkingDirectory();
-		File shutdownFile = new File(ampDir, "shutdown");
+		File shutdownFile = getShutdownFile();
 		boolean doShutdown = false;
 		if(shutdownFile.exists() && ! isAmplifierSyncing() )
 		{
@@ -338,11 +349,6 @@ public class MartusAmplifier
 		return security;
 	}
 
-	private File getWorkingDirectory()
-	{
-		return new File(getBasePath());
-	}
-	
 	public boolean isAmplifierSyncing()
 	{
 		return isSyncing;
