@@ -30,43 +30,36 @@ public class CharacterUtil
 {	
 	public static String removeRestrictCharacters(String str)
 	{
-		String newString = str;		
+		if (str.length() == 1 && !forceValidChar(str.charAt(0)))
+			return "";
+		
+		StringBuffer newString = new StringBuffer();		
 		for (int j=0; j<str.length();j++)
 		{
 			char ch = str.charAt(j);
-			if (!validChar(ch))
-				newString = replaceChar(ch, newString); 				  
-		}
-																			
-		return newString;
+			if (isAllowed(ch))
+				newString.append(ch);
+			else 			
+				newString.append(SPACE);										
+		}																			
+		return newString.toString();
 	}
 	
-	public static boolean isWildcardOnly(String str)
-	{
-		if (str.length() > 1)
-			return false;
-			
-		char ch = str.charAt(0);
-		return (ch == '*' || ch == '?')? true:false;
-	}
+	private static boolean forceValidChar(char ch)
+	{								
+		return (isAllowed(ch));
+	}	
 
-	private static String replaceChar(char oldChar, String text)
-	{
-		return text.replace(oldChar, SPACE);
-	}
-
-	private static boolean validChar(char ch)
+	public static boolean isAllowed(char ch)
 	{
 		if ((ch >= 48 && ch <= 57) ||
 			(ch >= 65 && ch <= 90) ||
 			(ch >= 97 && ch <= 122) ||
 			(ch == 34 || ch == 39 || ch >= 128))
-			return true;
+			return true;			
 			
 		return false;	
 	}
-	
-	public CharacterUtil(){}
-	
-	final static char SPACE	= ' ';
+
+	final static char SPACE	= ' ';	
 }

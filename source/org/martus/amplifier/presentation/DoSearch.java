@@ -83,7 +83,9 @@ public class DoSearch extends AbstractSearchResultsServlet
 	 
 		if (simpleQueryString != null)
 		{
-			if (CharacterUtil.isWildcardOnly(simpleQueryString))
+			simpleQueryString = CharacterUtil.removeRestrictCharacters(simpleQueryString);
+
+			if (simpleQueryString.equalsIgnoreCase(""))
 				return new ArrayList();
 							
 			return getSimpleSearchResults(request.getSession(), simpleQueryString);

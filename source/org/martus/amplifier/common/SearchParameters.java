@@ -84,7 +84,9 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 	
 	private void parseAdvancedQuery(String key)
 	{
-		String subQuery = CharacterUtil.removeRestrictCharacters(getValue(key));
+		String str = getValue(key);
+
+		String subQuery = CharacterUtil.removeRestrictCharacters(str);
 		if (subQuery.length() >0)
 		{			
 			subQuery = convertToQueryString(subQuery, key);
@@ -185,7 +187,7 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 		String dayTag = RESULT_START_DAY_KEY;
 		return getDateFromRequest(yearTag, monthTag, dayTag);
 	}
-
+	
 	public String getEndDate()
 	{	
 		String yearTag = RESULT_END_YEAR_KEY;

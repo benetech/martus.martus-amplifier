@@ -59,9 +59,8 @@ public class TestCharacterUtil extends TestCase
 		assertEquals("removed :\"@.", "http  test testagain com", outStr);
 		outStr = CharacterUtil.removeRestrictCharacters(test6);
 		assertEquals("removed <>)", " html  test  test ", outStr);
-		outStr = CharacterUtil.removeRestrictCharacters(test7);
-		assertEquals("is a wildcard only", true, CharacterUtil.isWildcardOnly(test7));
-		assertEquals("removed *)", " ", outStr);
+		outStr = CharacterUtil.removeRestrictCharacters(test7);		
+		assertEquals("removed *)", "", outStr);
 				
 	}		
 }
