@@ -685,27 +685,27 @@ public abstract class AbstractSearchTestCase
 			//2003-05-11 and 2003-08-30
 			fields.put(BulletinField.SEARCH_ENTRY_DATE_INDEX_FIELD, pastWeek);		
 			results = searcher.search(null, fields);			
-			assertEquals("search past 1 week from today? ", 0, results.getCount());
+			assertEquals("search for entry date submitted in past 1 week? ", 0, results.getCount());
 						
 			fields.remove(SEARCH_ENTRY_DATE_INDEX_FIELD);
 			fields.put(SEARCH_ENTRY_DATE_INDEX_FIELD, pastMonth);
 			results = searcher.search(null, fields);			
-			assertEquals("search past 1 month from today? ", 1, results.getCount());
+			assertEquals("search for entry date submitted in past 1 month? ", 1, results.getCount());
 			
 			fields.remove(SEARCH_ENTRY_DATE_INDEX_FIELD);
 			fields.put(SEARCH_ENTRY_DATE_INDEX_FIELD, past3Month);
 			results = searcher.search(null, fields);			
-			assertEquals("search past 3 month from today? ", 1, results.getCount());
+			assertEquals("search for entry date submitted in past 3 month? ", 1, results.getCount());
 			
 			fields.remove(SEARCH_ENTRY_DATE_INDEX_FIELD);
 			fields.put(SEARCH_ENTRY_DATE_INDEX_FIELD, past6Month);
 			results = searcher.search(null, fields);			
-			assertEquals("search past 6 month from today? ", 2, results.getCount());
+			assertEquals("search for entry date submitted in past 6 month? ", 2, results.getCount());
 			
 			fields.remove(SEARCH_ENTRY_DATE_INDEX_FIELD);
 			fields.put(SEARCH_ENTRY_DATE_INDEX_FIELD, pastYear);
 			results = searcher.search(null, fields);			
-			assertEquals("search past 1 year from today? ", 2, results.getCount());
+			assertEquals("search for entry date submitted in past 1 year? ", 2, results.getCount());
 			
 									
 			fields = new HashMap();			
@@ -717,7 +717,7 @@ public abstract class AbstractSearchTestCase
 			fields.put(SearchResultConstants.RESULT_ADVANCED_QUERY_KEY, "lunch");
 			
 			results = searcher.search(null, fields);
-			assertEquals("Combine search for eventdate, field, and laguage? ", 1, results.getCount());
+			assertEquals("Combine search for eventdate, field, laguage, and event date? ", 1, results.getCount());
 								
 		}
 		finally 
