@@ -73,7 +73,7 @@ public class AdvancedSearch extends AmplifierServlet
 	Vector getAvailableLanguageChoices()
 	{
 		LanguagesIndexedList indexedLanguages = LanguagesIndexedList.languagesIndexedSingleton;
-		Vector languageCodes = indexedLanguages.getListOfLanguagesIndexed();
+		Vector languageCodes = indexedLanguages.getIndexedValues();
 		Vector fields = new Vector();
 		for(int i = 0; i < languageCodes.size(); ++i)
 		{

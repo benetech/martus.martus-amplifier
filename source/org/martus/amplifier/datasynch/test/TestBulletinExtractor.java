@@ -111,9 +111,9 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 	public void testIndexingLanguages() throws Exception
 	{
 		LanguagesIndexedList.languagesIndexedSingleton = new LanguagesIndexedList(createTempFile());
-		LanguagesIndexedList.languagesIndexedSingleton.loadLanguagesAlreadyIndexed();
+		LanguagesIndexedList.languagesIndexedSingleton.loadFromFile();
 		
-		Vector languages = LanguagesIndexedList.languagesIndexedSingleton.getListOfLanguagesIndexed();
+		Vector languages = LanguagesIndexedList.languagesIndexedSingleton.getIndexedValues();
 		assertEquals("Should not have any yet file exists but is empty", 0, languages.size());
 		
 		String language = "eo";	
@@ -129,7 +129,7 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 		{
 			indexer.close();
 		}
-		languages = LanguagesIndexedList.languagesIndexedSingleton.getListOfLanguagesIndexed();
+		languages = LanguagesIndexedList.languagesIndexedSingleton.getIndexedValues();
 		assertEquals("Should only have esperanto", 1, languages.size());
 		assertTrue("Should contain esperanto", languages.contains(language));
 		

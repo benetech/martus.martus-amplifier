@@ -27,79 +27,31 @@ package org.martus.amplifier.main;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Vector;
 
 import org.martus.amplifier.common.SearchResultConstants;
-import org.martus.common.MartusUtilities;
-import org.martus.util.UnicodeWriter;
 
 
-public class LanguagesIndexedList
+public class LanguagesIndexedList extends IndexedValuesList
 {
+	public LanguagesIndexedList(File languagesIndexedFileToUse)
+	{
+		super(languagesIndexedFileToUse);
+	}
+
+	void createInitialList() throws IOException
+	{
+		super.createInitialList();
+		addValue(SearchResultConstants.LANGUAGE_ANYLANGUAGE_LABEL);
+	}
+
+
+	
 	static public void initialize(File languagesIndexedFile) throws IOException
 	{
 		LanguagesIndexedList.languagesIndexedSingleton = new LanguagesIndexedList(languagesIndexedFile);
-		LanguagesIndexedList.languagesIndexedSingleton.loadLanguagesAlreadyIndexed();
+		LanguagesIndexedList.languagesIndexedSingleton.loadFromFile();
 	}
 		
-
-	public LanguagesIndexedList(File languagesIndexedFileToUse)
-	{
-		languagesIndexedFile = languagesIndexedFileToUse;
-		languagesIndexed = null;
-	}
-
-	public void loadLanguagesAlreadyIndexed() throws IOException
-	{
-		try
-		{
-			languagesIndexed = MartusUtilities.loadListFromFile(languagesIndexedFile);
-		}
-		catch(IOException e)
-		{
-			createInitialList();
-			throw e;
-		}
-	}
-	
-	private void createInitialList() throws IOException
-	{
-		languagesIndexed = new Vector();
-		updateLanguagesIndexed(SearchResultConstants.LANGUAGE_ANYLANGUAGE_LABEL);
-	}
-
-	public void updateLanguagesIndexed(String language) throws IOException
-	{
-		if(language.length() == 0)
-			return;
-		
-		if(languagesIndexed == null)
-			createInitialList();
-		if(!languagesIndexed.contains(language))
-		{
-			languagesIndexed.add(language);
-			saveLanguagesAlreadyIndexed();
-		}
-	}
-
-	public void saveLanguagesAlreadyIndexed() throws IOException
-	{
-		UnicodeWriter writer = new UnicodeWriter(languagesIndexedFile);
-		for (int i = 0; i < languagesIndexed.size(); i++)
-		{
-			writer.writeln((String)languagesIndexed.get(i));	
-		}
-		writer.close();
-	}
-
-	public Vector getListOfLanguagesIndexed()
-	{
-		return languagesIndexed;
-	}
-
-	File languagesIndexedFile;
-	private Vector languagesIndexed;
-
 	public static LanguagesIndexedList languagesIndexedSingleton;
-	
+
 }

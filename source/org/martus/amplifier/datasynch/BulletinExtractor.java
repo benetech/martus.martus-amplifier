@@ -120,7 +120,7 @@ public class BulletinExtractor
 	
 	public void indexLanguage(String languageCode) throws IOException
 	{
-		LanguagesIndexedList.languagesIndexedSingleton.updateLanguagesIndexed(languageCode);
+		LanguagesIndexedList.languagesIndexedSingleton.addValue(languageCode);
 	}
 	
 	private void storeAttachments(
