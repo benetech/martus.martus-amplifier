@@ -21,7 +21,7 @@ public interface AmplifierBulletinRetrieverGatewayInterface extends BulletinRetr
 	public NetworkResponse getAccountIds(MartusCrypto signer) throws 
 			MartusCrypto.MartusSignatureException, IOException;
 			
-	public NetworkResponse getPublicBulletinUniversalIds(MartusCrypto signer, String accountId) throws 
+	public NetworkResponse getPublicBulletinLocalIds(MartusCrypto signer, String accountId) throws 
 			MartusCrypto.MartusSignatureException, IOException;
 			
 }

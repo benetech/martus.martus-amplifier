@@ -34,21 +34,15 @@ public class TestAmplifierNetworkGateway extends TestAbstractAmplifierDataSynch
 		assertTrue(list.size() >0);	
 	}
 
-	public void testGetAccountUniversalIds() throws Exception
+	public void testGetAccountBulletinLocalIds() throws Exception
 	{
-		//System.out.println("AmplifierNetworkGatewayTest:testGetAccountUniversalIds");
 		AmplifierBulletinRetrieverGatewayInterface abrgi = new MockGatewayInterface();
 		BackupServerInfo serverToCall = new BackupServerInfo("test", "10.1.1.1", 1, "key");
 		AmplifierNetworkGateway amplifierGateway = new AmplifierNetworkGateway(abrgi, serverToCall,  dummyLogger, MockMartusSecurity.createOtherServer());
 		
-		Vector list = amplifierGateway.getAccountUniversalIds(sampleAccountId);
-		//.out.println("AccountId2 = "+ sampleAccountId +"  Number of Universal IDs = "+ list.size());
-		for(int i =0; i < list.size(); i++)
-		{
-			//String uid = (String) list.get(i);
-			//System.out.println("UniversalIDs = "+ uid );
-		}
-		assertTrue(list.size() > 0);	
+		Vector list = amplifierGateway.getAccountBulletinLocalIds(sampleAccountId);
+		assertTrue(list.size() > 0);
+		assertEquals(list.get(0), sampleLocalId);	
 	}
 	
 	public void testgetBulletin()
@@ -86,7 +80,7 @@ public class TestAmplifierNetworkGateway extends TestAbstractAmplifierDataSynch
 			return new NetworkResponse(rawData);
 		}
 
-		public NetworkResponse getPublicBulletinUniversalIds(MartusCrypto signer, String accountId) throws MartusSignatureException, IOException
+		public NetworkResponse getPublicBulletinLocalIds(MartusCrypto signer, String accountId) throws MartusSignatureException, IOException
 		{
 			Vector ids = new Vector();
 			ids.add(sampleLocalId);

@@ -12,7 +12,6 @@ import org.martus.amplifier.search.BulletinIndexer;
 import org.martus.common.LoggerInterface;
 import org.martus.common.crypto.MartusCrypto;
 import org.martus.common.packet.UniversalId;
-import org.martus.common.packet.UniversalId.NotUniversalIdException;
 
 public class DataSynchManager
 {
@@ -58,23 +57,19 @@ public class DataSynchManager
 		for(int index=0; index <accountList.size();index++)
 		{
 			accountId = (String) accountList.get(index);
-			response = amplifierGateway.getAccountUniversalIds(accountId);
+			response = amplifierGateway.getAccountBulletinLocalIds(accountId);
 			for(int i = 0; i < response.size(); i++)
 			{
 				UniversalId uid = null;
 				try
 				{
-					uid = UniversalId.createFromString((String) response.get(i));
+					uid = UniversalId.createFromAccountAndLocalId(accountId, (String)response.get(i));
 	
 					if( !catalog.bulletinHasBeenIndexed(uid) )
 					{
 						logger.info("DataSynchManager.checkAndRetrieveBulletinsForUIDs():before calling  amplifierGateway.retrieveAndManageBulletin on UID = "+ uid.toString());
 						amplifierGateway.retrieveAndManageBulletin(uid, bulletinExtractor);
 					}
-				}
-				catch (NotUniversalIdException e)
-				{
-					logger.severe("DataSynchManager.getAllNewBulletins(): " + e);
 				}
 				catch (Exception e)
 				{

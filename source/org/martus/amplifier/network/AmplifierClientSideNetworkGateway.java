@@ -30,7 +30,7 @@ public class AmplifierClientSideNetworkGateway implements AmplifierBulletinRetri
 		return new NetworkResponse(server.getAccountIds(signer.getPublicKeyString(), parameters, signature));
 	}
 
-	public NetworkResponse getPublicBulletinUniversalIds(MartusCrypto signer, String accountId) throws 
+	public NetworkResponse getPublicBulletinLocalIds(MartusCrypto signer, String accountId) throws 
 			MartusCrypto.MartusSignatureException, IOException
 	{
 		Vector parameters = new Vector();

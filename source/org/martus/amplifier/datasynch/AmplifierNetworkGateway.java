@@ -85,13 +85,13 @@ public class AmplifierNetworkGateway
 	}
 	
 	
-	public Vector getAccountUniversalIds(String accountId) //throws ServerErrorException
+	public Vector getAccountBulletinLocalIds(String accountId) //throws ServerErrorException
 	{
 		Vector result = new Vector();
 		try
 		{
-			log("getAccountUniversalIds: " + MartusSecurity.getFormattedPublicCode(accountId));
-			NetworkResponse response = gateway.getPublicBulletinUniversalIds(security, accountId);
+			log("getAccountLocalIds: " + MartusSecurity.getFormattedPublicCode(accountId));
+			NetworkResponse response = gateway.getPublicBulletinLocalIds(security, accountId);
 			String resultCode = response.getResultCode();
 			if( !resultCode.equals(NetworkInterfaceConstants.OK) )	
 					throw new ServerErrorException(resultCode);
@@ -99,7 +99,7 @@ public class AmplifierNetworkGateway
 		}	
 		catch(Exception e)
 		{
-			log("AmplifierNetworkGateway.getAccountUniversalIds(): ERROR " + e.getMessage() + ": " + accountId);
+			log("AmplifierNetworkGateway.getAccountBulletinLocalIds(): ERROR " + e.getMessage() + ": " + accountId);
 		}
 		return result;
 	}
