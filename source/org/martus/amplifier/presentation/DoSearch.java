@@ -56,7 +56,7 @@ public class DoSearch extends AmplifierServlet implements SearchResultConstants
 		
 		String simpleQuery = request.getParameter("query");
 		request.getSession().setAttribute("simpleQuery", simpleQuery);
-		SearchResults.getSortByAndUpdateSession(request);
+		SearchResults.updateSortByInSession(request);
 
 		SearchResults.setSearchedFor(request, context);
 

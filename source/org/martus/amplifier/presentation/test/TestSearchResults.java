@@ -88,6 +88,17 @@ public class TestSearchResults extends TestCaseEnhanced
 		
 		assertEquals("Didn't reuse sort from session?", fieldToSortBy, session.getAttribute(SearchResultConstants.RESULT_SORTBY_KEY));
 	}
+	
+	public void testNoResults() throws Exception
+	{
+		MockAmplifierRequest request = new MockAmplifierRequest();
+		MockAmplifierResponse response = null;
+		Context context = new MockContext();
+
+		SearchResults sr = new SearchResults();
+		String templateName = sr.selectTemplate(request, response, context);
+		assertEquals("NoSearchResults.vm", templateName);
+	}
 
 	public void testSearchedFor() throws Exception
 	{

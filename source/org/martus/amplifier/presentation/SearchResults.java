@@ -51,9 +51,14 @@ public class SearchResults extends AmplifierServlet implements SearchResultConst
 		
 		setSearchedFor(request, context);
 
-		String sortField = getSortByAndUpdateSession(request);
+		updateSortByInSession(request);
 
-		Vector bulletins = (Vector)request.getSession().getAttribute("foundBulletins");
+		AmplifierServletSession session = request.getSession();
+		String sortField = (String)session.getAttribute(RESULT_SORTBY_KEY);
+		Vector bulletins = (Vector)session.getAttribute("foundBulletins");
+		if(bulletins == null || bulletins.size() == 0)
+			return "NoSearchResults.vm";
+			
 		sortBulletins(bulletins, sortField);
 
 		setReturnContext(request, bulletins, context);
@@ -61,7 +66,7 @@ public class SearchResults extends AmplifierServlet implements SearchResultConst
 	}
 
 
-	static public String getSortByAndUpdateSession(AmplifierServletRequest request)
+	static public void updateSortByInSession(AmplifierServletRequest request)
 	{
 		AmplifierServletSession session = request.getSession();
 		
@@ -71,8 +76,6 @@ public class SearchResults extends AmplifierServlet implements SearchResultConst
 		if(sortField == null)
 			sortField = SORT_BY_TITLE_TAG;
 		session.setAttribute(RESULT_SORTBY_KEY, sortField);
-		
-		return sortField;
 	}
 	
 
