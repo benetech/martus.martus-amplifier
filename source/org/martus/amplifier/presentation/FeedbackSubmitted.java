@@ -37,6 +37,7 @@ import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.velocity.AmplifierServlet;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
 import org.martus.amplifier.velocity.AmplifierServletResponse;
+import org.martus.amplifier.velocity.AmplifierServletSession;
 import org.martus.util.UnicodeWriter;
 
 
@@ -61,14 +62,19 @@ public class FeedbackSubmitted extends AmplifierServlet
 		String feedbackDissatisfied = request.getParameter("userFeedbackDissatisfied");
 		String feedbackProblem = request.getParameter("userFeedbackProblem");
 		Vector searchedFor = new Vector(); 
-		AdvancedSearchInfo advancedSearchedFor = (AdvancedSearchInfo) request.getSession().getAttribute("defaultAdvancedSearch");
-		if(advancedSearchedFor != null)
-			searchedFor = getVectorOfAdvancedSearch(advancedSearchedFor);
-		else
+		AmplifierServletSession session = request.getSession();
+
+		String type = (String)session.getAttribute("typeOfSearch");
+		if(type == null || type.equals("quick"))
 		{
-			String simple = (String)request.getSession().getAttribute("searchedFor");
+			String simple = (String)session.getAttribute("searchedFor");
 			if(simple!=null)
 				searchedFor.add(simple);
+		}
+		else
+		{
+			AdvancedSearchInfo advancedSearchedFor = (AdvancedSearchInfo) session.getAttribute("defaultAdvancedSearch");
+			searchedFor = getVectorOfAdvancedSearch(advancedSearchedFor);
 		}
 		
 		if(feedbackDissatisfied != null)

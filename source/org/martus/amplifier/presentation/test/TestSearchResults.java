@@ -111,8 +111,9 @@ public class TestSearchResults extends TestCaseEnhanced
 		
 		DoSearch servlet = new DoSearch();
 		servlet.configureSessionFromRequest(request);
-		assertEquals("Didn't get back correct search string from session", basicSearchString, request.getSession().getAttribute("searchedFor"));
-		AbstractSearchResultsServlet.setSearchedForInContext(request.getSession(), context);
+		AmplifierServletSession session = request.getSession();
+		assertEquals("Didn't get back correct search string from session", basicSearchString, session.getAttribute("searchedFor"));
+		AbstractSearchResultsServlet.setSearchedForInContext(session, context);
 		assertEquals("Didn't get back correct search string from context", basicSearchString, context.get("searchedFor"));		
 	}
 

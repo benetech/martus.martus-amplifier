@@ -33,7 +33,9 @@ import java.util.Vector;
 import org.apache.velocity.context.Context;
 import org.martus.amplifier.common.AdvancedSearchInfo;
 import org.martus.amplifier.common.SearchResultConstants;
+import org.martus.amplifier.presentation.DoSearch;
 import org.martus.amplifier.presentation.FeedbackSubmitted;
+import org.martus.amplifier.velocity.AmplifierServletSession;
 import org.martus.common.test.TestCaseEnhanced;
 import org.martus.util.DirectoryTreeRemover;
 import org.martus.util.UnicodeReader;
@@ -116,7 +118,9 @@ public class TestFeedbackSubmitted extends TestCaseEnhanced
 		String data = "my message";
 		String searchedFor = "test";
 		request.putParameter("userFeedbackDissatisfied",data);
-		request.getSession().setAttribute("searchedFor", searchedFor);
+		AmplifierServletSession session = request.getSession();
+		session.setAttribute("typeOfSearch", "quick");
+		session.setAttribute("searchedFor", searchedFor);
 		String templateName = servlet.selectTemplate(request, response, context);
 		assertEquals("dissatisfied set should get back feedbacksubmitted", "FeedbackSubmitted.vm", templateName);
 
@@ -149,7 +153,9 @@ public class TestFeedbackSubmitted extends TestCaseEnhanced
 		String data = "my message";
 		String searchedFor = "test";
 		request.putParameter("userFeedbackProblem",data);
-		request.getSession().setAttribute("searchedFor", searchedFor);
+		AmplifierServletSession session = request.getSession();
+		session.setAttribute("searchedFor", searchedFor);
+		session.setAttribute("typeOfSearch", "quick");
 		String templateName = servlet.selectTemplate(request, response, context);
 		assertEquals("problem set should get back feedbacksubmitted", "FeedbackSubmitted.vm", templateName);
 
@@ -179,8 +185,10 @@ public class TestFeedbackSubmitted extends TestCaseEnhanced
 		File tempFeedbackDir = createTempDirectory();
 	
 		AdvancedSearchInfo advancedSearchedFor = createTestAdvancedSearchInfo(); 
-		request.getSession().setAttribute("defaultAdvancedSearch", advancedSearchedFor);
-		request.getSession().setAttribute("searchedFor", "advanced search");
+		AmplifierServletSession session = request.getSession();
+		session.setAttribute("defaultAdvancedSearch", advancedSearchedFor);
+		session.setAttribute("searchedFor", "advanced search");
+		session.setAttribute("typeOfSearch", "advanced");
 
 		FeedbackSubmitted servlet = new FeedbackSubmitted(tempFeedbackDir.getAbsolutePath());
 		String data = "my message";
@@ -210,6 +218,20 @@ public class TestFeedbackSubmitted extends TestCaseEnhanced
 	
 		assertEquals("data dind't match?", data, dataIn);
 	}
+	
+	public void testTypeOfSearch() throws Exception
+	{
+		MockAmplifierRequest request = new MockAmplifierRequest();
+		String basicSearchString = "mybasicsearch";
+		request.putParameter("query", basicSearchString);
+		request.putParameter("typeOfSearch", "quick");
+
+		DoSearch servlet = new DoSearch();
+		servlet.configureSessionFromRequest(request);
+		AmplifierServletSession session = request.getSession();
+		assertEquals("Didn't get back correct search type from session", "quick", session.getAttribute("typeOfSearch"));
+	}
+	
 	
 	AdvancedSearchInfo createTestAdvancedSearchInfo()
 	{

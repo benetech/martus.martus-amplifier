@@ -15,7 +15,7 @@
 		#parse ("ResultHeader.vm")
 		<br/>
 		
-		<form name="search" action="DoSearch" method="post">
+		<form name="search" action="DoSearch?typeOfSearch=advanced" method="post">
 			<table bgcolor='#dddddd' color='#000000'>
 			<tr>
 			<td bgcolor='#ffffff' color='#000000'>

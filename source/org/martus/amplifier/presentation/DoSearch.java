@@ -50,9 +50,10 @@ public class DoSearch extends AbstractSearchResultsServlet
 	public void configureSessionFromRequest(AmplifierServletRequest request)
 	{
 		AmplifierServletSession session = request.getSession();
-
+		
 		String basicQueryString = request.getParameter(SearchResultConstants.RESULT_BASIC_QUERY_KEY);
 		String searchedForString = (String)session.getAttribute("searchedFor");
+		String searchType = request.getParameter("typeOfSearch");
 		
 		if(basicQueryString != null)
 		{
@@ -67,6 +68,7 @@ public class DoSearch extends AbstractSearchResultsServlet
 		session.setAttribute("searchedFor", searchedForString);
 		session.setAttribute("defaultSimpleSearch", basicQueryString);
 		session.setAttribute("simpleQuery", basicQueryString);
+		session.setAttribute("typeOfSearch", searchType);
 	}
 
 	Vector getBulletinsToDisplay(AmplifierServletRequest request)
