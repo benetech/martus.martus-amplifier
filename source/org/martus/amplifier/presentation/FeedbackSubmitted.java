@@ -33,7 +33,7 @@ import java.util.Vector;
 import org.apache.velocity.context.Context;
 import org.martus.amplifier.common.AdvancedSearchInfo;
 import org.martus.amplifier.common.SearchResultConstants;
-import org.martus.amplifier.main.MartusAmplifier.StubServer;
+import org.martus.amplifier.main.StubServer;
 import org.martus.amplifier.velocity.AmplifierServlet;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
 import org.martus.amplifier.velocity.AmplifierServletResponse;

@@ -37,6 +37,7 @@ import org.martus.amplifier.lucene.LuceneBulletinIndexer;
 import org.martus.amplifier.lucene.LuceneBulletinSearcher;
 import org.martus.amplifier.main.LanguagesIndexedList;
 import org.martus.amplifier.main.MartusAmplifier;
+import org.martus.amplifier.main.StubServer;
 import org.martus.amplifier.search.BulletinField;
 import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinIndexer;
@@ -61,7 +62,7 @@ public abstract class CommonSearchTest
 	public void setUp() throws Exception
 	{
 		super.setUp();
-		MartusAmplifier.StubServer.security = new MockMartusSecurity();
+		StubServer.security = new MockMartusSecurity();
 		MartusAmplifier.getSecurity().createKeyPair();
 		MartusAmplifier.dataManager = new FileSystemDataManager(getTestBasePath());
 		MartusAmplifier.languagesIndexed = new LanguagesIndexedList(new File(getTestBasePath(),"langIndex"));

@@ -33,6 +33,7 @@ import java.util.Vector;
 import org.martus.amplifier.attachment.AttachmentStorageException;
 import org.martus.amplifier.attachment.FileSystemDataManager;
 import org.martus.amplifier.main.MartusAmplifier;
+import org.martus.amplifier.main.StubServer;
 import org.martus.amplifier.presentation.DownloadAttachment;
 import org.martus.amplifier.search.AttachmentInfo;
 import org.martus.amplifier.search.BulletinIndexException;
@@ -53,7 +54,7 @@ public class TestDownloadAttachment extends TestCaseEnhanced
 	public void setUp() throws Exception
 	{
 		File testBasePath = createTempDirectory();
-		MartusAmplifier.StubServer.security = new MockMartusSecurity();
+		StubServer.security = new MockMartusSecurity();
 		MartusAmplifier.getSecurity().createKeyPair();
 		MartusAmplifier.dataManager = new FileSystemDataManager(testBasePath.getAbsolutePath());
 	}

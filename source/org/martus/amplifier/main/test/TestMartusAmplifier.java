@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.martus.amplifier.datasynch.BackupServerInfo;
 import org.martus.amplifier.main.MartusAmplifier;
+import org.martus.amplifier.main.StubServer;
 import org.martus.common.LoggerForTesting;
 import org.martus.common.MartusUtilities;
 import org.martus.common.crypto.MockMartusSecurity;
@@ -25,7 +26,7 @@ public class TestMartusAmplifier extends TestCaseEnhanced
 		dir.delete();
 		dir.mkdirs();
 		
-		MartusAmplifier.StubServer server = new MartusAmplifier.StubServer(dir, new LoggerForTesting());
+		StubServer server = new StubServer(dir, new LoggerForTesting());
 		MartusAmplifier amp = server.amp;
 		
 		List noServers = amp.loadServersWeWillCall(dir, security);
@@ -56,7 +57,7 @@ public class TestMartusAmplifier extends TestCaseEnhanced
 	public void testLoadAccountsWeWillNotAmplify() throws Exception
 	{
 		File unamplified = createTempFile();
-		MartusAmplifier.StubServer server = new MartusAmplifier.StubServer(unamplified, new LoggerForTesting());
+		StubServer server = new StubServer(unamplified, new LoggerForTesting());
 		MartusAmplifier amp = server.amp;
 		assertNull("List should be null", amp.getListOfAccountsWeWillNotAmplify());
 		

@@ -31,7 +31,7 @@ import java.util.HashMap;
 import org.apache.velocity.context.Context;
 import org.martus.amplifier.common.AdvancedSearchInfo;
 import org.martus.amplifier.common.SearchResultConstants;
-import org.martus.amplifier.main.MartusAmplifier;
+import org.martus.amplifier.main.StubServer;
 import org.martus.amplifier.presentation.AdvancedSearch;
 import org.martus.common.test.TestCaseEnhanced;
 import org.martus.util.DirectoryUtils;
@@ -45,12 +45,12 @@ public class TestAdvancedSearch extends TestCaseEnhanced
 	
 	public void setUp() throws Exception
 	{
-		MartusAmplifier.StubServer.dataDirectory = createTempDirectory();
+		StubServer.dataDirectory = createTempDirectory();
 	}
 	
 	public void tearDown()
 	{
-		DirectoryUtils.deleteEntireDirectoryTree(MartusAmplifier.StubServer.dataDirectory);
+		DirectoryUtils.deleteEntireDirectoryTree(StubServer.dataDirectory);
 	}
 
 	public void testBasics() throws Exception

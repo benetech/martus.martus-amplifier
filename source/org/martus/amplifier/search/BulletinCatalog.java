@@ -3,7 +3,7 @@ package org.martus.amplifier.search;
 import java.util.logging.Logger;
 
 import org.martus.amplifier.lucene.LuceneBulletinSearcher;
-import org.martus.amplifier.main.MartusAmplifier.StubServer;
+import org.martus.amplifier.main.StubServer;
 import org.martus.common.packet.UniversalId;
 
 /**

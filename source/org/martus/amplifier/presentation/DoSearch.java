@@ -35,7 +35,7 @@ import org.martus.amplifier.common.RawSearchParameters;
 import org.martus.amplifier.common.SearchParameters;
 import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.lucene.LuceneBulletinSearcher;
-import org.martus.amplifier.main.MartusAmplifier.StubServer;
+import org.martus.amplifier.main.StubServer;
 import org.martus.amplifier.search.BulletinInfo;
 import org.martus.amplifier.search.BulletinSearcher;
 import org.martus.amplifier.search.Results;

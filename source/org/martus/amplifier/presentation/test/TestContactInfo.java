@@ -33,6 +33,7 @@ import java.util.Vector;
 import org.apache.velocity.context.Context;
 import org.martus.amplifier.attachment.FileSystemDataManager;
 import org.martus.amplifier.main.MartusAmplifier;
+import org.martus.amplifier.main.StubServer;
 import org.martus.amplifier.presentation.ContactInfo;
 import org.martus.amplifier.presentation.DoSearch;
 import org.martus.amplifier.search.BulletinIndexException;
@@ -64,7 +65,7 @@ public class TestContactInfo extends TestCaseEnhanced
 	{
 		MockMartusSecurity client = new MockMartusSecurity();
 		client.createKeyPair();
-		MartusAmplifier.StubServer.security = client;
+		StubServer.security = client;
 		
 		File basePath = createTempDirectory();
 		MartusAmplifier.dataManager = new FileSystemDataManager(basePath.getAbsolutePath());

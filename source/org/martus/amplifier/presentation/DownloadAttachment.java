@@ -38,7 +38,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.martus.amplifier.attachment.AttachmentStorageException;
 import org.martus.amplifier.attachment.DataManager;
 import org.martus.amplifier.main.MartusAmplifier;
-import org.martus.amplifier.main.MartusAmplifier.StubServer;
+import org.martus.amplifier.main.StubServer;
 import org.martus.amplifier.search.AttachmentInfo;
 import org.martus.amplifier.search.BulletinInfo;
 import org.martus.amplifier.velocity.AmplifierServletRequest;

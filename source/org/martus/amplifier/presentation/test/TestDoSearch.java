@@ -32,6 +32,7 @@ import java.util.Vector;
 import org.apache.velocity.context.Context;
 import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.main.MartusAmplifier;
+import org.martus.amplifier.main.StubServer;
 import org.martus.amplifier.presentation.DoSearch;
 import org.martus.amplifier.presentation.SimpleSearch;
 import org.martus.amplifier.search.BulletinIndexException;
@@ -51,12 +52,12 @@ public class TestDoSearch extends TestCaseEnhanced
 	
 	public void setUp() throws Exception
 	{
-		MartusAmplifier.StubServer.dataDirectory = createTempDirectory();
+		StubServer.dataDirectory = createTempDirectory();
 	}
 	
 	public void tearDown()
 	{
-		DirectoryUtils.deleteEntireDirectoryTree(MartusAmplifier.StubServer.dataDirectory);
+		DirectoryUtils.deleteEntireDirectoryTree(StubServer.dataDirectory);
 	}
 
 	public void testNoResults() throws Exception
