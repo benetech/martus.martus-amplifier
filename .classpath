@@ -5,7 +5,6 @@
     <classpathentry exported="true" kind="var" path="JRE_LIB" sourcepath="JRE_SRC"/>
     <classpathentry kind="var" path="LuceneEngine"/>
     <classpathentry kind="var" path="Xerces"/>
-    <classpathentry kind="var" path="berkeleydb"/>
     <classpathentry kind="var" path="jsse"/>
     <classpathentry kind="var" path="xmlrpc"/>
     <classpathentry kind="var" path="jstl_standard"/>
