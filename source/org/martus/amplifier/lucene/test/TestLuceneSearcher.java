@@ -84,7 +84,8 @@ public class TestLuceneSearcher extends CommonSearchTest
 	
 	public void testFindBulletin() throws Exception
 	{
-		BulletinSearcher searcher = getSearcher1();
+		indexBulletin1();
+		BulletinSearcher searcher = openBulletinSearcher();
 		try {
 			Assert.assertNotNull(
 				"Didn't find indexed bulletin", 
@@ -96,7 +97,8 @@ public class TestLuceneSearcher extends CommonSearchTest
 	
 	public void testIndexAndSearch() throws Exception
 	{
-		BulletinSearcher searcher = getSearcher1();
+		indexBulletin1();
+		BulletinSearcher searcher = openBulletinSearcher();
 		try {
 			BulletinInfo found = searcher.lookup(bulletinId1);
 			Assert.assertNotNull("Didn't find indexed bulletin", found);
@@ -120,7 +122,8 @@ public class TestLuceneSearcher extends CommonSearchTest
 	
 	public void testReconstructFieldDataPacket()  throws Exception
 	{
-		BulletinSearcher searcher = getSearcher1();
+		indexBulletin1();
+		BulletinSearcher searcher = openBulletinSearcher();
 		try {
 			BulletinInfo found = searcher.lookup(bulletinId1);
 			Assert.assertNotNull(
@@ -195,7 +198,8 @@ public class TestLuceneSearcher extends CommonSearchTest
 	
 	public void testSearchResultsAfterClose() throws Exception
 	{
-		BulletinSearcher searcher = getSearcher1();
+		indexBulletin1();
+		BulletinSearcher searcher = openBulletinSearcher();
 		Results results = null;
 		try {
 			HashMap fields = new HashMap();			
@@ -215,7 +219,8 @@ public class TestLuceneSearcher extends CommonSearchTest
 	
 	public void testSearchAllFields() throws Exception
 	{
-		BulletinSearcher searcher = getSearcher1();
+		indexBulletin1();
+		BulletinSearcher searcher = openBulletinSearcher();
 		Results results = null;
 		try 
 		{
@@ -271,7 +276,8 @@ public class TestLuceneSearcher extends CommonSearchTest
 
 	public void testSearchForStopWords() throws Exception
 	{
-		BulletinSearcher searcher = getSearcher1();
+		indexBulletin1();
+		BulletinSearcher searcher = openBulletinSearcher();
 		Results results = null;
 		try 
 		{			
@@ -351,7 +357,8 @@ public class TestLuceneSearcher extends CommonSearchTest
 
 	public void testSearchForLanguageReturned() throws Exception
 	{
-		BulletinSearcher searcher = getSearcher1();
+		indexBulletin1();
+		BulletinSearcher searcher = openBulletinSearcher();
 		Results results = null;
 		try 
 		{
@@ -410,7 +417,8 @@ public class TestLuceneSearcher extends CommonSearchTest
 */	
 	public void testSearchEmptyField() throws Exception
 	{
-		BulletinSearcher searcher = getSearcher2();
+		indexBulletin2();
+		BulletinSearcher searcher = openBulletinSearcher();
 		Results results = null;
 		try 
 		{
@@ -435,7 +443,8 @@ public class TestLuceneSearcher extends CommonSearchTest
 	
 	public void testLuceneSearchQueries() throws Exception
 	{
-		BulletinSearcher searcher = getSearcher1And2();
+		indexBulletin1And2();
+		BulletinSearcher searcher = openBulletinSearcher();
 		Results results = null;				
 		
 		try 
@@ -462,7 +471,8 @@ public class TestLuceneSearcher extends CommonSearchTest
 	
 	public void testAdvancedSearchEventDateOnly() throws Exception
 	{
-		BulletinSearcher searcher = getSearcher1And2();
+		indexBulletin1And2();
+		BulletinSearcher searcher = openBulletinSearcher();
 		Results results = null;				
 		
 		try 
@@ -485,7 +495,8 @@ public class TestLuceneSearcher extends CommonSearchTest
 	
 	public void testAdvancedSearchCombineEventDateAndBulletineField() throws Exception
 	{
-		BulletinSearcher searcher = getSearcher1And2();
+		indexBulletin1And2();
+		BulletinSearcher searcher = openBulletinSearcher();
 		Results results = null;				
 		
 		try 
@@ -510,7 +521,8 @@ public class TestLuceneSearcher extends CommonSearchTest
 	
 	public void testAdvancedSearchCombineEventDateAndEntryDate() throws Exception
 	{
-		BulletinSearcher searcher = getSearcher1And2();
+		indexBulletin1And2();
+		BulletinSearcher searcher = openBulletinSearcher();
 		Results results = null;				
 		
 		try 
@@ -545,7 +557,8 @@ public class TestLuceneSearcher extends CommonSearchTest
 	
 	public void testAdvancedSearchCombineEventDateAndBulletineFieldAndLanguage() throws Exception
 	{
-		BulletinSearcher searcher = getSearcher1And2();
+		indexBulletin1And2();
+		BulletinSearcher searcher = openBulletinSearcher();
 		Results results = null;				
 		
 		try 
@@ -587,7 +600,8 @@ public class TestLuceneSearcher extends CommonSearchTest
 	
 	public void testAdvancedSearchCombineEventDateAndBulletineFieldAndLanguageAndEntryDate() throws Exception
 	{
-		BulletinSearcher searcher = getSearcher1And2();
+		indexBulletin1And2();
+		BulletinSearcher searcher = openBulletinSearcher();
 		Results results = null;				
 		
 		try 
@@ -657,7 +671,8 @@ public class TestLuceneSearcher extends CommonSearchTest
 	
 	public void testAdvancedSearchCombineEventDateAndFilterWords() throws Exception
 	{
-		BulletinSearcher searcher = getSearcher1And2();
+		indexBulletin1And2();
+		BulletinSearcher searcher = openBulletinSearcher();
 		Results results = null;				
 		
 		try 
@@ -707,7 +722,8 @@ public class TestLuceneSearcher extends CommonSearchTest
 	
 	public void test4FieldsQuery() throws Exception
 	{
-		BulletinSearcher searcher = getSearcher1And2();
+		indexBulletin1And2();
+		BulletinSearcher searcher = openBulletinSearcher();
 		Results results = null;				
 		
 		try 
@@ -763,7 +779,8 @@ public class TestLuceneSearcher extends CommonSearchTest
 	
 	public void testForeignCharsQuery() throws Exception
 	{
-		BulletinSearcher searcher = getSearcherForeign();
+		indexBulletinForeign();
+		BulletinSearcher searcher = openBulletinSearcher();
 		Results results = null;				
 		
 		try 
@@ -811,7 +828,8 @@ public class TestLuceneSearcher extends CommonSearchTest
 	
 	public void testAdvancedSearchSortByTitle() throws Exception
 	{
-		BulletinSearcher searcher = getSearcher1And2();
+		indexBulletin1And2();
+		BulletinSearcher searcher = openBulletinSearcher();
 		Results results = null;				
 		
 		try 
@@ -854,7 +872,8 @@ public class TestLuceneSearcher extends CommonSearchTest
 		
 	public void testAdvancedSearchSortByEventDate() throws Exception
 	{
-		BulletinSearcher searcher = getSearcher1And2();
+		indexBulletin1And2();
+		BulletinSearcher searcher = openBulletinSearcher();
 		Results results = null;				
 		
 		try 
@@ -896,7 +915,7 @@ public class TestLuceneSearcher extends CommonSearchTest
 		}
 	}
 	
-	private BulletinSearcher getSearcher1() throws BulletinIndexException, Exception
+	private void indexBulletin1() throws Exception
 	{
 		try 
 		{
@@ -906,25 +925,34 @@ public class TestLuceneSearcher extends CommonSearchTest
 		{
 			indexer.close();
 		}
-		
-		return openBulletinSearcher();
 	}
 
-	private BulletinSearcher getSearcher2() throws BulletinIndexException, Exception
+	private void indexBulletin2() throws Exception
 	{
 		try 
 		{
-			indexer.indexFieldData(bulletinId1, fdp2, new BulletinHistory());
+			indexer.indexFieldData(bulletinId2, fdp2, new BulletinHistory());
 		} 
 		finally 
 		{
 			indexer.close();
 		}
-		
-		return openBulletinSearcher();
 	}
-
-	private BulletinSearcher getSearcherForeign() throws BulletinIndexException, Exception
+	
+	private void indexBulletin1And2() throws Exception
+	{
+		try 
+		{
+			indexer.indexFieldData(bulletinId1, fdp1, new BulletinHistory());
+			indexer.indexFieldData(bulletinId2, fdp2, new BulletinHistory());
+		} 
+		finally 
+		{
+			indexer.close();
+		}
+	}
+	
+	private void indexBulletinForeign() throws BulletinIndexException
 	{
 		try 
 		{
@@ -934,23 +962,6 @@ public class TestLuceneSearcher extends CommonSearchTest
 		{
 			indexer.close();
 		}
-		
-		return openBulletinSearcher();
-	}
-
-	private BulletinSearcher getSearcher1And2() throws BulletinIndexException, Exception
-	{
-		try 
-		{
-			indexer.indexFieldData(bulletinId2, fdp2, new BulletinHistory());
-			indexer.indexFieldData(bulletinId1, fdp1, new BulletinHistory());
-		} 
-		finally 
-		{
-			indexer.close();
-		}
-		
-		return openBulletinSearcher();
 	}
 
 	UniversalId bulletinId1;
