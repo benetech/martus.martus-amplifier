@@ -7,7 +7,7 @@
 		#if ($problemReport)
 	    	#set ($pageTitle="Report Technical Problems")
 	    #else
-	    	#set ($pageTitle="Dissatisfied with Search Results")
+	    	#set ($pageTitle="Dissatisfied with Search Results?")
 	    #end
 	   	#set ($pageInfo="")
 		#set ($showSearchForm = false)
