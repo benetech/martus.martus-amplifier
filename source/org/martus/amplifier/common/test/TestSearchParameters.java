@@ -87,11 +87,11 @@ public class TestSearchParameters extends TestCase
 			new SearchParameters.FormatterForAnyWordSearch();
 
 		source.put(SearchResultConstants.ANYWORD_TAG, "");
-		d.addFormattedStringIfNotEmpty(destination, source);
-		assertNull("Added it when blank?", destination.get(SearchResultConstants.ANYWORD_TAG));		
+		d.addFormattedString(destination, source);
+		assertEquals("Formatted blank?", "", destination.get(SearchResultConstants.ANYWORD_TAG));		
 		
 		source.put(SearchResultConstants.ANYWORD_TAG, "cat dog");
-		d.addFormattedStringIfNotEmpty(destination, source);
+		d.addFormattedString(destination, source);
 		assertEquals("(cat dog)", destination.get(SearchResultConstants.ANYWORD_TAG));
 	}
 }

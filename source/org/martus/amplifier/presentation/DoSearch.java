@@ -98,6 +98,7 @@ public class DoSearch extends AbstractSearchResultsServlet
 		throws Exception
 	{
 		SearchParameters sp = new SearchParameters(request);
+		sp.saveSearchInSession(request.getSession());
 		SearchParameters.clearSimpleSearch(request);								
 		Map fields = sp.getSearchFields();
 		return getResults(fields);

@@ -86,7 +86,7 @@ public class QueryBuilder
 		if (startDate == null)				
 			return null;
 	
-		String endDate = SearchParameters.getEntryDate("0");
+		String endDate = SearchParameters.daysAgo(0);
 						
 		return parseSingleFieldQuery(setRangeQuery(startDate, endDate), SearchConstants.SEARCH_ENTRY_DATE_INDEX_FIELD,
 			"Improperly formed advanced find entry date type in bulletin query: ");		

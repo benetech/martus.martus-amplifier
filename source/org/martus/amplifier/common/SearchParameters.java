@@ -46,7 +46,12 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 		searchFields = new HashMap();
 
 		loadFromRequest();		
-		rememberAdvancedFields(request);	
+	}
+
+	public void saveSearchInSession(AmplifierServletSession session)
+	{
+		AdvancedSearchInfo info = new AdvancedSearchInfo(inputParameters);
+		session.setAttribute("defaultAdvancedSearch", info);	
 	}
 	
 	public Map getSearchFields()
@@ -79,19 +84,19 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 	private void setAnyWordSearch()
 	{
 		FormatterForAnyWordSearch decorator = new FormatterForAnyWordSearch();
-		decorator.addFormattedStringIfNotEmpty(searchFields, inputParameters);
+		decorator.addFormattedString(searchFields, inputParameters);
 	}
 
 	private void setExactPhraseSearch()
 	{
 		FormatterForExactPhraseSearch decorator = new FormatterForExactPhraseSearch();
-		decorator.addFormattedStringIfNotEmpty(searchFields, inputParameters);
+		decorator.addFormattedString(searchFields, inputParameters);
 	}
 
 	private void setAllWordsSearch()
 	{
 		FormatterForAllWordsSearch decorator = new FormatterForAllWordsSearch();
-		decorator.addFormattedStringIfNotEmpty(searchFields, inputParameters);
+		decorator.addFormattedString(searchFields, inputParameters);
 	}
 	
 	static String insertBeforeEachWord(String sign, String queryString)
@@ -140,16 +145,16 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 			return "1900-01-01";
 			
 		int days = Integer.parseInt(dayString);	
+		return daysAgo(days);
+	}
+
+	public static String daysAgo(int days)
+	{
 		GregorianCalendar today = new GregorianCalendar();
 		today.add(Calendar.DATE, -days);
 		return MartusFlexidate.toStoredDateFormat(today.getTime());
 	}
 	
-	public boolean containsKey(String key)
-	{
-		return inputParameters.containsKey(key);
-	}	
-		
 	private String getParameterValue(String param)
 	{
 		return searchRequest.getParameter(param);
@@ -158,11 +163,6 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 	public String getValue(String key)
 	{
 		return (String) inputParameters.get(key);
-	}	
-	
-	public HashMap getSearchResultValues()
-	{
-		return inputParameters;
 	}	
 	
 	public String getStartDate()
@@ -195,26 +195,9 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 		return new GregorianCalendar(year, month, day).getTime();
 	}	
 	
-	private void rememberAdvancedFields(AmplifierServletRequest request)
-	{		
-		String exactPhraseWords = (String) inputParameters.get(SearchResultConstants.EXACTPHRASE_TAG);
-		if (exactPhraseWords == null)			
-			inputParameters.put(SearchResultConstants.EXACTPHRASE_TAG, "");
-			
-		String anyWords = (String) inputParameters.get(SearchResultConstants.ANYWORD_TAG);
-		if (anyWords == null)			
-			inputParameters.put(SearchResultConstants.ANYWORD_TAG, "");
-			
-		String theseWords = (String) inputParameters.get(SearchResultConstants.THESE_WORD_TAG);
-		if (theseWords == null)			
-			inputParameters.put(SearchResultConstants.THESE_WORD_TAG, "");	
-			
-		request.getSession().setAttribute("defaultAdvancedSearch", new AdvancedSearchInfo(inputParameters));	
-	}	
-	
 	public static void clearAdvancedSearch(AmplifierServletSession session)
 	{
-		AdvancedSearchInfo info = new AdvancedSearchInfo(setDefaultAdvancedFields());
+		AdvancedSearchInfo info = new AdvancedSearchInfo(getDefaultAdvancedFields());
 		session.setAttribute("defaultAdvancedSearch", info);	
 	}
 	
@@ -224,7 +207,7 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 		request.getSession().setAttribute("defaultSimpleSearch", "");
 	}
 	
-	public static HashMap setDefaultAdvancedFields()
+	public static HashMap getDefaultAdvancedFields()
 	{
 		HashMap defaultMap = new HashMap();
 		defaultMap.put(SearchResultConstants.EXACTPHRASE_TAG, "");
@@ -250,13 +233,13 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 			tag = tagToUse;
 		}
 		
-		public void addFormattedStringIfNotEmpty(Map destination, Map source)
+		public void addFormattedString(Map destination, Map source)
 		{
 			String rawString = (String)source.get(tag);
 			rawString = CharacterUtil.removeRestrictCharacters(rawString);
-			if(rawString.length() == 0)
-				return;
-			String decoratedString = getFormattedString(rawString);
+			String decoratedString = "";
+			if(rawString.length() > 0)
+				decoratedString = getFormattedString(rawString);
 			destination.put(tag, decoratedString);
 		}
 		
