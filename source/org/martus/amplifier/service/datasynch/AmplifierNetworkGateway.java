@@ -78,7 +78,8 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
 		catch(IOException e)
 		{
 			//e.printStackTrace();
-			logger.info("No server available");
+			//logger.info("No server available");
+			System.out.println("No server available");
 		}
 		catch(Exception e)
 		{

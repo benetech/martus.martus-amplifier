@@ -118,12 +118,12 @@ public class MartusAmplifier
 			if(! isAmplifierSyncing() )
 			{
 				startSynch();
-				System.out.println("Scheduled Task started " + System.currentTimeMillis());
+				//System.out.println("Scheduled Task started " + System.currentTimeMillis());
 
 				List backupServersList = new BackupServerManager().getBackupServersList();
 				MartusAmplifier.pullNewBulletinsFromServers(backupServersList);
 				
-				System.out.println("Scheduled Task finished " + System.currentTimeMillis() + "\n");
+				//System.out.println("Scheduled Task finished " + System.currentTimeMillis() + "\n");
 				endSynch();
 			}
 		}
