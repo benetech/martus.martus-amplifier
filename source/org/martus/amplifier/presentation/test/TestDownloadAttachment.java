@@ -126,20 +126,22 @@ public class TestDownloadAttachment extends TestCaseEnhanced
 		request.parameters.put("attachmentIndex","1");
 	}
 
-	final UniversalId uid1 = UniversalId.createDummyUniversalId();
+	String accountId = "This would be an account id";
+	long unknownSize = -1;
+	final UniversalId uid1 = UniversalId.createFromAccountAndPrefix(accountId, "A");
 	final String label1 = "attachment 1";
 	final String data1 = "this is attachment 1";
-	final AttachmentInfo attachment1 = new AttachmentInfo(uid1.getAccountId(), uid1.getLocalId(), label1);
+	final AttachmentInfo attachment1 = new AttachmentInfo(uid1, label1, unknownSize);
 
-	final UniversalId uid2 = UniversalId.createDummyUniversalId();
+	final UniversalId uid2 = UniversalId.createFromAccountAndPrefix(accountId, "A");
 	final String label2 = "attachment 2";
 	final String data2 = "this is attachment 2";
-	final AttachmentInfo attachment2 =  new AttachmentInfo(uid1.getAccountId(), uid2.getLocalId(), label2);
+	final AttachmentInfo attachment2 =  new AttachmentInfo(uid2, label2, unknownSize);
 
-	final UniversalId uid3 = UniversalId.createDummyUniversalId();
+	final UniversalId uid3 = UniversalId.createFromAccountAndPrefix(accountId, "A");
 	final String label3 = "attachment 3";
 	final String data3 = "this is attachment 3";
-	final AttachmentInfo attachment3 =  new AttachmentInfo(uid2.getAccountId(), uid3.getLocalId(), label3);
+	final AttachmentInfo attachment3 =  new AttachmentInfo(uid3, label3, unknownSize);
 
 	public List getFoundBulletins()
 		throws Exception, BulletinIndexException

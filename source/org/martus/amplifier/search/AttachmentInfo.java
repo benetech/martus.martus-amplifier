@@ -28,13 +28,16 @@ package org.martus.amplifier.search;
 
 import java.io.Serializable;
 
+import org.martus.common.packet.UniversalId;
+
 public class AttachmentInfo implements Serializable
 {
-	public AttachmentInfo(String accountId, String localId, String label)
+	public AttachmentInfo(UniversalId uid, String label, long sizeInKb)
 	{
-		this.accountId = accountId;
-		this.localId = localId;
+		this.accountId = uid.getAccountId();
+		this.localId = uid.getLocalId();
 		this.label = label;
+		this.sizeInKb = sizeInKb;
 	}
 	
 	public String getAccountId()
@@ -52,11 +55,6 @@ public class AttachmentInfo implements Serializable
 		return label;
 	}
 	
-	public void setSize(long sizeInKb)
-	{
-		this.sizeInKb = sizeInKb;
-	}
-
 	public long getSize()
 	{
 		return sizeInKb;

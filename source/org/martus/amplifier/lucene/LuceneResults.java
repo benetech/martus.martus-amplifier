@@ -127,30 +127,34 @@ public class LuceneResults implements Results, LuceneSearchConstants, SearchCons
 			throws BulletinIndexException
 		{
 			String attachmentsString = doc.get(ATTACHMENT_LIST_INDEX_FIELD);
-			if (attachmentsString != null) {
+			if (attachmentsString != null) 
+			{
 				String[] attachmentsAssocList = 
 					attachmentsString.split(ATTACHMENT_LIST_SEPARATOR);
-				if ((attachmentsAssocList.length % 2) != 0) {
+				if ((attachmentsAssocList.length % 2) != 0) 
+				{
 					throw new BulletinIndexException(
 						"Invalid attachments string found: " + 
 						attachmentsString);
 				}
-				for (int i = 0; i < attachmentsAssocList.length; i += 2) {
-					AttachmentInfo attachmentInfo = new AttachmentInfo(
-						bulletinInfo.getAccountId(),
-						attachmentsAssocList[i],
-						attachmentsAssocList[i + 1]);
+				for (int i = 0; i < attachmentsAssocList.length; i += 2) 
+				{
+					String accountId = bulletinInfo.getAccountId();
+					String localId = attachmentsAssocList[i];
+					UniversalId uId = UniversalId.createFromAccountAndLocalId(accountId, localId);
+					long size = getAttachmentSizeInKb(uId);
 					
-					setAttachmentSize(attachmentInfo);
+					String attachmentLabel = attachmentsAssocList[i + 1];
+					AttachmentInfo attachmentInfo = new AttachmentInfo(uId, attachmentLabel, size);
 					bulletinInfo.addAttachment(attachmentInfo);
 				}
 			}
 		}
 		
-		private static void setAttachmentSize(AttachmentInfo attachmentInfo)
+		private static long getAttachmentSizeInKb(UniversalId uId)
 		{
 			AttachmentManager manager = MartusAmplifier.attachmentManager;
-
+			
 			//MartusAmplifier.attachmentManager is set in tests but live code since
 			//Two different classloaders construct the MartusAmplifier && DownloadAttachment
 			//requesting the static member results in null 
@@ -166,16 +170,16 @@ public class LuceneResults implements Results, LuceneSearchConstants, SearchCons
 					e.printStackTrace();
 				}
 			}
-			UniversalId uId = UniversalId.createFromAccountAndLocalId(attachmentInfo.getAccountId(), attachmentInfo.getLocalId());
+			long size = -1;
 			try
 			{
-				attachmentInfo.setSize(manager.getAttachmentSizeInKb(uId));
+				size = manager.getAttachmentSizeInKb(uId);
 			}
 			catch (Exception e)
 			{
-				attachmentInfo.setSize(-1);
 				e.printStackTrace();
 			}
+			return size;
 		}
 
 		private static UniversalId getBulletinId(Document doc) 
