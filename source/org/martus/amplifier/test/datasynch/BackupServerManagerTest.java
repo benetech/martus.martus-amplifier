@@ -18,7 +18,7 @@ public class BackupServerManagerTest extends AbstractAmplifierDataSynchTest
 		List serverList = BackupServerManager.getInstance().getBackupServersList();
 		BackupServerInfo testInfo = (BackupServerInfo) serverList.get(0);
 		assertEquals(testInfo.getAddress(), "127.0.0.1");
-		assertEquals(testInfo.getName(), "backupserver.martus.org");
-		assertEquals(testInfo.getPort(), 0);		
+		assertEquals(testInfo.getName(), "127.0.0.1");
+		assertEquals(testInfo.getPort(), 985);		
 	}
 }

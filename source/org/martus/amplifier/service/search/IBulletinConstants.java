@@ -9,9 +9,14 @@ package org.martus.amplifier.service.search;
  */
 public interface IBulletinConstants
 {
-
+/*
 	public static final String DEFAULT_FILES_LOCATION = 
 		"amplifierdata";
+*/
+
+	public static final String DEFAULT_FILES_LOCATION = 
+		"C:\\Martus_Amplifier_Folder\\Bulletin_Folder";
+
 
 	// PENDING: It would be nice to someday remove this 
 	// hard-coded reference to C: drive.  Maybe the right

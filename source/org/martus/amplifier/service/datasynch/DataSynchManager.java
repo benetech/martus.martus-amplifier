@@ -9,33 +9,38 @@ import java.util.Vector;
 import org.martus.common.UniversalId;
 import org.martus.amplifier.service.datasynch.AmplifierNetworkGateway;
 import org.martus.amplifier.service.search.BulletinIndexer;
+import org.martus.amplifier.service.search.BulletinCatalog;
 
 public class DataSynchManager implements IDataSynchConstants
 {
 
 	private AmplifierNetworkGateway amplifierGateway = null;
 	private static Logger logger = Logger.getLogger(DATASYNC_LOGGER);
+	private static DataSynchManager instance = new DataSynchManager();
 
-	public DataSynchManager()
+	private DataSynchManager()
 	{
 		super();
 		amplifierGateway = AmplifierNetworkGateway.getInstance();
 	}
 	
+	public static DataSynchManager getInstance()
+	{
+		if(instance == null)
+		instance = new DataSynchManager();
+		return instance;
+	}
+	
 	/*
 	 * This method retrieves existing Server UID list
-	 * and compares with the Amplifier List 
-	 * to give the new list of UniversalIDs.
 	 * 
 	 */
-	public List getNewUniversalIds()
+	public List getAllServerUniversalIds()
 	{
 		logger.info("in DataSynchManager.getNewUniversalIds(): ");	
-		List newUIDList = new ArrayList();	
 		List accountList = new ArrayList();
+		List accountUIDs = new ArrayList(); //all UniversalIds in each account
 		List totalMartusUIDList = new ArrayList();//all universalIds from Martus
-		List totalLocalUIDList = new ArrayList(); //existing UIDs on Amplifier
-		List accountUIDs = new ArrayList();
 		
 		int i=0;
 		String accountId = "";
@@ -44,7 +49,7 @@ public class DataSynchManager implements IDataSynchConstants
 		accountList = (List) amplifierGateway.getAllAccountIds();
 		if(accountList == null)
 		{
-			logger.severe("DataSynchManager.getNewUniversalIds(): accountLIst is null");
+			logger.severe("DataSynchManager.getNewUniversalIds(): accountList is null");
 			System.exit(0);
 		}
 		//Step2: Retrieve the universal ids for each account and create a list
@@ -55,11 +60,8 @@ public class DataSynchManager implements IDataSynchConstants
 			totalMartusUIDList.addAll(accountUIDs);
 		}
 		
-		//Step3: Compare that with the LocalUIDList;
-		//TODO: get the totalLocalUIDList, compare it with the totalMartusUIDList
-		newUIDList = totalMartusUIDList;
 				
-		return newUIDList;
+		return totalMartusUIDList;
 	}
 	
 	
@@ -67,16 +69,22 @@ public class DataSynchManager implements IDataSynchConstants
 	 * This methods retrieves new bulletins and attachments 
 	 * Saving the attachments and bulletin files is done in retrieveAndManageBulletin()
 	 */
-	public void getALLNewBulletinObjects(List newUIDList)
+	public void getALLNewBulletinObjects(List uidList)
 	{ 
 		logger.info("in DataSynchManager.getALLNewBulletinObjects()");	
 		int index=0;
-		int size = newUIDList.size();
+		int size = uidList.size();
 		UniversalId tempUID = null;
+		
+		BulletinCatalog catalog = BulletinCatalog.getInstance();	
 		for(index=0; index<size; index++)
 		{
-			tempUID = (UniversalId)newUIDList.get(index);		
-			amplifierGateway.retrieveAndManageBulletin(tempUID );
+			tempUID = (UniversalId)uidList.get(index);	
+			if( !catalog.bulletinHasBeenIndexed(tempUID) )
+			{
+			  logger.info("before calling  amplifierGateway.retrieveAndManageBulletin on UID = "+ tempUID.toString());
+			  amplifierGateway.retrieveAndManageBulletin(tempUID );
+			}
 		}
 	}
 	

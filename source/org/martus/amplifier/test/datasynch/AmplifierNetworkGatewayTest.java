@@ -22,13 +22,17 @@ public class AmplifierNetworkGatewayTest extends AbstractAmplifierDataSynchTest
 		super(name);
 	}
 	
-	/*
+	
 	
 	public void testGetAllAccountIds()
 	{
 		System.out.println("in testGetAllAccountIds");
 		AmplifierNetworkGateway amplifierGateway = AmplifierNetworkGateway.getInstance();
 		Vector list = amplifierGateway.getAllAccountIds();
+		for(int i =0; i<list.size(); i++)
+		{
+			System.out.println("AccountId = "+(list.elementAt(i)).toString() );
+		}
 		assertTrue(list.size() >0);	
 	}
 	
@@ -39,6 +43,11 @@ public class AmplifierNetworkGatewayTest extends AbstractAmplifierDataSynchTest
 		System.out.println("in testGetAccountUniversalIds");
 		AmplifierNetworkGateway amplifierGateway = AmplifierNetworkGateway.getInstance();
 		Vector list = amplifierGateway.getAccountUniversalIds(sampleAccountId);
+		System.out.println("AccountId = "+ sampleAccountId );
+		for(int i =0; i<list.size(); i++)
+		{
+			System.out.println("UniversalIDs = "+(list.elementAt(i)).toString() );
+		}
 		assertTrue(list.size() >0);	
 	}
 
@@ -52,7 +61,7 @@ public class AmplifierNetworkGatewayTest extends AbstractAmplifierDataSynchTest
 		assertTrue(file.length() >0);		
 	}
 
-*/
+
 	public void testRetrieveAndManageBulletin()
 	{
 		System.out.println("in testRetrieveAndManageBulletin");

@@ -17,6 +17,10 @@ public class MartusAmplifierDataSynch {
 		super();
 	}
 
-	public static void main(String[] args) {
+	public static void execute() {
+		
+		//Get an instance of DataSynchManager and trigger everything
+		
+		
 	}
 }
