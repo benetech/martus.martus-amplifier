@@ -7,5 +7,7 @@
     <classpathentry kind="var" path="JUnit"/>
     <classpathentry kind="var" path="LuceneEngine"/>
     <classpathentry kind="var" path="Xerces"/>
+    <classpathentry kind="var" path="Servlet"/>
+    <classpathentry kind="var" path="JasperRuntime"/>
     <classpathentry kind="output" path="bin"/>
 </classpath>
