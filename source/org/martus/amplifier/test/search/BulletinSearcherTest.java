@@ -5,6 +5,12 @@ import junit.framework.Assert;
 import org.apache.lucene.search.Hits;
 import org.martus.amplifier.service.search.BulletinSearcher;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import org.apache.lucene.document.DateField;
+
+
 /**
  * @author Daniel Chu
  *
@@ -42,9 +48,15 @@ public class BulletinSearcherTest extends AbstractAmplifierSearchTest {
 		System.out.println(hits.length());
 		Assert.assertEquals("Found title?", 1, hits.length());
 		
-//		hits = bulletinSearch.fieldSearch(EVENT_DATE_FIELD, "2001-02-03");
-//		System.out.println(hits.length());
-//		Assert.assertEquals("Found event date?", 1, hits.length());
+		Calendar sDate = new GregorianCalendar(2000, Calendar.FEBRUARY, 03);
+        Date startDate = sDate.getTime();
+        Calendar eDate = new GregorianCalendar(2003, Calendar.FEBRUARY, 03);
+        Date endDate = eDate.getTime();
+        
+        System.out.println("Start date is "+ startDate +"end Date= "+endDate);
+      	hits = bulletinSearch.searchDateRange(EVENT_DATE_FIELD, startDate, endDate);
+		System.out.println(hits.length());
+		Assert.assertEquals("Found event date?", 2, hits.length());
 
 		hits = bulletinSearch.searchField(PUBLIC_INFO_FIELD, "staff members were");
 		System.out.println(hits.length());
