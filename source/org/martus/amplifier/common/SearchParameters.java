@@ -42,7 +42,7 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 	public SearchParameters(AmplifierServletRequest request)
 	{
 		searchRequest = request;
-		parameters 	= new HashMap();
+		inputParameters 	= new HashMap();
 		searchFields  = new HashMap();
 		loadFromRequest();		
 		rememberAdvancedFields(request);	
@@ -60,7 +60,7 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 			String value = getParameterValue(ADVANCED_KEYS[i]);
 			if (value != null)
 			{				
-				parameters.put(ADVANCED_KEYS[i], value);				
+				inputParameters.put(ADVANCED_KEYS[i], value);				
 			}
 		}
 		setEventDate();
@@ -160,7 +160,7 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 	
 	public boolean containsKey(String key)
 	{
-		return parameters.containsKey(key);
+		return inputParameters.containsKey(key);
 	}	
 		
 	private String getParameterValue(String param)
@@ -170,32 +170,39 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 	
 	public String getValue(String key)
 	{
-		return (String) parameters.get(key);
+		return (String) inputParameters.get(key);
 	}	
 	
 	public HashMap getSearchResultValues()
 	{
-		return parameters;
+		return inputParameters;
 	}	
 	
 	public String getStartDate()
 	{			
-		Date startDate = getDate(Integer.parseInt(getValue(RESULT_START_YEAR_KEY)),					
-		               	Integer.parseInt(getValue(RESULT_START_MONTH_KEY)),
-		               	Integer.parseInt(getValue(RESULT_START_DAY_KEY)));
+		String yearTag = RESULT_START_YEAR_KEY;
+		String monthTag = RESULT_START_MONTH_KEY;
+		String dayTag = RESULT_START_DAY_KEY;
+		return getDateFromRequest(yearTag, monthTag, dayTag);
+	}
 
+	public String getEndDate()
+	{	
+		String yearTag = RESULT_END_YEAR_KEY;
+		String monthTag = RESULT_END_MONTH_KEY;
+		String dayTag = RESULT_END_DAY_KEY;
+		return getDateFromRequest(yearTag, monthTag, dayTag);
+	}
+	
+	String getDateFromRequest(String yearTag, String monthTag, String dayTag)
+	{
+		int year = Integer.parseInt(getValue(yearTag));
+		int month = Integer.parseInt(getValue(monthTag));
+		int day = Integer.parseInt(getValue(dayTag));
+		Date startDate = getDate(year, month, day);
 		return MartusFlexidate.toStoredDateFormat(startDate);
 	}
 		
-	public String getEndDate()
-	{	
-		Date endDate = getDate(Integer.parseInt(getValue(RESULT_END_YEAR_KEY)),					
-							Integer.parseInt(getValue(RESULT_END_MONTH_KEY)),
-							Integer.parseInt(getValue(RESULT_END_DAY_KEY)));		
-
-		return MartusFlexidate.toStoredDateFormat(endDate);
-	}
-	
 	public static Date getDate(int year, int month, int day)
 	{
 		return new GregorianCalendar(year, month, day).getTime();
@@ -203,19 +210,19 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 	
 	private void rememberAdvancedFields(AmplifierServletRequest request)
 	{		
-		String exactPhraseWords = (String) parameters.get(SearchResultConstants.EXACTPHRASE_TAG);
+		String exactPhraseWords = (String) inputParameters.get(SearchResultConstants.EXACTPHRASE_TAG);
 		if (exactPhraseWords == null)			
-			parameters.put(SearchResultConstants.EXACTPHRASE_TAG, "");
+			inputParameters.put(SearchResultConstants.EXACTPHRASE_TAG, "");
 			
-		String anyWords = (String) parameters.get(SearchResultConstants.ANYWORD_TAG);
+		String anyWords = (String) inputParameters.get(SearchResultConstants.ANYWORD_TAG);
 		if (anyWords == null)			
-			parameters.put(SearchResultConstants.ANYWORD_TAG, "");
+			inputParameters.put(SearchResultConstants.ANYWORD_TAG, "");
 			
-		String theseWords = (String) parameters.get(SearchResultConstants.THESE_WORD_TAG);
+		String theseWords = (String) inputParameters.get(SearchResultConstants.THESE_WORD_TAG);
 		if (theseWords == null)			
-			parameters.put(SearchResultConstants.THESE_WORD_TAG, "");	
+			inputParameters.put(SearchResultConstants.THESE_WORD_TAG, "");	
 			
-		request.getSession().setAttribute("defaultAdvancedSearch", new AdvancedSearchInfo(parameters));	
+		request.getSession().setAttribute("defaultAdvancedSearch", new AdvancedSearchInfo(inputParameters));	
 	}	
 	
 	public static void clearAdvancedSearch(AmplifierServletSession session)
@@ -250,7 +257,7 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 	}
 
 	AmplifierServletRequest searchRequest;
-	HashMap parameters;
+	HashMap inputParameters;
 	HashMap	searchFields;
 	final static String PLUS 	= "+";
 	final static String NOT 	= "-";	
