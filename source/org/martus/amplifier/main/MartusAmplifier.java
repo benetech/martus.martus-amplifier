@@ -28,17 +28,17 @@ import org.mortbay.jetty.Server;
 
 public class MartusAmplifier
 {
-	public MartusAmplifier(LoggerInterface loggerToUse)
-	{
-		logger = loggerToUse;
-	}
-
 	public static void main(String[] args) throws Exception
 	{
 		MartusAmplifier amp = new MartusAmplifier(new LoggerToConsole());
 		amp.start();
 	}
 	
+	public MartusAmplifier(LoggerInterface loggerToUse)
+	{
+		logger = loggerToUse;
+	}
+
 	void start() throws Exception
 	{
 		MartusSecurity security = new MartusSecurity();
@@ -50,15 +50,22 @@ public class MartusAmplifier
 		//Code.setDebug(true);
 		Server server = new Server("jettyConfiguration.xml");
 		server.addWebApplication("/","presentation/");
-		HttpContext context = server.getContext("/");
-		AccessHandler handler = new AccessHandler();
-		context.addHandler(handler);
+		
+		addPasswordAuthentication(server);
+		
 		server.start();
 		timer.scheduleAtFixedRate(timedTask, IMMEDIATELY, dataSynchIntervalMillis);
 		
 		while(! isShutdownRequested() )
 		{
 		}
+	}
+
+	void addPasswordAuthentication(Server server)
+	{
+		PasswordAuthenticationHandler handler = new PasswordAuthenticationHandler();
+		HttpContext context = server.getContext("/");
+		context.addHandler(handler);
 	}
 	
 	

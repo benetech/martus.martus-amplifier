@@ -36,7 +36,7 @@ import org.mortbay.http.handler.AbstractHttpHandler;
 import org.mortbay.util.B64Code;
 import org.mortbay.util.StringUtil;
 
-public class AccessHandler extends AbstractHttpHandler
+public class PasswordAuthenticationHandler extends AbstractHttpHandler
 {
 	
 	public void handle(String pathInContext, String pathParams, HttpRequest request, HttpResponse response)
