@@ -8,7 +8,6 @@
     	#set ($pageTitle="Searched Martus for: $searchedFor")
     	#set ($pageInfo="Bulletin $currentBulletin of $totalBulletins")
 		#set ($showSearchForm = true)
-		#set ($printerFriendly = false)
 		#parse ("ResultHeader.vm")
 		<p><font size='-1'><a href='PrintFoundBulletin?index=$currentBulletin&searchedFor=$searchedFor'>Printer Friendly Version</a></font></p>
 		#parse("PreviousNextBulletin.vm")

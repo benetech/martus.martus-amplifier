@@ -11,7 +11,7 @@
 	</center>
 #end
 
-#if ($printerFriendly == false)
+#if (!$printerFriendly)
 <table cellSpacing='0' cellPadding='1' width="100%" bgColor="$barColor" border='0'>
 	<tbody>
         <tr>

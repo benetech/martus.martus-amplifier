@@ -61,7 +61,11 @@
 				#end
 			</td>
 			<td valign='top'>
+			#if (!$printerFriendly)
 				<a 	href=DownloadAttachment?bulletinIndex=$currentBulletin&attachmentIndex=$velocityCount>$thisAttachments.label</a>
+			#else
+				$thisAttachments.label			
+			#end
 				&nbsp;($thisAttachments.size Kb)
 			</td>
 			<td></td>

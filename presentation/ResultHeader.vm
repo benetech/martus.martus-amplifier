@@ -24,7 +24,7 @@
 	</tr>
 </table>
 
-#if ($printerFriendly == false)
+#if (!$printerFriendly)
 	<font size='-1'>
 		<a href='http://martus.org'>Learn More</a>
 		&nbsp;&nbsp;
