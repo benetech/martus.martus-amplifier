@@ -1,5 +1,6 @@
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <STYLE TYPE="text/css" MEDIA=screen>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+
+<STYLE TYPE="text/css" MEDIA=screen>
 	<!--		
 	  BODY 	{ font-size: -1;font-family: sans-serif;}
 	  TITLE { font-size: -1;font-family: sans-serif;}
@@ -9,6 +10,7 @@
 	  INPUT { font-size: -1;font-family: sans-serif;}
 	  SELECT{ font-size: -1;font-family: sans-serif;}
 	-->
-	</STYLE>
+</STYLE>
 	
-	<title>Martus $pageTitle</title>
+<title>Martus $pageTitle</title>
+	
