@@ -123,7 +123,16 @@ public class MartusAmplifier
 			log("Error: LanguagesIndex" + e);
 		}
 		
-		startServer(password);
+		try
+		{
+			startServer(password);
+		}
+		catch (Exception e1)
+		{
+			e1.printStackTrace();
+			serverExit(3);
+		}
+
 		timer.scheduleAtFixedRate(timedTask, IMMEDIATELY, dataSynchIntervalMillis);
 		
 		while(! isShutdownRequested() )
@@ -145,7 +154,7 @@ public class MartusAmplifier
 	private void startNonSSLServer() throws IOException, MultiException
 	{
 		Server nonsslServer = new Server();
-		nonsslServer.addWebApplication("","presentationNonSSL");
+		nonsslServer.addWebApplication("", getPresentationBasePath() + "presentationNonSSL");
 		nonsslServer.addListener(new InetAddrPort(80));
 		nonsslServer.start();
 	}
@@ -166,7 +175,7 @@ public class MartusAmplifier
 		//Server sslServer = new Server(jettyXmlFile.getAbsolutePath());
 		Server sslServer = new Server();
 
-		sslServer.addWebApplication("","presentation");
+		sslServer.addWebApplication("", getPresentationBasePath() + "presentation");
 		addPasswordAuthentication(sslServer);
 		sslServer.addListener(sslListener);
 		sslServer.start();
@@ -494,21 +503,33 @@ public class MartusAmplifier
 			System.exit(6);
 		}
 	}
+	
+	public static String getPresentationBasePath()
+	{
+		String presentationBasePath = null;
+		if(isRunningUnderWindows())
+			presentationBasePath = "";
+		else
+			presentationBasePath = "/usrlocal/martus/htdocs/MartusAmplifier/";
+		return presentationBasePath;
+		
+	}
 
 	public static String getDefaultDataDirectoryPath()
 	{
 		String dataDirectory = null;
-		if(System.getProperty("os.name").indexOf("Windows") >= 0)
-		{
+		if(isRunningUnderWindows())
 			dataDirectory = "C:/MartusAmplifier/";
-		}
 		else
-		{
 			dataDirectory = "/var/MartusAmplifier/";
-		}
 		return dataDirectory;
 	}
 	
+	private static boolean isRunningUnderWindows()
+	{
+		return System.getProperty("os.name").indexOf("Windows") >= 0;
+	}
+
 	public static File getDefaultDataDirectory()
 	{
 		File file = new File(getDefaultDataDirectoryPath());
