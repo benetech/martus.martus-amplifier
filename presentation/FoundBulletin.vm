@@ -15,8 +15,10 @@
 			
 			</tr>
 			<tr>
-				<td>Location:</td>
-				<td>$bulletin.fields.location</td>
+				#if($bulletin.fields.location != "")
+					<td>Location:</td>
+					<td>$bulletin.fields.location</td>
+				#end
 				<td></td>
 			</tr>
 			<tr>
@@ -25,8 +27,10 @@
 				<td></td>
 			</tr>
 			<tr>
-				<td>Author:</td>
-				<td>$bulletin.fields.author</td>
+				#if($bulletin.fields.author != "")
+					<td>Author:</td>
+					<td>$bulletin.fields.author</td>
+				#end
 				<td></td>
 			</tr>
 			<tr>
@@ -35,18 +39,24 @@
 				<td></td>
 			</tr>
 			<tr>
-				<td>Summary:</td>
-				<td>$bulletin.fields.summary</td>
+				#if($bulletin.fields.summary != "")
+					<td>Summary:</td>
+					<td>$bulletin.fields.summary</td>
+				#end
 				<td></td>
 			</tr>
 			<tr>
-				<td>Details:</td>
-				<td>$bulletin.fields.publicinfo</td>
+				#if($bulletin.fields.publicinfo != "")
+					<td>Details:</td>
+					<td>$bulletin.fields.publicinfo</td>
+				#end
 				<td></td>
 			</tr>
 			<tr>
-				<td>Keywords:</td>
-				<td>$bulletin.fields.keywords</td>
+				#if($bulletin.fields.keywords != "")
+					<td>Keywords:</td>
+					<td>$bulletin.fields.keywords</td>
+				#end
 				<td></td>
 			</tr>
 		</table>

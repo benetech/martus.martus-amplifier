@@ -236,9 +236,24 @@ public class LuceneBulletinSearcher
 					"Unable to retrieve FieldDataPacket " + n, ioe);
 			}
 			BulletinInfo info = new BulletinInfo(getBulletinId(doc));
+			addAllEmptyFields(info);
 			addFields(info, doc);
 			addAttachments(info, doc);
 			return info;
+		}
+		
+		private static void addAllEmptyFields(BulletinInfo info)
+			throws BulletinIndexException
+		{
+			String[] fieldIds = BulletinField.getSearchableXmlIds();
+			for (int i = 0; i < fieldIds.length; i++) {
+				BulletinField field = BulletinField.getFieldByXmlId(fieldIds[i]);
+				if (field == null) {
+					throw new BulletinIndexException(
+						"Unknown field " + fieldIds[i]);
+				}
+				info.set(field.getIndexId(), "");
+			}
 		}
 		
 		private static void addFields(BulletinInfo info, Document doc) 

@@ -345,6 +345,40 @@ public abstract class TestAbstractSearch
 			searcher.close();
 		}
 	}
+
+	public void testSearchEmptyField() throws BulletinIndexException
+	{
+		UniversalId bulletinId = UniversalId.createDummyUniversalId();
+		FieldDataPacket fdp = generateSampleFlexiData(bulletinId);		
+		BulletinIndexer indexer = openBulletinIndexer();
+		try 
+		{
+			indexer.clearIndex();
+			indexer.indexFieldData(bulletinId, fdp);
+		} 
+		finally 
+		{
+			indexer.close();
+		}
+		
+		BulletinSearcher searcher = openBulletinSearcher();
+		BulletinSearcher.Results results = null;
+		try 
+		{
+			results = searcher.search(SEARCH_SUMMARY_INDEX_FIELD, "Chuck");
+			assertEquals("Should have found 1 result Chuck", 1, results.getCount());
+			BulletinInfo info =results.getBulletinInfo(0);
+			assertNotNull("Bulletin Info null?", info);
+			assertNotNull("Sumary should not be null",info.get(SEARCH_SUMMARY_INDEX_FIELD));
+			assertNotNull("Location should not be  null",info.get(SEARCH_LOCATION_INDEX_FIELD));
+			assertEquals("Location should be ''", "", info.get(SEARCH_LOCATION_INDEX_FIELD));
+		}
+		finally 
+		{
+			searcher.close();
+		}
+	}
+
 	
 	public void testAdvancedSearchEventDateOnly() throws BulletinIndexException,ParseException
 	{
@@ -460,14 +494,14 @@ public abstract class TestAbstractSearch
 		String summary = 
 			"Today Chuck ate an egg2 salad2 sandwich and a root beer2 " +
 			"for lunch.";
-		String location = "San Francisco, CA";
+		//String location = "San Francisco, CA";
 		
 		String attachment1LocalId = "att1Id";
 		String attachment1Label = "Eggs.gif";
 		String attachment2LocalId = "att2Id";
 		String attachment2Label = "Recipe.txt";
 		
-		FieldDataPacket fdp = createFieldDataPacket(bulletinId, author, keywords, title, eventdate, entrydate, publicInfo, summary, location, attachment1LocalId, attachment1Label, attachment2LocalId, attachment2Label);
+		FieldDataPacket fdp = createFieldDataPacket(bulletinId, author, keywords, title, eventdate, entrydate, publicInfo, summary, null, attachment1LocalId, attachment1Label, attachment2LocalId, attachment2Label);
 		return fdp;
 	}
 	
