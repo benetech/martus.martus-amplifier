@@ -18,7 +18,7 @@ onSubmit()
         request.getSession().setAttribute("CACHED_HITS", null);
 %>
 <center>
-	<table border="1" cellspacing="0" cellpadding="0">
+	<table border="0" cellspacing="0" cellpadding="0">
 	<tr>
 	<td align="center">
 		<img src="images/big_logo.gif" width="184" height="126" alt="Martus Amplifier"/>
