@@ -13,7 +13,7 @@
 
   <property name="martus-dir" value="../martus"/>
   
-  <property name="common-basedir"   value="../martus"/>
+  <property name="common-basedir"   value="../martus-common"/>
   <property name="common-dir" value="org/martus/common"/>
 
   <property name="util-basedir"   value="../martus-utils/bin"/>

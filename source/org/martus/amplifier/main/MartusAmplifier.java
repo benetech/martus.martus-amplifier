@@ -552,9 +552,9 @@ public class MartusAmplifier
 	{
 		String dataDirectory = null;
 		if(isRunningUnderWindows())
-			dataDirectory = "C:/MartusAmplifier/";
+			dataDirectory = "C:/MartusServer/";
 		else
-			dataDirectory = "/var/MartusAmplifier/";
+			dataDirectory = "/var/MartusServer/";
 		return dataDirectory;
 	}
 	
