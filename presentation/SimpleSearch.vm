@@ -1,5 +1,3 @@
-#set ($barColor = "#5588ee")
-#set ($noSearchForm = "1")
 <html>
     <head>
    		#include("Meta.vm")
@@ -9,13 +7,16 @@
     <body>
     	#set ($pageTitle="Quick Search")
     	#set ($pageInfo="")
+		#set ($noSearchForm = "1")
 		#parse ("ResultHeader.vm")
 		<br/><br/>
 		<center>
 			<table>
 				<tr>
 					<td align='center' width='500'>
-						<strong>Welcome to the Martus Search Engine.</strong>
+						<font size='+1'>
+							<strong>Welcome to the Martus Search Engine</strong>
+						</font>
 						<br/><br/>
 						This Quick Search page allows you to enter a list of 
 						words, and see all the bulletins that contain all 
@@ -33,6 +34,7 @@
 			</table>
         </center>
 		<br/><br/>
+        #set ($noSearchForm = "1")
         #parse ("ResultFooter.vm")
     </body>
 </html>

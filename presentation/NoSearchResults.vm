@@ -1,4 +1,3 @@
-#set ($barColor = "#5588ee")
 <html>
     <head>
      	#include("Meta.vm")

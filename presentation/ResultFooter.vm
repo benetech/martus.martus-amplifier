@@ -1,3 +1,4 @@
+#set ($barColor = "#5588ee")
 #if ($showSearchForm)
 	<center>
 		#include ("MiniSearchForm.vm")
