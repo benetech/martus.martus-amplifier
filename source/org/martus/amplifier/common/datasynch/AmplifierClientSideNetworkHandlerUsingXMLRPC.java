@@ -85,7 +85,7 @@ public class AmplifierClientSideNetworkHandlerUsingXMLRPC
 		try
 		{
 			XmlRpcClient client = new XmlRpcClient(serverUrl);
-			result = client.execute("MartusServer." + method, params);
+			result = client.execute("MartusAmplifierServer." + method, params);
 		}
 		catch (IOException e)
 		{
