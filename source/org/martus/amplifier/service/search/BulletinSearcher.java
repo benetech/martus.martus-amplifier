@@ -4,11 +4,14 @@ import java.io.IOException;
 
 import junit.framework.Assert;
 
-import org.apache.lucene.analysis.*;
-import org.apache.lucene.index.*;
-import org.apache.lucene.queryParser.*;
-import org.apache.lucene.search.*;
-
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.StopAnalyzer;
+import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.queryParser.QueryParser;
+import org.apache.lucene.search.Hits;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
 
 /**
  * @author Daniel Chu
@@ -19,8 +22,6 @@ import org.apache.lucene.search.*;
  */
 public class BulletinSearcher implements BulletinConstants
 {
-	private static BulletinSearcher instance = new BulletinSearcher();
-
 	protected BulletinSearcher()
 	{}
 	
@@ -45,6 +46,7 @@ public class BulletinSearcher implements BulletinConstants
 		}
 		catch(ParseException pe)
 		{
+			
 		}
 		
 		try
@@ -62,4 +64,6 @@ public class BulletinSearcher implements BulletinConstants
 	{
 		return fieldSearch("contents", queryString);
 	}
+	
+	private static BulletinSearcher instance = new BulletinSearcher();
 }
