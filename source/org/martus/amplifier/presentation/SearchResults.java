@@ -127,7 +127,7 @@ public class SearchResults extends AmplifierServlet implements SearchResultConst
 			
 			String sortField = (String) fields.get(RESULT_SORTBY_KEY);
 			if (sortField != null)
-				sortBulletin(list, sortField);					
+				sortBulletins(list, sortField);					
 	
 		} finally {
 			searcher.close();
@@ -135,7 +135,7 @@ public class SearchResults extends AmplifierServlet implements SearchResultConst
 		return list;	
 	}
 	
-	public void sortBulletin(List list, final String field)
+	public static void sortBulletins(List list, final String field)
 	{
 		Collections.sort(list, new Comparator()
 		{

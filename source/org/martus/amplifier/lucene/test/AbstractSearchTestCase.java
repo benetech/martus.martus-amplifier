@@ -874,8 +874,8 @@ public abstract class AbstractSearchTestCase
 			String title1 = ((BulletinInfo)list.get(0)).get(SEARCH_TITLE_INDEX_FIELD);
 			String title2 = ((BulletinInfo)list.get(1)).get(SEARCH_TITLE_INDEX_FIELD);
 						
-			assertEquals("What's for Lunch??", title1);
-			assertEquals("ZZZ Lunch?", title2);
+			assertEquals(fdp2.get(BulletinField.SEARCH_TITLE_INDEX_FIELD), title1);
+			assertEquals(fdp1.get(BulletinField.SEARCH_TITLE_INDEX_FIELD), title2);
 												
 		}
 		finally 
@@ -889,7 +889,7 @@ public abstract class AbstractSearchTestCase
 		String author = "Paul";
 		String keyword = "ate";
 		String keywords = keyword + " egg salad root beer";
-		String title = "ZZZ Lunch?";
+		String title = "ZZZ for Lunch?";
 		String eventdate = "2003-04-10";
 		String entrydate = "2003-05-11";
 		String publicInfo = "menu";
