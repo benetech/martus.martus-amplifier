@@ -133,6 +133,8 @@ abstract public class AmplifierServlet extends VelocityServlet
 			fieldData = fieldData.replaceAll("&", "&amp;");
 			fieldData = fieldData.replaceAll("<", "&lt;");
 			fieldData = fieldData.replaceAll("\n", "<BR/>");
+			fieldData = fieldData.replaceAll("\t", "&nbsp;&nbsp;&nbsp;&nbsp;");
+			fieldData = fieldData.replaceAll("  ", "&nbsp;&nbsp;");
 			mapToFormat.put(fieldTag, fieldData);
 		}
 	}

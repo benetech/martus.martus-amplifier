@@ -45,16 +45,29 @@ public class TestAmplifierServlet extends TestCaseEnhanced
 		testMap.put(key1, value1);
 		testMap.put(key2, value2);
 		testMap.put(key3, value3);
+		testMap.put(key4, value4);
+		testMap.put(key5, value5);
+		testMap.put(key6, value6);
 		AmplifierServlet.formatDataForHtmlDisplay(testMap);
 		assertEquals("&lt;HTML>", testMap.get(key1));		
 		assertEquals("&amp;test", testMap.get(key2));		
 		assertEquals("a<BR/>b", testMap.get(key3));		
+		String tab = "&nbsp;&nbsp;&nbsp;&nbsp;";
+		assertEquals(tab+"a"+tab+tab+"b"+tab, testMap.get(key4));		
+		assertEquals("&nbsp;&nbsp;a&nbsp;&nbsp; b&nbsp;&nbsp;", testMap.get(key5));		
+		assertEquals(value6, testMap.get(key6));		
 	}	
 
 	final String key1 = "key1";
 	final String key2 = "key2";
 	final String key3 = "key3";
+	final String key4 = "key4";
+	final String key5 = "key5";
+	final String key6 = "key6";
 	final String value1 = "<HTML>";
 	final String value2 = "&test";
 	final String value3 = "a\nb";
+	final String value4 = "	a		b	";
+	final String value5 = "  a   b  ";
+	final String value6 = " a b c ";
 }
