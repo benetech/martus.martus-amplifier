@@ -13,7 +13,6 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.martus.amplifier.service.attachment.AttachmentManager;
 import org.martus.amplifier.service.attachment.api.AttachmentInfo;
-import org.martus.amplifier.service.attachment.api.AttachmentInfo.InvalidAttachmentInfoException;
 import org.martus.amplifier.service.search.BulletinField;
 import org.martus.amplifier.service.search.ISearchConstants;
 import org.martus.common.Bulletin;
@@ -73,6 +72,7 @@ public class BulletinContentHandler implements ContentHandler
 		attachments = new ArrayList();
 		inAttachment = false;
 		curElementName = null;
+		curValue = null;
 		account = null;
 		packetId = null;
 		id = null;
@@ -84,6 +84,7 @@ public class BulletinContentHandler implements ContentHandler
 	public void endDocument() throws SAXException
 	{
 		addFieldsToDocument();
+		addAttachmentsToDocument();
 		//storeAttachments();	
 	}
 
@@ -111,6 +112,7 @@ public class BulletinContentHandler implements ContentHandler
 		throws SAXException
 	{
 		curElementName = localName;
+		curValue = null;
 		if (curElementName.equals(MartusXml.AttachmentElementName)) {
 			startAttachment();
 		}
@@ -122,14 +124,10 @@ public class BulletinContentHandler implements ContentHandler
 	public void endElement(String namespaceURI, String localName, String qName)
 		throws SAXException
 	{
+		processCurElement();
 		curElementName = null;
 		if (localName.equals(MartusXml.AttachmentElementName)) {
-			try {
-				endAttachment();
-			} catch (InvalidAttachmentInfoException e) {
-				throw new SAXParseException(
-					"Found invalid attachment info", locator, e);
-			}
+			endAttachment();
 		}
 	}
 
@@ -140,16 +138,11 @@ public class BulletinContentHandler implements ContentHandler
 	 */
 	public void characters(char[] ch, int start, int length) throws SAXException
 	{
-		if (curElementName != null) {
-			if (inAttachment) {
-				processAttachmentField(ch, start, length);
-			} else if (curElementName.startsWith(MartusXml.FieldElementPrefix)) {
-				processBulletinField(ch, start, length);
-			} else if (curElementName.equals(MartusXml.AccountElementName)) {
-				account = new String(ch, start, length);
-			} else if (curElementName.equals(MartusXml.PacketIdElementName)) {
-				packetId = new String(ch, start, length);
-			}
+		String s = new String(ch, start, length);
+		if (curValue == null) {
+			curValue = s;
+		} else {
+			curValue += s;
 		}
 	}
 	
@@ -178,45 +171,60 @@ public class BulletinContentHandler implements ContentHandler
 	private void startAttachment() 
 	{
 		inAttachment = true;
-		attachmentId = null;
+		attachmentLocalId = null;
 		attachmentKey = null;
 		attachmentLabel = null;
 	}
 
-	private void endAttachment() throws InvalidAttachmentInfoException
+	private void endAttachment()
 	{
 		inAttachment = false;
 		attachments.add(new AttachmentInfo(
-			attachmentId, attachmentKey, attachmentLabel));
+			attachmentLocalId, attachmentKey, attachmentLabel));
 	}
 	
-	private void processAttachmentField(char[] ch, int start, int length)
+	private void processCurElement() throws SAXException
+	{
+		if (curElementName != null) {
+			if (inAttachment) {
+				processAttachmentField();
+			} else if (curElementName.startsWith(MartusXml.FieldElementPrefix)) {
+				processBulletinField();
+			} else if (curElementName.equals(MartusXml.AccountElementName)) {
+				account = curValue;
+			} else if (curElementName.equals(MartusXml.PacketIdElementName)) {
+				packetId = curValue;
+			}
+		}
+	}
+	
+	private void processAttachmentField()
 	{
 		if (curElementName.equals(
 			MartusXml.AttachmentLocalIdElementName))
 		{
-			attachmentId = new String(ch, start, length);
+			attachmentLocalId = curValue;
 		}
 		else if (curElementName.equals(
 			MartusXml.AttachmentKeyElementName))
 		{
-			attachmentKey = new String(ch, start, length);
+			attachmentKey = curValue;
 		}
 		else if (curElementName.equals(
 			MartusXml.AttachmentLabelElementName))
 		{
-			attachmentLabel = new String(ch, start, length);
+			attachmentLabel = curValue;
 		}
 	}
 	
-	private void processBulletinField(char[] ch, int start, int length) 
+	private void processBulletinField() 
 		throws SAXException
 	{
 		String fieldName = curElementName.substring(
 			MartusXml.FieldElementPrefix.length());
 		BulletinField field = BulletinField.getFieldByXmlId(fieldName);
 		if (field != null) {
-			String value = new String(ch, start, length);
+			String value = curValue;
 			if (field.isDateField()) {
 				try {
 					value = convertDateToSearchableString(value);
@@ -242,6 +250,22 @@ public class BulletinContentHandler implements ContentHandler
 		
 		UniversalId id = getUniversalId();
 		doc.add(Field.Keyword(ISearchConstants.UNIVERSAL_ID_INDEX_FIELD, id.toString()));
+		
+	}
+	
+	private void addAttachmentsToDocument()
+	{
+		if (!attachments.isEmpty()) {
+			StringBuffer attachmentLocalIds = new StringBuffer();
+			for (Iterator iter = attachments.iterator(); iter.hasNext();) {
+				AttachmentInfo info = (AttachmentInfo) iter.next();
+				attachmentLocalIds.append(info.getLocalId());
+				attachmentLocalIds.append(ISearchConstants.ATTACHMENT_ID_LIST_SEPARATOR);
+			}
+			doc.add(Field.UnIndexed(
+				ISearchConstants.ATTACHMENT_ID_LIST_INDEX_FIELD, 
+				attachmentLocalIds.toString()));
+		}	
 	}
 	
 	private void storeAttachments()
@@ -271,13 +295,15 @@ public class BulletinContentHandler implements ContentHandler
 		return DateField.dateToString(df.parse(dateString));
 	}
 	
+	
 	private Document doc;
 	private Map fieldValues;
 	private List attachments;
 	private boolean inAttachment;
 	private UniversalId id;
 	private String curElementName;
-	private String attachmentId;
+	private String curValue;
+	private String attachmentLocalId;
 	private String attachmentLabel;
 	private String attachmentKey;
 	private String account;

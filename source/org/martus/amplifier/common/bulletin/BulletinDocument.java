@@ -6,18 +6,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.List;
 import java.util.logging.Logger;
 
 import org.apache.lucene.document.DateField;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
-import org.martus.amplifier.service.attachment.AttachmentManager;
-import org.martus.amplifier.service.attachment.api.AttachmentInfoListFactory;
 import org.martus.amplifier.service.search.IBulletinConstants;
 import org.martus.amplifier.service.search.ISearchConstants;
-import org.martus.common.UniversalId;
-import org.martus.common.UniversalId.NotUniversalIdException;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -59,12 +54,12 @@ public class BulletinDocument implements IBulletinConstants, ISearchConstants
 	
 	    // Add the path of the file as a field named "path".  Use a Text field, so
 	    // that the index stores the path, and so that the path is searchable
-	    doc.add(Field.Text("path", file.getPath()));
+	    doc.add(Field.Text(PATH_INDEX_FIELD, file.getPath()));
 	
 	    // Add the last modified date of the file a field named "modified".  Use a
 	    // Keyword field, so that it's searchable, but so that no attempt is made
 	    // to tokenize the field into words.
-	    doc.add(Field.Keyword("modified",
+	    doc.add(Field.Keyword(MODIFIED_INDEX_FIELD,
 				  DateField.timeToString(file.lastModified())));
 	
 		XMLReader xmlReader = null;

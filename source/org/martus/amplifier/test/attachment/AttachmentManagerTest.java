@@ -1,6 +1,7 @@
 package org.martus.amplifier.test.attachment;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 
 import org.martus.amplifier.common.configuration.AmplifierConfiguration;
@@ -46,6 +47,20 @@ public class AttachmentManagerTest extends AbstractAttachmentTest
 		List ids = manager.getAttachmentIds(id);
 		assertNotNull(ids);
 		assertTrue(ids.size() == 1);
+	}
+	
+	public void testMultipleAttachments()
+	{
+		AttachmentManager manager = AttachmentManager.getInstance();
+		UniversalId bulletinId = UniversalId.createDummyUniversalId();
+		UniversalId attachmentId1 = UniversalId.createDummyUniversalId();
+		UniversalId attachmentId2 = UniversalId.createDummyUniversalId();
+		manager.putAttachmentIds(
+			bulletinId, 
+			Arrays.asList(new Object[] { attachmentId1, attachmentId2 }));
+		List ids = manager.getAttachmentIds(bulletinId);
+		assertNotNull(ids);
+		assertEquals(2, ids.size());
 	}
 
 	public void testPutAndGetAttachment()

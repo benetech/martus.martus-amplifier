@@ -217,15 +217,19 @@ public class AttachmentManager implements IAttachmentConstants, IAttachmentManag
 		Iterator attachmentInfoIterator = attachmentInfoList.iterator();
 		AttachmentInfo currentInfo = null;
 		String attachmentPath = null;
-		UniversalId attachmentId = null;
+		String attachmentLocalId = null;
 			
 		while(attachmentInfoIterator.hasNext());
 		{
 			currentInfo = (AttachmentInfo) attachmentInfoIterator.next();
-			attachmentId = currentInfo.getId();
+			attachmentLocalId = currentInfo.getLocalId();
+			UniversalId attachmentId = 
+				UniversalId.createFromAccountAndLocalId(
+					universalBulletinId.getAccountId(), 
+					attachmentLocalId);
 			putAttachmentId(universalBulletinId, attachmentId);
 			attachmentPath = 
-				AmplifierConfiguration.getInstance().buildAmplifierWorkingPath(TEMP_ATTACHMENT_FOLDER, currentInfo.getId().toString());
+				AmplifierConfiguration.getInstance().buildAmplifierWorkingPath(TEMP_ATTACHMENT_FOLDER, attachmentId.toString());
 			File attachmentFile = new File(attachmentPath);
 			putAttachmentFile(attachmentId, attachmentFile);
 			putAttachmentName(attachmentId, currentInfo.getLabel());

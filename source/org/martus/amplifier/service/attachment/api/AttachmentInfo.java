@@ -1,41 +1,23 @@
 package org.martus.amplifier.service.attachment.api;
 
-import org.martus.common.UniversalId;
-import org.martus.common.UniversalId.NotUniversalIdException;
+
 
 public class AttachmentInfo
 {
-	public class InvalidAttachmentInfoException extends Exception
+	public AttachmentInfo(String newLocalId, String newKey, String newLabel)
 	{
-		InvalidAttachmentInfoException(String message)
-		{
-			super(message);
-		}
-	}
-	
-	public AttachmentInfo(String newId, String newKey, String newLabel)
-	throws InvalidAttachmentInfoException
-	{
-		super();
-		try
-		{
-			id = UniversalId.createFromString(newId);
-		}
-		catch(NotUniversalIdException nuie)
-		{
-			throw new InvalidAttachmentInfoException(nuie.getMessage());
-		}
+		localId = newLocalId;
 		key = newKey;
 		label = newLabel;
 	}
 	
-	private UniversalId id = null;
+	private String localId = null;
 	private String key = null;
 	private String label = null;
 
-	public UniversalId getId()
+	public String getLocalId()
 	{
-		return id;
+		return localId;
 	}
 
 	public String getKey()

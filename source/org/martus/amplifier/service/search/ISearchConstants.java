@@ -16,4 +16,7 @@ public interface ISearchConstants
 	public static final String UNIVERSAL_ID_INDEX_FIELD = "universal_id";
 	public static final String PATH_INDEX_FIELD = "path";
 	public static final String MODIFIED_INDEX_FIELD = "modified";
+	public static final String ATTACHMENT_ID_LIST_INDEX_FIELD = "attachment_ids";
+	public static final String ATTACHMENT_ID_LIST_SEPARATOR = "\n";
+	
 }
