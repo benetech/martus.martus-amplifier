@@ -6,7 +6,7 @@
     
     <body>
 #include ("header.vm")
-		#set ($years = [1900..2004])
+		#set ($years = [1970..2004])
         #set ($months = [1..12])
         #set ($days = [1..31])
             
@@ -25,31 +25,31 @@
 						    #end
                         </select>     
                             is 
-			</p>		
-			<p> &nbsp;&nbsp;&nbsp;&nbsp;between 
-                    <select name="startMonth">                    	
-					    #foreach ($month in $months)
-                            <option value="$month">
-                                $month
-                            </option>
-					    #end
-                    </select>
-
-                    <select name="startDay">                    	
-					    #foreach ($day in $days)
-                            <option value="$day">
-                                $day
-                            </option>
-					    #end
-                    </select>    
-                      
-                    <select name="startYear">                    	
-					    #foreach ($year in $years)
-                            <option value="$year">
-                                $year
-                            </option>
-					    #end
-                    </select>                                               
+				</p>		
+				<p> &nbsp;&nbsp;&nbsp;&nbsp;between 
+	                    <select name="startMonth">                    	
+						    #foreach ($month in $months)
+	                            <option value="$month">
+	                                $month
+	                            </option>
+						    #end
+	                    </select>
+	
+	                    <select name="startDay">                    	
+						    #foreach ($day in $days)
+	                            <option value="$day">
+	                                $day
+	                            </option>
+						    #end
+	                    </select>    
+	                      
+	                    <select name="startYear">                    	
+						    #foreach ($year in $years)
+	                            <option value="$year">
+	                                $year
+	                            </option>
+						    #end
+	                    </select>                                               
                         			                                                                            </p>				
                 <p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and 
                         &nbsp;&nbsp;&nbsp&nbsp;&nbsp
