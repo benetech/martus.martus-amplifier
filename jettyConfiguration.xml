@@ -23,6 +23,7 @@
 					<SystemProperty name="jetty.home" default="."/>/keystore
 				</Set>
 				<Set name="KeyPassword">password</Set>
+				<Set name="Password">password</Set>
 				<Set name="MinThreads">5</Set>
 				<Set name="MaxThreads">255</Set>
 				<Set name="MaxIdleTimeMs">30000</Set>
