@@ -33,7 +33,7 @@ public class BulletinIndexer implements BulletinConstants, LoggerConstants
 		IndexWriter writer = null;
 		try
 		{
-			writer = new IndexWriter(DEFAULT_INDEX_LOCATION, new StandardAnalyzer(), false);
+			writer = new IndexWriter(DEFAULT_INDEX_LOCATION, new StandardAnalyzer(), true);
 			indexDocs(writer, new File(DEFAULT_FILES_LOCATION));
 			writer.optimize();
 			writer.close();
