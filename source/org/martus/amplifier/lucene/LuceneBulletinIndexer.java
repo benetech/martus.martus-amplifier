@@ -49,6 +49,8 @@ import org.martus.common.packet.BulletinHistory;
 import org.martus.common.packet.FieldDataPacket;
 import org.martus.common.packet.UniversalId;
 import org.martus.common.utilities.MartusFlexidate;
+import org.martus.util.UnicodeReader;
+import org.martus.util.UnicodeWriter;
 
 public class LuceneBulletinIndexer 
 	implements BulletinIndexer, LuceneSearchConstants
@@ -119,6 +121,24 @@ public class LuceneBulletinIndexer
 		}
 	}
 	
+	public static boolean isIndexObsolete(File indexDir) throws IOException
+	{
+		if (!IndexReader.indexExists(indexDir)) 
+			return false;
+
+		File indexTypeFile = new File(indexDir, INDEX_TYPE_FILENAME);
+		UnicodeReader reader = new UnicodeReader(indexTypeFile);
+		try
+		{
+			String builtWithClassName = reader.readLine();
+			return(!getAnalyzerName().equals(builtWithClassName));
+		}
+		finally
+		{
+			reader.close();
+		}
+	}
+	
 	/* package */ 
 	static void createIndexIfNecessary(File indexDir)
 		throws IOException
@@ -127,7 +147,22 @@ public class LuceneBulletinIndexer
 			IndexWriter writer = 
 				new IndexWriter(indexDir, getAnalyzer(), true);
 			writer.close();
+			
+			updateIndexTypeFile(indexDir);
 		}
+	}
+	
+	static void updateIndexTypeFile(File indexDir) throws IOException
+	{
+		File file = new File(indexDir, INDEX_TYPE_FILENAME);
+		UnicodeWriter writer = new UnicodeWriter(file);
+		writer.writeln(getAnalyzerName());
+		writer.close();
+	}
+	
+	static String getAnalyzerName()
+	{
+		return ANALYZER.getClass().getName();
 	}
 	
 	/* package */
@@ -245,6 +280,8 @@ public class LuceneBulletinIndexer
 		doc.add(Field.Text(field.getIndexId(), value));				
 	}
 	
+	// NOTE: if the external behavior changes, this class MUST be renamed,
+	// so the search engine can force the index to be rebuilt
 	static class AlphanumericAnalyzer extends Analyzer
 	{
 		public TokenStream tokenStream(String fieldNameUNUSED, Reader reader)
@@ -260,4 +297,5 @@ public class LuceneBulletinIndexer
 	
 	private static final String INDEX_DIR_NAME = "ampIndex";
 	private static final String ALL_FIELD_VALUE_SEPARATOR = "    |    ";
+	private static final String INDEX_TYPE_FILENAME = "indexType.txt";
 }

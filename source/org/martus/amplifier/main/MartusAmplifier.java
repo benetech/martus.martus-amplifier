@@ -67,8 +67,26 @@ public class MartusAmplifier
 	{
 		staticAmplifierDirectory = coreServer.getDataDirectory();
 		deleteLuceneLockFile();
-		String packetsDirectory = getAmplifierPacketsDirectory().getPath();
+
+		File indexDir = LuceneBulletinIndexer.getIndexDir(getStaticAmplifierDataPath());
+		boolean isIndexObsolete;
+		try
+		{
+			isIndexObsolete = LuceneBulletinIndexer.isIndexObsolete(indexDir);
+		}
+		catch(Exception e)
+		{
+			isIndexObsolete = true;
+			log(e.getMessage());
+		}
 		
+		if(isIndexObsolete)
+		{
+			log("ERROR: Index needs to be rebuilt to be compatible with this version of the search engine!");
+			throw new Exception();
+		}
+		
+		String packetsDirectory = getAmplifierPacketsDirectory().getPath();
 		File webAuthorizedUserPasswordFile = getWebPasswordConfigurationFile();
 		if(webAuthorizedUserPasswordFile.exists())
 		{
@@ -92,7 +110,6 @@ public class MartusAmplifier
 		loadAccountsWeWillNotAmplify(getAccountsNotAmplifiedFile());
 		log(notAmplifiedAccountsList.size() + " account(s) will not get amplified");
 
-		File indexDir = LuceneBulletinIndexer.getIndexDir(getStaticAmplifierDataPath());
 		File languagesIndexedFile = new File(indexDir, "languagesIndexed.txt");
 		try
 		{
