@@ -25,8 +25,6 @@ Boston, MA 02111-1307, USA.
 */
 package org.martus.amplifier.presentation;
 
-import java.util.Vector;
-
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.velocity.context.Context;
@@ -35,10 +33,7 @@ public class AdvancedSearch extends AmplifierServlet
 {
 	public String selectTemplate(AmplifierServletRequest request, HttpServletResponse response, Context context)
 	{
-		Vector searchableDateFields = new Vector();
-		
 		context.put("monthFields", MonthFields.getMonthDisplayNames());
-		
 		return "AdvancedSearch.vm";
 	}
 }

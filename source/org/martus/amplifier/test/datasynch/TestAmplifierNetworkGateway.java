@@ -42,7 +42,7 @@ public class TestAmplifierNetworkGateway extends TestAbstractAmplifierDataSynch
 		//.out.println("AccountId2 = "+ sampleAccountId +"  Number of Universal IDs = "+ list.size());
 		for(int i =0; i < list.size(); i++)
 		{
-			String uid = (String) list.get(i);
+			//String uid = (String) list.get(i);
 			//System.out.println("UniversalIDs = "+ uid );
 		}
 		assertTrue(list.size() > 0);	
