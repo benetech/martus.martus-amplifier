@@ -77,3 +77,7 @@ Martus Eclipse Setup (Oct. 31, 2002)
            jcfield450k.jar) can be found in martus-amplifier/buildfiles/jars. 
            These have to be copied to your "jre/lib/ext" directory.
 
+8. Set up linked libraries
+Add the path to the linkedlibraries folder on your computer to your PATH environment variable
+The linkedlibraries folder is in your workspace under buildfiles
+	e.g. D:\Development\eclipse\workspace\martus-amplifier\buildfiles\linkedlibraries_win32
