@@ -35,7 +35,7 @@
 				<tr bgcolor='#dddddd' color='#000000'>
 					<td></td>
 					<td>with the <strong>exact phrase</strong></td>
-					<td><input name="exactPhraseQuery" size="44" value="$info.fields.exactPhraseQuery"></input></td>
+					<td><input name="exactPhraseQuery" size="44" value="$info.fields.exactPhraseQuery"></input></td>										
 					<td bgcolor='#ffffff' ></td>
 				</tr>
 ##			<tr bgcolor='#dddddd' color='#000000'>
@@ -132,9 +132,7 @@
 										#foreach ($monthChoice in $monthFields)						    	
 											<option 
 												#if ($monthChoice.tag == $info.fields.endMonth)
-													selected
-											    #elseif ($monthChoice.tag == $today.month)             	
-											    	selected
+													selected											  
 											    #end	
 												value="$monthChoice.tag">
 											           	$monthChoice.label	                                
@@ -144,11 +142,9 @@
 									<select name="endDay">                    	
 									    #foreach ($day in $days)
 									    	<option
-									    	#if ("$day" == $info.fields.endDay)
-									    		selected									    		
-									    	#elseif ($day == $today.day)
-									    		selected
-									    	#end						    	
+									    	#if ("$day" == $info.fields.endDay) 
+									    		selected		
+									    	#end								    											    					    	
 									        value="$day">	                            		                            		
 									            $day	                                
 									        </option>	                            	                           
@@ -159,9 +155,7 @@
 									    #foreach ($year in $years)
 									    	<option
 									    	#if ("$year" == $info.fields.endYear)
-									    		selected
-									     	#elseif ($year == $today.year)
-									         	selected                            
+									    		selected									     	                         
 									        #end	                            	  
 									        value="$year">	                            		                            		
 									           $year	                                

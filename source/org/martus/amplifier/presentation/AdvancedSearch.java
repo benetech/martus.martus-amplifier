@@ -34,6 +34,7 @@ import org.martus.amplifier.common.AmplifierLocalization;
 import org.martus.amplifier.common.ChoiceEntry;
 import org.martus.amplifier.common.FindBulletinsFields;
 import org.martus.amplifier.common.SearchResultConstants;
+import org.martus.amplifier.common.Today;
 import org.martus.amplifier.velocity.AmplifierServlet;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
 import org.martus.amplifier.velocity.AmplifierServletResponse;
@@ -75,6 +76,10 @@ public class AdvancedSearch extends AmplifierServlet
 		map.put(SearchResultConstants.EXACTPHRASE_TAG, "");	
 		map.put(SearchResultConstants.ANYWORD_TAG, "");
 		map.put(SearchResultConstants.THESE_WORD_TAG, "");
+		map.put(SearchResultConstants.RESULT_END_DAY_KEY, Today.getDayString());
+		map.put(SearchResultConstants.RESULT_END_MONTH_KEY, Today.getMonth());
+		map.put(SearchResultConstants.RESULT_END_YEAR_KEY, Today.getYearString());
+	
 			
 		return new AdvancedSearchInfo(map);		
 	}
