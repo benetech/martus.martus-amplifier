@@ -1,3 +1,4 @@
+
 <form name="search" action="DoSearch?typeOfSearch=quick" method="post">
     <p>
         <input name="query" size="44" value='$defaultSimpleSearch'></input>&nbsp;

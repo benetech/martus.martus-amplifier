@@ -1,6 +1,6 @@
 #set ($barColor = "#5588ee")
 #if ($showSearchForm)
-	<center>
+	<center>					
 		#parse ("MiniSearchForm.vm")
 	    <p>
 		    <font size='-1'>

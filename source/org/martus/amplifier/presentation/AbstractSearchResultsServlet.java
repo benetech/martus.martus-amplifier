@@ -57,8 +57,12 @@ public abstract class AbstractSearchResultsServlet extends AmplifierServlet
 		AmplifierServletSession session = request.getSession();
 		session.setAttribute(SearchResultConstants.RESULT_SORTBY_KEY, sortField);
 		session.setAttribute("foundBulletins", bulletins);
-
+				
 		sortBulletins(bulletins, sortField);
+		String searchType = request.getParameter("typeOfSearch");		
+		if (searchType != null && searchType.equals("quickSearchAll"))
+			Collections.reverse(bulletins);			
+
 		setSearchedForInContext(request.getSession(), context);
 		setSearchResultsContext(bulletins, request, context);
 
@@ -94,15 +98,15 @@ public abstract class AbstractSearchResultsServlet extends AmplifierServlet
 
 	public static void sortBulletins(List bulletinList, final String sortByFieldTag)
 	{
-		Collections.sort(bulletinList, new BulletinSorter(sortByFieldTag));
+		Collections.sort(bulletinList, new BulletinSorter(sortByFieldTag));		
 	}
 
 	static class BulletinSorter implements Comparator
 	{
 		private final String field;
 		BulletinSorter(String field)
-		{
-			super();
+		{			
+			super();	
 			if(field.equals(SearchConstants.SEARCH_EVENT_DATE_INDEX_FIELD))
 				this.field = SearchConstants.SEARCH_EVENT_DATE_INDEX_FIELD +"-start";
 			else
@@ -111,7 +115,8 @@ public abstract class AbstractSearchResultsServlet extends AmplifierServlet
 		public int compare(Object o1, Object o2)
 		{
 			String string1 = ((BulletinInfo)o1).get(field);
-			String string2 = ((BulletinInfo)o2).get(field);	  			  		
+			String string2 = ((BulletinInfo)o2).get(field);
+	
 			return ((Comparable)string1.toLowerCase()).compareTo(string2.toLowerCase());
 		}
 	}
@@ -119,11 +124,14 @@ public abstract class AbstractSearchResultsServlet extends AmplifierServlet
 	protected static String getFieldToSortBy(AmplifierServletRequest request)
 	{
 		AmplifierServletSession session = request.getSession();
+		String searchType = (String) session.getAttribute("typeOfSearch");
+		
 		String sortField = request.getParameter(SearchResultConstants.RESULT_SORTBY_KEY);
 		if (sortField == null)
 			sortField = (String)session.getAttribute(SearchResultConstants.RESULT_SORTBY_KEY);
 		if(sortField == null)
-			sortField = SearchResultConstants.SORT_BY_TITLE_TAG;
+			sortField = (searchType.equals("quickSearchAll"))?
+				SearchConstants.SEARCH_ENTRY_DATE_INDEX_FIELD:SearchResultConstants.SORT_BY_TITLE_TAG;
 		return sortField;
 	}
 

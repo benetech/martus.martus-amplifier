@@ -54,6 +54,12 @@ public class DoSearch extends AbstractSearchResultsServlet
 		String searchedForString = (String)session.getAttribute("searchedFor");
 		String searchType = request.getParameter("typeOfSearch");
 		
+		if (searchType.equals("quickSearchAll"))
+		{	
+			searchedForString = "Search All Bulletins";
+			basicQueryString = "";			
+		}
+		
 		if(basicQueryString != null)
 		{
 			searchedForString = basicQueryString;
@@ -80,16 +86,25 @@ public class DoSearch extends AbstractSearchResultsServlet
 		throws Exception
 	{
 		AmplifierServletSession session = request.getSession();
+		String searchType = (String) session.getAttribute("typeOfSearch");
+		
+		if (searchType.equals("quickSearchAll"))
+		{			
+			RawSearchParameters.clearAdvancedSearch(session);		
+			return getSearchResults(session, new RawSearchParameters(""));
+		}										
+		
 		if (isSimpleSearch(request))
 		{
 			String simpleQueryString = getSimpleSearchString(request);
-			RawSearchParameters.clearAdvancedSearch(session);			
-			
+			RawSearchParameters.clearAdvancedSearch(session);
+					
 			simpleQueryString = CharacterUtil.removeRestrictCharacters(simpleQueryString);
 			RawSearchParameters raw = new RawSearchParameters(simpleQueryString);
-			
+						
 			if (simpleQueryString.equals(""))
 				return new ArrayList();
+					
 			return getSearchResults(session, raw);
 		}
 		else
