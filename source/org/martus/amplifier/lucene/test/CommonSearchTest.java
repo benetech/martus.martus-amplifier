@@ -101,6 +101,31 @@ public abstract class CommonSearchTest
 		return fdp;
 	}
 
+	protected FieldDataPacket generateOtherLanguageData(UniversalId bulletinId)
+	{
+		String author = "Paul";
+		String keyword = "ate";
+		String keywords = keyword + " egg salad root beer";
+		String title = "other language?";
+		String eventdate = "2003-04-10";
+		String entrydate = "2003-05-11";
+		String publicInfo = "menu";
+		String language = "?";
+		String organization = "test sample";
+		String summary = 
+			"Today Paul ate an egg salad sandwich and a root beer " +
+			"for lunch.";
+		String location = "San Francisco, CA";
+		
+		String attachment1LocalId = "att1Id";
+		String attachment1Label = "Eggs.gif";
+		String attachment2LocalId = "att2Id";
+		String attachment2Label = "Recipe.txt";
+		
+		FieldDataPacket fdp = createFieldDataPacket(bulletinId, author, keywords, title, eventdate, entrydate, publicInfo, summary, location, attachment1LocalId, attachment1Label, attachment2LocalId, attachment2Label, language, organization);
+		return fdp;
+	}
+
 	protected FieldDataPacket generateSampleFlexiData(UniversalId bulletinId)
 	{
 		String author = "Chuck";	

@@ -419,6 +419,41 @@ public class TestLuceneSearcher extends CommonSearchTest
 		}
 	}
 
+/*
+ * TODO:Add this test back once Exact Prase wildcards are allowed.
+ *	public void testSearchForOtherLanguage() throws Exception
+	{
+		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
+		FieldDataPacket fdp1 	= generateOtherLanguageData(bulletinId1);		
+		BulletinIndexer indexer = openBulletinIndexer();
+		try 
+		{
+			indexer.clearIndex();
+			indexer.indexFieldData(bulletinId1, fdp1);
+		} 
+		finally 
+		{
+			indexer.close();
+		}
+		
+		BulletinSearcher searcher = openBulletinSearcher();
+		Results results = null;
+		try 
+		{
+			HashMap fields = new HashMap();
+			fields.put(RESULT_LANGUAGE_KEY, "\"?\"");						
+			results = searcher.search(fields);
+			assertEquals("Should have found 1 result ?", 1, results.getCount());
+			BulletinInfo info = results.getBulletinInfo(0);
+			assertEquals("The Language returned not correct?", "?", info.get(SEARCH_LANGUAGE_INDEX_FIELD));
+		}
+		finally 
+		{
+			searcher.close();
+		}
+	}
+*/
+	
 	public void testSearchEmptyField() throws Exception
 	{
 		UniversalId bulletinId 	= UniversalId.createDummyUniversalId();
