@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.apache.xalan.transformer.KeyIterator;
 import org.martus.amplifier.service.attachment.IAttachmentConstants;
 import org.martus.amplifier.service.attachment.api.AttachmentInfo.InvalidAttachmentInfoException;
 

@@ -1,9 +1,8 @@
 package org.martus.amplifier.service.search;
 
-import org.martus.common.UniversalId;
-import org.martus.amplifier.service.search.api.IBulletinCatalog;
-import org.martus.amplifier.service.search.IBulletinConstants;
 import org.apache.lucene.search.Hits;
+import org.martus.amplifier.service.search.api.IBulletinCatalog;
+import org.martus.common.UniversalId;
 
 /**
  * A class that represents a catalog of all of the 

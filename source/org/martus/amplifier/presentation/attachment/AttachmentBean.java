@@ -4,7 +4,6 @@ import org.apache.lucene.document.Document;
 import org.martus.amplifier.service.attachment.AttachmentManager;
 import org.martus.amplifier.service.search.IBulletinConstants;
 import org.martus.common.UniversalId;
-import org.martus.common.UniversalId.NotUniversalIdException;
 
 public class AttachmentBean implements IBulletinConstants
 {

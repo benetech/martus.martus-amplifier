@@ -1,16 +1,13 @@
 package org.martus.amplifier.common.datasynch;
 
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.IOException;
-import java.util.Vector;
+import java.io.OutputStream;
 import java.io.StringReader;
-
-import org.martus.amplifier.common.datasynch.AmplifierBulletinRetrieverGatewayInterface;
+import java.util.Vector;
 
 import org.martus.common.Base64;
-import org.martus.common.MartusUtilities;
 import org.martus.common.MartusCrypto;
+import org.martus.common.MartusUtilities;
 import org.martus.common.NetworkInterfaceConstants;
 import org.martus.common.NetworkResponse;
 import org.martus.common.ProgressMeterInterface;

@@ -11,11 +11,7 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 
 import org.apache.xmlrpc.XmlRpcClient;
-
-import org.martus.common.NetworkInterface;
 import org.martus.common.NetworkInterfaceConstants;
-
-import org.martus.amplifier.common.datasynch.AmplifierNetworkInterfaceXmlRpcConstants;
 /**
  * @author skoneru
  *

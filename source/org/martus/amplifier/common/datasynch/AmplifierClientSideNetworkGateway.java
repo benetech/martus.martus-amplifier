@@ -2,7 +2,6 @@ package org.martus.amplifier.common.datasynch;
 
 import java.util.Vector;
 
-
 import org.martus.common.MartusCrypto;
 import org.martus.common.MartusUtilities;
 import org.martus.common.NetworkResponse;

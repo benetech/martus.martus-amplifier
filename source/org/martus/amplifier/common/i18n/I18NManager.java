@@ -1,6 +1,5 @@
 package org.martus.amplifier.common.i18n;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Locale;

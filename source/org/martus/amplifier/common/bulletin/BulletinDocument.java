@@ -1,30 +1,26 @@
 package org.martus.amplifier.common.bulletin;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.Reader;
-import java.io.FileInputStream;
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
-
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
-
 import org.apache.lucene.document.DateField;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.martus.amplifier.service.attachment.AttachmentManager;
-import org.martus.amplifier.service.attachment.api.*;
+import org.martus.amplifier.service.attachment.api.AttachmentInfoListFactory;
 import org.martus.amplifier.service.search.IBulletinConstants;
 import org.martus.amplifier.service.search.ISearchConstants;
-import org.martus.common.Bulletin;
 import org.martus.common.BulletinHeaderPacket;
 import org.martus.common.FieldDataPacket;
 import org.martus.common.MartusCrypto;
@@ -168,7 +164,7 @@ public class BulletinDocument implements IBulletinConstants, ISearchConstants
     		ZipFile zip = new ZipFile(file);
 			MartusCrypto crypto = new MartusSecurity();
 			BulletinHeaderPacket header = BulletinHeaderPacket.loadFromZipFile(zip, crypto);
-			UniversalId universalId = header.createUniversalId(header.getAccountId());
+			UniversalId universalId = BulletinHeaderPacket.createUniversalId(header.getAccountId());
 			String[] fields = BULLETIN_FIELDS;
 			FieldDataPacket packet = new FieldDataPacket(universalId, fields);
 			

@@ -3,39 +3,26 @@ package org.martus.amplifier.service.datasynch;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
 import java.util.Vector;
-import java.util.zip.ZipFile;
-import java.util.zip.ZipEntry;
 import java.util.logging.Logger;
 
 import org.martus.amplifier.common.configuration.AmplifierConfiguration;
 import org.martus.amplifier.common.datasynch.AmplifierBulletinRetrieverGatewayInterface;
 import org.martus.amplifier.common.datasynch.AmplifierClientSideNetworkGateway;
-import org.martus.amplifier.common.datasynch.AmplifierNetworkInterface;
 import org.martus.amplifier.common.datasynch.AmplifierClientSideNetworkHandlerUsingXMLRPC;
+import org.martus.amplifier.common.datasynch.AmplifierNetworkInterface;
 import org.martus.amplifier.common.datasynch.AmplifierClientSideNetworkHandlerUsingXMLRPC.SSLSocketSetupException;
-import org.martus.amplifier.exception.MartusAmplifierApplicationException;
-import org.martus.amplifier.service.datasynch.BackupServerInfo;
-import org.martus.amplifier.service.datasynch.BackupServerManager;
-
-//imported from Martus Common Code
 import org.martus.common.MartusCrypto;
 import org.martus.common.MartusSecurity;
 import org.martus.common.MartusUtilities;
-import org.martus.common.NetworkResponse;
 import org.martus.common.NetworkInterfaceConstants;
-import org.martus.common.NetworkInterfaceXmlRpcConstants;
-import org.martus.common.Base64.InvalidBase64Exception;
-import org.martus.common.MartusCrypto.MartusSignatureException;
-import org.martus.common.MartusUtilities.ServerErrorException;
+import org.martus.common.NetworkResponse;
 import org.martus.common.UniversalId;
+import org.martus.common.MartusUtilities.ServerErrorException;
 
 public class AmplifierNetworkGateway implements IDataSynchConstants
 {

@@ -99,6 +99,8 @@ public class AttachmentManager implements IAttachmentConstants, IAttachmentManag
 		try
 		{
 			error = attachmentIdTable.put(null, key, value, Db.DB_NOOVERWRITE);
+			if(error != 0)
+				throw new DbException("Problems finding attachment.");
 		}
 		catch(DbException de)
 		{
@@ -110,9 +112,7 @@ public class AttachmentManager implements IAttachmentConstants, IAttachmentManag
 	{
 		UniversalIdDbt key = new UniversalIdDbt(UniversalBulletinId);
 		StringDbt returnValue = new StringDbt();
-		File result = null;
 		List attachmentIdList = new ArrayList();
-		int error = 0;
 		Dbc attachmentIdCursor = null;
 		try
 		{
@@ -148,6 +148,8 @@ public class AttachmentManager implements IAttachmentConstants, IAttachmentManag
 		try
 		{
 			error = attachmentNameTable.put(null, key, value, Db.DB_NOOVERWRITE);
+			if(error != 0)
+				throw new DbException("Problems finding attachment.");
 		}
 		catch(DbException de)
 		{
@@ -159,7 +161,6 @@ public class AttachmentManager implements IAttachmentConstants, IAttachmentManag
 	{
 		UniversalIdDbt key = new UniversalIdDbt(UniversalBulletinId);
 		StringDbt returnValue = new StringDbt();
-		File result = null;
 		int error = 0;
 		try
 		{
@@ -182,6 +183,8 @@ public class AttachmentManager implements IAttachmentConstants, IAttachmentManag
 		try
 		{
 			error = attachmentFileTable.put(null, key, value, Db.DB_NOOVERWRITE);
+			if(error != 0)
+				throw new DbException("Problems finding attachment.");
 		}
 		catch(DbException de)
 		{
@@ -193,7 +196,6 @@ public class AttachmentManager implements IAttachmentConstants, IAttachmentManag
 	{
 		UniversalIdDbt key = new UniversalIdDbt(UniversalBulletinId);
 		FileDbt returnValue = new FileDbt();
-		File result = null;
 		int error = 0;
 		try
 		{

@@ -3,8 +3,8 @@ package org.martus.amplifier.common.bulletin;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.martus.common.UniversalId;
 import org.martus.amplifier.exception.MartusAmplifierRuntimeException;
+import org.martus.common.UniversalId;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;

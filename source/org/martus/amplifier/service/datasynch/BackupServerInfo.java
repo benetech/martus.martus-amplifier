@@ -11,10 +11,10 @@ public class BackupServerInfo
 		serverPublicKey = newServerPublicKey;
 	}
 
-	private String name = null;
-	private String address = null;
-	private int port = 0;
-	private String serverPublicKey = null;
+	String name = null;
+	String address = null;
+	int port = 0;
+	String serverPublicKey = null;
 	
 	public String getAddress()
 	{

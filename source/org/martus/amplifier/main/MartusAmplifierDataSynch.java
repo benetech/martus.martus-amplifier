@@ -22,7 +22,7 @@ public class MartusAmplifierDataSynch {
 		super();
 	}
 
-	public static void execute() 
+	public void execute() 
 	{
 		
 		try

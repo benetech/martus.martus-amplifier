@@ -2,7 +2,6 @@ package org.martus.amplifier.service.datasynch;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Logger;
@@ -21,7 +20,7 @@ public class BackupServerManager implements IDataSynchConstants
 		{
 			logger.severe("Unable to load backup server configuration file.");
 		}
-		Enumeration serverNames = backupServerProperties.propertyNames();
+
 		String currentServerIP = null;
 		String currentServerName = null;
 		String currentServerPortString = null;
@@ -37,14 +36,6 @@ public class BackupServerManager implements IDataSynchConstants
 			currentServerPort = Integer.parseInt(currentServerPortString);
 		backupServersList.add(new BackupServerInfo(currentServerName,
 			currentServerIP, currentServerPort, serverPublicKey));
-		
-		
-		/*while(serverNames.hasMoreElements())
-		{
-			currentServerName = (String) serverNames.nextElement();
-			currentServerIP = backupServerProperties.getProperty(currentServerName);
-			backupServersList.add(currentServerIP);
-		}*/
 	}
 
 	public List getBackupServersList() 

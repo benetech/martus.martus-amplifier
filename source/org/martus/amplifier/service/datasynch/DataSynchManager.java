@@ -1,13 +1,12 @@
 package org.martus.amplifier.service.datasynch;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
-import org.martus.common.UniversalId;
-import org.martus.amplifier.service.datasynch.AmplifierNetworkGateway;
-import org.martus.amplifier.service.search.BulletinIndexer;
 import org.martus.amplifier.service.search.BulletinCatalog;
+import org.martus.amplifier.service.search.BulletinIndexer;
+import org.martus.common.UniversalId;
 
 public class DataSynchManager implements IDataSynchConstants
 {
