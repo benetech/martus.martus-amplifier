@@ -1,10 +1,11 @@
-<%@ page import = "javax.servlet.*, javax.servlet.http.*, java.io.*, org.apache.lucene.search.Hits, org.martus.amplifier.presentation.search.SearchResultsBean" %>
+<%@ page import = "javax.servlet.*, javax.servlet.http.*, java.io.*, org.apache.lucene.search.Hits, org.martus.amplifier.presentation.search.SearchResultsBean, org.apache.lucene.document.Document" %>
 <jsp:useBean id="searchResultsBean" class="org.martus.amplifier.presentation.search.SearchResultsBean" />
 <%
     String queryString = request.getParameter("query");           //get the search criteria
     Hits hits = null;         
     String startVal    = request.getParameter("startat");         //get the start index
     String maxresults  = request.getParameter("maxresults");      //get max results per page
+    String field 	= request.getParameter("field");
     int maxpage = 50;
     int startindex = 0;
 
@@ -22,7 +23,7 @@
             throw new ServletException("no query "+       //if you don't have a query then
                                        "specified");      //you probably played on the 
     if(hits == null)
-        hits= searchResultsBean.getSearchResults(queryString);
+        hits= searchResultsBean.getSearchResults(field, queryString);
     
 %>
                 <table>
@@ -31,7 +32,8 @@
                         <td>Summary</td>
                 </tr>
 <%
-                if ((startindex + maxpage) > hits.length()) 
+                int thispage = 0;
+		if ((startindex + maxpage) > hits.length()) 
 		{
                 	thispage = hits.length() - startindex;      // set the max index to maxpage or last
                 }                                                   // actual search result whichever is less
