@@ -141,7 +141,9 @@ public class TestLuceneSearcher extends CommonSearchTest
 			fields = new HashMap();
 			fields.put(RESULT_BASIC_QUERY_KEY, fdp1.get(SEARCH_DETAILS_INDEX_FIELD));											
 			Assert.assertEquals(1, searcher.search(fields).getCount());
-		} finally {
+		} 
+		finally 
+		{
 			searcher.close();
 		}
 		
@@ -308,6 +310,13 @@ public class TestLuceneSearcher extends CommonSearchTest
 			fields.put(RESULT_BASIC_QUERY_KEY, "Luch");								
 			results = searcher.search( fields);	
 			assertEquals("Should not have found a result for a word 'Luch' not in the bulletin", 0, results.getCount());
+			
+			
+			fields.remove(RESULT_BASIC_QUERY_KEY);
+			fields.put(RESULT_BASIC_QUERY_KEY, "Eggs.gif");								
+			results = searcher.search( fields);	
+			assertEquals("Didn't search attachment labels?", 1, results.getCount());
+			
 			
 		} 
 		finally 
