@@ -13,7 +13,6 @@ import org.martus.amplifier.service.search.BulletinField;
 import org.martus.amplifier.service.search.BulletinIndexException;
 import org.martus.amplifier.service.search.BulletinIndexer;
 import org.martus.common.FieldSpec;
-import org.martus.common.MartusUtilities;
 import org.martus.common.bulletin.AttachmentProxy;
 import org.martus.common.crypto.MartusCrypto;
 import org.martus.common.crypto.MartusCrypto.DecryptionException;
@@ -111,7 +110,7 @@ public class BulletinExtractor
 					"No entry " + attachmentId.getLocalId() + 
 					" found for account " + attachmentId.getAccountId());
 			}
-			proxy = MartusUtilities.createFileProxyFromAttachmentPacket(
+			proxy = AttachmentProxy.createFileProxyFromAttachmentPacket(
 				new ZipEntryInputStream(bulletinZipFile, attachmentEntry), 
 				proxy, verifier);
 			InputStream attachmentData = new FileInputStream(proxy.getFile());

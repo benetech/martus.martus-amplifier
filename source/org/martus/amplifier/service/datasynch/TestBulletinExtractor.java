@@ -102,7 +102,7 @@ public class TestBulletinExtractor extends AbstractAmplifierTest
 		attachments[0] = createAttachment("Attachment 1");
 		attachments[1] = createAttachment("Attachment 2");
 		Bulletin b = createSampleBulletin(attachments);
-		BulletinSaver.saveToDatabase(b, db, false, security);
+		BulletinSaver.saveToClientDatabase(b, db, false, security);
 		File f = createBulletinZipFile(b);
 		
 		try {
