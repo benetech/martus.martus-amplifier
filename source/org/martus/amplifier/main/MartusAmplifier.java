@@ -158,7 +158,7 @@ public class MartusAmplifier
 		Server nonsslServer = new Server();
 		nonsslServer.addWebApplication("", getPresentationBasePath() + "presentationNonSSL");
 		InetAddrPort nonssllistener = new InetAddrPort(80);
-		nonssllistener.setInetAddress(ampIpAddress);
+		nonssllistener.setInetAddress(getAmpIpAddress());
 		nonsslServer.addListener(nonssllistener);
 		
 		nonsslServer.start();
@@ -167,7 +167,7 @@ public class MartusAmplifier
 	private void startSSLServer(String password) throws IOException, MultiException
 	{
 		SunJsseListener sslListener = new SunJsseListener(new InetAddrPort(443));
-		sslListener.setInetAddress(ampIpAddress);
+		sslListener.setInetAddress(getAmpIpAddress());
 		sslListener.setPassword(password);
 		sslListener.setKeyPassword(password);
 		sslListener.setMaxIdleTimeMs(MAX_IDLE_TIME_MS);
@@ -202,18 +202,7 @@ public class MartusAmplifier
 			if(argument.equals("nopassword"))
 				insecurePassword = "password";
 			if(argument.startsWith(ampipTag))
-			{
-				String ip = argument.substring(ampipTag.length());
-				try
-				{
-					ampIpAddress = InetAddress.getByName(ip);
-				}
-				catch (UnknownHostException e)
-				{
-					ampIpAddress = null;
-					e.printStackTrace();
-				}
-			}
+				ampIpAddress = argument.substring(ampipTag.length());
 
 			if(argument.startsWith(indexEveryXHourTag))
 			{	
@@ -241,6 +230,19 @@ public class MartusAmplifier
 			System.out.println("Running in SECURE mode");
 		else
 			System.out.println("***RUNNING IN INSECURE MODE***");
+	}
+	
+	private static InetAddress getAmpIpAddress()
+	{
+		try
+		{
+			return InetAddress.getByName(ampIpAddress);
+		}
+		catch (UnknownHostException e)
+		{
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	private void displayStatistics() throws InvalidBase64Exception
@@ -591,7 +593,7 @@ public class MartusAmplifier
 	}
 
 	boolean secureMode;
-	private InetAddress ampIpAddress;
+	private static String ampIpAddress;
 	static String insecurePassword;
 	public static File dataDirectory;	
 
