@@ -30,11 +30,13 @@ import java.util.List;
 import java.util.Vector;
 
 import org.apache.velocity.context.Context;
+import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.presentation.DoSearch;
 import org.martus.amplifier.presentation.SimpleSearch;
 import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinInfo;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
+import org.martus.amplifier.velocity.AmplifierServletSession;
 import org.martus.common.packet.UniversalId;
 import org.martus.common.test.TestCaseEnhanced;
 
@@ -123,6 +125,27 @@ public class TestDoSearch extends TestCaseEnhanced
 		
 		assertEquals("The defaultSimpleSearch match.", sampleQuery, context.get("defaultSimpleSearch"));				
 	}	
+	
+	public void testSortBy() throws Exception
+	{
+		MockAmplifierRequest request = new MockAmplifierRequest();
+		MockAmplifierResponse response = null;
+		Context context = new MockContext();
+		AmplifierServletSession session = request.getSession();
+		
+		String sortBy = "language";
+		
+		DoSearch sr = new DoSearch();
+		String sampleQueryString = "owiefijweofiejoifoiwjefoiwef";
+		request.putParameter("query", sampleQueryString);
+		
+		sr.selectTemplate(request, response, context);
+		assertEquals("title", session.getAttribute(SearchResultConstants.RESULT_SORTBY_KEY));
+		
+		request.putParameter(SearchResultConstants.RESULT_SORTBY_KEY, sortBy);
+		sr.selectTemplate(request, response, context);
+		assertEquals(sortBy, session.getAttribute(SearchResultConstants.RESULT_SORTBY_KEY));
+	}
 
 	
 /*	private Context createSampleSearchResults(MockAmplifierRequest request, HttpServletResponse response) throws Exception

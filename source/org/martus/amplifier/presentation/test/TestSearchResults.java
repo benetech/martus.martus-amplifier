@@ -34,6 +34,7 @@ import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.presentation.SearchResults;
 import org.martus.amplifier.presentation.SimpleSearch;
 import org.martus.amplifier.search.BulletinInfo;
+import org.martus.amplifier.velocity.AmplifierServletSession;
 import org.martus.common.packet.UniversalId;
 import org.martus.common.test.TestCaseEnhanced;
 
@@ -50,19 +51,42 @@ public class TestSearchResults extends TestCaseEnhanced
 		MockAmplifierResponse response = null;
 		Context context = new MockContext();
 		
+		String fieldToSortBy = "title";
+
 		BulletinList data = new BulletinList();
-		request.getSession().setAttribute("foundBulletins", data.getList());
-		request.putParameter(SearchResultConstants.RESULT_SORTBY_KEY, "title");
+		AmplifierServletSession session = request.getSession();
+		session.setAttribute(tagFoundBulletins, data.getList());
+		request.putParameter(SearchResultConstants.RESULT_SORTBY_KEY, fieldToSortBy);
 		SearchResults sr = new SearchResults();
 		
 		String templateName = sr.selectTemplate(request, response, context);
 		assertEquals("SearchResults.vm", templateName);
 
-		BulletinInfo item1 = (BulletinInfo)((Vector)context.get("foundBulletins")).get(0);
-		assertEquals("Bulletins not sorted by title in context?", bulletin1Title, item1.get("title"));
+		BulletinInfo item1FromContext = (BulletinInfo)((Vector)context.get(tagFoundBulletins)).get(0);
+		assertEquals("Bulletins not sorted by title in context?", bulletin1Title, item1FromContext.get(fieldToSortBy));
 
-		BulletinInfo item1Session = (BulletinInfo)((Vector)request.getSession().getAttribute("foundBulletins")).get(0);
-		assertEquals("Bulletins not sorted by title in session?", bulletin1Title, item1Session.get("title"));
+		BulletinInfo item1FromSession = (BulletinInfo)((Vector)session.getAttribute(tagFoundBulletins)).get(0);
+		assertEquals("Bulletins not sorted by title in session?", bulletin1Title, item1FromSession.get(fieldToSortBy));
+		
+		assertEquals("Didn't save sort in session?", fieldToSortBy, session.getAttribute(SearchResultConstants.RESULT_SORTBY_KEY));
+	}
+	
+	public void testReuseSortFromSession() throws Exception
+	{
+		MockAmplifierRequest request = new MockAmplifierRequest();
+		MockAmplifierResponse response = null;
+		Context context = new MockContext();
+		
+		String fieldToSortBy = "title";
+
+		AmplifierServletSession session = request.getSession();
+		session.setAttribute(SearchResultConstants.RESULT_SORTBY_KEY, fieldToSortBy);
+		session.setAttribute(tagFoundBulletins, new BulletinList().getList());
+		SearchResults sr = new SearchResults();
+		String templateName = sr.selectTemplate(request, response, context);
+		assertEquals("SearchResults.vm", templateName);
+		
+		assertEquals("Didn't reuse sort from session?", fieldToSortBy, session.getAttribute(SearchResultConstants.RESULT_SORTBY_KEY));
 	}
 
 	public void testSearchedFor() throws Exception
@@ -137,6 +161,8 @@ public class TestSearchResults extends TestCaseEnhanced
 	final String bulletin1Language = "en";
 	final String bulletin2Language = "es";
 	final String bulletin3Language = "un";
+
+	final String tagFoundBulletins = "foundBulletins";
 
 
 	class BulletinList

@@ -38,6 +38,7 @@ import org.martus.amplifier.search.SearchConstants;
 import org.martus.amplifier.velocity.AmplifierServlet;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
 import org.martus.amplifier.velocity.AmplifierServletResponse;
+import org.martus.amplifier.velocity.AmplifierServletSession;
 
 
 public class SearchResults extends AmplifierServlet implements SearchResultConstants
@@ -50,12 +51,28 @@ public class SearchResults extends AmplifierServlet implements SearchResultConst
 		
 		setSearchedFor(request, context);
 
-		String sortField = request.getParameter(RESULT_SORTBY_KEY);
+		String sortField = getSortByAndUpdateSession(request);
+
 		Vector bulletins = (Vector)request.getSession().getAttribute("foundBulletins");
 		sortBulletins(bulletins, sortField);
 
 		setReturnContext(request, bulletins, context);
 		return "SearchResults.vm";				
+	}
+
+
+	static public String getSortByAndUpdateSession(AmplifierServletRequest request)
+	{
+		AmplifierServletSession session = request.getSession();
+		
+		String sortField = request.getParameter(RESULT_SORTBY_KEY);
+		if(sortField == null)
+			sortField = (String)session.getAttribute(RESULT_SORTBY_KEY);
+		if(sortField == null)
+			sortField = SORT_BY_TITLE_TAG;
+		session.setAttribute(RESULT_SORTBY_KEY, sortField);
+		
+		return sortField;
 	}
 	
 
@@ -66,7 +83,8 @@ public class SearchResults extends AmplifierServlet implements SearchResultConst
 		context.put("totalBulletins", new Integer(bulletins.size()));
 		Vector sortByFields = FindBulletinsFields.getSortByFieldDisplayNames();
 		context.put("sortByFields", sortByFields);
-		context.put("currentlySortingBy", request.getParameter(RESULT_SORTBY_KEY));
+		String sortBy = request.getParameter(RESULT_SORTBY_KEY);
+		context.put("currentlySortingBy", sortBy);
 	}
 
 

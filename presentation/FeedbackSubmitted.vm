@@ -1,18 +1,38 @@
 <html>
     <head>
    		#parse("Meta.vm")
-        <title>Martus Amplifier Feedback Submitted</title>
+        <title>Feedback Submitted</title>
     </head>
     
     <body>
-    	#set ($pageTitle="Feedback Submitted")
+    	#set ($pageTitle="Thank you for your feedback")
     	#set ($pageInfo="")
-		#set ($noSearchForm = "1")
+		#set ($showSearchForm = true)
 		#parse ("ResultHeader.vm")
 		<br/>
-			Thanks for your feedback.
-		<br/>
-        #set ($noSearchForm = "1")
-        #parse ("ResultFooter.vm")
+			<p>
+			We greatly appreciate hearing your suggestions and reports of 
+			problems. Your comments are being sent to the Martus Search 
+			development team for evaluation.
+			Please be aware that we do not normally respond to individual problem reports, 
+			even if you have included your email address.
+			</p>
+			<p>
+			If you need help using Martus Search or would like to learn more, 
+			you can find more information on 
+			<a href='http://www.martus.org/help/index.html'>
+				this help page</a>.
+			</p>
+		<ul>
+        	<li>
+        		Return to the most recent <a href='SearchResults'>search results</a>
+        	</li>
+			<li>
+				Return to the <a href='SimpleSearch'>Martus Search home page</a>
+			</li>
+		</ul>
+		<br/><br/>
+		#set ($showSearchForm = true)
+		#parse ("ResultFooter.vm")
     </body>
 </html>
