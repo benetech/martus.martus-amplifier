@@ -1,3 +1,29 @@
+/*
+
+The Martus(tm) free, social justice documentation and
+monitoring software. Copyright (C) 2001-2003, Beneficent
+Technology, Inc. (Benetech).
+
+Martus is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either
+version 2 of the License, or (at your option) any later
+version with the additions and exceptions described in the
+accompanying Martus license file entitled "license.txt".
+
+It is distributed WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, including warranties of fitness of purpose or
+merchantability.  See the accompanying Martus License and
+GPL license for more details on the required license terms
+for this software.
+
+You should have received a copy of the GNU General Public
+License along with this program; if not, write to the Free
+Software Foundation, Inc., 59 Temple Place - Suite 330,
+Boston, MA 02111-1307, USA.
+
+*/
+
 package org.martus.amplifier.lucene;
 
 import java.io.File;
@@ -95,10 +121,13 @@ public class LuceneBulletinSearcher
 			throw new BulletinIndexException( msg + query, pe);
 		}
 	}				
-		
-	private Query getEventDateQuery(Date startDate, Date endDate)
-			throws BulletinIndexException
+	
+	private Query queryEventDate(HashMap fields)
+			throws BulletinIndexException 
 	{
+		Date startDate	= (Date) fields.get(SEARCH_EVENT_START_DATE_INDEX_FIELD);
+		Date endDate 	= (Date) fields.get(SEARCH_EVENT_END_DATE_INDEX_FIELD);
+
 		String startDateString = setRangeQuery("*", DateField.dateToString(endDate));
 		String endDateString   = setRangeQuery(DateField.dateToString(startDate), "?");
 
@@ -106,18 +135,10 @@ public class LuceneBulletinSearcher
 		queryString += AND+ getFieldQuery(SearchConstants.SEARCH_EVENT_END_DATE_INDEX_FIELD,endDateString);
 		
 		return queryParser(queryString,SEARCH_EVENT_DATE_INDEX_FIELD, "Improperly formed query: ");
+	
 	}
 	
-	private Query handleEventDateQuery(HashMap fields)
-			throws BulletinIndexException 
-	{
-		Date startDate	= (Date) fields.get(SEARCH_EVENT_START_DATE_INDEX_FIELD);
-		Date endDate 	= (Date) fields.get(SEARCH_EVENT_END_DATE_INDEX_FIELD);
-
-		return (startDate != null && endDate != null)? getEventDateQuery(startDate, endDate):null;				
-	}
-	
-	private Query handleEntryDateQuery(HashMap fields)
+	private Query queryEntryDate(HashMap fields)
 			throws BulletinIndexException 
 	{		
 		Date startDate	= (Date) fields.get(SEARCH_ENTRY_DATE_INDEX_FIELD);
@@ -132,7 +153,7 @@ public class LuceneBulletinSearcher
 			"Improperly formed advanced find entry date type in bulletin query: ");		
 	}	
 	
-	private Query handleFindLanguageQuery(HashMap fields)
+	private Query queryLanguage(HashMap fields)
 			throws BulletinIndexException
 	{
 		Query query = null;
@@ -144,7 +165,7 @@ public class LuceneBulletinSearcher
 		return query;
 	} 
 	
-	private Query handleFindBulletinsQuery(String query, HashMap fields)
+	private Query queryMultiBulletinFields(String query, HashMap fields)
 			throws BulletinIndexException 
 	{		
 		Query fieldQuery = null;
@@ -166,18 +187,18 @@ public class LuceneBulletinSearcher
 			throws BulletinIndexException 
 	{
 		BooleanQuery query = new BooleanQuery();
-		Query foundEventDateQuery = handleEventDateQuery(fields);					
+		Query foundEventDateQuery = queryEventDate(fields);					
 		query.add(foundEventDateQuery, true, false);
 		
-		Query foudBulletinsQuery = handleFindBulletinsQuery(queryString, fields);
+		Query foudBulletinsQuery = queryMultiBulletinFields(queryString, fields);
 		if (foudBulletinsQuery != null)
 			query.add(foudBulletinsQuery, true, false);
 			
-		Query foudLanguageQuery = handleFindLanguageQuery(fields);
+		Query foudLanguageQuery = queryLanguage(fields);
 		if (foudLanguageQuery != null)
 			query.add(foudLanguageQuery, true, false);
 			
-		Query foudEntryDateQuery = handleEntryDateQuery(fields);
+		Query foudEntryDateQuery = queryEntryDate(fields);
 
 		if (foudEntryDateQuery != null)
 			query.add(foudEntryDateQuery, true, false);			

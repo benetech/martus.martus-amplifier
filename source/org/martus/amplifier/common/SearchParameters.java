@@ -131,8 +131,10 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 			newString = addSign(NOT, text);			
 		else if (filterType.equals(EXACTPHRASE_TAG))
 			newString = "\""+text+"\"";
-		else 
+		else if (filterType.equals(THESE_WORD_TAG))
 			newString = addSign(PLUS, text);
+		else
+			newString = "("+text+")";
 	
 		return newString;
 	}

@@ -1,4 +1,28 @@
+/*
 
+The Martus(tm) free, social justice documentation and
+monitoring software. Copyright (C) 2001-2003, Beneficent
+Technology, Inc. (Benetech).
+
+Martus is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either
+version 2 of the License, or (at your option) any later
+version with the additions and exceptions described in the
+accompanying Martus license file entitled "license.txt".
+
+It is distributed WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, including warranties of fitness of purpose or
+merchantability.  See the accompanying Martus License and
+GPL license for more details on the required license terms
+for this software.
+
+You should have received a copy of the GNU General Public
+License along with this program; if not, write to the Free
+Software Foundation, Inc., 59 Temple Place - Suite 330,
+Boston, MA 02111-1307, USA.
+
+*/
 package org.martus.amplifier.lucene;
 
 import java.io.IOException;
@@ -47,36 +71,42 @@ public class LuceneResults implements Results, LuceneSearchConstants, SearchCons
 			return info;
 		}
 		
+		private static BulletinField getField(String fieldId) throws BulletinIndexException
+		{
+			BulletinField field = BulletinField.getFieldByXmlId(fieldId);
+			if (field == null) 
+			{
+				throw new BulletinIndexException(
+					"Unknown field " + fieldId);
+			}
+			return field;
+		}
+		
 		private static void addAllEmptyFields(BulletinInfo info)
 			throws BulletinIndexException
 		{
 			String[] fieldIds = BulletinField.getSearchableXmlIds();
-			for (int i = 0; i < fieldIds.length; i++) {
-				BulletinField field = BulletinField.getFieldByXmlId(fieldIds[i]);
-				if (field == null) {
-					throw new BulletinIndexException(
-						"Unknown field " + fieldIds[i]);
-				}
+			for (int i = 0; i < fieldIds.length; i++) 
+			{
+				BulletinField field = getField(fieldIds[i]);
 				info.set(field.getIndexId(), "");
 			}
-		}
+		}			
 		
 		private static void addFields(BulletinInfo info, Document doc) 
 			throws BulletinIndexException
 		{
 			String[] fieldIds = BulletinField.getSearchableXmlIds();
-			for (int i = 0; i < fieldIds.length; i++) {
-				BulletinField field = BulletinField.getFieldByXmlId(fieldIds[i]);
-				if (field == null) {
-					throw new BulletinIndexException(
-						"Unknown field " + fieldIds[i]);
-				}
+			for (int i = 0; i < fieldIds.length; i++) 
+			{
+				BulletinField field = getField(fieldIds[i]);
+				
 				String value = doc.get(field.getIndexId());
 				if (value != null) 
 				{
 					if (field.isDateField()) 														
 						value = SEARCH_DATE_FORMAT.format(DateField.stringToDate(value));
-					 	
+				 	
 					if (field.isDateRangeField())
 					{
 						String startDate = LuceneBulletinSearcher.getStartDateRange(value);
