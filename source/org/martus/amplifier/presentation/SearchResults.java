@@ -25,7 +25,8 @@ Boston, MA 02111-1307, USA.
 */
 package org.martus.amplifier.presentation;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.martus.amplifier.velocity.AmplifierServletRequest;
 import org.martus.amplifier.velocity.AmplifierServletSession;
@@ -37,12 +38,12 @@ public class SearchResults extends AbstractSearchResultsServlet
 	{
 	}
 
-	Vector getBulletinsToDisplay(AmplifierServletRequest request)
+	List getBulletinsToDisplay(AmplifierServletRequest request)
 	{
 		AmplifierServletSession session = request.getSession();
-		Vector bulletins = (Vector)session.getAttribute("foundBulletins");
+		List bulletins = (List)session.getAttribute("foundBulletins");
 		if(bulletins == null)
-			bulletins = new Vector();
+			bulletins = new ArrayList();
 		return bulletins;
 	}
 

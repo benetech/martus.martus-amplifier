@@ -27,10 +27,8 @@ package org.martus.amplifier.presentation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 import org.martus.amplifier.common.AmplifierConfiguration;
 import org.martus.amplifier.common.AmplifierLocalization;
@@ -71,17 +69,10 @@ public class DoSearch extends AbstractSearchResultsServlet
 		session.setAttribute("typeOfSearch", searchType);
 	}
 
-	Vector getBulletinsToDisplay(AmplifierServletRequest request)
+	List getBulletinsToDisplay(AmplifierServletRequest request)
 		throws Exception
 	{
-		List results = getSearchResults(request);
-		Vector bulletins = new Vector();
-		for (Iterator iter = results.iterator(); iter.hasNext();)
-		{
-			BulletinInfo element = (BulletinInfo) iter.next();
-			bulletins.add(element);
-		}
-		return bulletins;
+		return  getSearchResults(request);
 	}
 
 	public List getSearchResults(AmplifierServletRequest request)

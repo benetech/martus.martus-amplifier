@@ -51,7 +51,7 @@ public abstract class AbstractSearchResultsServlet extends AmplifierServlet
 		
 		configureSessionFromRequest(request);
 
-		Vector bulletins = getBulletinsToDisplay(request);
+		List bulletins = getBulletinsToDisplay(request);
 		String sortField = getFieldToSortBy(request);
 		
 		AmplifierServletSession session = request.getSession();
@@ -69,9 +69,9 @@ public abstract class AbstractSearchResultsServlet extends AmplifierServlet
 	}
 	
 	abstract void configureSessionFromRequest(AmplifierServletRequest request);
-	abstract Vector getBulletinsToDisplay(AmplifierServletRequest request) throws Exception;
+	abstract List getBulletinsToDisplay(AmplifierServletRequest request) throws Exception;
 
-	public static void setSearchResultsContext(Vector bulletins, AmplifierServletRequest request, Context context)
+	public static void setSearchResultsContext(List bulletins, AmplifierServletRequest request, Context context)
 	{
 		AmplifierServletSession session = request.getSession();
 		context.put("foundBulletins", bulletins);

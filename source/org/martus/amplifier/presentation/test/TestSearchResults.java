@@ -26,6 +26,8 @@ Boston, MA 02111-1307, USA.
 
 package org.martus.amplifier.presentation.test;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import org.apache.velocity.context.Context;
@@ -123,19 +125,23 @@ public class TestSearchResults extends TestCaseEnhanced
 		Context context = new MockContext();
 		String mySearchByTag = "myOwnSearchTag";
 		request.getSession().setAttribute(SearchResultConstants.RESULT_SORTBY_KEY, mySearchByTag);	
-		Vector fakeBulletins = new Vector();
+		List fakeBulletins = new ArrayList();
 		fakeBulletins.add("hello");
 		fakeBulletins.add("there");
 		SearchResults.setSearchResultsContext(fakeBulletins, request, context);
 
-		assertEquals("wrong first bulletin in context?", fakeBulletins.get(0), ((Vector)context.get("foundBulletins")).get(0));		
+		AmplifierServletSession session = request.getSession();
+		List foundBulletins = (List)session.getAttribute("foundBulletins");
+		assertNull("Should not have set anything in session", foundBulletins);
+
+		assertEquals("wrong first bulletin in context?", fakeBulletins.get(0), ((List)context.get("foundBulletins")).get(0));		
 
 		assertEquals("wrong # of bulletins in context?", fakeBulletins.size(), ((Integer)context.get("totalBulletins")).intValue());		
 
 		Vector sortByFields = FindBulletinsFields.getSortByFieldDisplayNames();
 		assertEquals("SortingBy Fields not the same #?", sortByFields.size(), ((Vector)context.get("sortByFields")).size());
 
-		assertEquals("SearchTag not the same?", mySearchByTag, context.get("currentlySortingBy"));
+		assertEquals("SearchTag not the same?", mySearchByTag, context.get("currentlySortingBy"));		
 	}
 	
 	public void testPopulateSimpleSearch() throws Exception
