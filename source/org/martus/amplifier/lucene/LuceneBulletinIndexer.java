@@ -119,7 +119,7 @@ public class LuceneBulletinIndexer
 	}
 	
 	/* package */
-	static Analyzer getAnalyzer()
+	public static Analyzer getAnalyzer()
 	{
 		return ANALYZER;
 	}
