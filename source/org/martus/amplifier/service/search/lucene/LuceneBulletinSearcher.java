@@ -50,19 +50,9 @@ public class LuceneBulletinSearcher
 		}
 	}
 	
-	public Results search(String field, String queryString)
+	private Results results(Query query, String field)
 		throws BulletinIndexException 
 	{
-		Query query;
-		try {
-			query = QueryParser.parse(
-				queryString, field, 
-				LuceneBulletinIndexer.getAnalyzer());
-		} catch(ParseException pe) {
-			throw new BulletinIndexException(
-				"Improperly formed query: " + queryString, pe);
-		}
-		
 		try {
 			return new LuceneResults(searcher.search(query));
 		} catch (IOException e) {
@@ -70,7 +60,14 @@ public class LuceneBulletinSearcher
 				"An error occurred while executing query " + 
 					query.toString(field), 
 				e);
-		}
+		}		
+	}
+	
+	public Results search(String field, String queryString)
+		throws BulletinIndexException 
+	{
+		Query query = queryParser(queryString, field, "Improperly formed query: ");
+		return results(query, field);
 	}
 	
 	public Results searchFlexiDateRange(String field, String startQuery, String endQuery)
@@ -78,38 +75,27 @@ public class LuceneBulletinSearcher
 	{		
 			
 		BooleanQuery booleanQuery = new BooleanQuery();				
-		Query query = null;				
-		try {
-	
-			query = QueryParser.parse(
-				startQuery, SearchConstants.EVENT_START_DATE_INDEX_FIELD, 
-				LuceneBulletinIndexer.getAnalyzer());
-		} catch(ParseException pe) {
-			throw new BulletinIndexException(
-				"Improperly formed start query: " + startQuery, pe);
-		}			
-	
+
+		Query query = queryParser(startQuery, SearchConstants.EVENT_START_DATE_INDEX_FIELD,
+						"Improperly formed start query: ");	
 		booleanQuery.add(query, true, false);		
+		
+		query = queryParser(endQuery, SearchConstants.EVENT_END_DATE_INDEX_FIELD, 
+						"Improperly formed end query: ");		
+		booleanQuery.add(query, true, false);	
+		//System.out.println(booleanQuery.toString());
+				
+		return results(booleanQuery, field);
+	}	
 	
+	private Query queryParser(String query, String field, String msg)
+			throws BulletinIndexException 
+	{
 		try {
-   		    query = QueryParser.parse(
-			endQuery, SearchConstants.EVENT_END_DATE_INDEX_FIELD, 
+			return QueryParser.parse(query, field, 		
 				LuceneBulletinIndexer.getAnalyzer());
 		} catch(ParseException pe) {
-			throw new BulletinIndexException(
-				"Improperly formed end query: " + endQuery, pe);
-		}
-		
-		booleanQuery.add(query, true, false);	
-		//System.out.println(booleanQuery.toString());		
-		
-		try {
-			return new LuceneResults(searcher.search(booleanQuery));
-		} catch (IOException e) {
-			throw new BulletinIndexException(
-				"An error occurred while executing query " + 
-					query.toString(field), 
-				e);
+			throw new BulletinIndexException( msg + query, pe);
 		}
 	}
 	
@@ -117,19 +103,20 @@ public class LuceneBulletinSearcher
 		throws BulletinIndexException
 	{
 																				
-			String startDateString = 
-				((startDate == null) ? "*" : DateField.dateToString(startDate));
-			String endDateString = 
-				((endDate == null) ?  "?": DateField.dateToString(endDate));
+			String startDateString = ((startDate == null) ? "*" : DateField.dateToString(startDate));
+			String endDateString   = ((endDate == null) ?  "?": DateField.dateToString(endDate));
 					
 			if (field.equals(SearchConstants.ENTRY_DATE_INDEX_FIELD))		
-				return search(field, "[ " + startDateString + " TO " + endDateString + " ]");
-																				
-			String startQuery = "[ " +  "*" + " TO " + endDateString + " ]";				
-			String endQuery = "[ " + startDateString + " TO " + "?" + " ]";						
+				return search(field, setQuery(startDateString, endDateString));				
 			
-			return searchFlexiDateRange(field, startQuery, endQuery);
+			return searchFlexiDateRange(field, setQuery("*", endDateString),
+						setQuery(startDateString, "?"));
 														
+	}
+	
+	private String setQuery(String startDateString, String endDateString)
+	{
+		return "[ " + startDateString + " TO " + endDateString + " ]";
 	}
 
 	public BulletinInfo lookup(UniversalId bulletinId)
