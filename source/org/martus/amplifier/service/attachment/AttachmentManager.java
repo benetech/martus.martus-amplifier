@@ -2,6 +2,9 @@ package org.martus.amplifier.service.attachment;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.martus.common.UniversalId;
@@ -16,7 +19,12 @@ public class AttachmentManager implements IAttachmentConstants, IAttachmentManag
 	protected AttachmentManager()
 	{
 		super();
-		createDatabase();
+		attachmentFileTable = 
+			createDatabase(ATTACHMENT_FILE_DATABASE_FILENAME);
+		attachmentIdTable = 
+			createDatabase(ATTACHMENT_ID_DATABASE_FILENAME);
+		attachmentNameTable = 
+			createDatabase(ATTACHMENT_NAME_DATABASE_FILENAME);
 	}
 	
 	public static AttachmentManager getInstance()
@@ -24,16 +32,17 @@ public class AttachmentManager implements IAttachmentConstants, IAttachmentManag
 		return instance;
 	}
 	
-	public void createDatabase()
+	private Db createDatabase(String fileName)
 	{
         // Remove the previous database.
-        new File(DATABASE_FILENAME).delete();
+        new File(fileName).delete();
+        Db database = null;
 		try
         {
-        	table = new Db(null, 0);
-        	table.set_error_stream(System.err);
-        	table.set_errpfx("AttachmentManager");
-        	table.open(null, DATABASE_FILENAME, null, Db.DB_BTREE, Db.DB_CREATE, 0644);		
+        	database = new Db(null, 0);
+        	database.set_error_stream(System.err);
+        	database.set_errpfx("AttachmentManager");
+        	database.open(null, fileName, null, Db.DB_BTREE, Db.DB_CREATE, 0644);		
         }
         catch(DbException de)
         {
@@ -43,7 +52,70 @@ public class AttachmentManager implements IAttachmentConstants, IAttachmentManag
         {
             logger.severe("Unable to create find attachment database file: " + fnfe.getMessage());
         }
-        
+        return database;        
+	}
+	
+	public void putAttachmentIds(UniversalId universalId, List attachmentIdList)
+	{
+		if(attachmentIdList != null)
+		{
+			Iterator attachmentIdIterator = attachmentIdList.iterator();
+			UniversalId currentAttachmentId = null;
+			while(attachmentIdIterator.hasNext())
+			{
+				currentAttachmentId = (UniversalId) attachmentIdIterator.next();
+				putAttachmentId(universalId, currentAttachmentId);
+			}
+		}	
+	}
+
+	public void putAttachmentId(UniversalId universalId, UniversalId attachmentId)
+	{
+		AttachmentNameKeyDbt key = new AttachmentNameKeyDbt(universalId);
+		AttachmentNameValueDbt value = new AttachmentNameValueDbt(attachmentId.toString());
+		int error = 0;
+		try
+		{
+			error = attachmentIdTable.put(null, key, value, Db.DB_NOOVERWRITE);
+		}
+		catch(DbException de)
+		{
+			logger.severe("Unable to add attachment id to database: " + de.getMessage());
+		}
+	}
+
+	public List getAttachmentIds(UniversalId UniversalBulletinId)
+	{
+		AttachmentNameKeyDbt key = new AttachmentNameKeyDbt(UniversalBulletinId);
+		AttachmentNameValueDbt returnValue = new AttachmentNameValueDbt();
+		File result = null;
+		List attachmentIdList = new ArrayList();
+		int error = 0;
+		Dbc attachmentIdCursor = null;
+		try
+		{
+			attachmentIdCursor = attachmentIdTable.cursor(null, 0);
+			while(attachmentIdCursor.get(key, returnValue, Db.DB_NEXT) == 0)
+			{
+				attachmentIdList.add(returnValue.toString());
+			}
+		}
+		catch(DbException de)
+		{
+			logger.severe("Unable to get attachment ids from database: " + de);
+		}
+		finally
+		{
+			try
+			{
+				attachmentIdCursor.close();
+			}
+			catch(DbException de)
+			{
+				logger.severe("Unable to close the attachment id database.");
+			}
+		}
+		return attachmentIdList;
 	}
 	
 	public void putAttachmentName(UniversalId universalId, String attachmentName)
@@ -53,7 +125,7 @@ public class AttachmentManager implements IAttachmentConstants, IAttachmentManag
 		int error = 0;
 		try
 		{
-			error = table.put(null, key, value, Db.DB_NOOVERWRITE);
+			error = attachmentNameTable.put(null, key, value, Db.DB_NOOVERWRITE);
 		}
 		catch(DbException de)
 		{
@@ -69,7 +141,7 @@ public class AttachmentManager implements IAttachmentConstants, IAttachmentManag
 		int error = 0;
 		try
 		{
-			error = table.get(null, key, returnValue, 0);
+			error = attachmentNameTable.get(null, key, returnValue, 0);
 			if(error != 0)
 				throw new DbException("Problems finding attachment.");
 		}
@@ -87,7 +159,7 @@ public class AttachmentManager implements IAttachmentConstants, IAttachmentManag
 		int error = 0;
 		try
 		{
-			error = table.put(null, key, value, Db.DB_NOOVERWRITE);
+			error = attachmentFileTable.put(null, key, value, Db.DB_NOOVERWRITE);
 		}
 		catch(DbException de)
 		{
@@ -103,7 +175,7 @@ public class AttachmentManager implements IAttachmentConstants, IAttachmentManag
 		int error = 0;
 		try
 		{
-			error = table.get(null, key, returnValue, 0);
+			error = attachmentFileTable.get(null, key, returnValue, 0);
 			if(error != 0)
 				throw new DbException("Problems finding attachment.");
 		}
@@ -115,7 +187,11 @@ public class AttachmentManager implements IAttachmentConstants, IAttachmentManag
 	}
 		
 	private static AttachmentManager instance = new AttachmentManager();
-	private Db table =  null;
-	private static final String DATABASE_FILENAME = "attachments.db";
+	private Db attachmentFileTable =  null;
+	private Db attachmentIdTable =  null;
+	private Db attachmentNameTable =  null;
+	private static final String ATTACHMENT_FILE_DATABASE_FILENAME = "attachments_file.db";
+	private static final String ATTACHMENT_ID_DATABASE_FILENAME = "attachments_id.db";
+	private static final String ATTACHMENT_NAME_DATABASE_FILENAME = "attachments_name.db";
 	private Logger logger = Logger.getLogger(ATTACHMENT_LOGGER);
 }
