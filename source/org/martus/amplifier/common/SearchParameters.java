@@ -98,16 +98,28 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 	{
 		String newString = null;
 		if (filterType.equals(WITHOUTWORDS_TAG))
-			newString = NOT+"("+text+")";			
+			newString = addSign(NOT, text);			
 		else if (filterType.equals(EXACTPHRASE_TAG))
 			newString = "\""+text+"\"";
 		else if (filterType.equals(THESE_WORD_TAG))
-			newString = PLUS+"("+text+")";
+			newString = addSign(PLUS, text);
 		else
 			newString = "("+text+")";
 	
 		return newString;
 	}
+	
+	private static String addSign(String sign, String queryString)
+	{
+		String[] words = queryString.split(" ");
+		String query = "(";		
+
+		for (int i=0;i<words.length;i++)		
+			query += sign + words[i]+ " ";
+
+		return query + ")";
+	}
+
 	
 	private void setEventDate()
 	{
