@@ -140,7 +140,6 @@ public class MartusAmplifier
 		sslListener.setMaxThreads(MAX_THREADS);
 		sslListener.setMinThreads(MIN_THREADS);
 		sslListener.setLowResourcePersistTimeMs(LOW_RESOURCE_PERSIST_TIME_MS);
-
 		//Server sslServer = new Server(jettyXmlFile.getAbsolutePath());
 		Server sslServer = new Server();
 		sslServer.addWebApplication("/","presentation/");
