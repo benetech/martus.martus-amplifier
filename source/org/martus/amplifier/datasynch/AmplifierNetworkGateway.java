@@ -52,7 +52,7 @@ public class AmplifierNetworkGateway
 		security = securityToUse;
 	}
 	
-	public Vector getAllAccountIds() //throws ServerErrorException
+	public Vector getAllAccountIds()
 	{
 		class NotAuthorizedException extends Exception {}
 		
@@ -83,9 +83,27 @@ public class AmplifierNetworkGateway
 		}
 		return result;
 	}
+
+	public Vector getContactInfo(String accountId)
+	{
+		try
+		{
+			log("getContactInfo:" + MartusCrypto.formatPublicCode(MartusCrypto.computePublicCode(accountId)));
+			NetworkResponse response = gateway.getContactInfo(accountId, security);
+			String resultCode = response.getResultCode();
+			if(!resultCode.equals(NetworkInterfaceConstants.OK))
+				return null;
+			return  response.getResultVector();
+		}
+		catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}	
 	
-	
-	public Vector getAccountPublicBulletinLocalIds(String accountId) //throws ServerErrorException
+	public Vector getAccountPublicBulletinLocalIds(String accountId)
 	{
 		Vector result = new Vector();
 		try

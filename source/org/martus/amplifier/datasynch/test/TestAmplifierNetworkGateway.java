@@ -1,6 +1,7 @@
 package org.martus.amplifier.datasynch.test;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Vector;
 
 import org.martus.amplifier.datasynch.AmplifierNetworkGateway;
@@ -18,6 +19,7 @@ public class TestAmplifierNetworkGateway extends TestAbstractAmplifierDataSynch
 	public TestAmplifierNetworkGateway(String name)
 	{
 		super(name);
+		sampleContactInfo = new HashMap();
 	}
 	
 	public void testGetAllAccountIds() throws Exception
@@ -33,7 +35,30 @@ public class TestAmplifierNetworkGateway extends TestAbstractAmplifierDataSynch
 		}
 		assertTrue(list.size() >0);	
 	}
+	
+	public void testGetContactInfo() throws Exception
+	{
+		AmplifierBulletinRetrieverGatewayInterface gateway = new MockGatewayInterface();
+		BackupServerInfo serverToCall = new BackupServerInfo("test", "10.1.1.1", 1, "key");
+		AmplifierNetworkGateway amplifierGateway = new AmplifierNetworkGateway(gateway, serverToCall, dummyLogger, MockMartusSecurity.createOtherServer());
+		Vector contactInfo = amplifierGateway.getContactInfo(sampleAccountId);
+		assertNull("Should not find account since data isn't there yet", contactInfo);
 
+		Vector info = new Vector();
+		info.add(sampleAccountId);
+		info.add(new Integer(1));
+		info.add("data");
+		info.add("signature");
+		
+		sampleContactInfo.put(sampleAccountId, info);
+		contactInfo = amplifierGateway.getContactInfo(sampleAccountId);
+		assertEquals("account id don't match?", info.get(0), contactInfo.get(0));		
+		assertEquals("number of data entries don't match?", info.get(1), contactInfo.get(1));		
+		assertEquals("data doesn't match?", info.get(2), contactInfo.get(2));		
+		assertEquals("signatures don't match?", info.get(3), contactInfo.get(3));		
+
+	}
+	
 	public void testGetAccountBulletinLocalIds() throws Exception
 	{
 		AmplifierBulletinRetrieverGatewayInterface abrgi = new MockGatewayInterface();
@@ -80,6 +105,18 @@ public class TestAmplifierNetworkGateway extends TestAbstractAmplifierDataSynch
 			return new NetworkResponse(rawData);
 		}
 
+		public NetworkResponse getContactInfo(String accountId, MartusCrypto signer) throws MartusCrypto.MartusSignatureException, IOException 
+		{
+			Vector contactInfo = (Vector)sampleContactInfo.get(accountId);
+			
+			Vector rawData = new Vector();
+			rawData.add(NetworkInterfaceConstants.OK);
+			rawData.add(contactInfo);
+		
+			return new NetworkResponse(rawData);
+		}
+		
+
 		public NetworkResponse getPublicBulletinLocalIds(MartusCrypto signer, String accountId) throws MartusSignatureException, IOException
 		{
 			Vector ids = new Vector();
@@ -101,6 +138,6 @@ public class TestAmplifierNetworkGateway extends TestAbstractAmplifierDataSynch
 		
 	final String sampleAccountId = "MIIBIDANBgkqhkiG9w0BAQEFAAOCAQ0AMIIBCAKCAQEAt+9X7kLTLx8fTfXIogRK5ySJnVL1s2Wi/L9MYMxHWkddpD5XBibQjOM/RkW2tn7oXM9SdQrU16EvEJtTnIZ+z5D6uXuq37vffHcfV9x5vQ3p5PEtKLinvvbqwbVgka+OXbMsjoV6seeAtXAxop9qme9yk4d1/Pco+RdLOX/Toyt9prSqlr2epu+hpZ6Qv8X9C4IF80eajPJd0x5cKsTZPpAmC5Iy5oh2uE0dy9iP6Esz3Ob1X3dn/QLaHJhQQp49um6UCbuN57wof/m4k703txDzxpZdKYUDaCQvKslpBpfiqjLTZ2FbaUodkkcckky9U9xzMDdrNxSvuG9LpjFr0QIBEQ==";
 	final String sampleLocalId = "B-111ded2-f19d90f997--7ffd";
-
+	HashMap sampleContactInfo;
 	LoggerForTesting dummyLogger = new LoggerForTesting();
 }

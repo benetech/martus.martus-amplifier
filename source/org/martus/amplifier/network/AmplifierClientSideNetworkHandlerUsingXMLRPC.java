@@ -1,3 +1,28 @@
+/*
+
+The Martus(tm) free, social justice documentation and
+monitoring software. Copyright (C) 2002,2003, Beneficent
+Technology, Inc. (Benetech).
+
+Martus is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either
+version 2 of the License, or (at your option) any later
+version with the additions and exceptions described in the
+accompanying Martus license file entitled "license.txt".
+
+It is distributed WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, including warranties of fitness of purpose or
+merchantability.  See the accompanying Martus License and
+GPL license for more details on the required license terms
+for this software.
+
+You should have received a copy of the GNU General Public
+License along with this program; if not, write to the Free
+Software Foundation, Inc., 59 Temple Place - Suite 330,
+Boston, MA 02111-1307, USA.
+
+*/
 package org.martus.amplifier.network;
 
 import java.io.IOException;
@@ -13,14 +38,6 @@ import org.apache.xmlrpc.XmlRpcClient;
 import org.martus.common.network.NetworkInterfaceConstants;
 import org.martus.common.network.SimpleHostnameVerifier;
 import org.martus.common.network.SimpleX509TrustManager;
-/**
- * @author skoneru
- *
- * To change this generated comment edit the template variable "typecomment":
- * Window>Preferences>Java>Templates.
- * To enable and disable the creation of type comments go to
- * Window>Preferences>Java>Code Generation.
- */
 
 public class AmplifierClientSideNetworkHandlerUsingXMLRPC 
 	implements NetworkInterfaceConstants, AmplifierNetworkInterfaceXmlRpcConstants, AmplifierNetworkInterface
@@ -43,8 +60,6 @@ public class AmplifierClientSideNetworkHandlerUsingXMLRPC
 		}
 	}
 
-				
-		
 	public Vector getAccountIds(String myAccountId, Vector parameters, String signature) throws IOException
 	{
 		Vector params = new Vector();
@@ -54,6 +69,15 @@ public class AmplifierClientSideNetworkHandlerUsingXMLRPC
 		return (Vector)callServer(server, cmdGetAccountIds, params);
 	}			
 	
+	public Vector getContactInfo(String myAccountId, Vector parameters, String signature) throws IOException
+	{
+		Vector params = new Vector();
+		params.add(myAccountId);
+		params.add(parameters);
+		params.add(signature);
+		return (Vector)callServer(server, cmdGetContactInfo, params);
+	}			
+
 	
 	public Vector getPublicBulletinLocalIds(String myAccountId, Vector parameters, String signature) throws IOException
 	{
