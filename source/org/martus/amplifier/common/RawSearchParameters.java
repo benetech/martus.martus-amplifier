@@ -32,7 +32,7 @@ import java.util.Map;
 
 import org.martus.amplifier.velocity.AmplifierServletRequest;
 import org.martus.amplifier.velocity.AmplifierServletSession;
-import org.martus.util.MartusFlexidate;
+import org.martus.common.utilities.MartusFlexidate;
 
 public class RawSearchParameters
 {

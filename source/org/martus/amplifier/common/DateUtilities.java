@@ -26,7 +26,7 @@ Boston, MA 02111-1307, USA.
 
 package org.martus.amplifier.common;
 
-import org.martus.util.MartusFlexidate;
+import org.martus.common.utilities.MartusFlexidate;
 
 public class DateUtilities
 {

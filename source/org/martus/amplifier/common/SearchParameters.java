@@ -33,7 +33,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.martus.amplifier.search.SearchConstants;
-import org.martus.util.MartusFlexidate;
+import org.martus.common.utilities.MartusFlexidate;
 
 public class SearchParameters implements SearchResultConstants, SearchConstants
 {

@@ -49,8 +49,8 @@ import org.martus.common.bulletin.AttachmentProxy;
 import org.martus.common.crypto.MockMartusSecurity;
 import org.martus.common.packet.FieldDataPacket;
 import org.martus.common.packet.UniversalId;
+import org.martus.common.utilities.MartusFlexidate;
 import org.martus.util.DirectoryTreeRemover;
-import org.martus.util.MartusFlexidate;
 
 public abstract class CommonSearchTest 
 	extends AbstractAmplifierTestCase implements SearchConstants, SearchResultConstants

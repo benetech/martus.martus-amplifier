@@ -44,7 +44,7 @@ import org.martus.amplifier.search.SearchConstants;
 import org.martus.common.bulletin.AttachmentProxy;
 import org.martus.common.packet.FieldDataPacket;
 import org.martus.common.packet.UniversalId;
-import org.martus.util.MartusFlexidate;
+import org.martus.common.utilities.MartusFlexidate;
 
 public class LuceneBulletinIndexer 
 	implements BulletinIndexer, LuceneSearchConstants

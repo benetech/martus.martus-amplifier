@@ -4,6 +4,7 @@
 	<comment></comment>
 	<projects>
 		<project>martus</project>
+		<project>martus-utils</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

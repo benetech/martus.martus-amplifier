@@ -12,5 +12,6 @@
     <classpathentry kind="lib" path="thirdparty/jarsNeededToRunAmp/bcprov-jdk14-119.jar"/>
     <classpathentry kind="lib" path="thirdparty/jarsNeededToRunAmp/xmlrpc-1.1.jar"/>
     <classpathentry kind="var" path="junit"/>
+    <classpathentry kind="src" path="/martus-utils"/>
     <classpathentry kind="output" path="classes"/>
 </classpath>

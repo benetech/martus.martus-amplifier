@@ -6,9 +6,9 @@ import java.io.InputStream;
 
 import junit.framework.Assert;
 
-import org.martus.amplifier.attachment.DataManager;
 import org.martus.amplifier.attachment.AttachmentNotFoundException;
 import org.martus.amplifier.attachment.AttachmentStorageException;
+import org.martus.amplifier.attachment.DataManager;
 import org.martus.amplifier.test.AbstractAmplifierTestCase;
 import org.martus.common.packet.UniversalId;
 import org.martus.util.DirectoryTreeRemover;

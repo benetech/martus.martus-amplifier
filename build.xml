@@ -13,8 +13,10 @@
 
   <property name="martus-dir" value="../martus"/>
   
+  <property name="common-basedir"   value="../martus"/>
   <property name="common-dir" value="org/martus/common"/>
 
+  <property name="util-basedir"   value="../martus-utils/bin"/>
   <property name="util-dir"   value="org/martus/util"/>
 
   <property name="thirdparty-dir"   value="thirdparty/jarsNeededToRunAmp/"/>
@@ -91,13 +93,13 @@
     <!-- Jar up martus-common and throw it in the push dir -->
     <jar jarfile="${ampjar-filename}"
         update="false"
-   		basedir="${martus-dir}"
+   		basedir="${common-basedir}"
    		includes="${common-dir}/**/*.class"/>
 	
     <!-- Jar up martus-util and throw it in the push dir -->
     <jar jarfile="${ampjar-filename}"
         update="true"
-   		basedir="${martus-dir}"
+   		basedir="${util-basedir}"
    		includes="${util-dir}/**/*.class"/>
 
     <!-- Jar up hrvd and throw it in the push dir -->
