@@ -5,7 +5,7 @@
     </head>
     
 	#set ($years = [1970..2004])	
-    #set ($days = [1..31])]
+    #set ($days = [1..31])
     #set ($info = $defaultAdvancedSearch)
 
     <body>
@@ -37,7 +37,6 @@
 					<td>with the <strong>exact phrase</strong></td>
 					<td><input name="exactPhraseQuery" size="44" value="$info.fields.exactPhraseQuery"></input></td>
 					<td bgcolor='#ffffff' ></td>
-					$info.fields.exactPhraseQuery
 				</tr>
 ##			<tr bgcolor='#dddddd' color='#000000'>
 ##					<td></td>
