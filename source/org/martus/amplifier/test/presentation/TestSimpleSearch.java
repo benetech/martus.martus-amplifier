@@ -1,7 +1,5 @@
 package org.martus.amplifier.test.presentation;
 
-import java.util.Vector;
-
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.velocity.context.Context;
@@ -30,9 +28,5 @@ public class TestSimpleSearch extends TestCaseEnhanced
 		assertEquals("SimpleSearch.vm", templateName);
 		
 		assertEquals(sampleQuery, context.get("name"));
-		
-		Vector fields = (Vector)context.get("theFields");
-		assertEquals(8, fields.size());
-		assertContains("Title", fields);
 	}
 }

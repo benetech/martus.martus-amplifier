@@ -25,8 +25,6 @@ Boston, MA 02111-1307, USA.
 */
 package org.martus.amplifier.presentation;
 
-import java.util.Vector;
-
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.velocity.context.Context;
@@ -37,17 +35,6 @@ public class SimpleSearch extends AmplifierServlet
 				HttpServletResponse response, 
 				Context context)
 	{
-        Vector fields = new Vector();
-		fields.addElement("Author");
-		fields.addElement("Keywords");
-		fields.addElement("Title");
-		fields.addElement("Event Date");
-		fields.addElement("Details");
-		fields.addElement("Summary");
-		fields.addElement("Location");
-		fields.addElement("Entry Date");
-		context.put("theFields", fields);
-		
 		context.put("name", request.getParameter("query"));
 		
 		return "SimpleSearch.vm";
