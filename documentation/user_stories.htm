@@ -14,13 +14,14 @@
 
 <p><b>User Stories</b></p>
 <ul>
-  <li>user searches for a bulletin that just got added to backup server, and the
+  <li>user searches for a bulletin that &quot;recently&quot; got added to backup server, and the
     search returns that result
     <ul>
       <li>polling
         <ul>
           <li>when amp starts, it sets up a chron-like timer</li>
-          <li>whenever timer rings (e.g. once an hour), amp polls the servers</li>
+          <li>whenever timer rings (e.g. once a day), amp polls the servers</li>
+          <li>kevin says once per day polling should be adequate</li>
         </ul>
       </li>
       <li>[dan] amp gets list of servers to sync with
@@ -131,15 +132,21 @@
       <li>admin downloads martus server, which includes amp?</li>
     </ul>
   </li>
+  <li>target platforms
+    <ul>
+      <li>amp should run on linux</li>
+      <li>amp should run on windows 2000</li>
+    </ul>
+  </li>
   <li>installation
     <ul>
       <li>admin installs martus amp at same time as martus server?</li>
       <li>admin installs martus amp independent of martus server?</li>
-      <li>admin installs martus amp in under 5 minutes?</li>
-      <li>admin installs martus amp without typing?</li>
-      <li>admin installs martus amp without agreeing to more than one set of license agreements?</li>
+      <li>admin installs martus amp in under xxxx amount of time (60 minutes?)</li>
+      <li>admin installs martus amp without agreeing to more than one set of license
+        agreements (licenses for tomcat, lucene, Benetech, etc.)?</li>
       <li>admin installs new martus amp over old installation, with old
-        installation running</li>
+        installation running?</li>
       <li>admin sets up amp to find backup servers</li>
       <li>admin is able to pick the location of the directory where the unzipped
         bulletins and the indexed bulletins (and their attachments?) will be
