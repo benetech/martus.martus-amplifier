@@ -58,6 +58,21 @@ public class TestLuceneSearcher extends CommonSearchTest
 	{
 		super(name);
 	}
+	
+	public void setUp() throws Exception
+	{
+		super.setUp();
+		bulletinId1 = UniversalId.createDummyUniversalId();
+		bulletinId2 = UniversalId.createDummyUniversalId();
+		bulletinIdForeign = UniversalId.createDummyUniversalId();
+
+		fdp1 	= generateSampleData(bulletinId1);		
+		fdp2 	= generateSampleFlexiData(bulletinId2);
+		fdpForeign = generateSampleForeignCharData(bulletinIdForeign);
+		
+		indexer = openBulletinIndexer();
+		indexer.clearIndex();
+	}
 
 	public void testNewSearcherWithNoIndexDirectory() throws Exception
 	{
@@ -69,21 +84,11 @@ public class TestLuceneSearcher extends CommonSearchTest
 	
 	public void testFindBulletin() throws Exception
 	{
-		UniversalId bulletinId = UniversalId.createDummyUniversalId();
-		FieldDataPacket fdp = generateFieldDataPacket(bulletinId);
-		BulletinIndexer indexer = openBulletinIndexer();
-		try {
-			indexer.clearIndex();
-			indexer.indexFieldData(bulletinId, fdp, new BulletinHistory());
-		} finally {
-			indexer.close();
-		}
-		
-		BulletinSearcher searcher = openBulletinSearcher();
+		BulletinSearcher searcher = getSearcher1();
 		try {
 			Assert.assertNotNull(
 				"Didn't find indexed bulletin", 
-				searcher.lookup(bulletinId));
+				searcher.lookup(bulletinId1));
 		} finally {
 			searcher.close();
 		}
@@ -91,31 +96,21 @@ public class TestLuceneSearcher extends CommonSearchTest
 	
 	public void testIndexAndSearch() throws Exception
 	{
-		UniversalId bulletinId = UniversalId.createDummyUniversalId();
-		FieldDataPacket fdp = generateSampleData(bulletinId);		
-		BulletinIndexer indexer = openBulletinIndexer();
+		BulletinSearcher searcher = getSearcher1();
 		try {
-			indexer.clearIndex();
-			indexer.indexFieldData(bulletinId, fdp, new BulletinHistory());
-		} finally {
-			indexer.close();
-		}
-		
-		BulletinSearcher searcher = openBulletinSearcher();
-		try {
-			BulletinInfo found = searcher.lookup(bulletinId);
+			BulletinInfo found = searcher.lookup(bulletinId1);
 			Assert.assertNotNull("Didn't find indexed bulletin", found);
 				
 			HashMap fields = new HashMap();			
-			fields.put(RESULT_BASIC_QUERY_KEY, fdp.get(SEARCH_AUTHOR_INDEX_FIELD) );
+			fields.put(RESULT_BASIC_QUERY_KEY, fdp1.get(SEARCH_AUTHOR_INDEX_FIELD) );
 			Assert.assertEquals(1, searcher.search(fields).getCount());
 			
 			fields = new HashMap();	
-			fields.put(RESULT_BASIC_QUERY_KEY, fdp.get(SEARCH_KEYWORDS_INDEX_FIELD));
+			fields.put(RESULT_BASIC_QUERY_KEY, fdp1.get(SEARCH_KEYWORDS_INDEX_FIELD));
 			Assert.assertEquals(1,searcher.search(fields).getCount());
 			
 			fields = new HashMap();
-			fields.put(RESULT_BASIC_QUERY_KEY, fdp.get(SEARCH_DETAILS_INDEX_FIELD));											
+			fields.put(RESULT_BASIC_QUERY_KEY, fdp1.get(SEARCH_DETAILS_INDEX_FIELD));											
 			Assert.assertEquals(1, searcher.search(fields).getCount());
 		} finally {
 			searcher.close();
@@ -125,24 +120,14 @@ public class TestLuceneSearcher extends CommonSearchTest
 	
 	public void testReconstructFieldDataPacket()  throws Exception
 	{
-		UniversalId bulletinId = UniversalId.createDummyUniversalId();
-		FieldDataPacket fdp = generateSampleData(bulletinId);		
-		BulletinIndexer indexer = openBulletinIndexer();
+		BulletinSearcher searcher = getSearcher1();
 		try {
-			indexer.clearIndex();
-			indexer.indexFieldData(bulletinId, fdp, new BulletinHistory());
-		} finally {
-			indexer.close();
-		}
-		
-		BulletinSearcher searcher = openBulletinSearcher();
-		try {
-			BulletinInfo found = searcher.lookup(bulletinId);
+			BulletinInfo found = searcher.lookup(bulletinId1);
 			Assert.assertNotNull(
 				"Didn't find indexed bulletin", 
 				found);
 			
-			AttachmentProxy[] origProxies = fdp.getAttachments();
+			AttachmentProxy[] origProxies = fdp1.getAttachments();
 			List foundAttachments = found.getAttachments();
 			Assert.assertEquals(
 				origProxies.length, foundAttachments.size());
@@ -156,19 +141,19 @@ public class TestLuceneSearcher extends CommonSearchTest
 			}
 			
 			Assert.assertEquals(
-				bulletinId, found.getBulletinId());
+				bulletinId1, found.getBulletinId());
 			Collection fields = BulletinField.getSearchableFields();
 			for (Iterator iter = fields.iterator(); iter.hasNext();) 
 			{
 				BulletinField field = (BulletinField) iter.next();
 				if(field.isDateRangeField())
 					Assert.assertEquals(
-						fdp.get(field.getXmlId()), 
+						fdp1.get(field.getXmlId()), 
 						found.get(field.getIndexId()+"-start"));
 					
 				else
 					Assert.assertEquals(
-						fdp.get(field.getXmlId()), 
+						fdp1.get(field.getXmlId()), 
 						found.get(field.getIndexId()));
 			}
 		} 
@@ -180,12 +165,10 @@ public class TestLuceneSearcher extends CommonSearchTest
 	
 	public void testInterleavedAccess()  throws Exception
 	{
-		BulletinIndexer indexer = null;
 		BulletinSearcher searcher = null;
 		BulletinIndexException closeException = null;
 		
 		try {
-			indexer = openBulletinIndexer();
 			searcher = openBulletinSearcher();
 		} finally {
 			if (indexer != null) {
@@ -212,21 +195,11 @@ public class TestLuceneSearcher extends CommonSearchTest
 	
 	public void testSearchResultsAfterClose() throws Exception
 	{
-		UniversalId bulletinId 	= UniversalId.createDummyUniversalId();
-		FieldDataPacket fdp 	= generateSampleData(bulletinId);		
-		BulletinIndexer indexer = openBulletinIndexer();
-		try {
-			indexer.clearIndex();
-			indexer.indexFieldData(bulletinId, fdp, new BulletinHistory());
-		} finally {
-			indexer.close();
-		}
-		
-		BulletinSearcher searcher = openBulletinSearcher();
+		BulletinSearcher searcher = getSearcher1();
 		Results results = null;
 		try {
 			HashMap fields = new HashMap();			
-			fields.put(RESULT_BASIC_QUERY_KEY, fdp.get(SEARCH_AUTHOR_INDEX_FIELD) );
+			fields.put(RESULT_BASIC_QUERY_KEY, fdp1.get(SEARCH_AUTHOR_INDEX_FIELD) );
 			results = searcher.search(fields);
 		} finally {
 			searcher.close();
@@ -242,52 +215,39 @@ public class TestLuceneSearcher extends CommonSearchTest
 	
 	public void testSearchAllFields() throws Exception
 	{
-		UniversalId bulletinId 	= UniversalId.createDummyUniversalId();
-		FieldDataPacket fdp 	= generateSampleData(bulletinId);		
-		BulletinIndexer indexer = openBulletinIndexer();
-		try 
-		{
-			indexer.clearIndex();
-			indexer.indexFieldData(bulletinId, fdp, new BulletinHistory());
-		} 
-		finally 
-		{
-			indexer.close();
-		}
-		
-		BulletinSearcher searcher = openBulletinSearcher();
+		BulletinSearcher searcher = getSearcher1();
 		Results results = null;
 		try 
 		{
 			HashMap fields = new HashMap();
 			
-			fields.put(RESULT_BASIC_QUERY_KEY, fdp.get(BulletinField.SEARCH_AUTHOR_INDEX_FIELD));								
+			fields.put(RESULT_BASIC_QUERY_KEY, fdp1.get(BulletinField.SEARCH_AUTHOR_INDEX_FIELD));								
 			results = searcher.search(fields);							
 			assertEquals("Should have found a result for author", 1, results.getCount());
 			
 			fields.remove(RESULT_BASIC_QUERY_KEY);
-			fields.put(RESULT_BASIC_QUERY_KEY, fdp.get(SEARCH_DETAILS_INDEX_FIELD));								
+			fields.put(RESULT_BASIC_QUERY_KEY, fdp1.get(SEARCH_DETAILS_INDEX_FIELD));								
 			results = searcher.search( fields);							
 			assertEquals("Should have found a result for details", 1, results.getCount());
 						
 			fields.remove(RESULT_BASIC_QUERY_KEY);
-			fields.put(RESULT_BASIC_QUERY_KEY, fdp.get(SEARCH_KEYWORDS_INDEX_FIELD));								
+			fields.put(RESULT_BASIC_QUERY_KEY, fdp1.get(SEARCH_KEYWORDS_INDEX_FIELD));								
 			results = searcher.search( fields);	
 			assertEquals("Should have found a result for keyword", 1, results.getCount());
 			
 			fields.remove(RESULT_BASIC_QUERY_KEY);
-			fields.put(RESULT_BASIC_QUERY_KEY, fdp.get(SEARCH_LOCATION_INDEX_FIELD));								
+			fields.put(RESULT_BASIC_QUERY_KEY, fdp1.get(SEARCH_LOCATION_INDEX_FIELD));								
 			results = searcher.search(fields);				
 			assertEquals("Should have found a result for location", 1, results.getCount());
 			
 			
 			fields.remove(RESULT_BASIC_QUERY_KEY);
-			fields.put(RESULT_BASIC_QUERY_KEY, fdp.get(SEARCH_SUMMARY_INDEX_FIELD));								
+			fields.put(RESULT_BASIC_QUERY_KEY, fdp1.get(SEARCH_SUMMARY_INDEX_FIELD));								
 			results = searcher.search( fields);				
 			assertEquals("Should have found a result for summary", 1, results.getCount());
 			
 			fields.remove(RESULT_BASIC_QUERY_KEY);
-			fields.put(RESULT_BASIC_QUERY_KEY, fdp.get(SEARCH_TITLE_INDEX_FIELD));								
+			fields.put(RESULT_BASIC_QUERY_KEY, fdp1.get(SEARCH_TITLE_INDEX_FIELD));								
 			results = searcher.search( fields);		
 			assertEquals("Should have found a result for title", 1, results.getCount());
 			
@@ -311,20 +271,7 @@ public class TestLuceneSearcher extends CommonSearchTest
 
 	public void testSearchForStopWords() throws Exception
 	{
-		UniversalId bulletinId 	= UniversalId.createDummyUniversalId();
-		FieldDataPacket fdp 	= generateSampleData(bulletinId);		
-		BulletinIndexer indexer = openBulletinIndexer();
-		try 
-		{
-			indexer.clearIndex();
-			indexer.indexFieldData(bulletinId, fdp, new BulletinHistory());
-		} 
-		finally 
-		{
-			indexer.close();
-		}
-		
-		BulletinSearcher searcher = openBulletinSearcher();
+		BulletinSearcher searcher = getSearcher1();
 		Results results = null;
 		try 
 		{			
@@ -404,20 +351,7 @@ public class TestLuceneSearcher extends CommonSearchTest
 
 	public void testSearchForLanguageReturned() throws Exception
 	{
-		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
-		FieldDataPacket fdp1 	= generateSampleData(bulletinId1);		
-		BulletinIndexer indexer = openBulletinIndexer();
-		try 
-		{
-			indexer.clearIndex();
-			indexer.indexFieldData(bulletinId1, fdp1, new BulletinHistory());
-		} 
-		finally 
-		{
-			indexer.close();
-		}
-		
-		BulletinSearcher searcher = openBulletinSearcher();
+		BulletinSearcher searcher = getSearcher1();
 		Results results = null;
 		try 
 		{
@@ -476,20 +410,7 @@ public class TestLuceneSearcher extends CommonSearchTest
 */	
 	public void testSearchEmptyField() throws Exception
 	{
-		UniversalId bulletinId 	= UniversalId.createDummyUniversalId();
-		FieldDataPacket fdp 	= generateSampleFlexiData(bulletinId);		
-		BulletinIndexer indexer = openBulletinIndexer();
-		try 
-		{
-			indexer.clearIndex();
-			indexer.indexFieldData(bulletinId, fdp, new BulletinHistory());
-		} 
-		finally 
-		{
-			indexer.close();
-		}
-		
-		BulletinSearcher searcher = openBulletinSearcher();
+		BulletinSearcher searcher = getSearcher2();
 		Results results = null;
 		try 
 		{
@@ -514,23 +435,7 @@ public class TestLuceneSearcher extends CommonSearchTest
 	
 	public void testLuceneSearchQueries() throws Exception
 	{
-		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
-		FieldDataPacket fdp1 	= generateSampleData(bulletinId1);		
-		UniversalId bulletinId2 = UniversalId.createDummyUniversalId();
-		FieldDataPacket fdp2 	= generateSampleFlexiData(bulletinId2);		
-		BulletinIndexer indexer = openBulletinIndexer();
-		try 
-		{
-			indexer.clearIndex();
-			indexer.indexFieldData(bulletinId1, fdp1, new BulletinHistory());
-			indexer.indexFieldData(bulletinId2, fdp2, new BulletinHistory());
-		} 
-		finally 
-		{
-			indexer.close();
-		}
-		
-		BulletinSearcher searcher = openBulletinSearcher();
+		BulletinSearcher searcher = getSearcher1And2();
 		Results results = null;				
 		
 		try 
@@ -557,23 +462,7 @@ public class TestLuceneSearcher extends CommonSearchTest
 	
 	public void testAdvancedSearchEventDateOnly() throws Exception
 	{
-		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
-		FieldDataPacket fdp1 	= generateSampleData(bulletinId1);		
-		UniversalId bulletinId2 = UniversalId.createDummyUniversalId();
-		FieldDataPacket fdp2 	= generateSampleFlexiData(bulletinId2);		
-		BulletinIndexer indexer = openBulletinIndexer();
-		try 
-		{
-			indexer.clearIndex();
-			indexer.indexFieldData(bulletinId1, fdp1, new BulletinHistory());
-			indexer.indexFieldData(bulletinId2, fdp2, new BulletinHistory());
-		} 
-		finally 
-		{
-			indexer.close();
-		}
-		
-		BulletinSearcher searcher = openBulletinSearcher();
+		BulletinSearcher searcher = getSearcher1And2();
 		Results results = null;				
 		
 		try 
@@ -596,23 +485,7 @@ public class TestLuceneSearcher extends CommonSearchTest
 	
 	public void testAdvancedSearchCombineEventDateAndBulletineField() throws Exception
 	{
-		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
-		FieldDataPacket fdp1 = generateSampleData(bulletinId1);		
-		UniversalId bulletinId2 = UniversalId.createDummyUniversalId();
-		FieldDataPacket fdp2 = generateSampleFlexiData(bulletinId2);		
-		BulletinIndexer indexer = openBulletinIndexer();
-		try 
-		{
-			indexer.clearIndex();
-			indexer.indexFieldData(bulletinId1, fdp1, new BulletinHistory());
-			indexer.indexFieldData(bulletinId2, fdp2, new BulletinHistory());
-		} 
-		finally 
-		{
-			indexer.close();
-		}
-		
-		BulletinSearcher searcher = openBulletinSearcher();
+		BulletinSearcher searcher = getSearcher1And2();
 		Results results = null;				
 		
 		try 
@@ -637,23 +510,7 @@ public class TestLuceneSearcher extends CommonSearchTest
 	
 	public void testAdvancedSearchCombineEventDateAndEntryDate() throws Exception
 	{
-		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
-		FieldDataPacket fdp1 	= generateSampleData(bulletinId1);		
-		UniversalId bulletinId2 = UniversalId.createDummyUniversalId();
-		FieldDataPacket fdp2 	= generateSampleFlexiData(bulletinId2);		
-		BulletinIndexer indexer = openBulletinIndexer();
-		try 
-		{
-			indexer.clearIndex();
-			indexer.indexFieldData(bulletinId1, fdp1, new BulletinHistory());
-			indexer.indexFieldData(bulletinId2, fdp2, new BulletinHistory());
-		} 
-		finally 
-		{
-			indexer.close();
-		}
-		
-		BulletinSearcher searcher = openBulletinSearcher();
+		BulletinSearcher searcher = getSearcher1And2();
 		Results results = null;				
 		
 		try 
@@ -688,23 +545,7 @@ public class TestLuceneSearcher extends CommonSearchTest
 	
 	public void testAdvancedSearchCombineEventDateAndBulletineFieldAndLanguage() throws Exception
 	{
-		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
-		FieldDataPacket fdp1 	= generateSampleData(bulletinId1);		
-		UniversalId bulletinId2 = UniversalId.createDummyUniversalId();
-		FieldDataPacket fdp2 	= generateSampleFlexiData(bulletinId2);		
-		BulletinIndexer indexer = openBulletinIndexer();
-		try 
-		{
-			indexer.clearIndex();
-			indexer.indexFieldData(bulletinId1, fdp1, new BulletinHistory());
-			indexer.indexFieldData(bulletinId2, fdp2, new BulletinHistory());
-		} 
-		finally 
-		{
-			indexer.close();
-		}
-		
-		BulletinSearcher searcher = openBulletinSearcher();
+		BulletinSearcher searcher = getSearcher1And2();
 		Results results = null;				
 		
 		try 
@@ -746,23 +587,7 @@ public class TestLuceneSearcher extends CommonSearchTest
 	
 	public void testAdvancedSearchCombineEventDateAndBulletineFieldAndLanguageAndEntryDate() throws Exception
 	{
-		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
-		FieldDataPacket fdp1 = generateSampleData(bulletinId1);		
-		UniversalId bulletinId2 = UniversalId.createDummyUniversalId();
-		FieldDataPacket fdp2 = generateSampleFlexiData(bulletinId2);		
-		BulletinIndexer indexer = openBulletinIndexer();
-		try 
-		{
-			indexer.clearIndex();
-			indexer.indexFieldData(bulletinId1, fdp1, new BulletinHistory());
-			indexer.indexFieldData(bulletinId2, fdp2, new BulletinHistory());
-		} 
-		finally 
-		{
-			indexer.close();
-		}
-		
-		BulletinSearcher searcher = openBulletinSearcher();
+		BulletinSearcher searcher = getSearcher1And2();
 		Results results = null;				
 		
 		try 
@@ -832,23 +657,7 @@ public class TestLuceneSearcher extends CommonSearchTest
 	
 	public void testAdvancedSearchCombineEventDateAndFilterWords() throws Exception
 	{
-		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
-		FieldDataPacket fdp1 	= generateSampleData(bulletinId1);		
-		UniversalId bulletinId2 = UniversalId.createDummyUniversalId();
-		FieldDataPacket fdp2 	= generateSampleFlexiData(bulletinId2);		
-		BulletinIndexer indexer = openBulletinIndexer();
-		try 
-		{
-			indexer.clearIndex();
-			indexer.indexFieldData(bulletinId1, fdp1, new BulletinHistory());
-			indexer.indexFieldData(bulletinId2, fdp2, new BulletinHistory());
-		} 
-		finally 
-		{
-			indexer.close();
-		}
-		
-		BulletinSearcher searcher = openBulletinSearcher();
+		BulletinSearcher searcher = getSearcher1And2();
 		Results results = null;				
 		
 		try 
@@ -898,23 +707,7 @@ public class TestLuceneSearcher extends CommonSearchTest
 	
 	public void test4FieldsQuery() throws Exception
 	{
-		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
-		FieldDataPacket fdp1 	= generateSampleData(bulletinId1);		
-		UniversalId bulletinId2 = UniversalId.createDummyUniversalId();
-		FieldDataPacket fdp2 	= generateSampleFlexiData(bulletinId2);		
-		BulletinIndexer indexer = openBulletinIndexer();
-		try 
-		{
-			indexer.clearIndex();
-			indexer.indexFieldData(bulletinId1, fdp1, new BulletinHistory());
-			indexer.indexFieldData(bulletinId2, fdp2, new BulletinHistory());
-		} 
-		finally 
-		{
-			indexer.close();
-		}
-		
-		BulletinSearcher searcher = openBulletinSearcher();
+		BulletinSearcher searcher = getSearcher1And2();
 		Results results = null;				
 		
 		try 
@@ -970,20 +763,7 @@ public class TestLuceneSearcher extends CommonSearchTest
 	
 	public void testForeignCharsQuery() throws Exception
 	{
-		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
-		FieldDataPacket fdp1 	= generateSampleForeignCharData(bulletinId1);		
-		BulletinIndexer indexer = openBulletinIndexer();
-		try 
-		{
-			indexer.clearIndex();
-			indexer.indexFieldData(bulletinId1, fdp1, new BulletinHistory());
-		} 
-		finally 
-		{
-			indexer.close();
-		}
-		
-		BulletinSearcher searcher = openBulletinSearcher();
+		BulletinSearcher searcher = getSearcherForeign();
 		Results results = null;				
 		
 		try 
@@ -1031,23 +811,7 @@ public class TestLuceneSearcher extends CommonSearchTest
 	
 	public void testAdvancedSearchSortByTitle() throws Exception
 	{
-		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
-		FieldDataPacket fdp1 	= generateSampleData(bulletinId1);		
-		UniversalId bulletinId2 = UniversalId.createDummyUniversalId();
-		FieldDataPacket fdp2 	= generateSampleFlexiData(bulletinId2);		
-		BulletinIndexer indexer = openBulletinIndexer();
-		try 
-		{
-			indexer.clearIndex();
-			indexer.indexFieldData(bulletinId1, fdp1, new BulletinHistory());
-			indexer.indexFieldData(bulletinId2, fdp2, new BulletinHistory());
-		} 
-		finally 
-		{
-			indexer.close();
-		}
-		
-		BulletinSearcher searcher = openBulletinSearcher();
+		BulletinSearcher searcher = getSearcher1And2();
 		Results results = null;				
 		
 		try 
@@ -1090,23 +854,7 @@ public class TestLuceneSearcher extends CommonSearchTest
 		
 	public void testAdvancedSearchSortByEventDate() throws Exception
 	{
-		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
-		FieldDataPacket fdp1 	= generateSampleData(bulletinId1);		
-		UniversalId bulletinId2 = UniversalId.createDummyUniversalId();
-		FieldDataPacket fdp2 	= generateSampleFlexiData(bulletinId2);		
-		BulletinIndexer indexer = openBulletinIndexer();
-		try 
-		{
-			indexer.clearIndex();
-			indexer.indexFieldData(bulletinId2, fdp2, new BulletinHistory());
-			indexer.indexFieldData(bulletinId1, fdp1, new BulletinHistory());
-		} 
-		finally 
-		{
-			indexer.close();
-		}
-		
-		BulletinSearcher searcher = openBulletinSearcher();
+		BulletinSearcher searcher = getSearcher1And2();
 		Results results = null;				
 		
 		try 
@@ -1146,5 +894,70 @@ public class TestLuceneSearcher extends CommonSearchTest
 		{
 			searcher.close();
 		}
-	}					
+	}
+	
+	private BulletinSearcher getSearcher1() throws BulletinIndexException, Exception
+	{
+		try 
+		{
+			indexer.indexFieldData(bulletinId1, fdp1, new BulletinHistory());
+		} 
+		finally 
+		{
+			indexer.close();
+		}
+		
+		return openBulletinSearcher();
+	}
+
+	private BulletinSearcher getSearcher2() throws BulletinIndexException, Exception
+	{
+		try 
+		{
+			indexer.indexFieldData(bulletinId1, fdp2, new BulletinHistory());
+		} 
+		finally 
+		{
+			indexer.close();
+		}
+		
+		return openBulletinSearcher();
+	}
+
+	private BulletinSearcher getSearcherForeign() throws BulletinIndexException, Exception
+	{
+		try 
+		{
+			indexer.indexFieldData(bulletinIdForeign, fdpForeign, new BulletinHistory());
+		} 
+		finally 
+		{
+			indexer.close();
+		}
+		
+		return openBulletinSearcher();
+	}
+
+	private BulletinSearcher getSearcher1And2() throws BulletinIndexException, Exception
+	{
+		try 
+		{
+			indexer.indexFieldData(bulletinId2, fdp2, new BulletinHistory());
+			indexer.indexFieldData(bulletinId1, fdp1, new BulletinHistory());
+		} 
+		finally 
+		{
+			indexer.close();
+		}
+		
+		return openBulletinSearcher();
+	}
+
+	UniversalId bulletinId1;
+	UniversalId bulletinId2;
+	UniversalId bulletinIdForeign;
+	FieldDataPacket fdp1;	
+	FieldDataPacket fdp2;
+	FieldDataPacket fdpForeign;
+	BulletinIndexer indexer;
 }
