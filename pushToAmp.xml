@@ -28,8 +28,13 @@
   <property name="presentationNonSSL-dir" value="presentationNonSSL"/>
 
   <property name="push-dir" value="pushToAmp"/>
-  <property name="push-presentation" value="${push-dir}/presentation"/>
-  <property name="push-presentationNonSSL" value="${push-dir}/presentationNonSSL"/>
+  <property name="push-jars" value="${push-dir}/jars"/>
+  <property name="push-docs" value="${push-dir}/htdocs/"/>
+  <property name="push-amp" value="${push-docs}/MartusAmplifier/"/>
+  
+  
+  <property name="push-presentation" value="${push-amp}/presentation"/>
+  <property name="push-presentationNonSSL" value="${push-amp}/presentationNonSSL"/>
 
     
 <!-- ================================================================== -->
@@ -39,7 +44,7 @@
     <!-- tstamp task initializes ${DSTAMP} etc -->
     <tstamp/>
     <buildnumber/>
-	<property name="ampjar-filename"  value="${push-dir}/martus-amplifier-${DSTAMP}.jar"/>
+	<property name="ampjar-filename"  value="${push-jars}/martus-amplifier-${DSTAMP}.jar"/>
   </target>
 
 <!-- ================================================================== -->
@@ -48,6 +53,10 @@
   <target name="clean">
 
     <mkdir dir="${push-dir}"/>
+    <mkdir dir="${push-jars}"/>
+    <mkdir dir="${push-docs}"/>
+    <mkdir dir="${push-amp}"/>
+
     <mkdir dir="${push-presentation}"/>
     <mkdir dir="${push-presentationNonSSL}"/>
 
@@ -66,11 +75,6 @@
         <fileset dir="${push-presentationNonSSL}" includes="*.*"/>
     </delete>
 
-    <!-- Remove all files from push DeleteOnStartup dir. -->
-    <delete verbose="true">
-        <fileset dir="${push-DeleteOnStartup}" includes="*.*"/>
-    </delete>
-
   </target>
 
 <!-- ================================================================== -->
@@ -80,7 +84,7 @@
 
     <!-- Remove all jar files from main push dir. -->
     <delete verbose="true">
-        <fileset dir="${push-dir}" includes="*.jar"/>
+        <fileset dir="${push-jars}" includes="*.jar"/>
     </delete>
     
     <!-- Jar up martus-common and throw it in the push dir -->
@@ -123,7 +127,7 @@
 	</copy>
 	
     <!-- Copy all 3rd party jars needed -->
-	<copy todir="${push-dir}">
+	<copy todir="${push-jars}">
          <fileset dir="${thirdparty-dir}/"/>
 	</copy>
 
