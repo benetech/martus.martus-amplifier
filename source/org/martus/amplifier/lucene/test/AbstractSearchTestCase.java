@@ -24,7 +24,7 @@ import org.martus.common.bulletin.AttachmentProxy;
 import org.martus.common.packet.FieldDataPacket;
 import org.martus.common.packet.UniversalId;
 
-public abstract class TestAbstractSearch 
+public abstract class AbstractSearchTestCase 
 	extends AbstractAmplifierTestCase implements SearchConstants, SearchResultConstants
 {
 	
@@ -692,7 +692,7 @@ public abstract class TestAbstractSearch
 	}
 	
 	
-	protected TestAbstractSearch(String name) 
+	protected AbstractSearchTestCase(String name) 
 	{
 		super(name);
 	}

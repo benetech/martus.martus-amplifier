@@ -8,7 +8,7 @@ import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinIndexer;
 import org.martus.amplifier.search.BulletinSearcher;
 
-public class TestLuceneSearcher extends TestAbstractSearch
+public class TestLuceneSearcher extends AbstractSearchTestCase
 {
 	public TestLuceneSearcher(String name) 
 	{
