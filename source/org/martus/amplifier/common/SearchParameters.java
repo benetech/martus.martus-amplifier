@@ -109,18 +109,6 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 		return newString;
 	}
 	
-	
-	private static String addSign(String sign, String queryString)
-	{
-		String[] words = queryString.split(" ");
-		String query = "(";		
-
-		for (int i=0;i<words.length;i++)		
-			query += sign + words[i]+ " ";
-
-		return query + ")";
-	}
-	
 	private void setEventDate()
 	{
 		Date startDate	= getStartDate();

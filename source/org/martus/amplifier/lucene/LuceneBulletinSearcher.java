@@ -88,16 +88,13 @@ public class LuceneBulletinSearcher
 		throws BulletinIndexException 
 	{	
 		String queryString = (String) fields.get(SearchResultConstants.RESULT_BASIC_QUERY_KEY);
-		String fieldString = (String) fields.get(SearchResultConstants.RESULT_FIELDS_KEY);
-
 		if (queryString != null)
 		{
 			Query query = multiFieldQueryParser(queryString, SEARCH_ALL_TEXT_FIELDS, "Improperly formed multiquery: ");				
 			return getLuceneResults(query);	
 		}	
 			
-		queryString = (String) fields.get(SearchResultConstants.RESULT_ADVANCED_QUERY_KEY);												
-		return getLuceneResults(complexSearch(queryString, fields));
+		return getLuceneResults(complexSearch(fields));
 	}
 
 	private Query queryParser(String query, String field, String msg)
@@ -209,7 +206,7 @@ public class LuceneBulletinSearcher
 		return queryParser(queryString, fieldString, "Improperly formed advanced find bulletin query: ");
 	}				
 	
-	private Query complexSearch(String queryString, HashMap fields)
+	private Query complexSearch(HashMap fields)
 			throws BulletinIndexException 
 	{
 		BooleanQuery query = new BooleanQuery();
