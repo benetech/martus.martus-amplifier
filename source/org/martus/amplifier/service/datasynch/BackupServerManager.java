@@ -24,13 +24,23 @@ public class BackupServerManager implements IDataSynchConstants
 		Enumeration serverNames = backupServerProperties.propertyNames();
 		String currentServerIP = null;
 		String currentServerName = null;
+		String currentServerPortString = null;
+		int currentServerPort = 0;
+		
 		backupServersList = new ArrayList();
-		while(serverNames.hasMoreElements())
+		currentServerName = backupServerProperties.getProperty(NAME_PROPERTY);
+		currentServerIP = backupServerProperties.getProperty(IP_PROPERTY);
+		currentServerPortString = backupServerProperties.getProperty(PORT_PROPERTY);
+		if(currentServerPortString != null)
+			currentServerPort = Integer.parseInt(currentServerPortString);
+		backupServersList.add(new BackupServerInfo(currentServerName,
+			currentServerIP, currentServerPort));
+		/*while(serverNames.hasMoreElements())
 		{
 			currentServerName = (String) serverNames.nextElement();
 			currentServerIP = backupServerProperties.getProperty(currentServerName);
 			backupServersList.add(currentServerIP);
-		}
+		}*/
 	}
 
 	public List getBackupServersList() 
@@ -45,6 +55,10 @@ public class BackupServerManager implements IDataSynchConstants
 		singleton = new BackupServerManager();
 		return singleton;
 	}
+	
+	private static final String NAME_PROPERTY = "serverName";
+	private static final String IP_PROPERTY = "serverIP";
+	private static final String PORT_PROPERTY = "serverPort";
 	
 	public static BackupServerManager singleton = null;
 	private List backupServersList = null;
