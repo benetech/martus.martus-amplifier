@@ -51,13 +51,22 @@ Boston, MA 02111-1307, USA.
 	                	<br/>
 						#if($bulletin.fields.author != "")
 		        	        <strong>Author</strong>: $bulletin.fields.author<br/>
+		        	    #else
+		        	    	<strong>Author</strong>:   <br/>
 						#end
+						
 						#if($bulletin.fields.organization != "")
 		            	    <strong>Organization</strong>: $bulletin.fields.organization<br/>
+		            	#else
+		            		<strong>Organization</strong>: <br/>
 						#end
+						
 						#if($bulletin.fields.location != "")
 			                <strong>Location</strong>: $bulletin.fields.location<br/>
+			            #else
+			            	<strong>Location</strong>: <br/>  
 						#end
+						
 		                <strong>Event Date</strong>: 
 						#parse("DateRange.vm")
 						<br/>
