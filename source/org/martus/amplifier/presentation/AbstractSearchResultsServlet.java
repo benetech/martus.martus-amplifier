@@ -60,7 +60,7 @@ public abstract class AbstractSearchResultsServlet extends AmplifierServlet
 		context.put("currentlySortingBy", sortBy);
 	}
 
-	public static void setSearchedForInContextAndSession(AmplifierServletRequest request, Context context)
+	public static void setSearchedForInSession(AmplifierServletRequest request)
 	{
 		String basicQueryString = request.getParameter(SearchResultConstants.RESULT_BASIC_QUERY_KEY);
 		String searchedForString = (String)request.getSession().getAttribute("searchedFor");
@@ -77,8 +77,13 @@ public abstract class AbstractSearchResultsServlet extends AmplifierServlet
 
 		request.getSession().setAttribute("searchedFor", searchedForString);
 		request.getSession().setAttribute("defaultSimpleSearch", basicQueryString);
-
+	}
+	
+	public static void setSearchedForInContext(AmplifierServletSession session, Context context)
+	{
+		String searchedForString = (String)session.getAttribute("searchedFor");
 		context.put("searchedFor", searchedForString);
+		String basicQueryString = (String)session.getAttribute("defaultSimpleSearch");
 		context.put("defaultSimpleSearch", basicQueryString);
 	}
 

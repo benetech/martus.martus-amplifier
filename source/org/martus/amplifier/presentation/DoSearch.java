@@ -61,7 +61,8 @@ public class DoSearch extends AbstractSearchResultsServlet
 		String sortField = getFieldToSortBy(request);
 
 		sortBulletins(bulletins, sortField);
-		setSearchedForInContextAndSession(request, context);
+		setSearchedForInSession(request);
+		setSearchedForInContext(request.getSession(), context);
 		setSearchResultsContext(bulletins, request, context);		
 		setSortByInSession(sortField, request);
 		

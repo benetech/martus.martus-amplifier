@@ -31,6 +31,7 @@ import java.util.Vector;
 import org.apache.velocity.context.Context;
 import org.martus.amplifier.common.FindBulletinsFields;
 import org.martus.amplifier.common.SearchResultConstants;
+import org.martus.amplifier.presentation.AbstractSearchResultsServlet;
 import org.martus.amplifier.presentation.SearchResults;
 import org.martus.amplifier.presentation.SimpleSearch;
 import org.martus.amplifier.search.BulletinInfo;
@@ -107,8 +108,9 @@ public class TestSearchResults extends TestCaseEnhanced
 		request.putParameter("query", basicSearchString);
 		Context context = new MockContext();
 		
-		SearchResults.setSearchedForInContextAndSession(request, context);
+		AbstractSearchResultsServlet.setSearchedForInSession(request);
 		assertEquals("Didn't get back correct search string from session", basicSearchString, request.getSession().getAttribute("searchedFor"));
+		AbstractSearchResultsServlet.setSearchedForInContext(request.getSession(), context);
 		assertEquals("Didn't get back correct search string from context", basicSearchString, context.get("searchedFor"));		
 	}
 
