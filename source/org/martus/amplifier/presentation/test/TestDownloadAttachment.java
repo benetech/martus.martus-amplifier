@@ -41,7 +41,6 @@ import org.martus.amplifier.search.BulletinInfo;
 import org.martus.common.crypto.MockMartusSecurity;
 import org.martus.common.packet.UniversalId;
 import org.martus.common.test.TestCaseEnhanced;
-import org.martus.util.DirectoryTreeRemover;
 import org.martus.util.StringInputStream;
 
 
@@ -63,8 +62,6 @@ public class TestDownloadAttachment extends TestCaseEnhanced
 	public void tearDown() throws Exception
 	{
 		MartusAmplifier.dataManager.clearAllAttachments();
-		String basePath = AmplifierConfiguration.getInstance().getBasePath() + "/testing";
-		DirectoryTreeRemover.deleteEntireDirectoryTree(new File(basePath));
 	}
 	
 	public void testGetAttachment() throws Exception
