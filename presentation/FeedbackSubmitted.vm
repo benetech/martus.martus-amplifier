@@ -1,0 +1,18 @@
+<html>
+    <head>
+   		#parse("Meta.vm")
+        <title>Martus Amplifier Feedback Submitted</title>
+    </head>
+    
+    <body>
+    	#set ($pageTitle="Feedback Submitted")
+    	#set ($pageInfo="")
+		#set ($noSearchForm = "1")
+		#parse ("ResultHeader.vm")
+		<br/>
+			Thanks for your feedback.
+		<br/>
+        #set ($noSearchForm = "1")
+        #parse ("ResultFooter.vm")
+    </body>
+</html>

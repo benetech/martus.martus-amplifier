@@ -51,6 +51,11 @@
 	</servlet>
 
 	<servlet>
+		<servlet-name> FeedbackSubmitted </servlet-name>
+		<servlet-class> org.martus.amplifier.presentation.FeedbackSubmitted </servlet-class>
+	</servlet>
+
+	<servlet>
 		<servlet-name> ContactInfo </servlet-name>
 		<servlet-class> org.martus.amplifier.presentation.ContactInfo </servlet-class>
 	</servlet>

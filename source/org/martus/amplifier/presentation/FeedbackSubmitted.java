@@ -23,7 +23,6 @@ Software Foundation, Inc., 59 Temple Place - Suite 330,
 Boston, MA 02111-1307, USA.
 
 */
-
 package org.martus.amplifier.presentation;
 
 import org.apache.velocity.context.Context;
@@ -31,13 +30,13 @@ import org.martus.amplifier.velocity.AmplifierServlet;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
 import org.martus.amplifier.velocity.AmplifierServletResponse;
 
-public class UserFeedbackForm extends AmplifierServlet
+
+public class FeedbackSubmitted extends AmplifierServlet
 {
 	public String selectTemplate(AmplifierServletRequest request, AmplifierServletResponse response, Context context)
+			throws Exception
 	{
-		SearchResults.setSearchedFor(request, context);
-		boolean isProblemReport = (request.getParameter("problemReport") != null);
-		context.put("problemReport", new Boolean(isProblemReport));
-		return "UserFeedbackForm.vm";
-	}
+		super.selectTemplate(request, response, context);
+		return "FeedbackSubmitted.vm";
+	}	
 }

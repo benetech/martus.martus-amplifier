@@ -18,7 +18,7 @@
 			<tr>
 				<td width='5%'></td>
 				<td bgcolor='#dddddd' fgcolor='#000000'>
-					You searched for: <strong>test</strong><br/>
+					You searched for: <strong>$searchedFor</strong><br/>
 					<br/>
 					Please tell us what specific information you were seeking<br/>
 					and why you were dissatisfied with the search results.<br/>
@@ -31,7 +31,11 @@
 						<br/>
 					#end
 					<form name="feedback" action="FeedbackSubmitted" method="post">
-						<textarea rows='10' cols='60'></textarea>
+						#if ($problemReport)
+							<textarea name='userFeedbackProblem' rows='10' cols='60'></textarea>
+						#else
+							<textarea name='userFeedbackDissatisfied' rows='10' cols='60'></textarea>
+						#end
 						<br/><br/>
 						<input type='submit' value='Submit'></input>
 					</form>					
