@@ -105,28 +105,30 @@ public abstract class TestAbstractSearch
 				1, 
 				searcher.search(
 					SEARCH_AUTHOR_INDEX_FIELD, 
-					fdp.get(BulletinField.TAGAUTHOR)).getCount());
+					fdp.get(SEARCH_AUTHOR_INDEX_FIELD)).getCount());
+	
 			Assert.assertEquals(
 				1,
 				searcher.search(
 					SEARCH_KEYWORDS_INDEX_FIELD, 
-					fdp.get(BulletinField.TAGKEYWORDS)).getCount());
+					fdp.get(SEARCH_KEYWORDS_INDEX_FIELD)).getCount());
+	
 			Date startDate = SearchConstants.SEARCH_DATE_FORMAT.parse("2003-05-01");
 			Date endDate = SearchConstants.SEARCH_DATE_FORMAT.parse("2003-05-20");
 			Assert.assertEquals(
 				1,
 				searcher.searchDateRange(
-					SEARCH_ENTRY_DATE_INDEX_FIELD, startDate, endDate).getCount());
+					null, startDate, endDate).getCount());
 		
 			Assert.assertEquals(
 				0,
 				searcher.search(
-					SEARCH_DETAILS_INDEX_FIELD, 
-					fdp.get(BulletinField.TAGAUTHOR)).getCount());
+					null, 
+					fdp.get(SEARCH_DETAILS_INDEX_FIELD)).getCount());
 			Assert.assertEquals(
 				0,
 				searcher.searchDateRange(
-					SEARCH_EVENT_DATE_INDEX_FIELD, startDate, endDate).getCount());
+					null, startDate, endDate).getCount());
 		} finally {
 			searcher.close();
 		}
@@ -283,6 +285,33 @@ public abstract class TestAbstractSearch
 		}
 	}
 
+	public void testSearchForStopWords() throws BulletinIndexException
+	{
+		UniversalId bulletinId = UniversalId.createDummyUniversalId();
+		FieldDataPacket fdp = generateSampleData(bulletinId);		
+		BulletinIndexer indexer = openBulletinIndexer();
+		try 
+		{
+			indexer.clearIndex();
+			indexer.indexFieldData(bulletinId, fdp);
+		} 
+		finally 
+		{
+			indexer.close();
+		}
+		
+		BulletinSearcher searcher = openBulletinSearcher();
+		BulletinSearcher.Results results = null;
+		try 
+		{
+			results = searcher.search(SEARCH_TITLE_INDEX_FIELD, "for");
+			assertEquals("Should have found 1 result for stopword 'for'", 1, results.getCount());
+		} 
+		finally 
+		{
+			searcher.close();
+		}
+	}
 
 	public void testDateBoundary() 
 		throws BulletinIndexException, ParseException
@@ -491,8 +520,8 @@ public abstract class TestAbstractSearch
 		String keyword = "2003-04-10";
 		String keywords = keyword + " egg salad root beer";
 		String title = "What's for Lunch";
-		String eventDate = "2003-04-10";
-		String entryDate = "2003-05-11";
+		String eventdate = "2003-04-10";
+		String entrydate = "2003-05-11";
 		String publicInfo = "menu";
 		String summary = 
 			"Today Paul ate an egg salad sandwich and a root beer " +
@@ -506,14 +535,14 @@ public abstract class TestAbstractSearch
 		
 		FieldDataPacket fdp = generateFieldDataPacket(
 			bulletinId, new String[] { 
-				BulletinField.TAGAUTHOR, author, 
-				BulletinField.TAGKEYWORDS, keywords, 
-				BulletinField.TAGTITLE, title,
-				BulletinField.TAGENTRYDATE, entryDate, 
-				BulletinField.TAGEVENTDATE, eventDate,
-				BulletinField.TAGPUBLICINFO, publicInfo, 
-				BulletinField.TAGSUMMARY, summary,
-				BulletinField.TAGLOCATION, location
+				SEARCH_AUTHOR_INDEX_FIELD, author, 
+				SEARCH_KEYWORDS_INDEX_FIELD, keywords, 
+				SEARCH_TITLE_INDEX_FIELD, title,
+				SEARCH_ENTRY_DATE_INDEX_FIELD, entrydate, 
+				SEARCH_EVENT_DATE_INDEX_FIELD, eventdate,
+				SEARCH_DETAILS_INDEX_FIELD, publicInfo, 
+				SEARCH_SUMMARY_INDEX_FIELD, summary,
+				SEARCH_LOCATION_INDEX_FIELD, location
 			}, new String[] {
 				attachment1LocalId, attachment1Label, 
 				attachment2LocalId, attachment2Label
@@ -526,8 +555,8 @@ public abstract class TestAbstractSearch
 		String author = "Chuck";	
 		String keywords = "2003-08-20";
 		String title = "What's for Lunch??";
-		String entryDate= "2003-08-30";
-		String eventDate = "2003-08-20,20030820+3";
+		String entrydate= "2003-08-30";
+		String eventdate = "2003-08-20,20030820+3";
 		String publicInfo = "menu3";
 		String summary = 
 			"Today Chuck ate an egg2 salad sandwich and a root beer2 " +
@@ -541,14 +570,14 @@ public abstract class TestAbstractSearch
 		
 		FieldDataPacket fdp = generateFieldDataPacket(
 			bulletinId, new String[] { 
-				BulletinField.TAGAUTHOR, author, 
-				BulletinField.TAGKEYWORDS, keywords, 
-				BulletinField.TAGTITLE, title,
-				BulletinField.TAGENTRYDATE, entryDate, 
-				BulletinField.TAGEVENTDATE, eventDate,
-				BulletinField.TAGPUBLICINFO, publicInfo, 
-				BulletinField.TAGSUMMARY, summary,
-				BulletinField.TAGLOCATION, location
+				SEARCH_AUTHOR_INDEX_FIELD, author, 
+				SEARCH_KEYWORDS_INDEX_FIELD, keywords, 
+				SEARCH_TITLE_INDEX_FIELD, title,
+				SEARCH_ENTRY_DATE_INDEX_FIELD, entrydate, 
+				SEARCH_EVENT_DATE_INDEX_FIELD, eventdate,
+				SEARCH_DETAILS_INDEX_FIELD, publicInfo, 
+				SEARCH_SUMMARY_INDEX_FIELD, summary,
+				SEARCH_LOCATION_INDEX_FIELD, location
 			}, new String[] {
 				attachment1LocalId, attachment1Label, 
 				attachment2LocalId, attachment2Label
