@@ -57,15 +57,15 @@ public class TestRawLuceneSearching extends TestCaseEnhanced
 		
 		String sampleId1 = "blister";
 		String sampleDate1 = "1996-05-11";
-		String sampleDetails1 = "This is a test with keywords";
+		String sampleDetails1 = "This is a test with keywords fun";
 
 		String sampleId2 = "pucker";
 		String sampleDate2 = "2003-09-29";
-		String sampleDetails2 = "More keywords that can be found";
+		String sampleDetails2 = "More keywords that can be found fun";
 
 		String sampleId3 = "snooty";
 		String sampleDate3 = "1933-10-14";
-		String sampleDetails3 = "This must be really old data!";
+		String sampleDetails3 = "This must be really old data! fun";
 
 		boolean createIfNotThere = true;
 		Analyzer analyzer = LuceneBulletinIndexer.getAnalyzer();
@@ -76,12 +76,16 @@ public class TestRawLuceneSearching extends TestCaseEnhanced
 		writer.close();
 		
 		IndexSearcher searcher = new IndexSearcher(indexDir.getPath());
+
 		verifyLookupById(searcher, sampleId1);
 		verifyLookupById(searcher, sampleId2);
 		
 		verifyTextSearch(searcher, "none", new String[] {});
 		verifyTextSearch(searcher, "test", new String[] {sampleId1});
 		verifyTextSearch(searcher, "keywords", new String[] {sampleId1, sampleId2});
+
+		verifyTextSearch(searcher, "fun NOT keywords", new String[] {sampleId3});
+		verifyTextSearch(searcher, "+fun-keywords", new String[] {sampleId3});
 		
 		verifyDateRangeSearch(searcher, "1995-01-01", "1998-12-31", new String[] {sampleId1});
 		verifyDateRangeSearch(searcher, "1900-01-01", "2037-12-31", 
