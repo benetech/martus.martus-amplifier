@@ -26,6 +26,7 @@ public class TestAllMain extends TestSuite
 				new TestSuite("All Martus Amplifier Main Tests");
 
 			suite.addTest(new TestSuite(TestMartusAmplifier.class));
+			suite.addTest(new TestSuite(TestLanguagesIndexList.class));
 
 			return suite;
 		}
