@@ -20,11 +20,11 @@
 	                <td>	                	           	
 	                	<strong>Title</strong>: <a href="FoundBulletin?index=$velocityCount&searchedFor=$searchedFor">
 	                	#if ($bulletin.fields.title == "")
-	                		untitled
+	                		(Untitled)</a>
 	                	#else
-	                		$bulletin.fields.title
+	                		$bulletin.fields.title</a>
 	                	#end	
-	                		</a><br/>
+	                	<br/>
 						#if($bulletin.fields.author != "")
 		        	        <strong>Author</strong>: $bulletin.fields.author<br/>
 						#end
