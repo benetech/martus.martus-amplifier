@@ -53,9 +53,13 @@
 		<br/><br/><br/>
 
 		<center>
-			<a href='some url'>&lt;&lt; Previous</a>
+		#if ($previousBulletin >= 0)
+			<a href='FoundBulletin?index=$previousBulletin'>&lt;&lt; Previous</a>
+		#end
 			&nbsp;&nbsp;&nbsp;
-			<a href='some url'>Next &gt;&gt;</a>
+		#if ($nextBulletin >= 0)
+			<a href='FoundBulletin?index=$nextBulletin'>Next &gt;&gt;</a>
+		#end
 		</center>
 		#include ("ResultFooter.vm")
     </body>

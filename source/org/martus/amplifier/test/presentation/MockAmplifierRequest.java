@@ -9,6 +9,7 @@ import org.martus.amplifier.presentation.AmplifierServletRequest;
 
 public class MockAmplifierRequest implements AmplifierServletRequest
 {
+	
 	public void putParameter(String key, String value)
 	{
 		parameters.put(key, value);
@@ -21,8 +22,9 @@ public class MockAmplifierRequest implements AmplifierServletRequest
 
 	public HttpSession getSession()
 	{
-		return null;
+		return httpSession;
 	}
 
 	Map parameters = new HashMap();
+	MockHttpSession httpSession = new MockHttpSession();
 }
