@@ -60,15 +60,14 @@ Martus Eclipse Setup (Oct. 31, 2002)
 	Click on the tab labelled "Libraries".
 	Using "Add variables / New" create new variables pointing to the following Jars, most of which can be found in martus-amplifier/buildfiles/jars.
 		
-		berkeleydb (See Set up BerkeleyDB Instructions)
 		jsse (jsse.jar)
 		JUnit (junit.jar)
 		LuceneEngine (lucene-1.2.jar)
 		Xerces (xerces.jar)
 		xmlrpc (xmlrpc-1.1.jar)
-		jstl_standard (martus-amplifier/buildfiles/jakarta-taglibs/standard-1.0.3/lib/standard.jar)
+		Jetty
 
-	The same will need to be done for the "martus-readonly" project.
+	The same will need to be done for the "martus" project.
 
 		bccrypto (bcprov-jdk14-118.jar)
 		InfiniteMonkeys (InfiniteMonkey.jar)

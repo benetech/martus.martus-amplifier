@@ -5,7 +5,7 @@ martus-amplifier/buildfiles/jars/
 ant.jar
 jasper-runtime.jar
 jasper-compile.jar
-servelet.jar
+servlet.jar
 
 modify the code 
 server.addWebApplication("/","c:/eclipseworkspace/martus-amplifier/presentation/");

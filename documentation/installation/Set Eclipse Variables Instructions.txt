@@ -1,21 +1,11 @@
-
-Set jstl_standard build path variable (see Set up Eclipse Instructions #7)
-to martus-amplifier/buildfiles/jakarta-taglibs/standard-1.0.3/lib/standard.jar
-
 Set LuceneEngine build path variable 
 to martus-amplifier/buildfiles/jars/lucene-1.3.jar
 
 Set Xerces build path variable 
 to martus-amplifier/buildfiles/jars/xerces.jar
 
-Set JspEngine build path variable 
-to martus-amplifier/buildfiles/jars/jasper-runtime.jar 
-
 Set ServletEngine build path variable 
 to martus-amplifier/buildfiles/jars/servlet.jar
-
-Set JspEngine build path variable 
-to martus-amplifier/buildfiles/jars/jasper-runtime.jar
 
 Set Jetty build path variable 
 to martus-amplifier/buildfiles/jars/org.mortbay.jetty.jar
