@@ -7,13 +7,7 @@ import org.martus.amplifier.service.datasynch.AmplifierNetworkGateway;
 import org.martus.common.UniversalId;
 
 public class AmplifierNetworkGatewayTest extends AbstractAmplifierDataSynchTest
-{
-
-	public AmplifierNetworkGatewayTest()
-	{
-		super();
-	}
-	
+{	
 	public AmplifierNetworkGatewayTest(String name)
 	{
 		super(name);

@@ -1,10 +1,9 @@
 package org.martus.amplifier.test.search;
 
-import junit.framework.Assert;
-
 import org.martus.amplifier.service.search.BulletinIndexer;
+import org.martus.common.TestCaseEnhanced;
 
-public class BulletinIndexerTest extends AbstractAmplifierSearchTest
+public class BulletinIndexerTest extends TestCaseEnhanced
 {
 	public BulletinIndexerTest(String name)
 	{
@@ -15,7 +14,7 @@ public class BulletinIndexerTest extends AbstractAmplifierSearchTest
 	{
 		BulletinIndexer indexer = BulletinIndexer.getInstance();
 		indexer.indexBulletins();
-		Assert.assertNotNull(indexer);
+		assertNotNull(indexer);
 	}
 
 }

@@ -15,12 +15,6 @@ import org.martus.amplifier.service.datasynch.DataSynchManager;
  */
 public class DataSynchManagerTest extends AbstractAmplifierDataSynchTest
 {
-	
-	public DataSynchManagerTest()
-	{
-		super();
-	}
-	
 	public DataSynchManagerTest(String name)
 	{
 		super(name);

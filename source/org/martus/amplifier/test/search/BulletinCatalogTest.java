@@ -1,7 +1,7 @@
 package org.martus.amplifier.test.search;
 
-import junit.framework.Assert;
 import org.martus.amplifier.service.search.BulletinCatalog;
+import org.martus.common.TestCaseEnhanced;
 import org.martus.common.UniversalId;
 
 
@@ -13,7 +13,7 @@ import org.martus.common.UniversalId;
  * @see org.martus.amplifier.service.search.BulletinCatalog
  *
  */
-public class BulletinCatalogTest extends AbstractAmplifierSearchTest
+public class BulletinCatalogTest extends TestCaseEnhanced
 {
 	public BulletinCatalogTest(String name)
 	{
@@ -31,8 +31,8 @@ public class BulletinCatalogTest extends AbstractAmplifierSearchTest
 		
 		BulletinCatalog catalog = BulletinCatalog.getInstance();
 
-		Assert.assertTrue(catalog.bulletinHasBeenIndexed(oxfamBulletinId));
-		Assert.assertFalse(catalog.bulletinHasBeenIndexed(nonExistentBulletinId));
+		assertTrue("bulletin indexed?", catalog.bulletinHasBeenIndexed(oxfamBulletinId));
+		assertFalse("non-existant bulletin indexed?", catalog.bulletinHasBeenIndexed(nonExistentBulletinId));
 	}
 
 }
