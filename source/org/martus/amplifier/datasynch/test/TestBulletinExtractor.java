@@ -317,6 +317,7 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 		for (int i = 0; i < attachments.length; i++) {
 			b.addPublicAttachment(new AttachmentProxy(attachments[i]));
 		}
+		b.setSealed();
 		return b;
 	}
 	

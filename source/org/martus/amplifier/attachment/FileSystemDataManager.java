@@ -58,7 +58,7 @@ public class FileSystemDataManager implements DataManager
 	{
 		try
 		{
-			return db.openInputStream(new DatabaseKey(attachmentId), db.security);
+			return db.openInputStream(DatabaseKey.createSealedKey(attachmentId), db.security);
 		}
 		catch (Exception e)
 		{
@@ -70,7 +70,7 @@ public class FileSystemDataManager implements DataManager
 	{
 		try
 		{
-			int sizeInBytes = db.getRecordSize(new DatabaseKey(attachmentId));
+			int sizeInBytes = db.getRecordSize(DatabaseKey.createSealedKey(attachmentId));
 			int sizeInKb = sizeInBytes / Kbytes;
 			if(sizeInKb == 0)
 				sizeInKb = 1;
@@ -86,7 +86,7 @@ public class FileSystemDataManager implements DataManager
 	{
 		try
 		{
-			return db.getRecordSize(new DatabaseKey(attachmentId));
+			return db.getRecordSize(DatabaseKey.createSealedKey(attachmentId));
 		}
 		catch (Exception e)
 		{
@@ -98,7 +98,7 @@ public class FileSystemDataManager implements DataManager
 	{
 		try
 		{
-			db.writeRecord(new DatabaseKey(attachmentId), data);
+			db.writeRecord(DatabaseKey.createSealedKey(attachmentId), data);
 		}
 		catch (Exception e)
 		{
