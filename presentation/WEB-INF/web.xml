@@ -35,6 +35,11 @@
 		<servlet-class> org.martus.amplifier.presentation.FoundBulletin </servlet-class>
 	</servlet>
 
+	<servlet>
+		<servlet-name> DownloadAttachment </servlet-name>
+		<servlet-class> org.martus.amplifier.presentation.DownloadAttachment </servlet-class>
+	</servlet>
+
     <taglib>
         <taglib-uri>amplifiertaglib</taglib-uri>
         <taglib-location>/WEB-INF/amp.tld</taglib-location>

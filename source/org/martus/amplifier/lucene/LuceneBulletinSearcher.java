@@ -342,6 +342,7 @@ public class LuceneBulletinSearcher
 				}
 				for (int i = 0; i < attachmentsAssocList.length; i += 2) {
 					info.addAttachment(new AttachmentInfo(
+						info.getAccountId(),
 						attachmentsAssocList[i],
 						attachmentsAssocList[i + 1]));	
 				}

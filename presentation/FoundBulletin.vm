@@ -65,7 +65,7 @@
 			#foreach ($thisAttachments in $bulletin.attachments)
 				<tr>
 					<td valign='top'>Attachment $velocityCount:</td>
-					<td valign='top'><a href=DownloadAttachment?index=$velocityCount>$thisAttachments.label</a></td>
+					<td valign='top'><a href=DownloadAttachment?bulletinIndex=$currentBulletin&attachmentIndex=$velocityCount>$thisAttachments.label</a></td>
 					<td></td>
 				</tr>
 			#end

@@ -30,30 +30,27 @@ import java.util.Vector;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.velocity.context.Context;
+import org.martus.amplifier.search.AttachmentInfo;
 import org.martus.amplifier.search.BulletinInfo;
 import org.martus.amplifier.velocity.AmplifierServlet;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
 import org.martus.amplifier.velocity.AmplifierServletSession;
 
-public class FoundBulletin extends AmplifierServlet
+public class DownloadAttachment extends AmplifierServlet
 {
 	public String selectTemplate(AmplifierServletRequest request, HttpServletResponse response, Context context)
+		throws Exception
 	{
 		AmplifierServletSession session = request.getSession();
 		Vector bulletins = (Vector)session.getAttribute("foundBulletins");
-		int index = Integer.parseInt(request.getParameter("index"));
-		BulletinInfo info = (BulletinInfo)bulletins.get(index - 1);
-		context.put("bulletin", info);
-		int previousIndex = index - 1;
-		int nextIndex = index + 1;
-		if(previousIndex <= 0)
-			previousIndex = -1;
-		if(nextIndex > bulletins.size())
-			nextIndex = -1;
-		context.put("previousBulletin", new Integer(previousIndex));
-		context.put("nextBulletin", new Integer(nextIndex));
-		context.put("currentBulletin", new Integer(index));
-		return "FoundBulletin.vm";
+		int bulletinIndex = Integer.parseInt(request.getParameter("bulletinIndex"));
+			
+		BulletinInfo bulletin = (BulletinInfo)bulletins.get(bulletinIndex - 1);
+		int attachmentIndex = Integer.parseInt(request.getParameter("attachmentIndex"));
+		AttachmentInfo info = (AttachmentInfo)bulletin.getAttachments().get(attachmentIndex-1);
+		
+		context.put("attachment", info);
+		return "DownloadAttachment.vm";
 	}
 
 }

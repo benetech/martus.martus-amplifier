@@ -1,0 +1,16 @@
+<html>
+    <head>
+   		#include("Meta.vm")
+    	<title>Download Attachment</title>
+    </head>
+    
+    <body>
+		label = $attachment.label
+		<BR/>
+		accountId = $attachment.accountId
+		<BR/>
+		localId = $attachment.localId
+		<BR/>
+    </body>
+</html>
+		
