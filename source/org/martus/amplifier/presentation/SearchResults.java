@@ -25,73 +25,21 @@ Boston, MA 02111-1307, USA.
 */
 package org.martus.amplifier.presentation;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
-import java.util.Properties;
 import java.util.Vector;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.velocity.Template;
-import org.apache.velocity.app.Velocity;
 import org.apache.velocity.context.Context;
-import org.apache.velocity.exception.ParseErrorException;
-import org.apache.velocity.exception.ResourceNotFoundException;
-import org.apache.velocity.servlet.VelocityServlet;
 import org.martus.amplifier.presentation.search.SearchBean;
 import org.martus.amplifier.service.search.BulletinInfo;
 
 
-public class SearchResults extends VelocityServlet
+public class SearchResults extends AmplifierServlet
 {
-	/**
-	 *   Called by the VelocityServlet
-	 *   init().  We want to set a set of properties
-	 *   so that templates will be found in the webapp
-	 *   root.  This makes this easier to work with as 
-	 *   an example, so a new user doesn't have to worry
-	 *   about config issues when first figuring things
-	 *   out
-	 */
-	protected Properties loadConfiguration(ServletConfig config )
-		throws IOException, FileNotFoundException
-	{
-		Properties p = new Properties();
-
-		/*
-		 *  first, we set the template path for the
-		 *  FileResourceLoader to the root of the 
-		 *  webapp.  This probably won't work under
-		 *  in a WAR under WebLogic, but should 
-		 *  under tomcat :)
-		 */
-
-		String path = config.getServletContext().getRealPath("/");
-
-		if (path == null)
-		{
-			System.out.println(" SampleServlet.loadConfiguration() : unable to " 
-							   + "get the current webapp root.  Using '/'. Please fix.");
-
-			path = "/";
-		}
-
-		p.setProperty( Velocity.FILE_RESOURCE_LOADER_PATH,  path );
-
-		/**
-		 *  and the same for the log file
-		 */
-
-		p.setProperty( "runtime.log", path + "velocity.log" );
-
-		return p;
-	}
-
 	public Date getDate(int year, int month, int day)
 	{
 		return new GregorianCalendar(year, month, day).getTime();
@@ -128,9 +76,9 @@ public class SearchResults extends VelocityServlet
 		searcher.setEndDate(endDate);	
 	}
 	
-	protected Template handleRequest( HttpServletRequest request,
-	HttpServletResponse response, Context ctx )
-		throws Exception
+	public String selectTemplate( HttpServletRequest request,
+					HttpServletResponse response, Context ctx ) 
+					throws Exception
 	{
 
 		SearchBean searcher = new SearchBean();
@@ -144,35 +92,18 @@ searcher.setField("author");
 		SearchBean.SearchResultsBean results = searcher.getResults();
 		int resultCount = results.size();
 
-	   try
-	   {
-			String templateName = "NoSearchResults.vm";
-			if(resultCount > 0)
+		String templateName = "NoSearchResults.vm";
+		if(resultCount > 0)
+		{
+			templateName ="SearchResults.vm";
+			Vector bulletins = new Vector();
+			for (Iterator iter = results.iterator(); iter.hasNext();)
 			{
-				templateName ="SearchResults.vm";
-				Vector bulletins = new Vector();
-				for (Iterator iter = results.iterator(); iter.hasNext();)
-				{
-					BulletinInfo element = (BulletinInfo) iter.next();
-					bulletins.add(element);
-				}
-				ctx.put("foundBulletins", bulletins);
+				BulletinInfo element = (BulletinInfo) iter.next();
+				bulletins.add(element);
 			}
-			return getTemplate(templateName);
-	   }
-	   catch( ParseErrorException pee )
-	   {
-		   System.out.println("SearchResults : parse error for template " + pee);
-	   }
-	   catch( ResourceNotFoundException rnfe )
-	   {
-		   System.out.println("SearchResults : template not found " + rnfe);
-	   }
-	   catch( Exception e )
-	   {
-		   System.out.println("Error " + e);
-	   }
-	   return null;
+			ctx.put("foundBulletins", bulletins);
+		}
+		return templateName;
 	}
-
 }
