@@ -205,6 +205,9 @@ public class MartusAmplifier
 	
 	public void endSynch()
 	{
+		if(coreServer.isShutdownRequested())
+			log("Shutdown requested and amp endSynch called");
+		
 		isSyncing = false;
 	}
 
