@@ -3,6 +3,7 @@ package org.martus.amplifier.presentation;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
+import java.util.Vector;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -78,6 +79,12 @@ public class AdvancedSearch extends VelocityServlet
 	{      
     	
 		Template outty = null;
+		Vector searchableDateFields = new Vector();
+		
+		searchableDateFields.add("Entry Date");
+		searchableDateFields.add("Event Date");
+		
+		ctx.put("searchableDateFields", searchableDateFields);
         
 		try
 		{

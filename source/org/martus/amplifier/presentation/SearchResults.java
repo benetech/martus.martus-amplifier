@@ -27,6 +27,8 @@ package org.martus.amplifier.presentation;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.Vector;
@@ -89,6 +91,42 @@ public class SearchResults extends VelocityServlet
 
 		return p;
 	}
+
+	public Date getDate(int year, int month, int day)
+	{
+		return new GregorianCalendar(year, month, day).getTime();
+	}	
+	
+	private void handleAdvancedSearchParams(HttpServletRequest request, SearchBean searcher) 
+			throws Exception
+	{
+		
+		String startMonthString = request.getParameter("startMonth");		
+		String startDayString   = request.getParameter("startDay");		
+		String startYearString  = request.getParameter("startYear");
+		
+		String endMonthString   = request.getParameter("endMonth");
+		String endDayString     = request.getParameter("endDay");
+		String endYearString    = request.getParameter("endYear");
+
+		if (startMonthString == null || 
+			endMonthString == null ||
+			startDayString == null ||
+			endDayString == null ||
+			startYearString == null ||
+			endYearString == null)
+			return;
+		
+		Date startDate = getDate(Integer.parseInt(startYearString),
+								 Integer.parseInt(startMonthString), 
+								 Integer.parseInt(startDayString));
+		Date endDate = getDate(Integer.parseInt(endYearString),
+							   Integer.parseInt(endMonthString),
+							   Integer.parseInt(endDayString));
+
+		searcher.setStartDate(startDate);
+		searcher.setEndDate(endDate);	
+	}
 	
 	protected Template handleRequest( HttpServletRequest request,
 	HttpServletResponse response, Context ctx )
@@ -100,6 +138,9 @@ public class SearchResults extends VelocityServlet
 		searcher.setQuery(queryString);
 //		String fieldString = request.getParameter("field");
 searcher.setField("author");
+
+		handleAdvancedSearchParams(request, searcher);	
+
 		SearchBean.SearchResultsBean results = searcher.getResults();
 		int resultCount = results.size();
 

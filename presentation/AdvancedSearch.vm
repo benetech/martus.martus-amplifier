@@ -6,64 +6,83 @@
     
     <body>
 #include ("header.vm")
+		#set ($years = [1900..2004])
+        #set ($months = [1..12])
+        #set ($days = [1..31])
             
         <center>
             <table border="0" cellspacing="0" cellpadding="0">
             <tr>
                 <td> 
-                    <form name="search" action="ValidateDates" method="get">
+                    <form name="search" action="SearchResults" method="post">
                         <p>
                             The 
-                            <select name="field">
-<!--                                <c:forEach items="${search.dateSearchFields}" var="field">
-                                    <option value="<c:out value="${field.indexId}"/>">
-                                        <c:out value="${field.displayName}"/>
-                                    </option>
-                                </c:forEach>
-    -->                        </select>
+                         <select name="field">
+						    #foreach ($field in $searchableDateFields)
+                                <option value="$velocityCount">
+                                    $field
+                                </option>
+						    #end
+                        </select>     
                             is 
 			</p>		
 			<p> &nbsp;&nbsp;&nbsp;&nbsp;between 
-                            <select name="startMonth">
-                            </select>
-                            <select name="startDay">
-<!--                                <c:forEach begin="1" end="31" var="i">
-                                    <option><c:out value="${i}"/></option>
-                                </c:forEach>
--->                            </select>
-			    <select name = "startYear">
-<!--				<c:forEach begin="1900" end="2003" var="i">
-                                    <option><c:out value="${i}"/></option>
-                                </c:forEach>
-    -->                        </select>
-                            
-                        </p>				
-                        <p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and 
+                    <select name="startMonth">                    	
+					    #foreach ($month in $months)
+                            <option value="$month">
+                                $month
+                            </option>
+					    #end
+                    </select>
+
+                    <select name="startDay">                    	
+					    #foreach ($day in $days)
+                            <option value="$day">
+                                $day
+                            </option>
+					    #end
+                    </select>    
+                      
+                    <select name="startYear">                    	
+					    #foreach ($year in $years)
+                            <option value="$year">
+                                $year
+                            </option>
+					    #end
+                    </select>                                               
+                        			                                                                            </p>				
+                <p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and 
                         &nbsp;&nbsp;&nbsp&nbsp;&nbsp
-                            <select name="endMonth">
-	                        </select>
-                            <select name="endDay">
-<!--                                <c:forEach begin="1" end="31" var="i">
-                                    <option><c:out value="${i}"/></option>
-                                </c:forEach>
-    -->                        </select>
-			    <select name = "endYear">
-<!--				<c:forEach begin="1900" end="2003" var="i">
-                                    <option><c:out value="${i}"/></option>
-                                </c:forEach>
-    -->                        </select>
-                            
-                            <input type="submit" value="Search"/>
+                   <select name="endMonth">                    	
+					    #foreach ($month in $months)
+                            <option value="$month">
+                                $month
+                            </option>
+					    #end
+                    </select>
+
+                    <select name="endDay">                    	
+					    #foreach ($day in $days)
+                            <option value="$day">
+                                $day
+                            </option>
+					    #end
+                    </select>    
+                      
+                    <select name="endYear">                    	
+					    #foreach ($year in $years)
+                            <option value="$year">
+                                $year
+                            </option>
+					    #end
+                    </select>                              
+                                                   
+                    <input type="submit" value="Search"/>
                         </p><p>&nbsp;</p>	
-                        <p>
-			     <select name="requltsPerPage">
-<!--                                <c:forEach begin="20" end="100" var="i">
-                                    <option><c:out value="${i}"/></option>
-                                </c:forEach>
-    -->                        </select> &nbsp;Results Per Page&nbsp;                           
-                        </p>
-                        </form>
-                    </td>
+                     <p></p>
+                   </form>
+                   
+                  </td>
                 </tr>
                 <tr>
                     <td align="right">
