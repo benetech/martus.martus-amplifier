@@ -41,6 +41,11 @@
 	</servlet>
 
 	<servlet>
+		<servlet-name> PrintFoundBulletin </servlet-name>
+		<servlet-class> org.martus.amplifier.presentation.PrintFoundBulletin </servlet-class>
+	</servlet>
+
+	<servlet>
 		<servlet-name> DownloadAttachment </servlet-name>
 		<servlet-class> org.martus.amplifier.presentation.DownloadAttachment </servlet-class>
 	</servlet>

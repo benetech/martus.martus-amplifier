@@ -10,6 +10,8 @@
 		</p>
 	</center>
 #end
+
+#if ($printerFriendly == false)
 <table cellSpacing='0' cellPadding='1' width="100%" bgColor="$barColor" border='0'>
 	<tbody>
         <tr>
@@ -23,6 +25,8 @@
 		</tr>
 	</tbody>
 </table>
+#end
+
 <br/>
 <center>
 	#parse("Copyright.vm")

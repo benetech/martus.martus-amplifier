@@ -163,7 +163,17 @@ public class TestFoundBulletin extends TestCaseEnhanced
 		request.parameters.put("index","1");
 		request.parameters.put("searchedFor","title");
 		sr.selectTemplate(request, response, context);
+		clearContextSetBySearchResults(context);
 		return context;
+	}
+
+	private void clearContextSetBySearchResults(Context context)
+	{
+		context.put("searchedFor", null);
+		context.put("previousBulletin", null);
+		context.put("nextBulletin", null);
+		context.put("currentBulletin", null);
+		context.put("totalBulletins", null);
 	}
 
 	private Context createSampleSearchResults2(MockAmplifierRequest request, MockAmplifierResponse response) throws Exception
@@ -174,6 +184,7 @@ public class TestFoundBulletin extends TestCaseEnhanced
 		request.parameters.put("index","2");
 		request.parameters.put("searchedFor","title");
 		sr.selectTemplate(request, response, context);
+		clearContextSetBySearchResults(context);
 		return context;
 	}
 

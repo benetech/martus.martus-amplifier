@@ -1,4 +1,11 @@
-#set ($barColor = "#5588ee")
+#if ($printerFriendly)
+	#set ($barColor = "#ffffff")
+	#set ($barFontColor = "#000000")
+#else
+	#set ($barColor = "#5588ee")
+	#set ($barFontColor = "#ffffff")
+#end
+
 <table border='0' width='100%'>
 	<tr>
 		<td>
@@ -16,24 +23,28 @@
 		</td>
 	</tr>
 </table>
-<font size='-1'>
-	<a href='http://martus.org'>Learn More</a>
-	&nbsp;&nbsp;
-	<a href='http://martus.org'>Search Tips</a>
-	&nbsp;&nbsp;
-	<a href='UserFeedbackForm?problemReport'>Report Technical Problems</a>
-</font>
-<br/><br/>
+
+#if ($printerFriendly == false)
+	<font size='-1'>
+		<a href='http://martus.org'>Learn More</a>
+		&nbsp;&nbsp;
+		<a href='http://martus.org'>Search Tips</a>
+		&nbsp;&nbsp;
+		<a href='UserFeedbackForm?problemReport'>Report Technical Problems</a>
+	</font>
+	<br/><br/>
+#end
+
 <table cellSpacing=0 cellPadding=1 width="100%" bgColor="$barColor" border=0>
 	<tbody>
         <tr>
 			<td noWrap>
-				<font color=#ffffff size='+1'>
+				<font color=$barFontColor size='+1'>
 					$pageTitle
 				</font>
 			</td>
 			<td noWrap align=right>
-				<font color=#ffffff size='+1'>
+				<font color=$barFontColor size='+1'>
 					$pageInfo
 				</font>
 			</td>

@@ -1,0 +1,70 @@
+<table>
+	<tr>
+		<td valign='top'><font size="+1">Title:</font></td>
+		<td valign='top'><font size="+1"><strong>$bulletin.fields.title</strong></font></td>
+	
+	</tr>
+	<tr>
+		<td valign='top'>Language:</td>
+		<td valign='top'>$bulletin.fields.language</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td valign='top'>Author:</td>
+		#set ($text=$bulletin.fields.author)
+		#parse ("DisplayContactInfoLink.vm")
+		<td></td>
+	</tr>
+	<tr>
+		<td valign='top'>Organization:</td>
+		#set ($text=$bulletin.fields.organization)
+		#parse ("DisplayContactInfoLink.vm")
+		<td></td>
+	</tr>
+	<tr>
+		<td valign='top'>Location:</td>
+		<td valign='top'>$bulletin.fields.location</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td valign='top'>Keywords:</td>
+		<td valign='top'>$bulletin.fields.keywords</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td valign='top'>Event Date:</td>
+		<td valign='top'>
+			#parse("DateRange.vm")
+		</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td valign='top'>Date Submitted:</td>
+		<td valign='top'>$bulletin.fields.entrydate</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td valign='top'>Summary:</td>
+		<td valign='top'>$bulletin.fields.summary</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td valign='top'>Details:</td>
+		<td valign='top'>$bulletin.fields.publicinfo</td>
+		<td></td>
+	</tr>
+	#foreach ($thisAttachments in $bulletin.attachments)
+		<tr>
+			<td valign='top'>
+				#if ($velocityCount == 1)
+					Attachment(s):
+				#end
+			</td>
+			<td valign='top'>
+				<a 	href=DownloadAttachment?bulletinIndex=$currentBulletin&attachmentIndex=$velocityCount>$thisAttachments.label</a>
+				&nbsp;($thisAttachments.size Kb)
+			</td>
+			<td></td>
+		</tr>
+	#end
+</table>

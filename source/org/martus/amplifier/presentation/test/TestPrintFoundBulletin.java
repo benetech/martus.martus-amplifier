@@ -31,22 +31,17 @@ import java.util.List;
 import java.util.Vector;
 
 import org.apache.velocity.context.Context;
-import org.martus.amplifier.attachment.FileSystemDataManager;
-import org.martus.amplifier.main.MartusAmplifier;
-import org.martus.amplifier.presentation.ContactInfo;
 import org.martus.amplifier.presentation.DoSearch;
+import org.martus.amplifier.presentation.PrintFoundBulletin;
 import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinInfo;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
-import org.martus.common.crypto.MockMartusSecurity;
 import org.martus.common.packet.UniversalId;
 import org.martus.common.test.TestCaseEnhanced;
-import org.martus.util.DirectoryTreeRemover;
 
-
-public class TestContactInfo extends TestCaseEnhanced
+public class TestPrintFoundBulletin extends TestCaseEnhanced
 {
-	public TestContactInfo(String name)
+	public TestPrintFoundBulletin(String name)
 	{
 		super(name);
 	}
@@ -56,43 +51,52 @@ public class TestContactInfo extends TestCaseEnhanced
 		MockAmplifierRequest request = new MockAmplifierRequest();
 		MockAmplifierResponse response = null;
 		Context context = createSampleSearchResults(request, response);
-		ContactInfo servlet = new ContactInfo();
-		String templateName = servlet.selectTemplate(request, response, context);
-		assertEquals("InternalError.vm", templateName);
-	}
-	public void testCorrectContactInfoPageRetrieved() throws Exception
-	{
-		MockMartusSecurity client = new MockMartusSecurity();
-		client.createKeyPair();
-		MartusAmplifier.security = client;
-		
-		File basePath = createTempDirectory();
-		MartusAmplifier.dataManager = new FileSystemDataManager(basePath.getAbsolutePath());
-		String accountId = client.getPublicKeyString();		
-		contactInfo2 = MartusAmplifier.dataManager.getContactInfoFile(accountId);
 
+		PrintFoundBulletin servlet = new PrintFoundBulletin();
+		String templateName = servlet.selectTemplate(request, response, context);
+		assertEquals("PrintFoundBulletin.vm", templateName);
+	}
+	
+	public void testCurrentBulletin() throws Exception
+	{
 		MockAmplifierRequest request = new MockAmplifierRequest();
 		MockAmplifierResponse response = null;
 		Context context = createSampleSearchResults(request, response);
-		ContactInfo servlet = new ContactInfo();
-
-		String data1 = "data 1";
-		String data2 = "data 2";
-		Vector contactInfo = new Vector();
-		contactInfo.add(accountId);
-		contactInfo.add(new Integer(2));
-		contactInfo.add(data1);
-		contactInfo.add(data2);
-		String signature = client.createSignatureOfVectorOfStrings(contactInfo);
-		contactInfo.add(signature);		
-		MartusAmplifier.dataManager.writeContactInfoToFile(accountId, contactInfo);
-
-		request.parameters.put("index","2");
+	
+	
+		PrintFoundBulletin servlet = new PrintFoundBulletin();
 		String templateName = servlet.selectTemplate(request, response, context);
-		assertEquals("ContactInfo.vm", templateName);
+		assertEquals("PrintFoundBulletin.vm", templateName);
+		BulletinInfo bulletinInfo1 = (BulletinInfo)context.get("bulletin");
+		assertEquals("Bulletin 1's ID didn't match", uid1, bulletinInfo1.getBulletinId());
+		assertEquals("Bulletin 1's title didn't match", bulletin1Title, bulletinInfo1.get("title"));
+		
+	}
 
-		contactInfo2.delete();
-		DirectoryTreeRemover.deleteEntireDirectoryTree(basePath);
+	public void testSearchedFor() throws Exception
+	{
+		MockAmplifierRequest request = new MockAmplifierRequest();
+		MockAmplifierResponse response = null;
+		Context context = createSampleSearchResults(request, response);
+	
+	
+		PrintFoundBulletin servlet = new PrintFoundBulletin();
+		servlet.selectTemplate(request, response, context);
+		assertEquals("Didn't get searchedFor correct", "title", context.get("searchedFor"));
+	}
+	
+
+	public void testCurrentTotalBulletins() throws Exception
+	{
+		MockAmplifierRequest request = new MockAmplifierRequest();
+		MockAmplifierResponse response = null;
+		Context context = createSampleSearchResults(request, response);
+	
+	
+		PrintFoundBulletin servlet = new PrintFoundBulletin();
+		servlet.selectTemplate(request, response, context);
+		assertEquals("Didn't get correct current bulletin", new Integer(1), context.get("currentBulletin"));
+		assertEquals("Didn't get correct total bulletin count", new Integer(3), context.get("totalBulletins"));
 	}
 
 	private Context createSampleSearchResults(MockAmplifierRequest request, MockAmplifierResponse response) throws Exception
@@ -115,6 +119,7 @@ public class TestContactInfo extends TestCaseEnhanced
 		context.put("currentBulletin", null);
 		context.put("totalBulletins", null);
 	}
+
 
 	final UniversalId uid1 = UniversalId.createDummyUniversalId();
 	final UniversalId uid2 = UniversalId.createDummyUniversalId();
@@ -139,7 +144,9 @@ public class TestContactInfo extends TestCaseEnhanced
 			
 			BulletinInfo bulletinInfo2 = new BulletinInfo(uid2);
 			bulletinInfo2.set("title", bulletin2Title);
-			bulletinInfo2.putContactInfo(contactInfo2);
+			File info2ContactInfo = createTempFile();
+			info2ContactInfo.createNewFile();
+			bulletinInfo2.putContactInfo(info2ContactInfo);
 			infos.add(bulletinInfo2);
 			
 			BulletinInfo bulletinInfo3 = new BulletinInfo(uid3);
@@ -148,5 +155,5 @@ public class TestContactInfo extends TestCaseEnhanced
 			return infos;
 		}
 	}
-	File contactInfo2;
 }
+
