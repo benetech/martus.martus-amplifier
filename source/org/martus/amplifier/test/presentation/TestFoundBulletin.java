@@ -45,18 +45,22 @@ public class TestFoundBulletin extends TestCaseEnhanced
 		assertEquals("previousBulletin not -1?", new Integer(-1), context.get("previousBulletin"));
 		assertEquals("nextBulletin not 2?", new Integer(2), context.get("nextBulletin"));
 		BulletinInfo bulletinInfo1 = (BulletinInfo)context.get("bulletin");
-	
+		assertEquals("Bulletin 1's ID didn't match", uid1, bulletinInfo1.getBulletinId());
+		
 		request.parameters.put("index","2");
 		servlet.selectTemplate(request, response, context);
 		assertEquals("previousBulletin not 1?", new Integer(1), context.get("previousBulletin"));
 		assertEquals("nextBulletin not 3?", new Integer(3), context.get("nextBulletin"));
 		BulletinInfo bulletinInfo2 = (BulletinInfo)context.get("bulletin");
 		assertNotEquals("both bulletin id's equal?",bulletinInfo1.getBulletinId(), bulletinInfo2.getBulletinId());
+		assertEquals("Bulletin 2's ID didn't match", uid2, bulletinInfo2.getBulletinId());
 
 		request.parameters.put("index","3");
 		servlet.selectTemplate(request, response, context);
 		assertEquals("previousBulletin not 2?", new Integer(2), context.get("previousBulletin"));
 		assertEquals("nextBulletin not -1?", new Integer(-1), context.get("nextBulletin"));
+		BulletinInfo bulletinInfo3 = (BulletinInfo)context.get("bulletin");
+		assertEquals("Bulletin 3's ID didn't match", uid3, bulletinInfo3.getBulletinId());
 	}
 
 	private Context createSampleSearchResults(MockAmplifierRequest request, HttpServletResponse response) throws Exception
