@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -602,8 +601,8 @@ public abstract class AbstractSearchTestCase
 		
 		try 
 		{
-			Date startDate 	= SearchConstants.SEARCH_DATE_FORMAT.parse("2003-08-01");
-			Date endDate 	= SearchConstants.SEARCH_DATE_FORMAT.parse("2003-08-25");
+			String startDate 	= "2003-08-01";
+			String endDate 	= "2003-08-25";
 		
 			HashMap fields = new HashMap();
 			fields.put(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, startDate);
@@ -641,8 +640,8 @@ public abstract class AbstractSearchTestCase
 		
 		try 
 		{
-			Date startDate 	= SearchConstants.SEARCH_DATE_FORMAT.parse("2003-08-01");
-			Date endDate 	= SearchConstants.SEARCH_DATE_FORMAT.parse("2003-08-22");
+			String startDate 	= "2003-08-01";
+			String endDate 	= "2003-08-22";
 		
 			HashMap fields = new HashMap();
 			fields.put(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, startDate);
@@ -682,14 +681,15 @@ public abstract class AbstractSearchTestCase
 		
 		try 
 		{
-			Date startDate		= SearchConstants.SEARCH_DATE_FORMAT.parse("2003-08-01");
-			Date endDate 		= SearchConstants.SEARCH_DATE_FORMAT.parse("2003-08-22");
-			Date defaultDate 	= SearchConstants.SEARCH_DATE_FORMAT.parse("1970-01-01");			
-			Date entryStartDate = SearchConstants.SEARCH_DATE_FORMAT.parse("2003-05-22");		
+			String startDate		= "2003-08-01";
+			String endDate 		= "2003-08-22";
+			String defaultDate 	= "1970-01-01";			
+			String entryStartDate = "2003-05-22";
+			String nearToday = "2003-10-03";		
 		
 			HashMap fields = new HashMap();
 			fields.put(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, defaultDate);
-			fields.put(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, new GregorianCalendar().getTime());
+			fields.put(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, nearToday);
 			fields.put(BulletinField.SEARCH_ENTRY_DATE_INDEX_FIELD, entryStartDate);
 			
 			results = searcher.search(fields);
@@ -732,10 +732,10 @@ public abstract class AbstractSearchTestCase
 		
 		try 
 		{
-			Date startDate 			= SearchConstants.SEARCH_DATE_FORMAT.parse("2003-08-01");
-			Date endDate 			= SearchConstants.SEARCH_DATE_FORMAT.parse("2003-08-22");			
-			Date defaultStartDate	= SearchConstants.SEARCH_DATE_FORMAT.parse("1970-01-01");
-			Date defaultEndDate		= SearchConstants.SEARCH_DATE_FORMAT.parse("2003-09-24");
+			String startDate 			= "2003-08-01";
+			String endDate 			= "2003-08-22";			
+			String defaultStartDate	= "1970-01-01";
+			String defaultEndDate		= "2003-09-24";
 				
 			HashMap fields = new HashMap();
 			fields.put(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, defaultStartDate);
@@ -790,16 +790,16 @@ public abstract class AbstractSearchTestCase
 		
 		try 
 		{
-			Date startDate 			= SearchConstants.SEARCH_DATE_FORMAT.parse("2003-08-01");
-			Date endDate 			= SearchConstants.SEARCH_DATE_FORMAT.parse("2003-08-22");			
-			Date defaultStartDate 	= SearchConstants.SEARCH_DATE_FORMAT.parse("1970-01-01");		
-			Date todayDate 			= SearchConstants.SEARCH_DATE_FORMAT.parse("2003-09-24");
+			String startDate 		= "2003-08-01";
+			String endDate 			= "2003-08-22";			
+			String defaultStartDate = "1970-01-01";		
+			String todayDate 		= "2003-09-24";
 			
-			Date pastWeek 	= SearchParameters.getEntryDate(ENTRY_PAST_WEEK_DAYS_TAG);
-			Date pastMonth 	= SearchParameters.getEntryDate(ENTRY_PAST_MONTH_DAYS_TAG);
-			Date past3Month = SearchParameters.getEntryDate(ENTRY_PAST_3_MONTH_DAYS_TAG);
-			Date past6Month = SearchParameters.getEntryDate(ENTRY_PAST_6_MONTH_DAYS_TAG);
-			Date pastYear 	= SearchParameters.getEntryDate(ENTRY_PAST_YEAR_DAYS_TAG);
+			String pastWeek 	= SearchParameters.getEntryDate(ENTRY_PAST_WEEK_DAYS_TAG);
+			String pastMonth 	= SearchParameters.getEntryDate(ENTRY_PAST_MONTH_DAYS_TAG);
+			String past3Month = SearchParameters.getEntryDate(ENTRY_PAST_3_MONTH_DAYS_TAG);
+			String past6Month = SearchParameters.getEntryDate(ENTRY_PAST_6_MONTH_DAYS_TAG);
+			String pastYear 	= SearchParameters.getEntryDate(ENTRY_PAST_YEAR_DAYS_TAG);
 		
 			HashMap fields = new HashMap();
 			fields.put(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, defaultStartDate);
@@ -872,8 +872,8 @@ public abstract class AbstractSearchTestCase
 		
 		try 
 		{
-			Date defaultDate 	= SearchConstants.SEARCH_DATE_FORMAT.parse("1970-01-01");
-			Date defaultEndDate = SearchConstants.SEARCH_DATE_FORMAT.parse("2004-01-01");			
+			String defaultDate 	= "1970-01-01";
+			String defaultEndDate = "2004-01-01";			
 		
 			HashMap fields = new HashMap();
 			fields.put(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, defaultDate);
@@ -946,8 +946,8 @@ public abstract class AbstractSearchTestCase
 		
 		try 
 		{
-			Date defaultDate 	= SearchConstants.SEARCH_DATE_FORMAT.parse("1970-01-01");
-			Date defaultEndDate = SearchConstants.SEARCH_DATE_FORMAT.parse("2004-01-01");			
+			String defaultDate 	= "1970-01-01";
+			String defaultEndDate = "2004-01-01";			
 		
 			HashMap fields = new HashMap();
 			fields.put(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, defaultDate);
@@ -1013,8 +1013,8 @@ public abstract class AbstractSearchTestCase
 		
 		try 
 		{
-			Date defaultDate 	= SearchConstants.SEARCH_DATE_FORMAT.parse("1970-01-01");
-			Date defaultEndDate = SearchConstants.SEARCH_DATE_FORMAT.parse("2004-01-01");
+			String defaultDate 	= "1970-01-01";
+			String defaultEndDate = "2004-01-01";
 			
 			HashMap fields = new HashMap();			
 			fields.put(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, defaultDate);
@@ -1072,8 +1072,8 @@ public abstract class AbstractSearchTestCase
 		
 		try 
 		{
-			Date defaultDate 	= SearchConstants.SEARCH_DATE_FORMAT.parse("1970-01-01");
-			Date defaultEndDate = SearchConstants.SEARCH_DATE_FORMAT.parse("2004-01-01");
+			String defaultDate 	= "1970-01-01";
+			String defaultEndDate = "2004-01-01";
 			
 			HashMap fields = new HashMap();			
 			fields.put(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, defaultDate);

@@ -137,7 +137,8 @@ abstract public class AmplifierServlet extends VelocityServlet
     
 	protected void displayError(String message, Exception e)
 	{
-		System.out.println(getClass().getName() + ": " + message + " " + e);
+		System.out.println(getClass().getName() + ": " + message + " " + e.getMessage());
+		e.printStackTrace();
 	}
 	
 	static public void formatDataForHtmlDisplay(Map mapToFormat)

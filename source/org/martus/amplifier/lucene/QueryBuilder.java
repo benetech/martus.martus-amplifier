@@ -26,16 +26,14 @@ Boston, MA 02111-1307, USA.
 
 package org.martus.amplifier.lucene;
 
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.document.DateField;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Query;
+import org.martus.amplifier.common.SearchParameters;
 import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.search.SearchConstants;
 
@@ -67,11 +65,11 @@ public class QueryBuilder
 	static Query parseEventDateQuery(HashMap fields)
 			throws Exception 
 	{
-		Date startDate	= (Date) fields.get(SearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD);
-		Date endDate 	= (Date) fields.get(SearchConstants.SEARCH_EVENT_END_DATE_INDEX_FIELD);
+		String startDate	= (String) fields.get(SearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD);
+		String endDate 	= (String) fields.get(SearchConstants.SEARCH_EVENT_END_DATE_INDEX_FIELD);
 
-		String startDateString = setRangeQuery("*", DateField.dateToString(endDate));
-		String endDateString   = setRangeQuery(DateField.dateToString(startDate), "?");
+		String startDateString = setRangeQuery("*", endDate);
+		String endDateString   = setRangeQuery(startDate, "?");
 
 		String queryString = getFieldQuery(SearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD, startDateString);
 		queryString += AND+ getFieldQuery(SearchConstants.SEARCH_EVENT_END_DATE_INDEX_FIELD,endDateString);
@@ -83,15 +81,14 @@ public class QueryBuilder
 	static Query parseEntryDateQuery(HashMap fields)
 			throws Exception 
 	{		
-		Date startDate	= (Date) fields.get(SearchConstants.SEARCH_ENTRY_DATE_INDEX_FIELD);
+		String startDate	= (String) fields.get(SearchConstants.SEARCH_ENTRY_DATE_INDEX_FIELD);
 
 		if (startDate == null)				
 			return null;
 	
-		String startDateString = DateField.dateToString(startDate);
-		String endDateString = DateField.dateToString(new GregorianCalendar().getTime());
+		String endDate = SearchParameters.getEntryDate("0");
 						
-		return parseSingleFieldQuery(setRangeQuery(startDateString, endDateString), SearchConstants.SEARCH_ENTRY_DATE_INDEX_FIELD,
+		return parseSingleFieldQuery(setRangeQuery(startDate, endDate), SearchConstants.SEARCH_ENTRY_DATE_INDEX_FIELD,
 			"Improperly formed advanced find entry date type in bulletin query: ");		
 	}	
 	

@@ -27,7 +27,6 @@ package org.martus.amplifier.lucene;
 
 import java.io.IOException;
 
-import org.apache.lucene.document.DateField;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.IndexSearcher;
@@ -115,9 +114,6 @@ public class LuceneResults implements Results, LuceneSearchConstants, SearchCons
 			String value = doc.get(field.getIndexId());
 			if (value != null) 
 			{
-				if (field.isDateField()) 														
-					value = SEARCH_DATE_FORMAT.format(DateField.stringToDate(value));
-			 	
 				if (field.isDateRangeField())
 				{
 					String startDate = DateUtilities.getStartDateRange(value);

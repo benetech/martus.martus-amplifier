@@ -34,6 +34,7 @@ import java.util.HashMap;
 
 import org.martus.amplifier.search.SearchConstants;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
+import org.martus.util.MartusFlexidate;
 
 public class SearchParameters implements SearchResultConstants, SearchConstants
 {
@@ -123,8 +124,8 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 	
 	private void setEventDate()
 	{
-		Date startDate	= getStartDate();
-		Date endDate	= getEndDate();
+		String startDate	= getStartDate();
+		String endDate	= getEndDate();
 
 		if (startDate != null && endDate != null)
 		{			
@@ -141,7 +142,7 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 		if (languageString != null && !languageString.equals(LANGUAGE_ANYLANGUAGE_LABEL))
 			addField(RESULT_LANGUAGE_KEY, languageString);
 			
-		Date entryDate = getEntryDate(getValue(RESULT_ENTRY_DATE_KEY));
+		String entryDate = getEntryDate(getValue(RESULT_ENTRY_DATE_KEY));
 		addField(SEARCH_ENTRY_DATE_INDEX_FIELD, entryDate);
 		
 		String sortByString = getValue(RESULT_SORTBY_KEY);
@@ -149,16 +150,15 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 			addField(RESULT_SORTBY_KEY, sortByString);	
 	}
 
-	public static Date getEntryDate(String dayString)
+	public static String getEntryDate(String dayString)
 	{
 		if (dayString.equals(ENTRY_ANYTIME_TAG))
-			return getDate(1970, 1,1);
+			return "1900-01-01";
 			
 		int days = Integer.parseInt(dayString);	
 		GregorianCalendar today = new GregorianCalendar();
 		today.add(Calendar.DATE, -days);
-
-		return today.getTime();
+		return MartusFlexidate.toStoredDateFormat(today.getTime());
 	}
 	
 	public boolean containsKey(String key)
@@ -186,22 +186,28 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 		return hasEventFields;
 	}
 	
-	public Date getStartDate()
+	public String getStartDate()
 	{	
-		if (hasEventFieldKeys())
-		 return getDate(Integer.parseInt(getValue(RESULT_START_YEAR_KEY)),					
+		if (!hasEventFieldKeys())
+			return null;
+			
+		Date startDate = getDate(Integer.parseInt(getValue(RESULT_START_YEAR_KEY)),					
 		               	Integer.parseInt(getValue(RESULT_START_MONTH_KEY)),
 		               	Integer.parseInt(getValue(RESULT_START_DAY_KEY)));
-		return null;
+
+		return MartusFlexidate.toStoredDateFormat(startDate);
 	}
 		
-	public Date getEndDate()
+	public String getEndDate()
 	{	
-		if (hasEventFieldKeys())
-			return getDate(Integer.parseInt(getValue(RESULT_END_YEAR_KEY)),					
+		if (!hasEventFieldKeys())
+			return null;
+
+		Date endDate = getDate(Integer.parseInt(getValue(RESULT_END_YEAR_KEY)),					
 							Integer.parseInt(getValue(RESULT_END_MONTH_KEY)),
 							Integer.parseInt(getValue(RESULT_END_DAY_KEY)));		
-		return null;
+
+		return MartusFlexidate.toStoredDateFormat(endDate);
 	}
 	
 	public static Date getDate(int year, int month, int day)

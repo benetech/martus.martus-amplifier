@@ -60,7 +60,7 @@ public interface SearchResultConstants
 	final static String ENTRY_PAST_6_MONTH_LABEL= "6 months";
 	final static String ENTYR_PAST_YEAR_LABEL	= "year";
 	
-	final static String ENTRY_ANYTIME_TAG			= "0";
+	final static String ENTRY_ANYTIME_TAG			= "99999";
 	final static String ENTRY_PAST_WEEK_DAYS_TAG	= "7";
 	final static String ENTRY_PAST_MONTH_DAYS_TAG	= "30";
 	final static String ENTRY_PAST_3_MONTH_DAYS_TAG	= "90";

@@ -27,13 +27,11 @@ package org.martus.amplifier.lucene;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.Collection;
 import java.util.Iterator;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.document.DateField;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexReader;
@@ -160,8 +158,7 @@ public class LuceneBulletinIndexer
 	{
 		if (field.isDateField()) 
 		{
-			doc.add(Field.Keyword(field.getIndexId(), 
-				convertDateToSearchableString(value)));
+			doc.add(Field.Keyword(field.getIndexId(), value));
 		}
 		else if (field.isDateRangeField())
 		{
@@ -190,34 +187,6 @@ public class LuceneBulletinIndexer
 		}
 	}
 	
-	private static String convertDateToSearchableString(String dateString) 
-		throws BulletinIndexException
-	{
-		try 
-		{
-			String date = DateField.dateToString(SEARCH_DATE_FORMAT.parse(dateString));
-			return date;
-		} 
-		catch (ParseException e) 
-		{
-			throw new BulletinIndexException(
-				"Unable to parse date " + dateString, e);
-		} 
-		catch (RuntimeException e) 
-		{
-			// NOTE pdalbora 30-Apr-2003 -- Some date objects cause the
-			// dateToString() method to throw a RuntimeException() with
-			// the message "time too early." This seems like a design flaw
-			// on Lucene's part, since I only encountered this by mistake.
-			// For now I'm just wrapping this exception, but this seems kind
-			// of drastic. A date that's considered "too early" should perhaps
-			// just be ignored w.r.t. the index.
-			throw new BulletinIndexException(
-				"Unable to convert date to indexable value: " + dateString, 
-				e);
-		}
-	}
-
 	private static void convertDateRangeToSearchableString(Document doc, BulletinField field, String value) throws BulletinIndexException
 	{
 		MartusFlexidate mfd = MartusFlexidate.createFromMartusDateString(value);
@@ -225,8 +194,8 @@ public class LuceneBulletinIndexer
 		String beginDate = MartusFlexidate.toStoredDateFormat(mfd.getBeginDate());
 		String endDate = MartusFlexidate.toStoredDateFormat(mfd.getEndDate());							
 	
-		doc.add(Field.Keyword(SearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD, convertDateToSearchableString(beginDate))); 			
-		doc.add(Field.Keyword(SearchConstants.SEARCH_EVENT_END_DATE_INDEX_FIELD, convertDateToSearchableString(endDate)));
+		doc.add(Field.Keyword(SearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD, beginDate)); 			
+		doc.add(Field.Keyword(SearchConstants.SEARCH_EVENT_END_DATE_INDEX_FIELD, endDate));
 					
 		doc.add(Field.Text(field.getIndexId(), value));				
 	}
