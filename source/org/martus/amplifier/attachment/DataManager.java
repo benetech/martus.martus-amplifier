@@ -29,8 +29,14 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Vector;
+import org.martus.common.crypto.MartusCrypto.CryptoException;
+import org.martus.common.database.Database.RecordHiddenException;
 import org.martus.common.packet.FieldDataPacket;
 import org.martus.common.packet.UniversalId;
+import org.martus.common.packet.Packet.InvalidPacketException;
+import org.martus.common.packet.Packet.SignatureVerificationException;
+import org.martus.common.packet.Packet.WrongPacketTypeException;
+import org.martus.util.inputstreamwithseek.ZipEntryInputStreamWithSeek;
 
 /**
  * This class defines the interface through which attachments are saved
@@ -58,6 +64,6 @@ public interface DataManager
 	public void writeContactInfoToFile(String accountId, Vector contactInfo) throws IOException;
 	public Vector getContactInfo(String accountId) throws IOException;
 	
-	public void putFieldDataPacket(FieldDataPacket fpd) throws IOException;
-	public FieldDataPacket getFieldDataPacket(UniversalId uid) throws IOException;
+	public void putFieldDataPacket(UniversalId uid, ZipEntryInputStreamWithSeek data) throws IOException, RecordHiddenException, CryptoException;
+	public FieldDataPacket getFieldDataPacket(UniversalId uid) throws IOException, CryptoException, InvalidPacketException, WrongPacketTypeException, SignatureVerificationException;
 }

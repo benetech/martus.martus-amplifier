@@ -29,13 +29,16 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Vector;
+import java.util.zip.ZipFile;
 import junit.framework.Assert;
 import org.martus.amplifier.attachment.AttachmentStorageException;
 import org.martus.amplifier.attachment.DataManager;
 import org.martus.amplifier.attachment.FileSystemDataManager;
+import org.martus.amplifier.datasynch.BulletinExtractor;
 import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.amplifier.search.BulletinField;
 import org.martus.common.bulletin.Bulletin;
+import org.martus.common.bulletin.BulletinForTesting;
 import org.martus.common.bulletin.BulletinHtmlGenerator;
 import org.martus.common.clientside.UiBasicLocalization;
 import org.martus.common.crypto.MockMartusSecurity;
@@ -46,6 +49,7 @@ import org.martus.common.packet.UniversalId;
 import org.martus.common.test.UniversalIdForTesting;
 import org.martus.util.DirectoryUtils;
 import org.martus.util.inputstreamwithseek.StringInputStreamWithSeek;
+import org.martus.util.inputstreamwithseek.ZipEntryInputStreamWithSeek;
 
 
 public class TestFileSystemDataManager 
@@ -142,13 +146,22 @@ public class TestFileSystemDataManager
 		b.set(BulletinField.TAGENTRYDATE, "2003-04-30");
 		b.setAllPrivate(false);
 		b.setSealed();
-		
+		b.getFieldDataPacket().setEncrypted(false);
+
+		File tempFile = createTempFileFromName("$$$MartusAmpBulletinExtractorTest");
+		BulletinForTesting.saveToFile(dataManager.getDatabase(), b, tempFile, security);
 		FieldDataPacket publicData = b.getFieldDataPacket();
-		publicData.setEncrypted(false);
-		
-		dataManager.putFieldDataPacket(publicData);
+
+		ZipFile bulletinZipFile = new ZipFile(tempFile);
+
+		ZipEntryInputStreamWithSeek zipEntryPointForFieldDataPacket = BulletinExtractor.getZipEntryPointForFieldDataPacket(b.getBulletinHeaderPacket(),bulletinZipFile);
+		dataManager.putFieldDataPacket(publicData.getUniversalId(),zipEntryPointForFieldDataPacket);
+		zipEntryPointForFieldDataPacket.close();
+		bulletinZipFile.close();
+
 		FieldDataPacket publicDataPacketRetrieved = dataManager.getFieldDataPacket(publicData.getUniversalId());
 		assertNotNull(publicDataPacketRetrieved);
+
 		assertEquals("Uids not the same?",publicData.getUniversalId(), publicDataPacketRetrieved.getUniversalId());
 		
 		UiBasicLocalization localization = new UiBasicLocalization(createTempDirectory(), new String[]{});

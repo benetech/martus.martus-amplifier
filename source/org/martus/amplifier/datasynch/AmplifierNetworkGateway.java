@@ -30,7 +30,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Vector;
-
 import org.martus.amplifier.attachment.AttachmentStorageException;
 import org.martus.amplifier.attachment.DataManager;
 import org.martus.amplifier.main.MartusAmplifier;
@@ -45,8 +44,9 @@ import org.martus.common.LoggerInterface;
 import org.martus.common.MartusUtilities.ServerErrorException;
 import org.martus.common.bulletin.BulletinZipUtilities;
 import org.martus.common.crypto.MartusCrypto;
+import org.martus.common.crypto.MartusCrypto.CryptoException;
 import org.martus.common.crypto.MartusCrypto.DecryptionException;
-import org.martus.common.crypto.MartusCrypto.NoKeyPairException;
+import org.martus.common.database.Database.RecordHiddenException;
 import org.martus.common.network.NetworkInterfaceConstants;
 import org.martus.common.network.NetworkResponse;
 import org.martus.common.network.MartusXmlrpcClient.SSLSocketSetupException;
@@ -153,10 +153,9 @@ public class AmplifierNetworkGateway
 
 	public void retrieveAndManageBulletin(
 		UniversalId uid, BulletinExtractor bulletinExtractor, MartusAmplifier amp) 
-		throws WrongPacketTypeException, IOException, DecryptionException, 
-			InvalidPacketException, BulletinIndexException, 
-			NoKeyPairException, SignatureVerificationException, 
-			AttachmentStorageException, InvalidBase64Exception
+		throws WrongPacketTypeException, IOException, InvalidPacketException, BulletinIndexException, 
+			SignatureVerificationException, 
+			AttachmentStorageException, InvalidBase64Exception, RecordHiddenException, CryptoException
 	{
 		File bulletinFile = retrieveBulletin(uid);
 		bulletinFile.deleteOnExit();

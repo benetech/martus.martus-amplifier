@@ -44,8 +44,10 @@ import org.martus.common.FieldSpec;
 import org.martus.common.bulletin.AttachmentProxy;
 import org.martus.common.bulletin.BulletinConstants;
 import org.martus.common.crypto.MartusCrypto;
+import org.martus.common.crypto.MartusCrypto.CryptoException;
 import org.martus.common.crypto.MartusCrypto.DecryptionException;
 import org.martus.common.crypto.MartusCrypto.NoKeyPairException;
+import org.martus.common.database.Database.RecordHiddenException;
 import org.martus.common.packet.BulletinHeaderPacket;
 import org.martus.common.packet.FieldDataPacket;
 import org.martus.common.packet.UniversalId;
@@ -71,10 +73,8 @@ public class BulletinExtractor
 	
 	public void extractAndStoreBulletin(File bulletinFile) 
 		throws IOException, SignatureVerificationException, 
-			BulletinIndexException, NoKeyPairException, 
-			InvalidPacketException, DecryptionException, 
-			WrongPacketTypeException, AttachmentStorageException, 
-			InvalidBase64Exception
+			BulletinIndexException, InvalidPacketException, WrongPacketTypeException, AttachmentStorageException, 
+			InvalidBase64Exception, RecordHiddenException, CryptoException
 	{
 		ZipFile bulletinZipFile = new ZipFile(bulletinFile);
 		try {
@@ -82,15 +82,19 @@ public class BulletinExtractor
 				BulletinHeaderPacket.loadFromZipFile(bulletinZipFile, verifier);
 			
 			FieldDataPacket fdp = indexFieldData(bhp, bulletinZipFile);
-			storeFieldDataPacket(fdp);
+			
+			ZipEntryInputStreamWithSeek zipEntryPointForFieldDataPacket = getZipEntryPointForFieldDataPacket(bhp,bulletinZipFile);
+			storeFieldDataPacket(fdp.getUniversalId(), zipEntryPointForFieldDataPacket);
+			zipEntryPointForFieldDataPacket.close();
+			
 			storeAttachments(fdp.getAttachments(), bulletinZipFile);
 		} finally {
 			bulletinZipFile.close();
 		}
 	}
 	
-	private FieldDataPacket indexFieldData(
-		BulletinHeaderPacket bhp, ZipFile bulletinZipFile) 
+
+	private FieldDataPacket indexFieldData(BulletinHeaderPacket bhp, ZipFile bulletinZipFile) 
 		throws SignatureVerificationException, NoKeyPairException, 
 			WrongPacketTypeException, DecryptionException, 
 			InvalidPacketException, IOException, BulletinIndexException
@@ -102,21 +106,26 @@ public class BulletinExtractor
 		FieldSpec[] fieldSpec = BulletinField.getDefaultSearchFieldSpecs();
 		FieldDataPacket fdp = new FieldDataPacket(fieldUid, fieldSpec);
 		
+		ZipEntryInputStreamWithSeek zipEntryPointForFieldDataPacket = getZipEntryPointForFieldDataPacket(bhp, bulletinZipFile);
+
+		fdp.loadFromXml(zipEntryPointForFieldDataPacket,verifier);
+		bulletinIndexer.indexFieldData(bhp.getUniversalId(), fdp, bhp.getHistory());
+		indexLanguage(fdp.get(BulletinConstants.TAGLANGUAGE));
+		indexEventDate(fdp.get(BulletinConstants.TAGEVENTDATE));
+		
+		return fdp;
+	}
+
+	public static ZipEntryInputStreamWithSeek getZipEntryPointForFieldDataPacket(BulletinHeaderPacket bhp, ZipFile bulletinZipFile) throws IOException
+	{
+		String fieldDataPacketId = bhp.getFieldDataPacketId();
 		ZipEntry fieldDataEntry = bulletinZipFile.getEntry(fieldDataPacketId);
 		if (fieldDataEntry == null) {
 			throw new IOException(
 				"No entry " + fieldDataPacketId + " found for account " + 
 				bhp.getAccountId());
 		}
-		
-		fdp.loadFromXml(
-			new ZipEntryInputStreamWithSeek(bulletinZipFile, fieldDataEntry),
-			verifier);
-		bulletinIndexer.indexFieldData(bhp.getUniversalId(), fdp, bhp.getHistory());
-		indexLanguage(fdp.get(BulletinConstants.TAGLANGUAGE));
-		indexEventDate(fdp.get(BulletinConstants.TAGEVENTDATE));
-		
-		return fdp;
+		return new ZipEntryInputStreamWithSeek(bulletinZipFile, fieldDataEntry);
 	}
 	
 	public void indexLanguage(String languageCode) throws IOException
@@ -129,9 +138,9 @@ public class BulletinExtractor
 		EventDatesIndexedList.eventDatesIndexedSingleton.addValue(flexidateString);
 	}
 	
-	private void storeFieldDataPacket(FieldDataPacket fdp) throws IOException
+	private void storeFieldDataPacket(UniversalId uId, ZipEntryInputStreamWithSeek data) throws IOException, RecordHiddenException, CryptoException
 	{
-		bulletinDataManager.putFieldDataPacket(fdp);	
+		bulletinDataManager.putFieldDataPacket(uId, data);	
 	}
 	
 	private void storeAttachments(

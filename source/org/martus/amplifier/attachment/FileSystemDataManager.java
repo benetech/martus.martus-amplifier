@@ -35,14 +35,20 @@ import org.martus.common.FieldSpec;
 import org.martus.common.StandardFieldSpecs;
 import org.martus.common.MartusUtilities.FileVerificationException;
 import org.martus.common.crypto.MartusCrypto;
+import org.martus.common.crypto.MartusCrypto.CryptoException;
 import org.martus.common.database.DatabaseKey;
 import org.martus.common.database.ServerFileDatabase;
+import org.martus.common.database.Database.RecordHiddenException;
 import org.martus.common.database.FileDatabase.MissingAccountMapException;
 import org.martus.common.database.FileDatabase.MissingAccountMapSignatureException;
 import org.martus.common.packet.FieldDataPacket;
 import org.martus.common.packet.UniversalId;
+import org.martus.common.packet.Packet.InvalidPacketException;
+import org.martus.common.packet.Packet.SignatureVerificationException;
+import org.martus.common.packet.Packet.WrongPacketTypeException;
 import org.martus.common.utilities.MartusServerUtilities;
-import org.martus.util.inputstreamwithseek.FileInputStreamWithSeek;
+import org.martus.util.inputstreamwithseek.InputStreamWithSeek;
+import org.martus.util.inputstreamwithseek.ZipEntryInputStreamWithSeek;
 
 
 public class FileSystemDataManager implements DataManager
@@ -165,36 +171,31 @@ public class FileSystemDataManager implements DataManager
 		info.remove(info.size() - 1);//Signature
 	}
 
-	public void putFieldDataPacket(FieldDataPacket fdp) throws IOException
+	public void putFieldDataPacket(UniversalId uid, ZipEntryInputStreamWithSeek data) throws IOException, RecordHiddenException, CryptoException
 	{
-		try
-		{
-			fdp.writeXmlToDatabase(db, DatabaseKey.createSealedKey(fdp.getUniversalId()), false, db.security);
-		}
-		catch(Exception e)
-		{
-			throw new IOException(e.getMessage());
-		}
+		db.writeRecord(DatabaseKey.createSealedKey(uid), data);
 	}
 
-	public FieldDataPacket getFieldDataPacket(UniversalId uid) throws IOException
+	public FieldDataPacket getFieldDataPacket(UniversalId uid) throws IOException, CryptoException, InvalidPacketException, WrongPacketTypeException, SignatureVerificationException
 	{
 		FieldSpec[] standardPublicFieldSpecs = StandardFieldSpecs.getDefaultPublicFieldSpecs();
 		FieldDataPacket fdp = new FieldDataPacket(uid, standardPublicFieldSpecs);
-		FileInputStreamWithSeek in = new FileInputStreamWithSeek(db.getFileForRecord(DatabaseKey.createSealedKey(fdp.getUniversalId())));
+		InputStreamWithSeek in = null;
 		try
 		{
-			fdp.loadFromXml(in, null);
-		}
-		catch(Exception e)
-		{
-			throw new IOException(e.getMessage());
+		in = db.openInputStream(DatabaseKey.createSealedKey(fdp.getUniversalId()),db.security);					
+		fdp.loadFromXml(in, null);
 		}
 		finally
 		{
 			in.close();
 		}
 		return fdp;
+	}
+	
+	public ServerFileDatabase getDatabase()
+	{
+		return db;
 	}
 
 	private ServerFileDatabase db;
