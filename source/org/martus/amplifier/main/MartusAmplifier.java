@@ -277,17 +277,16 @@ public class MartusAmplifier
 		isSyncing = false;
 	}
 
-	public void pullNewBulletinsFromServers(List backupServersList) 
+	public void pullNewDataFromServers(List backupServersList) 
 	{
-		log("Beginning pull loop");
 		for(int i=0; i < backupServersList.size(); ++i)
 		{
 			BackupServerInfo backupServerToCall = (BackupServerInfo)backupServersList.get(i);
-			pullNewBulletinsFromOneServer(backupServerToCall);
+			pullNewDataFromOneServer(backupServerToCall);
 		}
 	}
 
-	private void pullNewBulletinsFromOneServer(BackupServerInfo backupServerToCall)
+	private void pullNewDataFromOneServer(BackupServerInfo backupServerToCall)
 	{
 		BulletinIndexer indexer = null;
 		try
@@ -298,7 +297,7 @@ public class MartusAmplifier
 			indexer = new LuceneBulletinIndexer(
 				config.getBasePath());
 		
-			dataManager.getAllNewBulletins(attachmentManager, indexer);
+			dataManager.getAllNewData(attachmentManager, indexer);
 		}
 		catch(Exception e)
 		{
@@ -372,7 +371,7 @@ public class MartusAmplifier
 				startSynch();
 				//System.out.println("Scheduled Task started " + System.currentTimeMillis());
 
-				pullNewBulletinsFromServers(backupServersList);
+				pullNewDataFromServers(backupServersList);
 				
 				//System.out.println("Scheduled Task finished " + System.currentTimeMillis() + "\n");
 				endSynch();

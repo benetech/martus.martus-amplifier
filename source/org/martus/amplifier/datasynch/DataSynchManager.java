@@ -26,58 +26,53 @@ public class DataSynchManager
 		amplifierGateway = new AmplifierNetworkGateway(backupServerToCall, loggerToUse, securityToUse);
 	}
 	
-	
-	/**
-	 * This methods retrieves account and UniversalIds.
-	 * This calls the method checkAndRetrieveBulletinsForUIDs() for new bulletins and attachments 
-	 * Saving the attachments and bulletin files is done in AmplifierNetworkGateway.retrieveAndManageBulletin()
-	 */
-	public void getAllNewBulletins(
-		AttachmentManager attachmentManager, BulletinIndexer indexer)
+	public void getAllNewData(AttachmentManager attachmentManager, BulletinIndexer indexer)
 	{
-		//logger.info("in DataSynchManager.getAllNewBulletins(): ");	
-	
-		String accountId = "";
-		List accountList = null;
-		Vector response;
-		
-		
-		
-		//Step1: Retrieve all the accountids from Martus Server
-		
-		accountList = new ArrayList(amplifierGateway.getAllAccountIds());
-		
-		BulletinCatalog catalog = BulletinCatalog.getInstance();
+		List accountList = new ArrayList(amplifierGateway.getAllAccountIds());
 		
 		BulletinExtractor bulletinExtractor = 
 			amplifierGateway.createBulletinExtractor(
 				attachmentManager, indexer);
 		
-		//Step2: Retrieve the universal ids and bulletins for each account
 		for(int index=0; index <accountList.size();index++)
 		{
-			accountId = (String) accountList.get(index);
-			response = amplifierGateway.getAccountPublicBulletinLocalIds(accountId);
-			for(int i = 0; i < response.size(); i++)
-			{
-				UniversalId uid = null;
-				try
-				{
-					uid = UniversalId.createFromAccountAndLocalId(accountId, (String)response.get(i));
+			String accountId = (String) accountList.get(index);
+			pullContactInfoForAccount(accountId);
+			pullNewBulletinsForAccount(accountId, bulletinExtractor);
+		}
+	}
 	
-					if( !catalog.bulletinHasBeenIndexed(uid) )
-					{
-						logger.info("DataSynchManager.checkAndRetrieveBulletinsForUIDs():before calling  amplifierGateway.retrieveAndManageBulletin on UID = "+ uid.toString());
-						amplifierGateway.retrieveAndManageBulletin(uid, bulletinExtractor);
-					}
-				}
-				catch (Exception e)
+	private void pullContactInfoForAccount(String accountId)
+	{
+		Vector response = amplifierGateway.getContactInfo(accountId);
+		if(response == null)
+			return;
+	
+	}
+
+	private void pullNewBulletinsForAccount(String accountId, BulletinExtractor bulletinExtractor)
+	{
+		BulletinCatalog catalog = BulletinCatalog.getInstance();
+		Vector response = amplifierGateway.getAccountPublicBulletinLocalIds(accountId);
+		for(int i = 0; i < response.size(); i++)
+		{
+			UniversalId uid = null;
+			try
+			{
+				
+				uid = UniversalId.createFromAccountAndLocalId(accountId, (String)response.get(i));
+
+				if( !catalog.bulletinHasBeenIndexed(uid) )
 				{
-					logger.severe("Unable to process " + uid + ": " + e.getMessage());
-					e.printStackTrace();
+					logger.info("DataSynchManager.checkAndRetrieveBulletinsForUIDs():before calling  amplifierGateway.retrieveAndManageBulletin on UID = "+ uid.toString());
+					amplifierGateway.retrieveAndManageBulletin(uid, bulletinExtractor);
 				}
 			}
+			catch (Exception e)
+			{
+				logger.severe("Unable to process " + uid + ": " + e.getMessage());
+				e.printStackTrace();
+			}
 		}
-				
 	}
 }
