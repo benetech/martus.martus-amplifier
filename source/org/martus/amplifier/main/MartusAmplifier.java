@@ -80,7 +80,9 @@ public class MartusAmplifier
 		server.addWebApplication("/","presentation/");
 		
 		addPasswordAuthentication(server);
-		File languages = new File(AmplifierConfiguration.getInstance().getBasePath(), "languagesIndexed.txt");
+
+		File indexDir = LuceneBulletinIndexer.getIndexDir(AmplifierConfiguration.getInstance().getBasePath());
+		File languages = new File(indexDir, "languagesIndexed.txt");
 		languagesIndexed = new LanguagesIndexedList(languages);
 		try
 		{
