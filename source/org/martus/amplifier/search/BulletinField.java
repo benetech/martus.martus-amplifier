@@ -29,9 +29,8 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.martus.common.CustomFields;
 import org.martus.common.FieldSpec;
-import org.martus.common.LegacyCustomFields;
+import org.martus.common.StandardFieldSpecs;
 import org.martus.common.bulletin.BulletinConstants;
 
 public class BulletinField implements BulletinConstants, SearchConstants
@@ -63,12 +62,12 @@ public class BulletinField implements BulletinConstants, SearchConstants
 
 	public boolean isDateField()
 	{
-		return (CustomFields.getStandardType(xmlId) == FieldSpec.TYPE_DATE);
+		return (StandardFieldSpecs.getStandardType(xmlId) == FieldSpec.TYPE_DATE);
 	}		
 	
 	public boolean isDateRangeField()
 	{
-		return (CustomFields.getStandardType(xmlId) == FieldSpec.TYPE_DATERANGE);
+		return (StandardFieldSpecs.getStandardType(xmlId) == FieldSpec.TYPE_DATERANGE);
 	}	
 		
 	public static BulletinField getFieldByXmlId(String xmlId)
@@ -94,7 +93,9 @@ public class BulletinField implements BulletinConstants, SearchConstants
 		FieldSpec[] defaultSearchFieldSpecs = new FieldSpec[length];
 		for(int i = 0; i < length; ++i)
 		{
-			defaultSearchFieldSpecs[i] = LegacyCustomFields.createFromLegacy(ids[i].toString());
+			String tag = ids[i].toString();
+			int type = StandardFieldSpecs.getStandardType(tag);
+			defaultSearchFieldSpecs[i] = FieldSpec.createStandardField(tag, type);
 		}
 		return defaultSearchFieldSpecs;
 	}	
