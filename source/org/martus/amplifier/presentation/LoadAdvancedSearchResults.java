@@ -26,16 +26,22 @@ Boston, MA 02111-1307, USA.
 
 package org.martus.amplifier.presentation;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Hashtable;
 
-public class LoadAdvancedSearchResults implements SearchResultConstants
+import org.martus.amplifier.service.search.SearchConstants;
+
+public class LoadAdvancedSearchResults implements SearchResultConstants, SearchConstants
 {
-	public LoadAdvancedSearchResults(AmplifierServletRequest request)
+	public LoadAdvancedSearchResults(AmplifierServletRequest request, SearchFields fields)
 	{
 		searchRequest = request;
 		loadSearchResults();
+		
+		if (hasEventFieldKeys())
+		 	setEventDate(fields);
 	}
 	
 	private void loadSearchResults()
@@ -53,7 +59,26 @@ public class LoadAdvancedSearchResults implements SearchResultConstants
 			!containsKey(RESULT_END_YEAR_KEY) ||
 			!containsKey(RESULT_END_MONTH_KEY) ||
 			!containsKey(RESULT_END_DAY_KEY))
-				hasEventFields = false;			
+				hasEventFields = false;																	
+	}	
+	
+	private void setEventDate(SearchFields result)
+	{
+		Date startDate	= getStartDate();
+		Date endDate	= getEndDate();
+
+		if (startDate != null && endDate != null)
+		{			
+			result.add(SEARCH_EVENT_START_DATE_INDEX_FIELD, startDate);
+			result.add(SEARCH_EVENT_END_DATE_INDEX_FIELD, endDate);
+		}	
+	}
+	
+	public void setSearchFields(SearchFields result)
+	{
+		String fields = getParameterValue(RESULT_FIELDS_KEY);
+		if (fields != null)
+			result.add(fields, fields);
 	}	
 
 	public boolean containsKey(String key)
@@ -69,6 +94,11 @@ public class LoadAdvancedSearchResults implements SearchResultConstants
 	public String getValue(String key)
 	{
 		return (String) resultList.get(key);
+	}	
+	
+	public Collection getSearchResultValues()
+	{
+		return resultList.values();
 	}
 	
 	public boolean hasEventFieldKeys()
@@ -85,8 +115,7 @@ public class LoadAdvancedSearchResults implements SearchResultConstants
 		               	Integer.parseInt(getValue(RESULT_START_DAY_KEY)));
 		return null;
 	}
-	
-	
+		
 	public Date getEndDate()
 	{
 		if (hasEventFieldKeys())
@@ -99,8 +128,7 @@ public class LoadAdvancedSearchResults implements SearchResultConstants
 	public static Date getDate(int year, int month, int day)
 	{
 		return new GregorianCalendar(year, month, day).getTime();
-	}
-
+	}	
 
 	AmplifierServletRequest searchRequest;
 	Hashtable resultList 	= new Hashtable();

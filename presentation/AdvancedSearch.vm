@@ -29,14 +29,14 @@
 				<tr bgcolor='#dddddd' color='#000000'>
 					<td><strong>Find bulletins </strong></td>
 					<td>
-						<select>
+						<select name = 'filterBy'>
 							<option value='allWords'>with all of these words</option>
 							<option value='exactPhrase'>with the exact phrase</option>
 							<option value='anyWord'>with at least one of these words</option>
 							<option value='withoutWords'>without any of these words</option>
 						</select>
 					</td>
-					<td><input name="query" size="44"/></td>
+					<td><input name="advancedQuery" size="44"/></td>
 					<td bgcolor='#ffffff' color='#000000'><input type="submit" value="Search"/></td>
 				</tr>
 				<tr bgcolor='#dddddd' color='#000000'>
@@ -47,7 +47,7 @@
 							<option value='title'>in the title</option>
 							<option value='keywords'>in the keywords</option>
 							<option value='summary'>in the summary</option>
-							<option value='details'>in the details</option>
+							<option value='publicinfo'>in the details</option>
 							<option value='author'>in the author</option>
 							<option value='organization'>in the organization</option>
 						</select>

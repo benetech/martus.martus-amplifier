@@ -15,6 +15,7 @@ import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
+import org.martus.amplifier.presentation.SearchFields;
 import org.martus.amplifier.service.search.AttachmentInfo;
 import org.martus.amplifier.service.search.BulletinField;
 import org.martus.amplifier.service.search.BulletinIndexException;
@@ -75,22 +76,60 @@ public class LuceneBulletinSearcher
 		return getLuceneResults(query, field);
 	}
 	
-	private Results searchEventDate(String field, String startQuery, String endQuery)
-		throws BulletinIndexException 
-	{		
-		BooleanQuery booleanQuery = new BooleanQuery();				
-
+	private Query loadEventDateQuery(String field, String startQuery, String endQuery)
+			throws BulletinIndexException 
+	{
+		BooleanQuery booleanQuery = new BooleanQuery();						
 		Query query = queryParser(startQuery, SearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD,
 						"Improperly formed start query: ");	
-		booleanQuery.add(query, true, false);		
-		
+		booleanQuery.add(query, true, false);				
 		query = queryParser(endQuery, SearchConstants.SEARCH_EVENT_END_DATE_INDEX_FIELD, 
 						"Improperly formed end query: ");		
-		booleanQuery.add(query, true, false);	
-				
-		return getLuceneResults(booleanQuery, field);
+		booleanQuery.add(query, true, false);
+		
+		return booleanQuery;
+	}
+	
+	
+	private Query getEventDateQuery(String field, Date startDate, Date endDate)
+			throws BulletinIndexException
+	{
+		String startDateString = ((startDate == null) ? "*" : DateField.dateToString(startDate));
+		String endDateString   = ((endDate == null) ?  "?": DateField.dateToString(endDate));
+															
+		return loadEventDateQuery(field, setRangeQuery("*", endDateString),
+					setRangeQuery(startDateString, "?"));
+	}
+	
+	private Query handleEventDateQuery(String field, SearchFields fields)
+			throws BulletinIndexException 
+	{
+		Date startDate	= (Date) fields.getValue(SEARCH_EVENT_START_DATE_INDEX_FIELD);
+		Date endDate 	= (Date) fields.getValue(SEARCH_EVENT_END_DATE_INDEX_FIELD);
+
+		return (startDate != null && endDate != null)? getEventDateQuery(field, startDate, endDate):null;				
 	}	
 	
+	private Query handleFindBulletinsQuery(String field, SearchFields fields)
+			throws BulletinIndexException 
+	{
+		BooleanQuery booleanQuery = new BooleanQuery();
+//		String bulletineField = (String) fields.getValue(RESULT_FIELDS_KEY)						
+//		Query query = queryParser(startQuery, SearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD,
+//						"Improperly formed find bulletins query: ");
+		return null;	
+	}
+		
+	public Results advancedSercher(String field, SearchFields fields)
+		throws BulletinIndexException 
+	{	
+		BooleanQuery query = new BooleanQuery();
+		Query eventDateQuery = handleEventDateQuery(field, fields);						
+		query.add(eventDateQuery, true, false);
+							
+		return getLuceneResults(query, null);
+	}	
+			
 	private Query queryParser(String query, String field, String msg)
 			throws BulletinIndexException 
 	{
@@ -111,23 +150,8 @@ public class LuceneBulletinSearcher
 		} catch(ParseException pe) {
 			throw new BulletinIndexException( msg + query, pe);
 		}
-	}
-	
-	public Results searchDateRange(String field, Date startDate, Date endDate)
-		throws BulletinIndexException
-	{
-																				
-			String startDateString = ((startDate == null) ? "*" : DateField.dateToString(startDate));
-			String endDateString   = ((endDate == null) ?  "?": DateField.dateToString(endDate));
+	}	
 
-			if (field != null && field.equals(SEARCH_ENTRY_DATE_INDEX_FIELD))
-				return search(field, setRangeQuery(startDateString,endDateString)); 
-															
-			return searchEventDate(field, setRangeQuery("*", endDateString),
-						setRangeQuery(startDateString, "?"));
-														
-	}
-	
 	private String setRangeQuery(String from, String to)
 	{
 		return "[ " + from + " TO " + to + " ]";
@@ -274,5 +298,5 @@ public class LuceneBulletinSearcher
 		private Hits hits;		
 	}
 	
-	private IndexSearcher searcher;
+	private IndexSearcher searcher;	
 }

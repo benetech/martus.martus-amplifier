@@ -1,8 +1,6 @@
 package org.martus.amplifier.service.search;
 
-
-import java.util.Date;
-
+import org.martus.amplifier.presentation.SearchFields;
 import org.martus.common.packet.UniversalId;
 
 public interface BulletinSearcher extends SearchConstants
@@ -12,8 +10,8 @@ public interface BulletinSearcher extends SearchConstants
 	Results search(String field, String queryString) 
 		throws BulletinIndexException;		
 		
-	Results searchDateRange(String field, Date startDate, Date endDate)
-		throws BulletinIndexException;				
+	Results advancedSercher(String field, SearchFields fields)
+		throws BulletinIndexException; 				
 		
 	BulletinInfo lookup(UniversalId bulletinId)
 		throws BulletinIndexException;

@@ -25,7 +25,7 @@ Boston, MA 02111-1307, USA.
 */
 package org.martus.amplifier.presentation;
 
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -33,31 +33,20 @@ import java.util.Vector;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.velocity.context.Context;
-import org.martus.amplifier.presentation.search.SearchBean;
+import org.martus.amplifier.common.configuration.AmplifierConfiguration;
 import org.martus.amplifier.service.search.BulletinIndexException;
 import org.martus.amplifier.service.search.BulletinInfo;
+import org.martus.amplifier.service.search.BulletinSearcher;
+import org.martus.amplifier.service.search.lucene.LuceneBulletinSearcher;
 
 
-public class SearchResults extends AmplifierServlet
+public class SearchResults extends AmplifierServlet implements SearchResultConstants
 {
-
-	private void handleEventDateFields(LoadAdvancedSearchResults results, SearchBean searcher) 
-	{
-		Date startDate	= results.getStartDate();
-		Date endDate	= results.getEndDate();
-
-		if (startDate != null && endDate != null)
-		{
-			searcher.setStartDate(startDate);
-			searcher.setEndDate(endDate);	
-		}		
-	}
-
-	private void handleAdvancedSearchParams(AmplifierServletRequest request, SearchBean searcher) 
+	
+	private void handleAdvancedSearchParams(AmplifierServletRequest request, SearchFields searcher) 
 			throws Exception
-	{
-		LoadAdvancedSearchResults results = new LoadAdvancedSearchResults(request);
-		handleEventDateFields(results, searcher);			
+	{		
+		new LoadAdvancedSearchResults(request, searcher);		
 	}
 	
 	public String selectTemplate(AmplifierServletRequest request,
@@ -95,15 +84,61 @@ public class SearchResults extends AmplifierServlet
 	public List getSearchResults(AmplifierServletRequest request)
 		throws Exception, BulletinIndexException
 	{
-				SearchBean searcher = new SearchBean();
-				String queryString = request.getParameter("query");
-				searcher.setQuery(queryString);
-				String fieldString = request.getParameter("field");
-				searcher.setField(fieldString);
-
-				handleAdvancedSearchParams(request, searcher);	
+		SearchFields searcher = new SearchFields();
 		
-				SearchBean.SearchResultsBean results = searcher.getResults();
-		return results;
+		String queryString = request.getParameter(RESULT_BASIC_QUERY_KEY);
+		String fieldString = request.getParameter(RESULT_FIELD_KEY);	
+	 
+		if (queryString == null)
+		{
+			queryString = request.getParameter(RESULT_ADVANCED_QUERY_KEY);				
+			new LoadAdvancedSearchResults(request, searcher);							
+			searcher.add(RESULT_ADVANCED_QUERY_KEY, queryString);
+			advancedSearch = true;
+		}
+		else
+		{										
+			searcher.add(RESULT_BASIC_QUERY_KEY, queryString);
+			advancedSearch = false;
+		}								
+				
+		return getResults(searcher);
 	}
+	
+	BulletinSearcher openBulletinSearcher() throws BulletinIndexException
+	{
+		AmplifierConfiguration config = AmplifierConfiguration.getInstance();
+		String indexPath = config.getBasePath();
+
+		return new LuceneBulletinSearcher(indexPath);
+	}
+	
+	public List getResults(SearchFields fields) throws BulletinIndexException
+	{
+		BulletinSearcher searcher = openBulletinSearcher();
+		ArrayList list = new ArrayList();
+		
+		try {
+			BulletinSearcher.Results results;			
+	
+			if (advancedSearch) 
+			{					
+				String field = (String)fields.getValue(RESULT_FIELD_KEY);			
+				results = searcher.advancedSercher(field, fields);
+			}
+			else	
+				results = searcher.search((String)fields.getValue(RESULT_FIELD_KEY),
+						 (String)fields.getValue(RESULT_BASIC_QUERY_KEY));
+						
+			int numResults = results.getCount();
+			for (int i = 0; i < numResults; i++)				
+				list.add(results.getBulletinInfo(i));				
+	
+		} finally {
+			searcher.close();
+		}
+		return list;	
+	}
+	
+	boolean advancedSearch=false;
 }
