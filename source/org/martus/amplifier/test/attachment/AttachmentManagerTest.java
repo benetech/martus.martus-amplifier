@@ -25,9 +25,13 @@ public class AttachmentManagerTest extends AbstractAttachmentTest
 		AttachmentManager manager = AttachmentManager.getInstance();
 		UniversalId id = UniversalId.createDummyUniversalId();
 		File testDoc = 
-			new File(AmplifierConfiguration.getInstance().getTestDataPath() + File.separator + "test.doc");
+			new File(AmplifierConfiguration.getInstance().buildAmplifierWorkingPath(ATTACHMENT_TEST_FOLDER, "test.doc"));
 		manager.putAttachmentFile(id, testDoc);
-		File returnDoc = manager.getAttachmentFile(id, AmplifierConfiguration.getInstance().getTestOutputPath() + File.separator + "testoutput.doc");
+		StringBuffer docPath = new StringBuffer(200);
+		docPath.append(AmplifierConfiguration.getInstance().buildAmplifierWorkingPath(ATTACHMENT_TEST_FOLDER));
+		docPath.append(File.separator);
+		docPath.append("testoutput.doc");
+		File returnDoc = manager.getAttachmentFile(id, docPath.toString());
 		assertNotNull(returnDoc);
 	}
 	
@@ -39,4 +43,6 @@ public class AttachmentManagerTest extends AbstractAttachmentTest
 		String result = manager.getAttachmentName(id);
 		assertNotNull(result);
 	}
+	
+	private static final String ATTACHMENT_TEST_FOLDER = "attachment_test_output";
 }

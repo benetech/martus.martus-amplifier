@@ -6,10 +6,10 @@ import org.martus.amplifier.common.configuration.AmplifierConfiguration;
 
 public class AmplifierConfigurationTest extends TestCase
 {
-	public void testGetTestDataPath()
+	public void testGetBasePath()
 	{
-		String testDataPath = AmplifierConfiguration.getInstance().getTestDataPath();
-		assertEquals("C:\\Development\\eclipse\\workspace\\martus-amplifier\\testdata", testDataPath);
+		String basePath = AmplifierConfiguration.getInstance().getBasePath();
+		assertEquals("C:\\Development\\eclipse\\workspace\\martus-amplifier", basePath);
 	}
 
 }

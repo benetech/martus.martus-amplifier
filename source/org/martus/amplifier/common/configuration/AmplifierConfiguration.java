@@ -34,19 +34,33 @@ public class AmplifierConfiguration implements IConfigurationConstants
 		return getGenericProperty(AMPLIFIER_BASE_PATH);
 	}
 	
-	public String getTestDataPath()
+	public String getWorkingPath()
 	{
-		StringBuffer testDataPath = new StringBuffer(200); 
-		testDataPath.append(getBasePath());
-		testDataPath.append(File.separator);
-		testDataPath.append(getGenericProperty(TEST_DATA_PATH));
-		return testDataPath.toString();
-	}	
-	
-	public String getTestOutputPath()
-	{
-		return getGenericProperty(TEST_OUTPUT_PATH);
+		return getGenericProperty(AMPLIFIER_WORKING_PATH);
 	}
+	
+	public String buildAmplifierWorkingPath(String directoryOrFile)
+	{
+		StringBuffer newWorkingPath = new StringBuffer(200); 
+		newWorkingPath.append(getWorkingPath());
+		newWorkingPath.append(File.separator);
+		newWorkingPath.append(directoryOrFile);
+		return newWorkingPath.toString();
+
+	}
+	
+	public String buildAmplifierWorkingPath(String folder, String file)
+	{
+		StringBuffer newWorkingPath = new StringBuffer(200); 
+		newWorkingPath.append(getWorkingPath());
+		newWorkingPath.append(File.separator);
+		newWorkingPath.append(folder);
+		newWorkingPath.append(File.separator);
+		newWorkingPath.append(file);
+		return newWorkingPath.toString();
+
+	}
+
 	private String getGenericProperty(String propertyKey)
 	{
 		String propertyValue = null;
@@ -65,8 +79,7 @@ public class AmplifierConfiguration implements IConfigurationConstants
 	
 	//property keys
 	private static final String AMPLIFIER_BASE_PATH = "AMPLIFIER_BASE_DIRECTORY";
-	private static final String TEST_DATA_PATH = "TEST_DATA_DIRECTORY";
-	private static final String TEST_OUTPUT_PATH = "TEST_OUTPUT_DIRECTORY";
+	private static final String AMPLIFIER_WORKING_PATH = "AMPLIFIER_WORKING_DIRECTORY";
 	
 	private static final String PATH_PROPERTY_FILE = "/Path.properties";
 	private static AmplifierConfiguration instance = new AmplifierConfiguration();
