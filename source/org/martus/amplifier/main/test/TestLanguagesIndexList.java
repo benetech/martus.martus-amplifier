@@ -34,7 +34,6 @@ import org.martus.amplifier.main.LanguagesIndexedList;
 import org.martus.common.MartusUtilities;
 import org.martus.common.test.TestCaseEnhanced;
 import org.martus.util.DirectoryUtils;
-import org.martus.util.UnicodeReader;
 
 
 public class TestLanguagesIndexList extends TestCaseEnhanced
@@ -66,9 +65,7 @@ public class TestLanguagesIndexList extends TestCaseEnhanced
 		assertEquals("Only 1 Language should be in the list", 1, list.getListOfLanguagesIndexed().size());		
 		assertEquals("Any Language should be in the list", SearchResultConstants.LANGUAGE_ANYLANGUAGE_LABEL, list.getListOfLanguagesIndexed().get(0));		
 		
-		UnicodeReader reader = new UnicodeReader(languageListFile);
-		Vector listFromFile = MartusUtilities.loadListFromFile(reader);
-		reader.close();
+		Vector listFromFile = MartusUtilities.loadListFromFile(languageListFile);
 		
 		assertEquals("Saved copy should have 1 entry", 1, listFromFile.size());
 		assertEquals("Any Language should be in the list", SearchResultConstants.LANGUAGE_ANYLANGUAGE_LABEL, listFromFile.get(0));		

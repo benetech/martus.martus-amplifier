@@ -31,7 +31,6 @@ import java.util.Vector;
 
 import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.common.MartusUtilities;
-import org.martus.util.UnicodeReader;
 import org.martus.util.UnicodeWriter;
 
 
@@ -54,9 +53,7 @@ public class LanguagesIndexedList
 	{
 		try
 		{
-			UnicodeReader reader = new UnicodeReader(languagesIndexedFile);
-			languagesIndexed = MartusUtilities.loadListFromFile(reader);
-			reader.close();
+			languagesIndexed = MartusUtilities.loadListFromFile(languagesIndexedFile);
 		}
 		catch(IOException e)
 		{

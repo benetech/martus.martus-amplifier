@@ -44,7 +44,6 @@ import org.martus.common.MartusUtilities;
 import org.martus.common.crypto.MartusCrypto;
 import org.martus.common.crypto.MartusCrypto.CryptoInitializationException;
 import org.martus.common.network.MartusXmlrpcClient.SSLSocketSetupException;
-import org.martus.util.UnicodeReader;
 import org.mortbay.http.HttpContext;
 import org.mortbay.http.SunJsseListener;
 import org.mortbay.jetty.Server;
@@ -264,9 +263,7 @@ public class MartusAmplifier
 		
 		try
 		{
-			UnicodeReader reader = new UnicodeReader(notAmplifiedAccountsFile);
-			notAmplifiedAccountsList = MartusUtilities.loadListFromFile(reader);
-			reader.close();
+			notAmplifiedAccountsList = MartusUtilities.loadListFromFile(notAmplifiedAccountsFile);
 		}
 		catch(Exception e)
 		{

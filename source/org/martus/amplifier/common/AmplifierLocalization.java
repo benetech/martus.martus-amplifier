@@ -64,13 +64,13 @@ public class AmplifierLocalization
 		{
 			UnicodeReader reader = new UnicodeReader(languageFileInputStream);
 			Vector localizedLanguages = MartusUtilities.loadListFromFile(reader);
+			reader.close();
 			for (Iterator iter = localizedLanguages.iterator(); iter.hasNext();)
 			{
 				String data = (String) iter.next();
 				String[] idAndName = data.split("=");
 				languages.put(idAndName[0], idAndName[1]);
 			}
-			reader.close();
 		}
 		catch(IOException e)
 		{
