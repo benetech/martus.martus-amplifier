@@ -49,8 +49,9 @@ import org.martus.common.packet.UniversalId;
 import org.martus.common.packet.Packet.InvalidPacketException;
 import org.martus.common.packet.Packet.SignatureVerificationException;
 import org.martus.common.packet.Packet.WrongPacketTypeException;
-import org.martus.util.ZipEntryInputStream;
 import org.martus.util.Base64.InvalidBase64Exception;
+import org.martus.util.inputstreamwithseek.ZipEntryInputStreamWithSeek;
+
 
 
 public class BulletinExtractor
@@ -106,7 +107,7 @@ public class BulletinExtractor
 		}
 		
 		fdp.loadFromXml(
-			new ZipEntryInputStream(bulletinZipFile, fieldDataEntry),
+			new ZipEntryInputStreamWithSeek(bulletinZipFile, fieldDataEntry),
 			verifier);
 			
 		bulletinIndexer.indexFieldData(bhp.getUniversalId(), fdp);
@@ -132,7 +133,7 @@ public class BulletinExtractor
 					" found for account " + attachmentId.getAccountId());
 			}
 			proxy = AttachmentProxy.createFileProxyFromAttachmentPacket(
-				new ZipEntryInputStream(bulletinZipFile, attachmentEntry), 
+				new ZipEntryInputStreamWithSeek(bulletinZipFile, attachmentEntry), 
 				proxy, verifier);
 			InputStream attachmentData = new FileInputStream(proxy.getFile());
 			try 

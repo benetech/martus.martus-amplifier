@@ -42,7 +42,8 @@ import org.martus.common.database.FileDatabase.MissingAccountMapSignatureExcepti
 import org.martus.common.packet.UniversalId;
 import org.martus.common.test.UniversalIdForTesting;
 import org.martus.util.DirectoryUtils;
-import org.martus.util.StringInputStream;
+import org.martus.util.inputstreamwithseek.StringInputStreamWithSeek;
+
 
 public class TestFileSystemDataManager 
 	extends TestAbstractDataManager
@@ -113,7 +114,7 @@ public class TestFileSystemDataManager
 	{
 		UniversalId id = UniversalId.createDummyUniversalId();
 		String testString = "FileSystemClearAll";
-		InputStream sin = new StringInputStream(testString);
+		InputStream sin = new StringInputStreamWithSeek(testString);
 		try {
 			dataManager.putAttachment(id, sin);
 		} finally {
@@ -134,7 +135,7 @@ public class TestFileSystemDataManager
 		UniversalId id = UniversalIdForTesting.createFromAccountAndPrefix(
 			"AnAccount/With/Slashes", "Test");
 		String testString = "AccountWithFileSeparators";
-		InputStream sin = new StringInputStream(testString);
+		InputStream sin = new StringInputStreamWithSeek(testString);
 		try {
 			dataManager.putAttachment(id, sin);
 		} finally {

@@ -37,7 +37,8 @@ import org.martus.amplifier.attachment.DataManager;
 import org.martus.amplifier.test.AbstractAmplifierTestCase;
 import org.martus.common.packet.UniversalId;
 import org.martus.util.DirectoryUtils;
-import org.martus.util.StringInputStream;
+import org.martus.util.inputstreamwithseek.StringInputStreamWithSeek;
+
 
 public abstract class TestAbstractDataManager 
 	extends AbstractAmplifierTestCase
@@ -59,7 +60,7 @@ public abstract class TestAbstractDataManager
 		DataManager attachmentManager = getAttachmentManager();
 		UniversalId id = UniversalId.createDummyUniversalId();
 		String testString = "ClearAll";
-		InputStream sin = new StringInputStream(testString);
+		InputStream sin = new StringInputStreamWithSeek(testString);
 		try {
 			attachmentManager.putAttachment(id, sin);
 		} finally {
@@ -96,7 +97,7 @@ public abstract class TestAbstractDataManager
 		attachmentManager.clearAllAttachments();
 		UniversalId id = UniversalId.createDummyUniversalId();
 		String testString = "SimplePutAndGet";
-		InputStream sin = new StringInputStream(testString);
+		InputStream sin = new StringInputStreamWithSeek(testString);
 		try {
 			attachmentManager.putAttachment(id, sin);
 		} finally {
@@ -120,7 +121,7 @@ public abstract class TestAbstractDataManager
 		attachmentManager.clearAllAttachments();
 		UniversalId id = UniversalId.createDummyUniversalId();
 		String testString = "PutAndGetTwoSameAccount";
-		InputStream sin = new StringInputStream(testString);
+		InputStream sin = new StringInputStreamWithSeek(testString);
 		try {
 			attachmentManager.putAttachment(id, sin);
 		} finally {
@@ -138,7 +139,7 @@ public abstract class TestAbstractDataManager
 		
 		UniversalId id2 = UniversalId.createDummyUniversalId();
 		String testString2 = "PutAndGetTwoSameAccount2";
-		sin = new StringInputStream(testString2);
+		sin = new StringInputStreamWithSeek(testString2);
 		try {
 			attachmentManager.putAttachment(id2, sin);
 		} finally {
@@ -163,7 +164,7 @@ public abstract class TestAbstractDataManager
 		UniversalId id = 
 			UniversalId.createFromAccountAndLocalId("Account1", "Test");
 		String testString = "PutAndGetTwoDifferentAccounts";
-		InputStream sin = new StringInputStream(testString);
+		InputStream sin = new StringInputStreamWithSeek(testString);
 		try {
 			attachmentManager.putAttachment(id, sin);
 		} finally {
@@ -182,7 +183,7 @@ public abstract class TestAbstractDataManager
 		UniversalId id2 = 
 			UniversalId.createFromAccountAndLocalId("Account2", "Test");
 		String testString2 = "PutAndGetTwoDifferentAccounts2";
-		sin = new StringInputStream(testString2);
+		sin = new StringInputStreamWithSeek(testString2);
 		try {
 			attachmentManager.putAttachment(id2, sin);
 		} finally {
@@ -207,7 +208,7 @@ public abstract class TestAbstractDataManager
 		UniversalId id = 
 			UniversalId.createFromAccountAndLocalId("Account1", "Test");
 		String testString = "PutAndGetTwoDifferentAccounts";
-		InputStream sin = new StringInputStream(testString);
+		InputStream sin = new StringInputStreamWithSeek(testString);
 		try 
 		{
 			attachmentManager.putAttachment(id, sin);
@@ -227,7 +228,7 @@ public abstract class TestAbstractDataManager
 		attachmentManager.clearAllAttachments();
 		UniversalId id = UniversalId.createDummyUniversalId();
 		String testString = "OverwriteExisting";
-		InputStream sin = new StringInputStream(testString);
+		InputStream sin = new StringInputStreamWithSeek(testString);
 		try {
 			attachmentManager.putAttachment(id, sin);
 		} finally {
@@ -244,7 +245,7 @@ public abstract class TestAbstractDataManager
 		}
 		
 		String testString2 = "OverwriteExisting2";
-		sin = new StringInputStream(testString2);
+		sin = new StringInputStreamWithSeek(testString2);
 		try {
 			attachmentManager.putAttachment(id, sin);
 		} finally {

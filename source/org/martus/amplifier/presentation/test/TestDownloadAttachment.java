@@ -40,8 +40,9 @@ import org.martus.amplifier.search.BulletinInfo;
 import org.martus.common.crypto.MockMartusSecurity;
 import org.martus.common.packet.UniversalId;
 import org.martus.common.test.UniversalIdForTesting;
-import org.martus.util.StringInputStream;
 import org.martus.util.TestCaseEnhanced;
+import org.martus.util.inputstreamwithseek.StringInputStreamWithSeek;
+
 
 
 public class TestDownloadAttachment extends TestCaseEnhanced
@@ -168,7 +169,7 @@ public class TestDownloadAttachment extends TestCaseEnhanced
 	{
 		AttachmentInfo attachInfo = (AttachmentInfo)bulletinInfo1.getAttachments().get(index);
 		UniversalId uid = UniversalId.createFromAccountAndLocalId(attachInfo.getAccountId(), attachInfo.getLocalId());
-		MartusAmplifier.dataManager.putAttachment(uid, new StringInputStream(data));
+		MartusAmplifier.dataManager.putAttachment(uid, new StringInputStreamWithSeek(data));
 	}
 	
 	final String basePath = createTempDirectory().getPath();

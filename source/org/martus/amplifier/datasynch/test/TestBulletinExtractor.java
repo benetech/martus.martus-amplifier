@@ -70,7 +70,8 @@ import org.martus.common.packet.UniversalId;
 import org.martus.common.test.MockBulletinStore;
 import org.martus.util.DirectoryUtils;
 import org.martus.util.StreamCopier;
-import org.martus.util.StringInputStream;
+import org.martus.util.inputstreamwithseek.StringInputStreamWithSeek;
+
 
 public class TestBulletinExtractor extends AbstractAmplifierTestCase
 	implements SearchConstants
@@ -343,7 +344,7 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 	private File stringToFile(String s) throws IOException
 	{
 		File temp = createTempFileFromName("$$$MartusAmpTempAttachment");
-		InputStream in = new StringInputStream(s);
+		InputStream in = new StringInputStreamWithSeek(s);
 		OutputStream out = new FileOutputStream(temp);
 		try {
 			new StreamCopier().copyStream(in, out);
