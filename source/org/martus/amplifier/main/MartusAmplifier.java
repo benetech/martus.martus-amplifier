@@ -155,10 +155,17 @@ public class MartusAmplifier
 		return startupFiles;
 	}
 	
+	public Vector getDeleteOnStartupFolders()
+	{
+		Vector startupFolders = new Vector();
+		startupFolders.add(getServersWhoWeCallDirectory());
+		return startupFolders;
+	}
+	
 	public void deleteAmplifierStartupFiles()
 	{
 		MartusUtilities.deleteAllFiles(getDeleteOnStartupFiles());
-		DirectoryUtils.deleteEntireDirectoryTree(getServersWhoWeCallDirectory());
+		DirectoryUtils.deleteEntireDirectoryTree(getDeleteOnStartupFolders());
 	}
 
 	public boolean isAmplifierSyncing()
