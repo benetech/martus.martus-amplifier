@@ -28,6 +28,7 @@ import org.martus.amplifier.exception.MartusAmplifierApplicationException;
 
 
 import org.martus.common.MartusCrypto;
+import org.martus.common.MartusSecurity;
 import org.martus.common.MartusUtilities;
 import org.martus.common.NetworkInterfaceConstants;
 import org.martus.common.NetworkInterfaceXmlRpcConstants;
@@ -55,9 +56,15 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
 	protected AmplifierNetworkGateway()
 	{
 		super();
-		//TODO:have to initialize security
-		gateway = getCurrentNetworkInterfaceGateway();
-//		security
+		try
+		{
+			gateway = getCurrentNetworkInterfaceGateway();
+			security = new MartusSecurity();
+		}
+		catch(Exception e)
+		{
+			logger.severe("CryptoInitialization Exception " + e.getMessage());		
+		}
 		serverInfoList = BackupServerManager.getInstance().getBackupServersList();
 	}
 	
