@@ -92,6 +92,8 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 //		newFilterFormat();
 	}
 	
+	// TODO: Leave this as a warning for now. 
+	// Chiawei should fix it and remove this comment by 10/03
 	private void newFilterFormat()
 	{
 		parseAdvancedQuery(THESE_WORD_TAG);					
