@@ -107,13 +107,9 @@ public class DoSearch extends AbstractSearchResultsServlet
 					
 			return getSearchResults(session, raw);
 		}
-		else
-		{	
-			RawSearchParameters.clearSimpleSearch(session);										
-			RawSearchParameters raw = new RawSearchParameters(request);
-			
-			return getSearchResults(session, raw);			
-		}
+		RawSearchParameters.clearSimpleSearch(session);										
+		RawSearchParameters raw = new RawSearchParameters(request);
+		return getSearchResults(session, raw);			
 	}
 
 	private boolean isSimpleSearch(AmplifierServletRequest request)
