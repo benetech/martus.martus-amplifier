@@ -61,8 +61,8 @@ public abstract class CommonSearchTest
 	public void setUp() throws Exception
 	{
 		super.setUp();
-		MartusAmplifier.security = new MockMartusSecurity();
-		MartusAmplifier.security.createKeyPair();
+		MartusAmplifier.StubServer.security = new MockMartusSecurity();
+		MartusAmplifier.getSecurity().createKeyPair();
 		MartusAmplifier.dataManager = new FileSystemDataManager(getTestBasePath());
 		MartusAmplifier.languagesIndexed = new LanguagesIndexedList(new File(getTestBasePath(),"langIndex"));
 	}

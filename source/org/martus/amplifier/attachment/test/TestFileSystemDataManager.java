@@ -156,7 +156,7 @@ public class TestFileSystemDataManager
 	{
 		MockMartusSecurity client = new MockMartusSecurity();
 		client.createKeyPair();
-		MartusAmplifier.security = client;
+		MartusAmplifier.StubServer.security = client;
 
 		String id = "test";
 		String data1 = "data 1";

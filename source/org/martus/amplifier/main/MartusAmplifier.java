@@ -50,6 +50,8 @@ import org.martus.common.LoggerInterface;
 import org.martus.common.LoggerToConsole;
 import org.martus.common.MartusUtilities;
 import org.martus.common.VersionBuildDate;
+import org.martus.common.MartusUtilities.InvalidPublicKeyFileException;
+import org.martus.common.MartusUtilities.PublicInformationInvalidException;
 import org.martus.common.crypto.MartusCrypto;
 import org.martus.common.crypto.MartusSecurity;
 import org.martus.common.crypto.MartusCrypto.AuthorizationFailedException;
@@ -66,46 +68,426 @@ import org.mortbay.util.MultiException;
 
 public class MartusAmplifier
 {
+	static public class StubServer 
+	{
+		StubServer(File dir) throws 
+						CryptoInitializationException, IOException, InvalidPublicKeyFileException, PublicInformationInvalidException
+		{
+			this(dir, new LoggerToConsole());
+		}
+		
+		public StubServer(File dir, LoggerInterface loggerToUse) throws 
+		MartusCrypto.CryptoInitializationException, IOException, InvalidPublicKeyFileException, PublicInformationInvalidException
+		{
+			dataDirectory = dir;
+			logger = loggerToUse;
+			amp = new MartusAmplifier(this);
+		
+			security = new MartusSecurity();
+		}
+
+		void processCommandLine(String[] args)
+		{
+			long indexEveryXMinutes = 0;
+			String indexEveryXHourTag = "indexinghours=";
+			String indexEveryXMinutesTag = "indexingminutes=";
+			String ampipTag = "ampip=";
+
+			for(int arg = 0; arg < args.length; ++arg)
+			{
+				String argument = args[arg];
+				if(argument.equals("secure"))
+					enterSecureMode();
+				if(argument.equals("nopassword"))
+					insecurePassword = "password".toCharArray();
+				if(argument.startsWith(ampipTag))
+					ampIpAddress = argument.substring(ampipTag.length());
+
+				if(argument.startsWith(indexEveryXHourTag))
+				{	
+					String hours = argument.substring(indexEveryXHourTag.length());
+					System.out.println("Indexing every " + hours + " hours");
+					long indexEveryXHours = new Integer(hours).longValue();
+					indexEveryXMinutes = indexEveryXHours * 60;
+				}
+				if(argument.startsWith(indexEveryXMinutesTag))
+				{	
+					String minutes = argument.substring(indexEveryXMinutesTag.length());
+					System.out.println("Indexing every " + minutes + " minutes");
+					indexEveryXMinutes = new Integer(minutes).longValue();
+				}
+			}
+			if(indexEveryXMinutes==0)
+			{
+				indexEveryXMinutes = DEFAULT_HOURS_TO_SYNC * 60;
+				System.out.println("Indexing every " + DEFAULT_HOURS_TO_SYNC + " hours");
+			}
+		
+			dataSynchIntervalMillis = indexEveryXMinutes * MINITUES_TO_MILLI;
+		
+			if(isSecureMode())
+				System.out.println("Running in SECURE mode");
+			else
+				System.out.println("***RUNNING IN INSECURE MODE***");
+		}
+
+		public boolean isSecureMode()
+		{
+			return secureMode;
+		}
+	
+		public void enterSecureMode()
+		{
+			secureMode = true;
+		}
+	
+		void deleteRunningFile()
+		{
+			getRunningFile().delete();
+		}
+
+		File getRunningFile()
+		{
+			File runningFile = new File(StubServer.getTriggerDirectory(), AMP_RUNNING_FILE);
+			return runningFile;
+		}
+
+		boolean hasAccount()
+		{
+			return getKeyPairFile().exists();
+		}
+	
+		File getKeyPairFile()
+		{
+			return new File(StubServer.getStartupConfigDirectory(), KEYPAIR_FILENAME);
+		}
+
+		void loadAccount(char[] passphrase) throws AuthorizationFailedException, InvalidKeyPairFileVersionException, IOException
+		{
+			FileInputStream in = new FileInputStream(getKeyPairFile());
+			readKeyPair(in, passphrase);
+			in.close();
+			System.out.println("Passphrase correct.");			
+		}
+	
+		void readKeyPair(InputStream in, char[] passphrase) throws 
+			IOException,
+			MartusCrypto.AuthorizationFailedException,
+			MartusCrypto.InvalidKeyPairFileVersionException
+		{
+			getSecurity().readKeyPair(in, passphrase);
+		}
+	
+		void displayStatistics() throws InvalidBase64Exception
+		{
+			displayServerAccountId();
+			displayServerPublicCode();
+		}
+	
+		private String displayServerAccountId()
+		{
+			String accountId = getAccountId();
+			System.out.println("Server Account: " + accountId);
+			System.out.println();
+			return accountId;
+		}
+
+		private void displayServerPublicCode() throws InvalidBase64Exception
+		{
+			System.out.print("Server Public Code: ");
+			String accountId = getAccountId();
+			String publicCode = MartusCrypto.computePublicCode(accountId);
+			System.out.println(MartusCrypto.formatPublicCode(publicCode));
+			System.out.println();
+		}
+
+		public String getAccountId()
+		{
+			return getSecurity().getPublicKeyString();
+		}
+	
+		public void deleteStartupFiles()
+		{
+			if(!isSecureMode())
+				return;
+
+			if(!getKeyPairFile().delete())
+			{
+				System.out.println("Unable to delete keypair");
+				System.exit(5);
+			}
+
+			amp.deleteAmplifierStartupFiles();
+		}
+
+
+		void startBackgroundTimers()
+		{
+			MartusUtilities.startTimer(new UpdateFromServerTask(), dataSynchIntervalMillis);
+			MartusUtilities.startTimer(new ShutdownRequestMonitor(), shutdownRequestIntervalMillis);
+		}
+	
+		static public boolean isShutdownRequested()
+		{
+			return(StubServer.getShutdownFile().exists());
+		}
+	
+		public boolean canExitNow()
+		{
+			return !(amp.isAmplifierSyncing());
+		}
+
+		class UpdateFromServerTask extends TimerTask
+		{	
+			public void run()
+			{
+				if(! amp.isAmplifierSyncing() )
+				{
+					amp.startSynch();
+					amp.pullNewDataFromServers(amp.backupServersList);
+					amp.endSynch();
+				}
+			}
+		}
+
+		private class ShutdownRequestMonitor extends TimerTask
+		{
+			public void run()
+			{
+				if( isShutdownRequested() && canExitNow() )
+				{
+					log("Shutdown request received.");
+					StubServer.getShutdownFile().delete();
+					log("Server has exited.");
+					try
+					{
+						serverExit(0);
+					}
+					catch (Exception e)
+					{
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+
+		void log(String message)
+		{
+			logger.log(message);
+		}
+	
+		public void initalizeAmplifier(char[] keystorePassword) throws Exception
+		{
+			amp.initalizeAmplifier(keystorePassword);
+		}
+		
+		static public File getShutdownFile()
+		{
+			return new File(StubServer.getTriggerDirectory(), MartusAmplifier.EXIT_AMP_FILE);
+		}
+
+		static File getTriggerDirectory()
+		{
+			return new File(StubServer.getBasePath(), MartusAmplifier.ADMIN_TRIGGER_DIRECTORY);
+			
+		}
+
+		public static String getBasePath()
+		{
+			return StubServer.getDataDirectory().getPath();
+		}
+
+		static public File getStartupConfigDirectory()
+		{
+			return new File(MartusAmplifier.StubServer.getBasePath(), MartusAmplifier.ADMIN_STARTUP_CONFIG_DIRECTORY);
+		}
+
+		static char[] getPassphraseFromConsole()
+		{
+			System.out.print("Enter passphrase: ");
+			System.out.flush();
+			
+			File waitingFile = new File(MartusAmplifier.StubServer.getTriggerDirectory(), MartusAmplifier.AMP_WAITING_FILE);
+			waitingFile.delete();
+			StubServer.writeSyncFile(waitingFile);
+			
+			InputStreamReader rawReader = new InputStreamReader(System.in);	
+			BufferedReader reader = new BufferedReader(rawReader);
+			String passphrase = null;
+			try
+			{
+				//Security issue passphrase is a String
+				passphrase = reader.readLine();
+			}
+			catch(Exception e)
+			{
+				System.out.println("MartusServer.main: " + e);
+				System.exit(3);
+			}
+			return passphrase.toCharArray();
+		}
+
+		public static void writeSyncFile(File syncFile) 
+		{
+			try 
+			{
+				FileOutputStream out = new FileOutputStream(syncFile);
+				out.write(0);
+				out.close();
+			} 
+			catch(Exception e) 
+			{
+				System.out.println("MartusServer.main: " + e);
+				System.exit(6);
+			}
+		}
+
+		public static String getDefaultDataDirectoryPath()
+		{
+			String dataDirectory = null;
+			if(StubServer.isRunningUnderWindows())
+				dataDirectory = "C:/MartusServer/";
+			else
+				dataDirectory = "/var/MartusServer/";
+			return dataDirectory;
+		}
+
+		static boolean isRunningUnderWindows()
+		{
+			return System.getProperty("os.name").indexOf("Windows") >= 0;
+		}
+
+		public static File getDefaultDataDirectory()
+		{
+			File file = new File(MartusAmplifier.StubServer.getDefaultDataDirectoryPath());
+			if(!file.exists())
+			{
+				file.mkdirs();
+			}
+			
+			return file;
+		}
+
+		public static File getDataDirectory()
+		{
+			return dataDirectory;
+		}
+
+		long dataSynchIntervalMillis;
+		boolean secureMode;
+		public static File dataDirectory;
+		LoggerInterface logger;
+		public static MartusSecurity security;
+		public MartusAmplifier amp;
+	}
+	
 	public static void main(String[] args) throws Exception
 	{
 		displayVersion();
-
-		File dataDirectory = MartusAmplifier.getDefaultDataDirectory();
-		MartusAmplifier amp = new MartusAmplifier(dataDirectory, new LoggerToConsole());
+		StubServer server = new StubServer(StubServer.getDefaultDataDirectory());
 		
-		amp.processCommandLine(args);
-		amp.deleteRunningFile();
+		server.processCommandLine(args);
+		server.deleteRunningFile();
 		
-		if(!amp.hasAccount())
+		if(!server.hasAccount())
 		{
 			System.out.println("***** Key pair file not found *****");
 			serverExit(2);
 		}
 		char[] passphrase = insecurePassword;
 		if(passphrase == null)
-			passphrase = getPassphraseFromConsole();
-		amp.loadAccount(passphrase);
-		amp.displayStatistics();
-		amp.start(passphrase);
+			passphrase = StubServer.getPassphraseFromConsole();
+		server.loadAccount(passphrase);
+		server.displayStatistics();
+		server.initalizeAmplifier(passphrase);
+
+		server.deleteStartupFiles();
+		server.startBackgroundTimers();
+		StubServer.writeSyncFile(server.getRunningFile());
+		System.out.println("Waiting for connection...");
 	}
 	
-	public void deleteStartupFiles()
+	
+	
+	static public void serverExit(int exitCode) 
 	{
-		if(!isSecureMode())
-			return;
+		System.exit(exitCode);
+	}
 
-		if(!getKeyPairFile().delete())
+	
+	public MartusAmplifier(StubServer serverToUse) throws CryptoInitializationException
+	{
+		coreServer = serverToUse;
+	}
+
+	static public boolean isShutdownRequested()
+	{
+		return StubServer.isShutdownRequested();
+	}
+	
+	private File getServersWhoWeCallDirectory()
+	{
+		return new File(StubServer.getStartupConfigDirectory(), SERVERS_WHO_WE_CALL_DIRIRECTORY);
+	}
+
+	private File getAccountsNotAmplifiedFile()
+	{
+		return new File(StubServer.getStartupConfigDirectory(), ACCOUNTS_NOT_AMPLIFIED_FILE);
+	}
+
+	void initalizeAmplifier(char[] password) throws Exception
+	{
+		deleteLuceneLockFile();
+		String packetsDirectory = new File(StubServer.getBasePath(), "ampPackets").getPath();
+
+		dataManager = new FileSystemDataManager(packetsDirectory);
+		
+		File backupServersDirectory = getServersWhoWeCallDirectory();
+		backupServersList = loadServersWeWillCall(backupServersDirectory, getSecurity());
+		
+		File notAmplifiedAccountsFile = getAccountsNotAmplifiedFile();
+		loadAccountsWeWillNotAmplify(notAmplifiedAccountsFile);
+		log(notAmplifiedAccountsList.size() + " account(s) will not get amplified");
+
+		
+		//Code.setDebug(true);
+		File indexDir = LuceneBulletinIndexer.getIndexDir(StubServer.getBasePath());
+		File languages = new File(indexDir, "languagesIndexed.txt");
+		languagesIndexed = new LanguagesIndexedList(languages);
+		try
 		{
-			System.out.println("Unable to delete keypair");
-			System.exit(5);
+			languagesIndexed.loadLanguagesAlreadyIndexed();
 		}
+		catch (IOException e)
+		{
+			log("Error: LanguagesIndex" + e);
+		}
+		
+		try
+		{
+			startServers(password);
+		}
+		catch (Exception e1)
+		{
+			e1.printStackTrace();
+			serverExit(3);
+		}
+	}
 
+	private File getKeystoreFile()
+	{
+		return new File(StubServer.getStartupConfigDirectory(), "keystore");
+	}
+
+
+	void deleteAmplifierStartupFiles()
+	{
 		if(!getKeystoreFile().delete())
 		{
 			System.out.println("Unable to delete keystore");
 			System.exit(6);
 		}
-		
+
 		File serversWhoWeCallDir = getServersWhoWeCallDirectory();
 		if(serversWhoWeCallDir.exists())
 		{
@@ -139,7 +521,7 @@ public class MartusAmplifier
 			}
 		}
 
-		File jettyconfig = new File(getStartupConfigDirectory(), "jettyConfiguration.xml");
+		File jettyconfig = new File(StubServer.getStartupConfigDirectory(), "jettyConfiguration.xml");
 		if(jettyconfig.exists())
 		{	
 			if(!jettyconfig.delete())
@@ -148,82 +530,6 @@ public class MartusAmplifier
 				System.exit(9);
 			}
 		}
-	}
-	
-	
-	static public void serverExit(int exitCode) 
-	{
-		System.exit(exitCode);
-	}
-
-	
-	public MartusAmplifier(File dataDirectoryToUse, LoggerInterface loggerToUse) throws CryptoInitializationException
-	{
-		dataDirectory = dataDirectoryToUse;
-		logger = loggerToUse;
-		security = new MartusSecurity();
-	}
-
-	void start(char[] password) throws Exception
-	{
-		deleteLuceneLockFile();
-		String packetsDirectory = new File(getBasePath(), "ampPackets").getPath();
-
-		dataManager = new FileSystemDataManager(packetsDirectory);
-		
-		File backupServersDirectory = getServersWhoWeCallDirectory();
-		backupServersList = loadServersWeWillCall(backupServersDirectory, security);
-		
-		File notAmplifiedAccountsFile = getAccountsNotAmplifiedFile();
-		loadAccountsWeWillNotAmplify(notAmplifiedAccountsFile);
-		log(notAmplifiedAccountsList.size() + " account(s) will not get amplified");
-
-		
-		//Code.setDebug(true);
-		File indexDir = LuceneBulletinIndexer.getIndexDir(getBasePath());
-		File languages = new File(indexDir, "languagesIndexed.txt");
-		languagesIndexed = new LanguagesIndexedList(languages);
-		try
-		{
-			languagesIndexed.loadLanguagesAlreadyIndexed();
-		}
-		catch (IOException e)
-		{
-			log("Error: LanguagesIndex" + e);
-		}
-		
-		try
-		{
-			startServers(password);
-		}
-		catch (Exception e1)
-		{
-			e1.printStackTrace();
-			serverExit(3);
-		}
-		deleteStartupFiles();
-
-		startBackgroundTimers();
-
-		writeSyncFile(getRunningFile());
-		System.out.println("Waiting for connection...");
-	}
-
-	void startBackgroundTimers()
-	{
-		MartusUtilities.startTimer(new UpdateFromServerTask(), dataSynchIntervalMillis);
-		MartusUtilities.startTimer(new ShutdownRequestMonitor(), shutdownRequestIntervalMillis);
-	}
-	
-
-	private File getServersWhoWeCallDirectory()
-	{
-		return new File(getStartupConfigDirectory(), SERVERS_WHO_WE_CALL_DIRIRECTORY);
-	}
-
-	private File getAccountsNotAmplifiedFile()
-	{
-		return new File(getStartupConfigDirectory(), ACCOUNTS_NOT_AMPLIFIED_FILE);
 	}
 
 	private void startServers(char[] password) throws IOException, MultiException
@@ -266,144 +572,15 @@ public class MartusAmplifier
 		sslServer.start();
 	}
 
-	private File getKeystoreFile()
-	{
-		return new File(getStartupConfigDirectory(), "keystore");
-	}
-
-	private void processCommandLine(String[] args)
-	{
-		long indexEveryXMinutes = 0;
-		String indexEveryXHourTag = "indexinghours=";
-		String indexEveryXMinutesTag = "indexingminutes=";
-		String ampipTag = "ampip=";
-
-		for(int arg = 0; arg < args.length; ++arg)
-		{
-			String argument = args[arg];
-			if(argument.equals("secure"))
-				enterSecureMode();
-			if(argument.equals("nopassword"))
-				insecurePassword = "password".toCharArray();
-			if(argument.startsWith(ampipTag))
-				ampIpAddress = argument.substring(ampipTag.length());
-
-			if(argument.startsWith(indexEveryXHourTag))
-			{	
-				String hours = argument.substring(indexEveryXHourTag.length());
-				System.out.println("Indexing every " + hours + " hours");
-				long indexEveryXHours = new Integer(hours).longValue();
-				indexEveryXMinutes = indexEveryXHours * 60;
-			}
-			if(argument.startsWith(indexEveryXMinutesTag))
-			{	
-				String minutes = argument.substring(indexEveryXMinutesTag.length());
-				System.out.println("Indexing every " + minutes + " minutes");
-				indexEveryXMinutes = new Integer(minutes).longValue();
-			}
-		}
-		if(indexEveryXMinutes==0)
-		{
-			indexEveryXMinutes = DEFAULT_HOURS_TO_SYNC * 60;
-			System.out.println("Indexing every " + DEFAULT_HOURS_TO_SYNC + " hours");
-		}
-		
-		dataSynchIntervalMillis = indexEveryXMinutes * MINITUES_TO_MILLI;
-		
-		if(isSecureMode())
-			System.out.println("Running in SECURE mode");
-		else
-			System.out.println("***RUNNING IN INSECURE MODE***");
-	}
 	
 	private static InetAddress getAmpIpAddress() throws UnknownHostException
 	{
 		return InetAddress.getByName(ampIpAddress);
 	}
 
-	private void displayStatistics() throws InvalidBase64Exception
-	{
-		displayServerAccountId();
-		displayServerPublicCode();
-	}
-	
-	private String displayServerAccountId()
-	{
-		String accountId = getAccountId();
-		System.out.println("Server Account: " + accountId);
-		System.out.println();
-		return accountId;
-	}
-
-	private void displayServerPublicCode() throws InvalidBase64Exception
-	{
-		System.out.print("Server Public Code: ");
-		String accountId = getAccountId();
-		String publicCode = MartusCrypto.computePublicCode(accountId);
-		System.out.println(MartusCrypto.formatPublicCode(publicCode));
-		System.out.println();
-	}
-
-	public String getAccountId()
-	{
-		return security.getPublicKeyString();
-	}
-	
-	private void deleteRunningFile()
-	{
-		getRunningFile().delete();
-	}
-
-	private File getRunningFile()
-	{
-		File runningFile = new File(getTriggerDirectory(), AMP_RUNNING_FILE);
-		return runningFile;
-	}
-
-	static public File getShutdownFile()
-	{
-		return new File(getTriggerDirectory(), EXIT_AMP_FILE);
-	}
-
-	public boolean isSecureMode()
-	{
-		return secureMode;
-	}
-	
-	public void enterSecureMode()
-	{
-		secureMode = true;
-	}
-	
-	static File getTriggerDirectory()
-	{
-		return new File(getBasePath(), ADMIN_TRIGGER_DIRECTORY);
-		
-	}
-
-	public static String getBasePath()
-	{
-		return getDataDirectory().getPath();
-	}
-	
-	public File getStartupConfigDirectory()
-	{
-		return new File(getBasePath(), ADMIN_STARTUP_CONFIG_DIRECTORY);
-	}
-
-	boolean hasAccount()
-	{
-		return getKeyPairFile().exists();
-	}
-	
-	File getKeyPairFile()
-	{
-		return new File(getStartupConfigDirectory(), KEYPAIR_FILENAME);
-	}
-
 	void deleteLuceneLockFile() throws BulletinIndexException
 	{
-		File indexDirectory = LuceneBulletinIndexer.getIndexDir(getBasePath());
+		File indexDirectory = LuceneBulletinIndexer.getIndexDir(StubServer.getBasePath());
 		File lockFile = new File(indexDirectory, "write.lock");
 		if(lockFile.exists())
 		{
@@ -419,60 +596,9 @@ public class MartusAmplifier
 		context.addHandler(handler);
 	}
 	
-	private static char[] getPassphraseFromConsole()
+	static public MartusSecurity getSecurity()
 	{
-		System.out.print("Enter passphrase: ");
-		System.out.flush();
-		
-		File waitingFile = new File(getTriggerDirectory(), AMP_WAITING_FILE);
-		waitingFile.delete();
-		writeSyncFile(waitingFile);
-		
-		InputStreamReader rawReader = new InputStreamReader(System.in);	
-		BufferedReader reader = new BufferedReader(rawReader);
-		String passphrase = null;
-		try
-		{
-			//Security issue passphrase is a String
-			passphrase = reader.readLine();
-		}
-		catch(Exception e)
-		{
-			System.out.println("MartusServer.main: " + e);
-			System.exit(3);
-		}
-		return passphrase.toCharArray();
-	}
-
-	void loadAccount(char[] passphrase) throws AuthorizationFailedException, InvalidKeyPairFileVersionException, IOException
-	{
-		FileInputStream in = new FileInputStream(getKeyPairFile());
-		readKeyPair(in, passphrase);
-		in.close();
-		System.out.println("Passphrase correct.");			
-	}
-	
-	void readKeyPair(InputStream in, char[] passphrase) throws 
-		IOException,
-		MartusCrypto.AuthorizationFailedException,
-		MartusCrypto.InvalidKeyPairFileVersionException
-	{
-		security.readKeyPair(in, passphrase);
-	}
-	
-	static public boolean isShutdownRequested()
-	{
-		return(getShutdownFile().exists());
-	}
-	
-	public boolean canExitNow()
-	{
-		return !(isAmplifierSyncing());
-	}
-	
-	MartusSecurity getSecurity()
-	{
-		return security;
+		return StubServer.security;
 	}
 
 	public boolean isAmplifierSyncing()
@@ -494,7 +620,7 @@ public class MartusAmplifier
 	{
 		for(int i=0; i < backupServersList.size(); ++i)
 		{
-			if(isShutdownRequested())
+			if(StubServer.isShutdownRequested())
 				return;
 			BackupServerInfo backupServerToCall = (BackupServerInfo)backupServersList.get(i);
 			pullNewDataFromOneServer(backupServerToCall);
@@ -506,8 +632,8 @@ public class MartusAmplifier
 		BulletinIndexer indexer = null;
 		try
 		{
-			DataSynchManager dataSyncManager = new DataSynchManager(backupServerToCall, logger, getSecurity());
-			indexer = new LuceneBulletinIndexer(getBasePath());
+			DataSynchManager dataSyncManager = new DataSynchManager(backupServerToCall, coreServer.logger, getSecurity());
+			indexer = new LuceneBulletinIndexer(StubServer.getBasePath());
 		
 			dataSyncManager.getAllNewData(dataManager, indexer, getListOfAccountsWeWillNotAmplify());
 		}
@@ -597,44 +723,9 @@ public class MartusAmplifier
 	
 	void log(String message)
 	{
-		logger.log(message);
+		coreServer.log(message);
 	}
 	
-	class UpdateFromServerTask extends TimerTask
-	{	
-		public void run()
-		{
-			if(! isAmplifierSyncing() )
-			{
-				startSynch();
-				pullNewDataFromServers(backupServersList);
-				endSynch();
-			}
-		}
-	}
-
-	private class ShutdownRequestMonitor extends TimerTask
-	{
-		public void run()
-		{
-			if( isShutdownRequested() && canExitNow() )
-			{
-				log("Shutdown request received.");
-				getShutdownFile().delete();
-				log("Server has exited.");
-				try
-				{
-					serverExit(0);
-				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-
-
 	private static void displayVersion()
 	{
 		System.out.println("MartusAmplifier");
@@ -643,25 +734,10 @@ public class MartusAmplifier
 		System.out.println("Build Date " + versionInfo);
 	}
 
-	public static void writeSyncFile(File syncFile) 
-	{
-		try 
-		{
-			FileOutputStream out = new FileOutputStream(syncFile);
-			out.write(0);
-			out.close();
-		} 
-		catch(Exception e) 
-		{
-			System.out.println("MartusServer.main: " + e);
-			System.exit(6);
-		}
-	}
-	
 	public static String getPresentationBasePath()
 	{
 		String presentationBasePath = null;
-		if(isRunningUnderWindows())
+		if(StubServer.isRunningUnderWindows())
 			presentationBasePath = "";
 		else
 			presentationBasePath = "/usrlocal/martus/htdocs/MartusAmplifier/";
@@ -669,55 +745,19 @@ public class MartusAmplifier
 		
 	}
 
-	public static String getDefaultDataDirectoryPath()
-	{
-		String dataDirectory = null;
-		if(isRunningUnderWindows())
-			dataDirectory = "C:/MartusServer/";
-		else
-			dataDirectory = "/var/MartusServer/";
-		return dataDirectory;
-	}
-	
-	private static boolean isRunningUnderWindows()
-	{
-		return System.getProperty("os.name").indexOf("Windows") >= 0;
-	}
-
-	public static File getDefaultDataDirectory()
-	{
-		File file = new File(getDefaultDataDirectoryPath());
-		if(!file.exists())
-		{
-			file.mkdirs();
-		}
-		
-		return file;
-	}
-	
-	public static File getDataDirectory()
-	{
-		return dataDirectory;
-	}
-
-	boolean secureMode;
-	private static String ampIpAddress;
+	static String ampIpAddress;
 	static char[] insecurePassword;
-	public static File dataDirectory;	
 
-	public static MartusSecurity security;
 	static final long IMMEDIATELY = 0;
 	static final long MINITUES_TO_MILLI = 60 * 1000;
 	static final long DEFAULT_HOURS_TO_SYNC = 24;
-	long dataSynchIntervalMillis;
 
 	boolean isSyncing;
 	
 	List backupServersList;
 	List notAmplifiedAccountsList;
 	
-	LoggerInterface logger;
-
+	StubServer coreServer;
 	public static LanguagesIndexedList languagesIndexed;
 	public static DataManager dataManager;
 

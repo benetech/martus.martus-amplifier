@@ -64,7 +64,7 @@ public class TestContactInfo extends TestCaseEnhanced
 	{
 		MockMartusSecurity client = new MockMartusSecurity();
 		client.createKeyPair();
-		MartusAmplifier.security = client;
+		MartusAmplifier.StubServer.security = client;
 		
 		File basePath = createTempDirectory();
 		MartusAmplifier.dataManager = new FileSystemDataManager(basePath.getAbsolutePath());

@@ -53,8 +53,8 @@ public class TestDownloadAttachment extends TestCaseEnhanced
 	public void setUp() throws Exception
 	{
 		File testBasePath = createTempDirectory();
-		MartusAmplifier.security = new MockMartusSecurity();
-		MartusAmplifier.security.createKeyPair();
+		MartusAmplifier.StubServer.security = new MockMartusSecurity();
+		MartusAmplifier.getSecurity().createKeyPair();
 		MartusAmplifier.dataManager = new FileSystemDataManager(testBasePath.getAbsolutePath());
 	}
 	

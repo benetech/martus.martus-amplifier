@@ -45,7 +45,7 @@ public class FileSystemDataManager implements DataManager
 {
 	public FileSystemDataManager(String baseDir) throws FileVerificationException, MissingAccountMapException, MissingAccountMapSignatureException
 	{
-		this(baseDir, MartusAmplifier.security);
+		this(baseDir, MartusAmplifier.getSecurity());
 	}
 	
 	public FileSystemDataManager(String baseDir, MartusCrypto crypto) throws FileVerificationException, MissingAccountMapException, MissingAccountMapSignatureException
@@ -135,7 +135,7 @@ public class FileSystemDataManager implements DataManager
 			return null;
 		
 		Vector info = MartusServerUtilities.getContactInfo(contactFile);
-		if(!MartusAmplifier.security.verifySignatureOfVectorOfStrings(info, accountId))
+		if(!MartusAmplifier.getSecurity().verifySignatureOfVectorOfStrings(info, accountId))
 			return null;
 		removeContactInfoNonDataElements(info);		
 		info = removeContactInfoBlankDataElements(info);

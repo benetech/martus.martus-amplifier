@@ -25,7 +25,8 @@ public class TestMartusAmplifier extends TestCaseEnhanced
 		dir.delete();
 		dir.mkdirs();
 		
-		MartusAmplifier amp = new MartusAmplifier(dir, new LoggerForTesting());
+		MartusAmplifier.StubServer server = new MartusAmplifier.StubServer(dir, new LoggerForTesting());
+		MartusAmplifier amp = server.amp;
 		
 		List noServers = amp.loadServersWeWillCall(dir, security);
 		assertEquals(0, noServers.size());
@@ -55,7 +56,8 @@ public class TestMartusAmplifier extends TestCaseEnhanced
 	public void testLoadAccountsWeWillNotAmplify() throws Exception
 	{
 		File unamplified = createTempFile();
-		MartusAmplifier amp = new MartusAmplifier(unamplified, new LoggerForTesting());
+		MartusAmplifier.StubServer server = new MartusAmplifier.StubServer(unamplified, new LoggerForTesting());
+		MartusAmplifier amp = server.amp;
 		assertNull("List should be null", amp.getListOfAccountsWeWillNotAmplify());
 		
 		amp.loadAccountsWeWillNotAmplify(null);

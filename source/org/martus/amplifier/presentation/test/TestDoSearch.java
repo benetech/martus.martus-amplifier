@@ -51,12 +51,12 @@ public class TestDoSearch extends TestCaseEnhanced
 	
 	public void setUp() throws Exception
 	{
-		MartusAmplifier.dataDirectory = createTempDirectory();
+		MartusAmplifier.StubServer.dataDirectory = createTempDirectory();
 	}
 	
 	public void tearDown()
 	{
-		DirectoryUtils.deleteEntireDirectoryTree(MartusAmplifier.dataDirectory);
+		DirectoryUtils.deleteEntireDirectoryTree(MartusAmplifier.StubServer.dataDirectory);
 	}
 
 	public void testNoResults() throws Exception
