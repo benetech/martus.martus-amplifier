@@ -51,7 +51,20 @@ public class TestAmplifierNetworkGateway extends TestAbstractAmplifierDataSynch
 		info.add("signature");
 		
 		sampleContactInfo.put(sampleAccountId, info);
-		contactInfo = amplifierGateway.getContactInfo(sampleAccountId);
+		Vector invalidSignatureForContactInfo = amplifierGateway.getContactInfo(sampleAccountId);
+		assertNull("Should not return this invalid contactInfo", invalidSignatureForContactInfo);
+
+		info.clear();
+		MockMartusSecurity client = MockMartusSecurity.createClient();
+		String clientId = client.getPublicKeyString();
+		info.add(clientId);
+		info.add(new Integer(1));
+		info.add("data");
+		info.add(client.createSignatureOfVectorOfStrings(info));
+		sampleContactInfo.put(clientId, info);
+		contactInfo = amplifierGateway.getContactInfo(clientId);
+		
+		assertNotNull("Didn't return the contact Info?", contactInfo);
 		assertEquals("account id don't match?", info.get(0), contactInfo.get(0));		
 		assertEquals("number of data entries don't match?", info.get(1), contactInfo.get(1));		
 		assertEquals("data doesn't match?", info.get(2), contactInfo.get(2));		

@@ -93,12 +93,13 @@ public class AmplifierNetworkGateway
 			String resultCode = response.getResultCode();
 			if(!resultCode.equals(NetworkInterfaceConstants.OK))
 				return null;
-			return  response.getResultVector();
+			Vector contactInfoResult = response.getResultVector();
+			if(security.verifySignatureOfVectorOfStrings(contactInfoResult, accountId))
+				return contactInfoResult;
 		}
 		catch (Exception e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log(e.toString());
 		}
 		return null;
 	}	

@@ -1,17 +1,22 @@
 package org.martus.amplifier.datasynch;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
 
 import org.martus.amplifier.attachment.AttachmentManager;
+import org.martus.amplifier.attachment.FileSystemAttachmentManager;
 import org.martus.amplifier.common.AmplifierConfiguration;
+import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.amplifier.search.BulletinCatalog;
 import org.martus.amplifier.search.BulletinIndexer;
 import org.martus.common.LoggerInterface;
 import org.martus.common.crypto.MartusCrypto;
 import org.martus.common.packet.UniversalId;
+import org.martus.common.utilities.MartusServerUtilities;
 
 public class DataSynchManager
 {
@@ -47,7 +52,18 @@ public class DataSynchManager
 		Vector response = amplifierGateway.getContactInfo(accountId);
 		if(response == null)
 			return;
-	
+		try
+		{
+			File contactFile = ((FileSystemAttachmentManager)MartusAmplifier.attachmentManager).getContactInfoFile(accountId);
+			MartusServerUtilities.writeContatctInfo(accountId, response, contactFile);
+		}
+		catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 	}
 
 	private void pullNewBulletinsForAccount(String accountId, BulletinExtractor bulletinExtractor)

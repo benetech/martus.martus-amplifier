@@ -26,6 +26,7 @@ Boston, MA 02111-1307, USA.
 package org.martus.amplifier.attachment;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 
 import org.martus.amplifier.main.MartusAmplifier;
@@ -112,6 +113,11 @@ public class FileSystemAttachmentManager implements AttachmentManager
 		{
 			throw new AttachmentStorageException(e);
 		}		
+	}
+	
+	public File getContactInfoFile(String accountId) throws IOException
+	{
+		return db.getContactInfoFile(accountId);	
 	}
 	
 	private ServerFileDatabase db;
