@@ -37,6 +37,7 @@ import junit.framework.Assert;
 import org.martus.amplifier.common.SearchParameters;
 import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.lucene.LuceneBulletinSearcher;
+import org.martus.amplifier.main.LanguagesIndexedList;
 import org.martus.amplifier.presentation.SearchResults;
 import org.martus.amplifier.search.AttachmentInfo;
 import org.martus.amplifier.search.BulletinField;
@@ -46,6 +47,7 @@ import org.martus.amplifier.search.BulletinInfo;
 import org.martus.amplifier.search.BulletinSearcher;
 import org.martus.amplifier.search.Results;
 import org.martus.common.bulletin.AttachmentProxy;
+import org.martus.common.bulletin.Bulletin;
 import org.martus.common.packet.BulletinHistory;
 import org.martus.common.packet.FieldDataPacket;
 import org.martus.common.packet.UniversalId;
@@ -936,6 +938,14 @@ public class TestLuceneSearcher extends CommonSearchTest
 		{
 			searcher.close();
 		}
+	}
+	
+	public void testBlankLanguage() throws Exception
+	{
+		assertNull("already have languages?", LanguagesIndexedList.languagesIndexedSingleton.getListOfLanguagesIndexed());
+		fdp1.set(Bulletin.TAGLANGUAGE, "");
+		indexBulletin1();
+		assertNull("indexed a blank language?", LanguagesIndexedList.languagesIndexedSingleton.getListOfLanguagesIndexed());
 	}
 	
 	private void indexBulletin1() throws Exception

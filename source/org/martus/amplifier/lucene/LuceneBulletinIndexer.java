@@ -161,11 +161,11 @@ public class LuceneBulletinIndexer
 		{
 			BulletinField field = (BulletinField) iter.next();
 			String value = fdp.get(field.getXmlId());
-			if(field.isLanguageField())
-				LanguagesIndexedList.languagesIndexedSingleton.updateLanguagesIndexed(value);
 			if ((value != null) && (value.length() > 0)) 
 			{
 				addField(doc, field, value);
+				if(field.isLanguageField())
+					LanguagesIndexedList.languagesIndexedSingleton.updateLanguagesIndexed(value);
 			}
 			
 		}

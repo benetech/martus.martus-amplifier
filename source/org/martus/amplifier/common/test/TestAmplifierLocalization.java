@@ -75,7 +75,7 @@ public class TestAmplifierLocalization extends TestCaseEnhanced
 		assertNotNull("English File should exist.", englishLanguageTranslationFileInputStream);
 
 		HashMap languages = AmplifierLocalization.buildLanguageMap(englishLanguageTranslationFileInputStream);
-		assertEquals("Should contain 48 languages", 48, languages.size());
+		assertEquals("Wrong number of languages", 51, languages.size());
 		assertEquals("en should give us English", "English", languages.get("en"));		
 		assertEquals("fr should give us French", "French", languages.get("fr"));		
 		assertEquals("es should give us Spanish", "Spanish", languages.get("es"));		
