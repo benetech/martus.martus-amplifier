@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.martus.common.FieldSpec;
-import org.martus.common.bulletin.Bulletin;
 import org.martus.common.bulletin.BulletinConstants;
 
 /**

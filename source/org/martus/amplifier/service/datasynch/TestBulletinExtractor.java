@@ -27,6 +27,7 @@ import org.martus.amplifier.service.search.lucene.LuceneBulletinSearcher;
 import org.martus.amplifier.test.AbstractAmplifierTest;
 import org.martus.common.bulletin.AttachmentProxy;
 import org.martus.common.bulletin.Bulletin;
+import org.martus.common.bulletin.BulletinForTesting;
 import org.martus.common.bulletin.BulletinSaver;
 import org.martus.common.crypto.MartusCrypto;
 import org.martus.common.crypto.MockMartusSecurity;
@@ -244,7 +245,7 @@ public class TestBulletinExtractor extends AbstractAmplifierTest
 	{
 		File tempFile = File.createTempFile("BulletinExtractorTest", null);
 		tempFile.deleteOnExit();
-		MockBulletin.saveToFile(db, b, tempFile, security);
+		BulletinForTesting.saveToFile(db, b, tempFile, security);
 		return tempFile;
 	}
 
