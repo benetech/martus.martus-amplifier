@@ -52,6 +52,7 @@ public class TestDownloadAttachment extends TestCaseEnhanced
 
 	public void setUp() throws Exception
 	{
+		super.setUp();
 		File testBasePath = createTempDirectory();
 		MartusAmplifier.setStaticSecurity(new MockMartusSecurity());
 		MartusAmplifier.getSecurity().createKeyPair();
@@ -61,6 +62,7 @@ public class TestDownloadAttachment extends TestCaseEnhanced
 	public void tearDown() throws Exception
 	{
 		MartusAmplifier.dataManager.clearAllAttachments();
+		super.tearDown();
 	}
 	
 	public void testGetAttachment() throws Exception

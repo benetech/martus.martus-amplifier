@@ -51,12 +51,14 @@ public class TestDoSearch extends TestCaseEnhanced
 	
 	public void setUp() throws Exception
 	{
+		super.setUp();
 		MartusAmplifier.staticAmplifierDirectory = createTempDirectory();
 	}
 	
-	public void tearDown()
+	public void tearDown() throws Exception
 	{
 		DirectoryUtils.deleteEntireDirectoryTree(MartusAmplifier.staticAmplifierDirectory);
+		super.tearDown();
 	}
 
 	public void testNoResults() throws Exception

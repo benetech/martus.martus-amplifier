@@ -45,14 +45,11 @@ public class TestAdvancedSearch extends TestCaseEnhanced
 	
 	public void setUp() throws Exception
 	{
+		super.setUp();
 		File empty = createTempFileWithData("");
 		LanguagesIndexedList.initialize(empty);
 	}
 	
-	public void tearDown()
-	{
-	}
-
 	public void testBasics() throws Exception
 	{
 		MockAmplifierRequest request = new MockAmplifierRequest();

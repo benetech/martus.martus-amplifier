@@ -25,6 +25,7 @@ public abstract class TestAbstractDataManager
 	protected void tearDown() throws Exception 
 	{
 		DirectoryUtils.deleteEntireDirectoryTree(new File(basePath));
+		super.tearDown();
 	}
 
 	public void testClearAllAttachments() 

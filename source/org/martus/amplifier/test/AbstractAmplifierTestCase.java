@@ -18,13 +18,14 @@ public abstract class AbstractAmplifierTestCase extends TestCaseEnhanced
 	
 	protected void setUp() throws Exception
 	{
-		basePath = createTempDirectory().getAbsolutePath();
 		super.setUp();
+		basePath = createTempDirectory().getAbsolutePath();
 	}
 	
-	protected void teardown() throws Exception
+	protected void tearDown() throws Exception
 	{
 		DirectoryUtils.deleteEntireDirectoryTree(new File(basePath));
+		super.tearDown();
 	}
 	
 	protected String getTestBasePath()
