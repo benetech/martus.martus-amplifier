@@ -263,12 +263,12 @@ public class MartusAmplifier
 				if(!toCallFile.isDirectory())
 				{
 					serversWeWillCall.add(getServerToCall(toCallFile, security));
-					log("We will call: " + toCallFile.getName());
+					log("Amp will call: " + toCallFile.getName());
 				}
 			}
 		}
 
-		log("Configured to call " + serversWeWillCall.size() + " servers");
+		log("Amp Configured to call " + serversWeWillCall.size() + " servers");
 		return serversWeWillCall;
 	}
 
