@@ -56,7 +56,7 @@ Boston, MA 02111-1307, USA.
 		
 		<h3>Automatic &quot;and&quot; Queries</h3>
 		<p>By default, Martus only returns pages that include all of your search 
-		terms. There is no need to include "and" between terms. Keep in mind that 
+		terms. Do not include "and" between terms. Keep in mind that 
 		the order in which the terms are typed will affect the search results.  
 		To restrict a search further, just include more terms. 
 		For example, to find bulletins about victims who were put in prison and 
@@ -64,6 +64,8 @@ Boston, MA 02111-1307, USA.
 		
 		<p align=center style='text-align:center'><INPUT TYPE="TEXT" SIZE="44" NAME="query" VALUE="prison torture">&nbsp;
 		<INPUT TYPE="submit" ACTION="DoSearch?typeOfSearch=quick" VALUE="Search" METHOD="post"></p>
+		
+		<p>If you want to do an "or" query, go to the Advanced Search page.</p>
 		
 		<h3>Phrase Searches</h3>
 		

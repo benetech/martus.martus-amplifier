@@ -23,7 +23,7 @@ Boston, MA 02111-1307, USA.
 
 *#
 <html>
-	#set ($pageTitle="Internal Error")
+	#set ($pageTitle="Search Error")
     <head>
      	#parse("Meta.vm")       
     </head>
@@ -34,7 +34,7 @@ Boston, MA 02111-1307, USA.
 		#parse ("ResultHeader.vm")
 		
 		<br/><br/><br/>
-        Please try again.
+        Please see <a href='SearchTips'>search tips</a> for help and try again.
 		<br/><br/><br/>
 
 		#set ($showSearchForm = true)
