@@ -15,7 +15,7 @@ public class FindBulletinsFields implements SearchConstants, SearchResultConstan
 		filters.add(new ChoiceEntry(ANYWORD_LABEL, ANYWORD_KEY));
 		filters.add(new ChoiceEntry(THESE_WORD_LABEL, THESE_WORD_KEY));
 		filters.add(new ChoiceEntry(EXACTPHRASE_LABEL, EXACTPHRASE_KEY));		
-		filters.add(new ChoiceEntry(WITHOUTWORDS_LABEL, WITHOUTWORDS_KEY));
+//		filters.add(new ChoiceEntry(WITHOUTWORDS_LABEL, WITHOUTWORDS_KEY));
 
 		return filters;	
 	}
