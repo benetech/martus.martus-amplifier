@@ -106,8 +106,8 @@ public class SearchResults extends AmplifierServlet
 				SearchBean searcher = new SearchBean();
 				String queryString = request.getParameter("query");
 				searcher.setQuery(queryString);
-		//		String fieldString = request.getParameter("field");
-		searcher.setField("author");
+				String fieldString = request.getParameter("field");
+				searcher.setField(fieldString);
 		
 				handleAdvancedSearchParams(request, searcher);	
 		
