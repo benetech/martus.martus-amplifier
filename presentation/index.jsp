@@ -3,16 +3,19 @@
 <head>
         <title>Martus Amplifier Search Query</title>
         <link rel="stylesheet" href="stylesheets/style.css" type="text/css">
+        <script language="Javascript">
+                function validateSubmission(submittedForm)
+                {
+                        if(submittedForm.query.value == null || submittedForm.query.value == "")
+                        {
+                                alert('Please enter a query.');
+                                return false;
+                        }
+                        else
+                                return true;
+                }
+        </script>
 </head>
-<script language="Javascript">
-onSubmit()
-{
-        if(document.search.query = "")
-                alert("Please enter a query hitting the search button.");
-        else
-                search.submit();
-}
-</script>
 <%
 //clear cached hits
         request.getSession().setAttribute("CACHED_HITS", null);
@@ -25,7 +28,7 @@ onSubmit()
 	</tr>
 	<tr>
 	<td> 
-		<form name="search" action="searchresults.jsp" method="get">
+		<form name="search" action="searchresults.jsp" onsubmit="return validateSubmission(this)" method="post">
 			<p>
 				<input name="query" size="44"/>&nbsp;<input type="submit" value="Search"/>
 			</p>
