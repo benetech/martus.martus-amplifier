@@ -26,6 +26,7 @@ Boston, MA 02111-1307, USA.
 
 package org.martus.amplifier.common;
 
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -90,7 +91,20 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 		addField(RESULT_FIELDS_KEY, resultList.get(RESULT_FIELDS_KEY));
 		addField(RESULT_FILTER_BY_KEY, resultList.get(RESULT_FILTER_BY_KEY));
 		addField(RESULT_LANGUAGE_KEY, resultList.get(RESULT_LANGUAGE_KEY));
-		addField(RESULT_ENTRY_DATE_KEY,resultList.get(RESULT_ENTRY_DATE_KEY));	
+		Date entryDate = getEntryDate((String)resultList.get(RESULT_ENTRY_DATE_KEY));
+		addField(SEARCH_ENTRY_DATE_INDEX_FIELD, entryDate);	
+	}
+
+	private Date getEntryDate(String dayString)
+	{
+		if (dayString.equals(ENTRY_ANYTIME_LABEL))
+			return getDate(1970, 1,1);
+			
+		int days = Integer.parseInt(dayString);	
+		GregorianCalendar today = new GregorianCalendar();
+		today.add(Calendar.DATE, -days);
+
+		return today.getTime();
 	}
 	
 	public void setSearchFields(SearchFields result)
@@ -136,10 +150,16 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 		
 	public Date getEndDate()
 	{
+		int year = Integer.parseInt(getValue(RESULT_END_YEAR_KEY));
+		int month = MonthFields.getIndexOfMonth(getValue(RESULT_END_MONTH_KEY));
+		int day = Integer.parseInt(getValue(RESULT_END_DAY_KEY));
+
+		if (year <=1970 && month == 1)
+			return getTodayDate();
+
 		if (hasEventFieldKeys())
-			return getDate(Integer.parseInt(getValue(RESULT_END_YEAR_KEY)),					
-						MonthFields.getIndexOfMonth(getValue(RESULT_END_MONTH_KEY)),
-						Integer.parseInt(getValue(RESULT_END_DAY_KEY)));
+			return getDate(year, month, day);
+			
 		return null;
 	}
 	
@@ -148,6 +168,11 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 		return new GregorianCalendar(year, month, day).getTime();
 	}	
 
+	public static Date getTodayDate()
+	{
+		return new GregorianCalendar().getTime();
+	}
+	
 	AmplifierServletRequest searchRequest;
 	Hashtable resultList 	= new Hashtable();
 	SearchFields	searchFields;

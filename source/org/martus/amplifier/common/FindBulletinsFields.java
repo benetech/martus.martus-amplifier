@@ -42,6 +42,7 @@ public class FindBulletinsFields implements SearchConstants, SearchResultConstan
 		fields.add(new ChoiceEntry(IN_AUTHOR_KEY, SEARCH_AUTHOR_INDEX_FIELD));
 		fields.add(new ChoiceEntry(IN_DETAIL_KEY, SEARCH_DETAILS_INDEX_FIELD ));
 		fields.add(new ChoiceEntry(IN_LOCATION_KEY, SEARCH_LOCATION_INDEX_FIELD ));
+		fields.add(new ChoiceEntry(IN_ORGANIZATION_KEY,SEARCH_ORGANIZATION_INDEX_FIELD));
 		
 		return fields;
 	}

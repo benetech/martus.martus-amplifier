@@ -3,6 +3,7 @@ package org.martus.amplifier.lucene;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import org.apache.lucene.document.DateField;
 import org.apache.lucene.document.Document;
@@ -109,6 +110,21 @@ public class LuceneBulletinSearcher
 		Date endDate 	= (Date) fields.getValue(SEARCH_EVENT_END_DATE_INDEX_FIELD);
 
 		return (startDate != null && endDate != null)? getEventDateQuery(field, startDate, endDate):null;				
+	}
+	
+	private Query handleEntryDateQuery(SearchFields fields)
+			throws BulletinIndexException 
+	{		
+		Date startDate	= (Date) fields.getValue(SEARCH_ENTRY_DATE_INDEX_FIELD);
+
+		if (startDate == null)				
+			return null;
+			
+		String startDateString = DateField.dateToString(startDate);
+		String endDateString = DateField.dateToString(new GregorianCalendar().getTime());
+						
+		return queryParser(setRangeQuery(startDateString, endDateString), SEARCH_ENTRY_DATE_INDEX_FIELD,
+			"Improperly formed advanced find entry date type in bulletin query: ");		
 	}	
 	
 	private Query handleFindLanguageQuery(SearchFields fields)
@@ -118,7 +134,7 @@ public class LuceneBulletinSearcher
 		String fieldString = (String) fields.getValue(SearchResultConstants.RESULT_LANGUAGE_KEY);
 	
 		if (fieldString != null)				
-			fieldQuery = queryParser(fieldString,SEARCH_LANGUAGE_INDEX_FIELD, "Improperly formed advance find language type in bulletin query: ");
+			fieldQuery = queryParser(fieldString,SEARCH_LANGUAGE_INDEX_FIELD, "Improperly formed advanced find language type in bulletin query: ");
 		
 		return fieldQuery;
 	} 
@@ -134,7 +150,7 @@ public class LuceneBulletinSearcher
 			if (fieldString.equals(SearchResultConstants.IN_ALL_FIELDS))
 				fieldQuery = multiFieldQueryParser(query, SEARCH_ALL_TEXT_FIELDS, "Improperly formed advanced find bulletin multiquery: ");
 			
-			fieldQuery = queryParser(query, fieldString, "Improperly formed advance find bulletin query: ");
+			fieldQuery = queryParser(query, fieldString, "Improperly formed advanced find bulletin query: ");
 		}
 		
 		return fieldQuery;
@@ -166,6 +182,11 @@ public class LuceneBulletinSearcher
 		Query foudLanguageQuery = handleFindLanguageQuery(fields);
 		if (foudLanguageQuery != null)
 			query.add(foudLanguageQuery, true, false);
+			
+		Query foudEntryDateQuery = handleEntryDateQuery(fields);
+
+		if (foudEntryDateQuery != null)
+			query.add(foudEntryDateQuery, true, false);			
 			
 		return query;	
 	}
