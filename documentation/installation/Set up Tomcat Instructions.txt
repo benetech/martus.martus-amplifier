@@ -45,3 +45,6 @@ http://online.securityfocus.com/archive/1/292936/2002-09-21/2002-09-27/0
 
 An example server.xml is in the repository at tools/eclipseconfig/server.xml
 Please adjust the docBase attribute for the Martus Amplifier context for your Eclipse installation
+
+Add TOMCAT_HOME to your computer's Environment variables pointing to eg. C:\Program Files\Apache Group\Tomcat 4.1
+
