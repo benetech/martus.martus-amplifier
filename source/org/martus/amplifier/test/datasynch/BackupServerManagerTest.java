@@ -2,6 +2,7 @@ package org.martus.amplifier.test.datasynch;
 
 import java.util.List;
 
+import org.martus.amplifier.service.datasynch.BackupServerInfo;
 import org.martus.amplifier.service.datasynch.BackupServerManager;
 
 public class BackupServerManagerTest extends AbstractAmplifierDataSynchTest
@@ -15,7 +16,9 @@ public class BackupServerManagerTest extends AbstractAmplifierDataSynchTest
 	public void testGetBackupServersList()
 	{
 		List serverList = BackupServerManager.getInstance().getBackupServersList();
-		assertTrue(serverList.contains("backupserver.martus.org"));
-		assertTrue(serverList.contains("backupserver2.martus.org"));
+		BackupServerInfo testInfo = (BackupServerInfo) serverList.get(0);
+		assertEquals(testInfo.getAddress(), "0.0.0.0");
+		assertEquals(testInfo.getName(), "backupserver.martus.org");
+		assertEquals(testInfo.getPort(), 0);		
 	}
 }
