@@ -165,6 +165,8 @@ public class LuceneBulletinSearcher implements BulletinSearcher
 			if(leafs.contains(uid))
 				results.add(doc);
 		}
+		System.out.println("Final Version Bulletins = " + leafs.size());
+		System.out.println("All Bulletins = " + docs.size());
 		
 		return results;
 	}
