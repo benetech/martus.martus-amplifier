@@ -160,18 +160,27 @@ public class MartusAmplifier
 
 	private void processCommandLine(String[] args)
 	{
+		String hours = DEFAULT_HOURS_TO_SYNC;
+		String indexEveryXHourTag = "indexinghours=";
+
 		for(int arg = 0; arg < args.length; ++arg)
 		{
 			if(args[arg].equals("secure"))
 				enterSecureMode();
 			if(args[arg].equals("nopassword"))
 				insecurePassword = "password";
+			if(args[arg].startsWith(indexEveryXHourTag))
+				hours = args[arg].substring(indexEveryXHourTag.length());
 		}
 		
 		if(isSecureMode())
 			System.out.println("Running in SECURE mode");
 		else
 			System.out.println("***RUNNING IN INSECURE MODE***");
+
+		System.out.println("Indexing every " + hours + " hours");
+		long indexEveryXHours = new Integer(hours).longValue();
+		dataSynchIntervalMillis = indexEveryXHours * HOURS_TO_MILLI;
 	}
 
 	private void displayStatistics() throws InvalidBase64Exception
@@ -509,7 +518,9 @@ public class MartusAmplifier
 
 	public static MartusSecurity security;
 	static final long IMMEDIATELY = 0;
-	static final long dataSynchIntervalMillis = 100000;
+	static final long HOURS_TO_MILLI = 60 * 60 * 1000;
+	static final String DEFAULT_HOURS_TO_SYNC = "24";
+	long dataSynchIntervalMillis;
 
 	Timer timer = new Timer(true);
 	TimerTask timedTask = new UpdateFromServerTask();
