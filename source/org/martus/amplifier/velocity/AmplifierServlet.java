@@ -31,6 +31,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.Vector;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -153,21 +154,40 @@ abstract public class AmplifierServlet extends VelocityServlet
 		System.out.println(getClass().getName() + ": " + message + " " + e);
 	}
 	
-	static public void formatDataForHtmlDisplay(Map mapToFormat)
+
+	static public void formatDataForHtmlDisplay(Vector dataToFormat)
 	{
-		Set tags = mapToFormat.keySet();
-		for (Iterator iter = tags.iterator(); iter.hasNext();)
+		if(dataToFormat == null)
+			return;
+		for(int i = 0 ; i < dataToFormat.size(); ++i)
 		{
-			String fieldTag = (String) iter.next();
-			String fieldData = (String)mapToFormat.get(fieldTag);
-			fieldData = fieldData.replaceAll("&", "&amp;");
-			fieldData = fieldData.replaceAll("<", "&lt;");
-			fieldData = fieldData.replaceAll("\n", "<BR/>");
-			fieldData = fieldData.replaceAll("\t", "&nbsp;&nbsp;&nbsp;&nbsp;");
-			fieldData = fieldData.replaceAll("  ", "&nbsp;&nbsp;");
-			mapToFormat.put(fieldTag, fieldData);
+			dataToFormat.set(i, formatDataForHtmlDisplay((String)dataToFormat.get(i)));
 		}
 	}
 
+	static public void formatDataForHtmlDisplay(Map dataToFormat)
+	{
+		if(dataToFormat == null)
+			return;
+		Set tags = dataToFormat.keySet();
+		for (Iterator iter = tags.iterator(); iter.hasNext();)
+		{
+			String fieldTag = (String) iter.next();
+			String fieldData = (String)dataToFormat.get(fieldTag);
+			fieldData = formatDataForHtmlDisplay(fieldData);
+			dataToFormat.put(fieldTag, fieldData);
+		}
+	}
+
+	private static String formatDataForHtmlDisplay(String dataToFormat)
+	{
+		dataToFormat = dataToFormat.replaceAll("&", "&amp;");
+		dataToFormat = dataToFormat.replaceAll("<", "&lt;");
+		dataToFormat = dataToFormat.replaceAll("\n", "<BR/>");
+		dataToFormat = dataToFormat.replaceAll("\t", "&nbsp;&nbsp;&nbsp;&nbsp;");
+		dataToFormat = dataToFormat.replaceAll("  ", "&nbsp;&nbsp;");
+		return dataToFormat;
+	}
+	
 
 }

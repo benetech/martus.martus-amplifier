@@ -48,8 +48,9 @@ public class ContactInfo extends AmplifierServlet
 		BulletinInfo info = (BulletinInfo)bulletins.get(index - 1);
 		if(!info.hasContactInfo())
 			return "InternalError.vm";
-		Vector contactInfo = MartusAmplifier.dataManager.getContactInfo(info.getAccountId());
-		context.put("contactInfo", contactInfo);
+		Vector contactInfoData = MartusAmplifier.dataManager.getContactInfo(info.getAccountId());
+		formatDataForHtmlDisplay(contactInfoData);
+		context.put("contactInfo", contactInfoData);
 		return "ContactInfo.vm";
 	}
 }

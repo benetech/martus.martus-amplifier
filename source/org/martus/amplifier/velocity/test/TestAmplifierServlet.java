@@ -27,6 +27,7 @@ package org.martus.amplifier.velocity.test;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Vector;
 
 import org.martus.amplifier.velocity.AmplifierServlet;
 import org.martus.common.test.TestCaseEnhanced;
@@ -39,7 +40,7 @@ public class TestAmplifierServlet extends TestCaseEnhanced
 		super(name);
 	}
 
-	public void testHTMLDisplayFormatting() throws Exception
+	public void testMapHTMLDisplayFormatting() throws Exception
 	{
 		Map testMap = new HashMap();
 		testMap.put(key1, value1);
@@ -56,6 +57,37 @@ public class TestAmplifierServlet extends TestCaseEnhanced
 		assertEquals(tab+"a"+tab+tab+"b"+tab, testMap.get(key4));		
 		assertEquals("&nbsp;&nbsp;a&nbsp;&nbsp; b&nbsp;&nbsp;", testMap.get(key5));		
 		assertEquals(value6, testMap.get(key6));		
+
+		Map testEmptyMap = new HashMap();
+		AmplifierServlet.formatDataForHtmlDisplay(testEmptyMap);
+
+		Map testNullMap = null;
+		AmplifierServlet.formatDataForHtmlDisplay(testNullMap);
+	}	
+
+	public void testVectprHTMLDisplayFormatting() throws Exception
+	{
+		Vector testVector = new Vector();
+		testVector.add(value1);
+		testVector.add(value2);
+		testVector.add(value3);
+		testVector.add(value4);
+		testVector.add(value5);
+		testVector.add(value6);
+		AmplifierServlet.formatDataForHtmlDisplay(testVector);
+		assertEquals("&lt;HTML>", testVector.get(0));		
+		assertEquals("&amp;test", testVector.get(1));		
+		assertEquals("a<BR/>b", testVector.get(2));		
+		String tab = "&nbsp;&nbsp;&nbsp;&nbsp;";
+		assertEquals(tab+"a"+tab+tab+"b"+tab, testVector.get(3));		
+		assertEquals("&nbsp;&nbsp;a&nbsp;&nbsp; b&nbsp;&nbsp;", testVector.get(4));		
+		assertEquals(value6, testVector.get(5));
+		
+		Vector testEmptyVector = new Vector();
+		AmplifierServlet.formatDataForHtmlDisplay(testEmptyVector);
+
+		Vector testNullVector = null;
+		AmplifierServlet.formatDataForHtmlDisplay(testNullVector);
 	}	
 	
 	final String key1 = "key1";
