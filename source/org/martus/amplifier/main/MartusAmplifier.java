@@ -41,6 +41,7 @@ import org.martus.amplifier.lucene.LuceneBulletinIndexer;
 import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinIndexer;
 import org.martus.common.MartusUtilities;
+import org.martus.common.Version;
 import org.martus.common.crypto.MartusCrypto;
 import org.martus.common.crypto.MartusCrypto.CryptoInitializationException;
 import org.martus.common.network.MartusXmlrpcClient.SSLSocketSetupException;
@@ -318,16 +319,10 @@ public class MartusAmplifier
 		coreServer.log(message);
 	}
 	
-	//TODO:This should be moved to common
-	public static boolean isRunningUnderWindows()
-	{
-		return System.getProperty("os.name").indexOf("Windows") >= 0;
-	}
-	
 	public static String getPresentationBasePath()
 	{
 		String presentationBasePath = null;
-		if(isRunningUnderWindows())
+		if(Version.isRunningUnderWindows())
 		{	
 			File amplifierPath = new File(MartusAmplifier.class.getResource("MartusAmplifier.class").getPath());
 			File amplifierBasePath = amplifierPath.getParentFile().getParentFile().getParentFile().getParentFile().getParentFile();
