@@ -78,7 +78,6 @@ public class LuceneBulletinSearcher
 	private Results searchEventDate(String field, String startQuery, String endQuery)
 		throws BulletinIndexException 
 	{		
-			
 		BooleanQuery booleanQuery = new BooleanQuery();				
 
 		Query query = queryParser(startQuery, SearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD,
@@ -120,7 +119,10 @@ public class LuceneBulletinSearcher
 																				
 			String startDateString = ((startDate == null) ? "*" : DateField.dateToString(startDate));
 			String endDateString   = ((endDate == null) ?  "?": DateField.dateToString(endDate));
-											
+
+			if (field != null && field.equals(SEARCH_ENTRY_DATE_INDEX_FIELD))
+				return search(field, setRangeQuery(startDateString,endDateString)); 
+															
 			return searchEventDate(field, setRangeQuery("*", endDateString),
 						setRangeQuery(startDateString, "?"));
 														

@@ -12,7 +12,7 @@ public interface SearchResultConstants
 	final String RESULT_END_DAY_KEY 	= "endDay";
 	final String RESULT_LANGUAGE_KEY 	= "language";
 	final String RESULT_FIELDS_KEY		= "fields";
-	final String RESULT_ENTRY_DATE_KEY	= "endtyDate";
+	final String RESULT_ENTRY_DATE_KEY	= "entryDate";
 	
 	final String[] ADVANCED_KEYS = new String[] {
 		RESULT_START_YEAR_KEY, RESULT_START_MONTH_KEY, RESULT_START_DAY_KEY,

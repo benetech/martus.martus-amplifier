@@ -53,7 +53,7 @@ public class LoadAdvancedSearchResults implements SearchResultConstants
 			!containsKey(RESULT_END_YEAR_KEY) ||
 			!containsKey(RESULT_END_MONTH_KEY) ||
 			!containsKey(RESULT_END_DAY_KEY))
-				hasEntryFields = false;			
+				hasEventFields = false;			
 	}	
 
 	public boolean containsKey(String key)
@@ -71,15 +71,15 @@ public class LoadAdvancedSearchResults implements SearchResultConstants
 		return (String) resultList.get(key);
 	}
 	
-	public boolean hasEntryFieldKeys()
+	public boolean hasEventFieldKeys()
 	{
-		return hasEntryFields;
+		return hasEventFields;
 	}
 	
 	public Date getStartDate()
 	{
 	
-		if (hasEntryFieldKeys())
+		if (hasEventFieldKeys())
 		 return getDate(Integer.parseInt(getValue(RESULT_START_YEAR_KEY)),					
 		               	MonthFields.getIndexOfMonth(getValue(RESULT_START_MONTH_KEY)),
 		               	Integer.parseInt(getValue(RESULT_START_DAY_KEY)));
@@ -89,7 +89,7 @@ public class LoadAdvancedSearchResults implements SearchResultConstants
 	
 	public Date getEndDate()
 	{
-		if (hasEntryFieldKeys())
+		if (hasEventFieldKeys())
 		 return getDate(Integer.parseInt(getValue(RESULT_END_YEAR_KEY)),					
 						MonthFields.getIndexOfMonth(getValue(RESULT_END_MONTH_KEY)),
 						Integer.parseInt(getValue(RESULT_END_DAY_KEY)));
@@ -104,5 +104,5 @@ public class LoadAdvancedSearchResults implements SearchResultConstants
 
 	AmplifierServletRequest searchRequest;
 	Hashtable resultList 	= new Hashtable();
-	boolean hasEntryFields 	= true;
+	boolean hasEventFields 	= true;
 }
