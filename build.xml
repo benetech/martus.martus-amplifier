@@ -75,11 +75,11 @@
    		includes="${hrvdproperties-dir}/**/*.properties,${hrvddate-dir}/**/*.class,${hrvdobj-dir}/**/*.class,${hrvdres-dir}/**/*.class"/>
 
 	<!-- Move necessary pre-built jars to web app dir. -->
-	<copy todir="${web-app-lib}">
+<!--	<copy todir="${web-app-lib}">
 		<fileset dir="${built-jars}" 
 			includes="lucene-1.3-rc1.jar"/>
 	</copy>
-	
+-->	
 	<!-- Move presentation class files to web app dir. -->
 	<copy todir="${web-app-classes}">
 		<fileset dir="${presentation-class}" includes="*.class"/>
