@@ -158,7 +158,7 @@ public class AmplifierNetworkGateway
 			NoKeyPairException, SignatureVerificationException, 
 			AttachmentStorageException, InvalidBase64Exception
 	{
-		File bulletinFile = getBulletin(uid);
+		File bulletinFile = retrieveBulletin(uid);
 		bulletinFile.deleteOnExit();
 		if(amp.isShutdownRequested())
 		{
@@ -183,7 +183,7 @@ public class AmplifierNetworkGateway
 	}
 	
 	
-	public File getBulletin(UniversalId uid)
+	public File retrieveBulletin(UniversalId uid)
 	{
 		File tempFile = null;
 		FileOutputStream out = null;
