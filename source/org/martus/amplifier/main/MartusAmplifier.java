@@ -105,17 +105,19 @@ public class MartusAmplifier
 	private void startNonSSLServer() throws IOException, MultiException
 	{
 		Server nonsslServer = new Server();
+		
 		InetAddrPort nonssllistener = new InetAddrPort(80);
+		nonsslServer.addWebApplication("/images/", getPresentationBasePath() + "presentationNonSSL/images");	
 		nonssllistener.setInetAddress(getAmpIpAddress());
 		nonsslServer.addListener(nonssllistener);
 		
 		HttpContext context = new HttpContext();
 	    context.setContextPath("/");
-	    nonsslServer.addContext(context);
+	    nonsslServer.addContext(context);		
 	    
 	    ServletHandler servlets = new ServletHandler();
 	    context.addHandler(servlets);
-	    servlets.addServlet("Insecure", "/", "org.martus.amplifier.presentation.InsecureHomePage");
+	    servlets.addServlet("Insecure", "/", "org.martus.amplifier.presentation.InsecureHomePage");		
 		
 		nonsslServer.start();
 	}
