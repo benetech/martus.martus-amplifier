@@ -29,6 +29,7 @@ import java.util.Vector;
 
 import org.apache.velocity.context.Context;
 import org.martus.amplifier.common.FindBulletinsFields;
+import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.velocity.AmplifierServlet;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
 import org.martus.amplifier.velocity.AmplifierServletResponse;
@@ -51,7 +52,8 @@ public class AdvancedSearch extends AmplifierServlet
 			Vector bulletinFields = FindBulletinsFields.getBulletinFieldDisplayNames();
 			context.put("bulletinFields", bulletinFields);	
 			
-			Vector languageFields = FindBulletinsFields.getLanguageFieldDisplayNames();
+			Vector languageCodesToAdd = addLanguageCodesToDisplay();
+			Vector languageFields = FindBulletinsFields.getLanguageFieldDisplayNames(languageCodesToAdd);
 			context.put("languageFields", languageFields);		
 			
 			Vector sortByFields = FindBulletinsFields.getSortByFieldDisplayNames();
@@ -67,5 +69,18 @@ public class AdvancedSearch extends AmplifierServlet
 			e.printStackTrace();
 			return "InternalError.vm";
 		}		
+	}
+
+	private Vector addLanguageCodesToDisplay()
+	{
+		Vector languageCodesToAdd = new Vector();
+		languageCodesToAdd.add(SearchResultConstants.LANGUAGE_ANYLANGUAGE_KEY);
+		languageCodesToAdd.add("en");
+		languageCodesToAdd.add("fr");
+		languageCodesToAdd.add("de");
+		languageCodesToAdd.add("id");
+		languageCodesToAdd.add("ru");
+		languageCodesToAdd.add("es");
+		return languageCodesToAdd;
 	}
 }

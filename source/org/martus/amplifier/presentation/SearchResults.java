@@ -35,12 +35,14 @@ import java.util.Vector;
 
 import org.apache.velocity.context.Context;
 import org.martus.amplifier.common.AmplifierConfiguration;
+import org.martus.amplifier.common.FindBulletinsFields;
 import org.martus.amplifier.common.SearchParameters;
 import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.lucene.LuceneBulletinSearcher;
 import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinInfo;
 import org.martus.amplifier.search.BulletinSearcher;
+import org.martus.amplifier.search.SearchConstants;
 import org.martus.amplifier.velocity.AmplifierServlet;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
 import org.martus.amplifier.velocity.AmplifierServletResponse;
@@ -120,6 +122,7 @@ public class SearchResults extends AmplifierServlet implements SearchResultConst
 			for (int i = 0; i < numResults; i++)
 			{
 				BulletinInfo bulletinInfo = results.getBulletinInfo(i);
+				convertLanguageCode(bulletinInfo);																						
 				formatDataForHtmlDisplay(bulletinInfo.getFields());
 				list.add(bulletinInfo);
 			}
@@ -134,6 +137,17 @@ public class SearchResults extends AmplifierServlet implements SearchResultConst
 		return list;	
 	}
 	
+	public void convertLanguageCode(BulletinInfo bulletinInfo)
+	{
+		String code = bulletinInfo.get(SearchConstants.SEARCH_LANGUAGE_INDEX_FIELD);
+		if(code == null)
+			return;
+		String languageString = FindBulletinsFields.getLanguageString(code);
+		if(languageString == null)
+			return;				
+		bulletinInfo.set(SearchConstants.SEARCH_LANGUAGE_INDEX_FIELD, languageString);
+	}
+
 	public static void sortBulletins(List list, final String field)
 	{
 		Collections.sort(list, new Comparator()

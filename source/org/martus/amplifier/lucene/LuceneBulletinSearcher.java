@@ -327,9 +327,9 @@ public class LuceneBulletinSearcher
 					 	value = SEARCH_DATE_FORMAT.format(DateField.stringToDate(value));
 					 	
 					if (field.isDateRangeField())																										
-  						value = LuceneBulletinSearcher.convertDateRange(value);					
-																										
-					info.set(field.getIndexId(), value);
+  						value = LuceneBulletinSearcher.convertDateRange(value);
+  						
+ 					info.set(field.getIndexId(), value);
 				}
 			}
 		}

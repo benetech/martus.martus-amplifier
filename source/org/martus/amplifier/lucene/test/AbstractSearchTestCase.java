@@ -431,6 +431,39 @@ public abstract class AbstractSearchTestCase
 		}
 	}
 
+	public void testSearchForLanguageReturned() throws BulletinIndexException
+	{
+		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
+		FieldDataPacket fdp1 	= generateSampleData(bulletinId1);		
+		BulletinIndexer indexer = openBulletinIndexer();
+		try 
+		{
+			indexer.clearIndex();
+			indexer.indexFieldData(bulletinId1, fdp1);
+		} 
+		finally 
+		{
+			indexer.close();
+		}
+		
+		BulletinSearcher searcher = openBulletinSearcher();
+		BulletinSearcher.Results results = null;
+		try 
+		{
+			HashMap fields = new HashMap();
+			fields.put(SEARCH_KEYWORDS_INDEX_FIELD, fdp1.get(BulletinField.SEARCH_KEYWORDS_INDEX_FIELD));
+			fields.put(RESULT_BASIC_QUERY_KEY, "ate");						
+			results = searcher.search(null, fields);
+			assertEquals("Should have found 1 result en", 1, results.getCount());
+			BulletinInfo info = results.getBulletinInfo(0);
+			assertEquals("The Language returned not correct?", "en", info.get(SEARCH_LANGUAGE_INDEX_FIELD));
+		}
+		finally 
+		{
+			searcher.close();
+		}
+	}
+
 	public void testSearchEmptyField() throws BulletinIndexException
 	{
 		UniversalId bulletinId 	= UniversalId.createDummyUniversalId();

@@ -53,6 +53,26 @@ public class TestSearchResults extends TestCaseEnhanced
 		assertEquals("NoSearchResults.vm", templateName);
 
 	}
+
+	public void testLanguageCodeToString() throws Exception
+	{
+		BulletinInfo bulletinInfo1 = new BulletinInfo(uid1);
+		bulletinInfo1.set("language", bulletin1Language);
+		BulletinInfo bulletinInfo2 = new BulletinInfo(uid2);
+		bulletinInfo2.set("language", bulletin2Language);
+		BulletinInfo bulletinInfo3 = new BulletinInfo(uid3);
+		bulletinInfo3.set("language", bulletin3Language);
+
+		SearchResultsForTesting sr = new SearchResultsForTesting();
+
+		sr.convertLanguageCode(bulletinInfo1);
+		assertEquals("English LanguageCode still exists?", "English", bulletinInfo1.get("language"));
+		sr.convertLanguageCode(bulletinInfo2);
+		assertEquals("Spanish LanguageCode still exists?", "Spanish", bulletinInfo2.get("language"));
+		sr.convertLanguageCode(bulletinInfo3);
+		assertEquals("Unknown LanguageCode should be returned unchanged?", bulletin3Language, bulletinInfo3.get("language"));
+		
+	}
 	
 /*	private Context createSampleSearchResults(MockAmplifierRequest request, HttpServletResponse response) throws Exception
 	{
@@ -70,6 +90,9 @@ public class TestSearchResults extends TestCaseEnhanced
 	final String bulletin1Title = "title 1";
 	final String bulletin2Title = "title 2";
 	final String bulletin3Title = "title 3";
+	final String bulletin1Language = "en";
+	final String bulletin2Language = "es";
+	final String bulletin3Language = "un";
 
 
 	class SearchResultsForTesting extends SearchResults
@@ -82,14 +105,17 @@ public class TestSearchResults extends TestCaseEnhanced
 			Vector infos = new Vector();
 			BulletinInfo bulletinInfo1 = new BulletinInfo(uid1);
 			bulletinInfo1.set("title", bulletin1Title);
+			bulletinInfo1.set("language", bulletin1Language);
 			infos.add(bulletinInfo1);
 			
 			BulletinInfo bulletinInfo2 = new BulletinInfo(uid2);
 			bulletinInfo2.set("title", bulletin2Title);
+			bulletinInfo2.set("language", bulletin2Language);
 			infos.add(bulletinInfo2);
 			
 			BulletinInfo bulletinInfo3 = new BulletinInfo(uid3);
 			bulletinInfo3.set("title", bulletin3Title);
+			bulletinInfo3.set("language", bulletin3Language);
 			infos.add(bulletinInfo3);
 			return infos;
 		}

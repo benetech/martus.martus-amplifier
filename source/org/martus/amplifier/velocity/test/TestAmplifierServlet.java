@@ -39,7 +39,7 @@ public class TestAmplifierServlet extends TestCaseEnhanced
 		super(name);
 	}
 
-	public void testBasics() throws Exception
+	public void testHTMLDisplayFormatting() throws Exception
 	{
 		Map testMap = new HashMap();
 		testMap.put(key1, value1);
@@ -57,7 +57,7 @@ public class TestAmplifierServlet extends TestCaseEnhanced
 		assertEquals("&nbsp;&nbsp;a&nbsp;&nbsp; b&nbsp;&nbsp;", testMap.get(key5));		
 		assertEquals(value6, testMap.get(key6));		
 	}	
-
+	
 	final String key1 = "key1";
 	final String key2 = "key2";
 	final String key3 = "key3";
