@@ -1,8 +1,8 @@
-<!-- Ant ushToAmp.xml - Need Ant v1.5 or later -->
+<!-- Ant pushToAmp.xml - Need Ant v1.5 or later -->
 
-<!-- 
-	 The purpose of this build script is to place the appropriate
-	 files into a push directory to get pushed to the amplifier.
+<!--
+     The purpose of this build script is to place the appropriate
+     files into a push directory to get pushed to the amplifier.
 -->
 
 <project name="martus-amplifier" default="build" basedir=".">
@@ -12,7 +12,7 @@
   <property environment="env"/>
 
   <property name="martus-dir" value="../martus"/>
-  
+
   <property name="common-dir" value="org/martus/common"/>
 
   <property name="util-dir"   value="org/martus/util"/>
@@ -31,20 +31,20 @@
   <property name="push-jars" value="${push-dir}/jars"/>
   <property name="push-docs" value="${push-dir}/htdocs/"/>
   <property name="push-amp" value="${push-docs}/MartusAmplifier/"/>
-  
-  
+
+
   <property name="push-presentation" value="${push-amp}/presentation"/>
   <property name="push-presentationNonSSL" value="${push-amp}/presentationNonSSL"/>
 
-    
+
 <!-- ================================================================== -->
 <!-- I N I T                                                            -->
-<!-- ================================================================== -->  
+<!-- ================================================================== -->
   <target name="init"  depends="">
     <!-- tstamp task initializes ${DSTAMP} etc -->
     <tstamp/>
     <buildnumber/>
-	<property name="ampjar-filename"  value="${push-jars}/martus-amplifier-${DSTAMP}.jar"/>
+    <property name="ampjar-filename"  value="${push-jars}/martus-amplifier-${DSTAMP}.${build.number}.jar"/>
   </target>
 
 <!-- ================================================================== -->
@@ -86,74 +86,74 @@
     <delete verbose="true">
         <fileset dir="${push-jars}" includes="*.jar"/>
     </delete>
-    
+
     <!-- Jar up martus-common and throw it in the push dir -->
     <jar jarfile="${ampjar-filename}"
         update="false"
-   		basedir="${martus-dir}"
-   		includes="${common-dir}/**/*.class"/>
-	
+        basedir="${martus-dir}"
+        includes="${common-dir}/**/*.class"/>
+
     <!-- Jar up martus-util and throw it in the push dir -->
     <jar jarfile="${ampjar-filename}"
         update="true"
-   		basedir="${martus-dir}"
-   		includes="${util-dir}/**/*.class"/>
+        basedir="${martus-dir}"
+        includes="${util-dir}/**/*.class"/>
 
     <!-- Jar up hrvd and throw it in the push dir -->
     <jar jarfile="${ampjar-filename}"
         update="true"
-   		basedir="${martus-dir}"
-   		includes="${hrvdproperties-dir}/**/*.properties,${hrvddate-dir}/**/*.class,${hrvdobj-dir}/**/*.class,${hrvdres-dir}/**/*.class"/>
+        basedir="${martus-dir}"
+        includes="${hrvdproperties-dir}/**/*.properties,${hrvddate-dir}/**/*.class,${hrvdobj-dir}/**/*.class,${hrvdres-dir}/**/*.class"/>
 
     <!-- Jar up amplifier and throw it in the push dir -->
     <jar jarfile="${ampjar-filename}"
         update="true"
-  		basedir=".\classes"
-   		includes="*.properties,**/*.class,**/*.txt"/>
+        basedir=".\classes"
+        includes="*.properties,**/*.class,**/*.txt"/>
 
     <!-- Copy all presentation -->
-	<copy todir="${push-presentation}">
+    <copy todir="${push-presentation}">
          <fileset dir="${presentation-dir}/"/>
-	</copy>
- 
+    </copy>
+
    <!-- Remove lib dir from webinf/lib-->
     <delete verbose="true">
         <fileset dir="${push-presentation}/WEB-INF/lib" includes="*.*"/>
     </delete>
-    
+
     <!-- Copy all presentationNonSSL -->
-	<copy todir="${push-presentationNonSSL}">
+    <copy todir="${push-presentationNonSSL}">
          <fileset dir="${presentationNonSSL-dir}/"/>
-	</copy>
-	
+    </copy>
+
     <!-- Copy all 3rd party jars needed -->
-	<copy todir="${push-jars}">
+    <copy todir="${push-jars}">
          <fileset dir="${thirdparty-dir}/"/>
-	</copy>
+    </copy>
 
   </target>
-  
+
   <!-- ================================================================== -->
   <!-- S I G N - J A R   &   Z I P                                                          -->
   <!-- ================================================================== -->
   <target name="release" depends="check_storepass, check_keypass, check_keystore,build">
-  
+
         <signjar jar="${ampjar-filename}"
                         keystore="${sign.keystore}"
                         storepass="${sign.storepass}"
                         keypass="${sign.keypass}"
                         alias="ssmtsjar"
                         />
-                        
+
         <property name="tar-filename"  value="${push-dir}/martus_amp-${DSTAMP}.tar"/>
-	    <!-- Remove all tar files from main push dir. -->
-	    <delete verbose="true">
-	        <fileset dir="${push-dir}" includes="*.tar"/>
-	    </delete>
+        <!-- Remove all tar files from main push dir. -->
+        <delete verbose="true">
+            <fileset dir="${push-dir}" includes="*.tar"/>
+        </delete>
         <tar destfile="${tar-filename}" basedir="${push-dir}"/>
 
   </target>
-    
+
 <!-- ================================================================== -->
 <!-- C H E C K  V A R S                                                  -->
 <!-- ================================================================== -->
