@@ -6,7 +6,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="C:/EclipseMartus/martus-common/ThirdPartyJars/server/lucene-1.3-rc1.jar"/>
 	<classpathentry kind="lib" path="C:/EclipseMartus/martus-common/ThirdPartyJars/server/org.mortbay.jetty.jar"/>
-	<classpathentry kind="lib" path="C:/EclipseMartus/martus-common/ThirdPartyJars/server/servlet.jar"/>
 	<classpathentry kind="lib" path="C:/EclipseMartus/martus-common/ThirdPartyJars/server/velocity-dep-1.4-rc1.jar"/>
+	<classpathentry kind="lib" path="C:/EclipseMartus/martus-common/ThirdPartyJars/server/servlet.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>
