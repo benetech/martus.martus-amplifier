@@ -48,11 +48,14 @@ public class TestUserFeedbackForm extends TestCase
 		String templateName = uff.selectTemplate(request, response, context);
 		assertEquals("UserFeedbackForm.vm", templateName);
 		assertEquals(Boolean.FALSE, context.get("problemReport"));
+		assertEquals("", context.get("searchedFor"));
 
 		request.putParameter("problemReport", "");
+		String searchedFor = "peanut butter and pickles";
+		request.getSession().setAttribute("searchedFor", searchedFor);
 		uff.selectTemplate(request, response, context);
 		assertEquals("UserFeedbackForm.vm", templateName);
 		assertEquals(Boolean.TRUE, context.get("problemReport"));
-
+		assertEquals(searchedFor, context.get("searchedFor"));
 	}
 }

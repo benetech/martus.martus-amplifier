@@ -85,6 +85,8 @@ public abstract class AbstractSearchResultsServlet extends AmplifierServlet
 	public static void setSearchedForInContext(AmplifierServletSession session, Context context)
 	{
 		String searchedForString = (String)session.getAttribute("searchedFor");
+		if(searchedForString == null)
+			searchedForString = "";
 		context.put("searchedFor", searchedForString);
 		String basicQueryString = (String)session.getAttribute("defaultSimpleSearch");
 		context.put("defaultSimpleSearch", basicQueryString);
