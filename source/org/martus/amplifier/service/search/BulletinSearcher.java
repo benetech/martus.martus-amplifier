@@ -13,7 +13,8 @@ import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
-import org.martus.amplifier.common.logging.LoggerConstants;
+import org.martus.amplifier.common.logging.ILoggerConstants;
+import org.martus.amplifier.service.search.api.IBulletinSearcher;
 
 /**
  * @author Daniel Chu
@@ -22,7 +23,8 @@ import org.martus.amplifier.common.logging.LoggerConstants;
  * functionality needed by the Amplifier application. If this class
  * gets too unwieldy we may need to break it up.
  */
-public class BulletinSearcher implements BulletinConstants, LoggerConstants
+public class BulletinSearcher 
+implements IBulletinSearcher, IBulletinConstants, ILoggerConstants
 {
 	protected BulletinSearcher()
 	{}
