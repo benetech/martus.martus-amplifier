@@ -1,7 +1,12 @@
 package org.martus.amplifier.main;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -12,6 +17,7 @@ import org.martus.amplifier.attachment.AttachmentManager;
 import org.martus.amplifier.attachment.AttachmentStorageException;
 import org.martus.amplifier.attachment.FileSystemAttachmentManager;
 import org.martus.amplifier.common.AmplifierConfiguration;
+import org.martus.amplifier.common.AmplifierConstants;
 import org.martus.amplifier.datasynch.BackupServerInfo;
 import org.martus.amplifier.datasynch.DataSynchManager;
 import org.martus.amplifier.lucene.LuceneBulletinIndexer;
@@ -23,6 +29,9 @@ import org.martus.common.LoggerToConsole;
 import org.martus.common.MartusUtilities;
 import org.martus.common.crypto.MartusCrypto;
 import org.martus.common.crypto.MartusSecurity;
+import org.martus.common.crypto.MartusCrypto.AuthorizationFailedException;
+import org.martus.common.crypto.MartusCrypto.CryptoInitializationException;
+import org.martus.common.crypto.MartusCrypto.InvalidKeyPairFileVersionException;
 import org.mortbay.http.HttpContext;
 import org.mortbay.jetty.Server;
 
@@ -30,22 +39,36 @@ public class MartusAmplifier
 {
 	public static void main(String[] args) throws Exception
 	{
+		displayVersion();
 		MartusAmplifier amp = new MartusAmplifier(new LoggerToConsole());
+		
+		amp.processCommandLine(args);
+		amp.deleteRunningFile();
+		
+		if(!amp.hasAccount())
+		{
+			System.out.println("***** Key pair file not found *****");
+			System.exit(2);
+		}
+
+		String passphrase = insecurePassword;
+		if(passphrase == null)
+			passphrase = getPassphraseFromConsole(amp);
+		amp.loadAccount(passphrase);
 		amp.start();
 	}
 	
-	public MartusAmplifier(LoggerInterface loggerToUse)
+	public MartusAmplifier(LoggerInterface loggerToUse) throws CryptoInitializationException
 	{
 		logger = loggerToUse;
+		security = new MartusSecurity();
 	}
 
 	void start() throws Exception
 	{
 		deleteLuceneLockFile();
 		
-		security = new MartusSecurity();
 		log("Creating key pair...");
-		security.createKeyPair();
 		
 		File configDirectory = new File(AmplifierConfiguration.getInstance().getBasePath());
 		File backupServersDirectory = new File(configDirectory, "serversWhoWeCall");
@@ -63,6 +86,69 @@ public class MartusAmplifier
 		while(! isShutdownRequested() )
 		{
 		}
+	}
+
+	private void processCommandLine(String[] args)
+	{
+		for(int arg = 0; arg < args.length; ++arg)
+		{
+			if(args[arg].equals("secure"))
+				enterSecureMode();
+			if(args[arg].equals("nopassword"))
+				insecurePassword = "password";
+		}
+		
+		if(isSecureMode())
+			System.out.println("Running in SECURE mode");
+		else
+			System.out.println("***RUNNING IN INSECURE MODE***");
+	}
+
+	private void deleteRunningFile()
+	{
+		getRunningFile().delete();
+	}
+
+	private File getRunningFile()
+	{
+		File runningFile = new File(getTriggerDirectory(), "running");
+		return runningFile;
+	}
+
+	public boolean isSecureMode()
+	{
+		return secureMode;
+	}
+	
+	public void enterSecureMode()
+	{
+		secureMode = true;
+	}
+	
+	File getTriggerDirectory()
+	{
+		return new File(getBasePath(), ADMINTRIGGERDIRECTORY);
+		
+	}
+
+	String getBasePath()
+	{
+		return AmplifierConfiguration.getInstance().getBasePath();
+	}
+	
+	public File getStartupConfigDirectory()
+	{
+		return new File(getBasePath(), ADMINSTARTUPCONFIGDIRECTORY);
+	}
+
+	boolean hasAccount()
+	{
+		return getKeyPairFile().exists();
+	}
+	
+	File getKeyPairFile()
+	{
+		return new File(getStartupConfigDirectory(), KEYPAIRFILENAME);
 	}
 
 	void deleteLuceneLockFile()
@@ -83,7 +169,45 @@ public class MartusAmplifier
 		context.addHandler(handler);
 	}
 	
+	private static String getPassphraseFromConsole(MartusAmplifier amp)
+	{
+		System.out.print("Enter passphrase: ");
+		System.out.flush();
+		
+		File waitingFile = new File(amp.getTriggerDirectory(), "waiting");
+		waitingFile.delete();
+		writeSyncFile(waitingFile);
+		
+		InputStreamReader rawReader = new InputStreamReader(System.in);	
+		BufferedReader reader = new BufferedReader(rawReader);
+		String passphrase = null;
+		try
+		{
+			passphrase = reader.readLine();
+		}
+		catch(Exception e)
+		{
+			System.out.println("MartusServer.main: " + e);
+			System.exit(3);
+		}
+		return passphrase;
+	}
+
+	void loadAccount(String passphrase) throws AuthorizationFailedException, InvalidKeyPairFileVersionException, IOException
+	{
+		FileInputStream in = new FileInputStream(getKeyPairFile());
+		readKeyPair(in, passphrase);
+		in.close();
+		System.out.println("Passphrase correct.");			
+	}
 	
+	void readKeyPair(InputStream in, String passphrase) throws 
+		IOException,
+		MartusCrypto.AuthorizationFailedException,
+		MartusCrypto.InvalidKeyPairFileVersionException
+	{
+		security.readKeyPair(in, passphrase);
+	}
 	
 	boolean isShutdownRequested()
 	{
@@ -236,6 +360,32 @@ public class MartusAmplifier
 		}
 	}
 
+	private static void displayVersion()
+	{
+		System.out.println("MartusAmplifier");
+		System.out.println("Version " + AmplifierConstants.marketingVersionNumber);
+		String versionInfo = MartusUtilities.getVersionDate();
+		System.out.println("Build Date " + versionInfo);
+	}
+
+	public static void writeSyncFile(File syncFile) 
+	{
+		try 
+		{
+			FileOutputStream out = new FileOutputStream(syncFile);
+			out.write(0);
+			out.close();
+		} 
+		catch(Exception e) 
+		{
+			System.out.println("MartusServer.main: " + e);
+			System.exit(6);
+		}
+	}
+	
+	boolean secureMode;
+	static String insecurePassword;
+
 	MartusSecurity security;
 	static final long IMMEDIATELY = 0;
 	static final long dataSynchIntervalMillis = 100000;
@@ -247,4 +397,8 @@ public class MartusAmplifier
 	List backupServersList;
 	
 	LoggerInterface logger;
+
+	private static final String KEYPAIRFILENAME = "keypair.dat";
+	private static final String ADMINTRIGGERDIRECTORY = "adminTriggers";
+	private static final String ADMINSTARTUPCONFIGDIRECTORY = "deleteOnStartup";
 }
