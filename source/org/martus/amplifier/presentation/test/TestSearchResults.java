@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.velocity.context.Context;
 import org.martus.amplifier.common.AmplifierServletRequest;
 import org.martus.amplifier.presentation.SearchResults;
-import org.martus.amplifier.service.search.BulletinIndexException;
-import org.martus.amplifier.service.search.BulletinInfo;
+import org.martus.amplifier.search.BulletinIndexException;
+import org.martus.amplifier.search.BulletinInfo;
 import org.martus.common.packet.UniversalId;
 import org.martus.common.test.TestCaseEnhanced;
 

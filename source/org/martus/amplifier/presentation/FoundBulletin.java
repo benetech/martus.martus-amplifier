@@ -33,7 +33,7 @@ import org.apache.velocity.context.Context;
 import org.martus.amplifier.common.AmplifierServlet;
 import org.martus.amplifier.common.AmplifierServletRequest;
 import org.martus.amplifier.common.AmplifierServletSession;
-import org.martus.amplifier.service.search.BulletinInfo;
+import org.martus.amplifier.search.BulletinInfo;
 
 public class FoundBulletin extends AmplifierServlet
 {
