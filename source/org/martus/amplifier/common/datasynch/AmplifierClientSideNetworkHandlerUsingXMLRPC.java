@@ -12,6 +12,7 @@ import javax.net.ssl.TrustManager;
 
 import org.apache.xmlrpc.XmlRpcClient;
 import org.martus.common.network.NetworkInterfaceConstants;
+import org.martus.common.network.SimpleHostnameVerifier;
 import org.martus.common.network.SimpleX509TrustManager;
 /**
  * @author skoneru
@@ -35,7 +36,7 @@ public class AmplifierClientSideNetworkHandlerUsingXMLRPC
 		try 
 		{
 			HttpsURLConnection.setDefaultSSLSocketFactory(createSocketFactory());
-			HttpsURLConnection.setDefaultHostnameVerifier(new AmplifierSimpleHostnameVerifier());
+			HttpsURLConnection.setDefaultHostnameVerifier(new SimpleHostnameVerifier());
 		} 
 		catch (Exception e) 
 		{
