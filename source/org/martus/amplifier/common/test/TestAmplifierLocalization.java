@@ -29,6 +29,7 @@ import java.io.File;
 import java.util.HashMap;
 
 import org.martus.amplifier.common.AmplifierLocalization;
+import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.common.test.TestCaseEnhanced;
 import org.martus.util.UnicodeWriter;
 
@@ -58,5 +59,10 @@ public class TestAmplifierLocalization extends TestCaseEnhanced
 		assertEquals("en should give us English", "English", languages.get("en"));		
 		assertEquals("fr should give us French", "French", languages.get("fr"));		
 		assertEquals("it should give us Italian", "Italian", languages.get("it"));		
+
+		HashMap noFileExists = AmplifierLocalization.buildLanguageMap(new File("doesnt exist"));
+		assertEquals("Should contain Anylanguage Only", 1, noFileExists.size());
+		assertTrue("Should contain Anylanguage Only", noFileExists.containsKey(SearchResultConstants.LANGUAGE_ANYLANGUAGE_LABEL));
+
 	}
 }

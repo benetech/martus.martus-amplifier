@@ -49,6 +49,12 @@ public class AmplifierLocalization
 	public static HashMap buildLanguageMap(File languageFile)
 	{
 		HashMap languages = new HashMap();
+		if(!languageFile.exists())
+		{
+			languages.put(SearchResultConstants.LANGUAGE_ANYLANGUAGE_LABEL, SearchResultConstants.LANGUAGE_ANYLANGUAGE_LABEL);
+			return languages;				
+		}
+		
 		try
 		{
 			UnicodeReader reader = new UnicodeReader(languageFile);
@@ -64,7 +70,6 @@ public class AmplifierLocalization
 		catch(IOException e)
 		{
 			e.printStackTrace();
-			languages.put(SearchResultConstants.LANGUAGE_ANYLANGUAGE_LABEL, SearchResultConstants.LANGUAGE_ANYLANGUAGE_LABEL);
 		}
 		return languages;
 	}
