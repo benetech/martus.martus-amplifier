@@ -27,7 +27,6 @@
 
   <property name="push-dir" value="pushToAmp"/>
   <property name="push-presentation" value="${push-dir}/presentation"/>
-  <property name="push-lib" value="${push-dir}/lib"/>
   
 <!-- ================================================================== -->
 <!-- I N I T                                                            -->
@@ -41,12 +40,10 @@
 <!-- C L E A N                                                          -->
 <!-- ================================================================== -->
   <target name="clean">
+
+    <mkdir dir="${push-dir}"/>
+    <mkdir dir="${push-presentation}"/>
   
-    <!-- Remove all files from push lib dir -->
-    <delete verbose="true">
-        <fileset dir="${push-lib}" includes="*.*"/>
-    </delete>
-    
     <!-- Remove all files from main push dir. -->
     <delete verbose="true">
         <fileset dir="${push-dir}" includes="*.*"/>
@@ -63,28 +60,32 @@
 <!-- ================================================================== -->
   <target name="build" depends="init">
      
-    <!-- Create web lib dir, if necessary. -->
-    <mkdir dir="${push-lib}"/>
+    <mkdir dir="${push-dir}"/>
     
     <!-- Jar up martus-common and throw it in the push dir -->
-    <jar jarfile="${push-lib}/martus-common.jar"
+    <jar jarfile="${push-dir}/amplifier.jar"
+        update="true"
    		basedir="${martus-dir}"
    		includes="${common-dir}/**/*.class"/>
 	
     <!-- Jar up martus-util and throw it in the push dir -->
-    <jar jarfile="${push-lib}/martus-util.jar"
+    <jar jarfile="${push-dir}/amplifier.jar"
+        update="true"
    		basedir="${martus-dir}"
    		includes="${util-dir}/**/*.class"/>
 
     <!-- Jar up hrvd and throw it in the push dir -->
-    <jar jarfile="${push-lib}/hrvd.jar"
+    <jar jarfile="${push-dir}/amplifier.jar"
+        update="true"
    		basedir="${martus-dir}"
    		includes="${hrvdproperties-dir}/**/*.properties,${hrvddate-dir}/**/*.class,${hrvdobj-dir}/**/*.class,${hrvdres-dir}/**/*.class"/>
 
     <!-- Jar up amplifier and throw it in the push dir -->
-    <jar jarfile="${push-lib}/amplifier.jar"
+    <jar jarfile="${push-dir}/amplifier.jar"
+        update="true"
   		basedir=".\classes"
    		includes="*.properties,**/*.class"/>
+
 
 
     <!-- Copy all presentation -->
