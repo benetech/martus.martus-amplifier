@@ -10,7 +10,7 @@ public interface IAttachmentManager
 	public String getAttachmentName(UniversalId UniversalBulletinId);
 	public void putAttachmentName(UniversalId universalId, String attachmentName);
 	
-	public File getAttachmentFile(UniversalId UniversalBulletinId, String filePath);
+	public File getAttachmentFile(UniversalId UniversalBulletinId, String filePath, String fileName);
 	public void putAttachmentFile(UniversalId universalId, File attachment);
 
 	public void putAttachmentIds(UniversalId universalId, List attachmentIdList);

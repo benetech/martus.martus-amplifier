@@ -30,12 +30,15 @@ implements IAttachmentConstants
 		copyFileIntoData(attachment);
 	}
 	
-	public File getFile(String filePath)
+	public File getFile(String filePath, String fileName)
 	{
 		try
 		{
+			File fileObject = new File(filePath);
+			fileObject.mkdirs();
+			String fileLocation = filePath + File.separator + fileName;
 			FileOutputStream fileStream = 
-				new FileOutputStream(filePath);
+				new FileOutputStream(fileLocation);
 			fileStream.write(get_data());
 			fileStream.close();
 		}

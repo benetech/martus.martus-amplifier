@@ -2,15 +2,27 @@ package org.martus.amplifier.service.attachment;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.martus.common.UniversalId;
 import org.martus.amplifier.common.configuration.AmplifierConfiguration;
 import org.martus.amplifier.service.attachment.api.AttachmentInfo;
 import org.martus.amplifier.service.attachment.api.IAttachmentManager;
+import org.martus.amplifier.service.attachment.exception.UnableToDecryptAttachmentException;
+import org.martus.amplifier.service.attachment.exception.UnableToFindAttachmentXmlException;
+import org.martus.common.AttachmentPacket;
+import org.martus.common.FileInputStreamWithSeek;
+import org.martus.common.MartusCrypto;
+import org.martus.common.MartusSecurity;
+import org.martus.common.UniversalId;
+import org.martus.common.Base64.InvalidBase64Exception;
+import org.martus.common.MartusCrypto.CryptoInitializationException;
+import org.martus.common.Packet.InvalidPacketException;
+import org.martus.common.Packet.SignatureVerificationException;
+import org.martus.common.Packet.WrongPacketTypeException;
 
 import com.sleepycat.db.Db;
 import com.sleepycat.db.DbException;
@@ -169,7 +181,7 @@ public class AttachmentManager implements IAttachmentConstants, IAttachmentManag
 		}
 	}
 	
-	public File getAttachmentFile(UniversalId UniversalBulletinId, String filePath)
+	public File getAttachmentFile(UniversalId UniversalBulletinId, String filePath, String fileName)
 	{
 		UniversalIdDbt key = new UniversalIdDbt(UniversalBulletinId);
 		FileDbt returnValue = new FileDbt();
@@ -185,7 +197,7 @@ public class AttachmentManager implements IAttachmentConstants, IAttachmentManag
 		{
 			logger.severe("Unable to get attachment from database: " + de);
 		}
-		return returnValue.getFile(filePath);
+		return returnValue.getFile(filePath, fileName);
 	}
 	
 	public void putAttachmentInfoList(UniversalId universalBulletinId, List attachmentInfoList)
@@ -210,6 +222,50 @@ public class AttachmentManager implements IAttachmentConstants, IAttachmentManag
 		}
 	}
 		
+	public void extractAttachment(File xmlFile, byte[] sessionKey, File destinationFile)
+	throws UnableToFindAttachmentXmlException, UnableToDecryptAttachmentException
+	{
+		FileInputStreamWithSeek attachmentXml = null;
+		try
+		{
+			attachmentXml = new FileInputStreamWithSeek(xmlFile);
+		}
+		catch(IOException ioe)
+		{
+			throw new UnableToFindAttachmentXmlException(ioe.getMessage());
+		}
+		try
+		{
+			MartusCrypto verifier = new MartusSecurity();
+			destinationFile.createNewFile();
+			AttachmentPacket.exportRawFileFromXml(attachmentXml, sessionKey, verifier, destinationFile);
+		}
+		catch(CryptoInitializationException cie)
+		{
+			logger.severe(cie.getMessage());
+		}
+		catch(InvalidBase64Exception ibe)
+		{			
+			logger.severe(ibe.getMessage());
+		}
+		catch(SignatureVerificationException sve)
+		{
+			logger.severe(sve.getMessage());
+		}
+		catch(InvalidPacketException ipe)
+		{
+			logger.severe(ipe.getMessage());
+		}
+		catch(WrongPacketTypeException wpte)
+		{
+			logger.severe(wpte.getMessage());		
+		}
+		catch(IOException ioe)
+		{
+			logger.severe(ioe.getMessage());
+		}		
+	}
+	
 	private static AttachmentManager instance = new AttachmentManager();
 	private Db attachmentFileTable =  null;
 	private Db attachmentIdTable =  null;
