@@ -22,7 +22,7 @@
         String location = document.get("location");
         String entryDate = document.get("entry_date");
 %>
-<img src="images/big_logo.gif" width="184" height="126" alt="Martus Amplifier"/>
+<a href="index.jsp"><img src="images/big_logo.gif" border="0" width="184" height="126" alt="Martus Amplifier"/></a>
 <% 
         boolean showPrevious = true;
         int previousBulletinNumber = documentNumber - 1;
