@@ -250,14 +250,17 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 				assertEquals(endDate, endDateRetrieved);
 				continue;
 			}
+			
 			retrievedValue = retrievedData.get(field.getIndexId());
-			if (retrievedValue == null) 
-			{
+			if (retrievedValue == null ) 
+			{	
 				retrievedValue = "";
-			}
-			assertEquals(
-				bulletin.get(field.getXmlId()), 
-				retrievedValue);
+			}			
+
+			if (field.isTitleField())
+				assertEquals("untitled", retrievedValue);
+			else				
+				assertEquals(bulletin.get(field.getXmlId()), retrievedValue);
 		}
 	}
 	

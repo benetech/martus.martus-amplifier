@@ -52,6 +52,11 @@ public class BulletinField implements BulletinConstants, SearchConstants
 	public boolean isLanguageField()
 	{
 		return (xmlId.equals(TAGLANGUAGE));
+	}
+	
+	public boolean isTitleField()
+	{
+		return (xmlId.equals(TAGTITLE));
 	}		
 
 	public boolean isDateField()
@@ -62,7 +67,7 @@ public class BulletinField implements BulletinConstants, SearchConstants
 	public boolean isDateRangeField()
 	{
 		return (FieldSpec.getStandardType(xmlId) == FieldSpec.TYPE_DATERANGE);
-	}
+	}	
 		
 	public static BulletinField getFieldByXmlId(String xmlId)
 	{

@@ -125,6 +125,29 @@ public abstract class CommonSearchTest
 		FieldDataPacket fdp = createFieldDataPacket(bulletinId, author, keywords, title, eventdate, entrydate, publicInfo, summary, location, attachment1LocalId, attachment1Label, attachment2LocalId, attachment2Label, language, organization);
 		return fdp;
 	}
+	
+	protected FieldDataPacket generateEmptyBullteinData(UniversalId bulletinId)
+	{
+		String author = "Test";
+		String keywords = "something";
+		String title = "";
+		String eventdate = "2003-04-10";
+		String entrydate = "2003-05-11";
+		String publicInfo = "something";
+		String language = "en";
+		String organization = "somewhere";
+		String summary = "test summary";
+		String location = "Space, Moon";	
+		
+		String attachment1LocalId = "att1Id";
+		String attachment1Label = "Eggs.gif";
+		String attachment2LocalId = "att2Id";
+		String attachment2Label = "Recipe.txt";		
+		
+		FieldDataPacket fdp = createFieldDataPacket(bulletinId, author, keywords, title, eventdate, entrydate, publicInfo, summary, location, attachment1LocalId, attachment1Label, attachment2LocalId, attachment2Label, language, organization);
+		
+		return fdp;
+	}
 
 	protected FieldDataPacket generateSampleFlexiData(UniversalId bulletinId)
 	{

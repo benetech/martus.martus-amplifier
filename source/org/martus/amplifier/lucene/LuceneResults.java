@@ -96,7 +96,7 @@ public class LuceneResults implements Results, LuceneSearchConstants, SearchCons
 		String[] fieldIds = BulletinField.getSearchableXmlIds();
 		for (int i = 0; i < fieldIds.length; i++) 
 		{
-			BulletinField field = getField(fieldIds[i]);
+			BulletinField field = getField(fieldIds[i]); 
 			info.set(field.getIndexId(), "");
 		}
 	}			
@@ -110,6 +110,9 @@ public class LuceneResults implements Results, LuceneSearchConstants, SearchCons
 			BulletinField field = getField(fieldIds[i]);
 			
 			String value = doc.get(field.getIndexId());
+			if (field.isTitleField() && value == null)
+				value = "untitled";				
+
 			if (value != null) 
 			{
 				if (field.isDateRangeField())
@@ -120,8 +123,7 @@ public class LuceneResults implements Results, LuceneSearchConstants, SearchCons
 					if(endDate != null)
 						info.set(field.getIndexId()+"-end", endDate);
 					continue;
-				}
-					
+				}				
 				info.set(field.getIndexId(), value);
 			}
 		}
