@@ -26,9 +26,8 @@ Boston, MA 02111-1307, USA.
 
 package org.martus.amplifier.common;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
@@ -40,23 +39,22 @@ public class AmplifierLocalization
 {
 	public static String getLanguageString(String code)
 	{
-		File languageFile = getEnglishLanguageTranslationFile();
-		HashMap languages = AmplifierLocalization.buildLanguageMap(languageFile);
+		InputStream in = getEnglishLanguageTranslationFile();
+		HashMap languages = AmplifierLocalization.buildLanguageMap(in);
 		if(!languages.containsKey(code))
 			return null;
 		return (String)languages.get(code);		
 	}
 
-	public static File getEnglishLanguageTranslationFile()
+	public static InputStream getEnglishLanguageTranslationFile()
 	{
-		URL url = AmplifierLocalization.class.getResource("LanguageNames_en.txt");
-		return new File(url.getFile());
+		return AmplifierLocalization.class.getResourceAsStream("LanguageNames_en.txt");
 	}
 
-	public static HashMap buildLanguageMap(File languageFile)
+	public static HashMap buildLanguageMap(InputStream languageFileInputStream)
 	{
 		HashMap languages = new HashMap();
-		if(!languageFile.exists())
+		if(languageFileInputStream == null)
 		{
 			languages.put(SearchResultConstants.LANGUAGE_ANYLANGUAGE_LABEL, SearchResultConstants.LANGUAGE_ANYLANGUAGE_LABEL);
 			return languages;				
@@ -64,7 +62,7 @@ public class AmplifierLocalization
 		
 		try
 		{
-			UnicodeReader reader = new UnicodeReader(languageFile);
+			UnicodeReader reader = new UnicodeReader(languageFileInputStream);
 			Vector localizedLanguages = MartusUtilities.loadListFromFile(reader);
 			for (Iterator iter = localizedLanguages.iterator(); iter.hasNext();)
 			{

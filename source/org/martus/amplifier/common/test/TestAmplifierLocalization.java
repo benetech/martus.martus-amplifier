@@ -26,6 +26,8 @@ Boston, MA 02111-1307, USA.
 package org.martus.amplifier.common.test;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.HashMap;
 
 import org.martus.amplifier.common.AmplifierLocalization;
@@ -50,7 +52,9 @@ public class TestAmplifierLocalization extends TestCaseEnhanced
 		writer.writeln("it=Italian");	
 		writer.close();
 		
-		HashMap languages = AmplifierLocalization.buildLanguageMap(languageFile);
+		InputStream in = new FileInputStream(languageFile);
+		
+		HashMap languages = AmplifierLocalization.buildLanguageMap(in);
 		
 		assertTrue("Should have en key", languages.containsKey("en"));
 		assertTrue("Should have fr key", languages.containsKey("fr"));
@@ -60,23 +64,21 @@ public class TestAmplifierLocalization extends TestCaseEnhanced
 		assertEquals("fr should give us French", "French", languages.get("fr"));		
 		assertEquals("it should give us Italian", "Italian", languages.get("it"));		
 
-		HashMap noFileExists = AmplifierLocalization.buildLanguageMap(new File("doesnt exist"));
+		HashMap noFileExists = AmplifierLocalization.buildLanguageMap(null);
 		assertEquals("Should contain Anylanguage Only", 1, noFileExists.size());
 		assertTrue("Should contain Anylanguage Only", noFileExists.containsKey(SearchResultConstants.LANGUAGE_ANYLANGUAGE_LABEL));
-
 	}
 	
 	public void testEnglishTranslations()throws Exception
 	{
-		File englishLanguageTranslationFile = AmplifierLocalization.getEnglishLanguageTranslationFile();
-		assertTrue("English File should exist.", englishLanguageTranslationFile.exists());
+		InputStream englishLanguageTranslationFileInputStream = AmplifierLocalization.getEnglishLanguageTranslationFile();
+		assertNotNull("English File should exist.", englishLanguageTranslationFileInputStream);
 
-		HashMap languages = AmplifierLocalization.buildLanguageMap(englishLanguageTranslationFile);
+		HashMap languages = AmplifierLocalization.buildLanguageMap(englishLanguageTranslationFileInputStream);
 		assertEquals("Should contain 41 languages", 41, languages.size());
 		assertEquals("en should give us English", "English", languages.get("en"));		
 		assertEquals("fr should give us French", "French", languages.get("fr"));		
 		assertEquals("es should give us Spanish", "Spanish", languages.get("es"));		
-	
 	}
 
 }
