@@ -30,6 +30,7 @@
   <property name="push-dir" value="pushToAmp"/>
   <property name="push-presentation" value="${push-dir}/presentation"/>
   <property name="push-presentationNonSSL" value="${push-dir}/presentationNonSSL"/>
+
     
 <!-- ================================================================== -->
 <!-- I N I T                                                            -->
@@ -38,6 +39,7 @@
     <!-- tstamp task initializes ${DSTAMP} etc -->
     <tstamp/>
     <buildnumber/>
+	<property name="ampjar-filename"  value="${push-dir}/martus-amplifier-${DSTAMP}.jar"/>
   </target>
 
 <!-- ================================================================== -->
@@ -77,25 +79,27 @@
   <target name="build" depends="init">
     
     <!-- Jar up martus-common and throw it in the push dir -->
-    <jar jarfile="${push-dir}/amplifier.jar"
-        update="true"
+    <delete verbose="true" file="${ampjar-filename}"/>
+
+    <jar jarfile="${ampjar-filename}"
+        update="false"
    		basedir="${martus-dir}"
    		includes="${common-dir}/**/*.class"/>
 	
     <!-- Jar up martus-util and throw it in the push dir -->
-    <jar jarfile="${push-dir}/amplifier.jar"
+    <jar jarfile="${ampjar-filename}"
         update="true"
    		basedir="${martus-dir}"
    		includes="${util-dir}/**/*.class"/>
 
     <!-- Jar up hrvd and throw it in the push dir -->
-    <jar jarfile="${push-dir}/amplifier.jar"
+    <jar jarfile="${ampjar-filename}"
         update="true"
    		basedir="${martus-dir}"
    		includes="${hrvdproperties-dir}/**/*.properties,${hrvddate-dir}/**/*.class,${hrvdobj-dir}/**/*.class,${hrvdres-dir}/**/*.class"/>
 
     <!-- Jar up amplifier and throw it in the push dir -->
-    <jar jarfile="${push-dir}/amplifier.jar"
+    <jar jarfile="${ampjar-filename}"
         update="true"
   		basedir=".\classes"
    		includes="*.properties,**/*.class,**/*.txt"/>
@@ -127,7 +131,7 @@
   <!-- ================================================================== -->
   <target name="release" depends="check_storepass, check_keypass, check_keystore,build">
   
-        <signjar jar="${push-dir}/amplifier.jar"
+        <signjar jar="${ampjar-filename}"
                         keystore="${sign.keystore}"
                         storepass="${sign.storepass}"
                         keypass="${sign.keypass}"
