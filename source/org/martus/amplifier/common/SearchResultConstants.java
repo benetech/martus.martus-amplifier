@@ -55,11 +55,11 @@ public interface SearchResultConstants
 	final static String WITHOUTWORDS_LABEL  	= "without words";
 	
 	final static String ENTRY_ANYTIME_KEY		= "any time";
-	final static String ENTRY_PAST_WEEK_KEY		= "past week";
-	final static String ENTRY_PAST_MONTH_KEY	= "past month";
-	final static String ENTRY_PAST_3_MONTH_KEY  = "past 3 months";
-	final static String ENTRY_PAST_6_MONTH_KEY	= "past 6 months";
-	final static String ENTYR_PAST_YEAR_KEY		= "past year";
+	final static String ENTRY_PAST_WEEK_KEY		= "week";
+	final static String ENTRY_PAST_MONTH_KEY	= "month";
+	final static String ENTRY_PAST_3_MONTH_KEY  = "3 months";
+	final static String ENTRY_PAST_6_MONTH_KEY	= "6 months";
+	final static String ENTYR_PAST_YEAR_KEY		= "year";
 	
 	final static String ENTRY_ANYTIME_LABEL				= "0";
 	final static String ENTRY_PAST_WEEK_DAYS_LABEL		= "7";
@@ -68,14 +68,14 @@ public interface SearchResultConstants
 	final static String ENTRY_PAST_6_MONTH_DAYS_LABEL	= "180";
 	final static String ENTRY_PAST_YEAR_DAYS_LABEL		= "365";	
 	
-	final static String ANYWHERE_IN_BULLETIN_KEY= "anywhere in the bulletin";
-	final static String IN_TITLE_KEY			= "in the title";
-	final static String IN_KEYWORDS_KEY			= "in the keywords";
-	final static String IN_SUMMARY_KEY			= "in the summary";
-	final static String IN_AUTHOR_KEY			= "in the author";
-	final static String IN_DETAIL_KEY			= "in the detail";
-	final static String IN_ORGANIZATION_KEY		= "in the organization";
-	final static String IN_LOCATION_KEY			= "in the location";	
+	final static String ANYWHERE_IN_BULLETIN_KEY= "anywhere";
+	final static String IN_TITLE_KEY			= "title";
+	final static String IN_KEYWORDS_KEY			= "keywords";
+	final static String IN_SUMMARY_KEY			= "summary";
+	final static String IN_AUTHOR_KEY			= "author";
+	final static String IN_DETAIL_KEY			= "detail of event";
+	final static String IN_ORGANIZATION_KEY		= "organization";
+	final static String IN_LOCATION_KEY			= "location of event";	
 	final static String IN_ALL_FIELDS			= "all";	
 	
 	final static String LANGUAGE_ANYLANGUAGE_KEY= "any language";
@@ -86,11 +86,11 @@ public interface SearchResultConstants
 	final static String LANGUAGE_RUSSIAN_KEY	= "Russian";
 	final static String LANGUAGE_SPANISH_KEY	= "Spanish";
 	
-	final static String SORT_BY_TITLE_LABEL		= "by title";
-	final static String SORT_BY_AUTHOR_LABEL	= "by author";
-	final static String SORT_BY_LOCATION_LABEL	= "by location";
-	final static String SORT_BY_EVENTDATE_LABEL	= "by event date";
-	final static String SORT_BY_ORGANIZATION_LABEL= "by organization";
+	final static String SORT_BY_TITLE_LABEL		= "title";
+	final static String SORT_BY_AUTHOR_LABEL	= "author";
+	final static String SORT_BY_LOCATION_LABEL	= "location";
+	final static String SORT_BY_EVENTDATE_LABEL	= "event date";
+	final static String SORT_BY_ORGANIZATION_LABEL= "organization";
 		
 	
 	final String[] ADVANCED_KEYS = new String[] {
