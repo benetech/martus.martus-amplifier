@@ -23,11 +23,13 @@
   <property name="hrvdres-dir"   value="org/hrvd/util/res"/>
 
   <property name="presentation-dir" value="presentation"/>
+  <property name="presentationNonSSL-dir" value="presentationNonSSL"/>
 
   <property name="push-dir" value="pushToAmp"/>
   <property name="push-presentation" value="${push-dir}/presentation"/>
   <property name="push-MartusAmplifier" value="${push-dir}/MartusAmplifier"/>
   <property name="push-DeleteOnStartup" value="${push-MartusAmplifier}/DeleteOnStartup"/>
+  <property name="push-presentationNonSSL" value="${push-dir}/presentationNonSSL"/>
   
 <!-- ================================================================== -->
 <!-- I N I T                                                            -->
@@ -41,11 +43,12 @@
 <!-- C L E A N                                                          -->
 <!-- ================================================================== -->
   <target name="clean">
+
     <mkdir dir="${push-dir}"/>
     <mkdir dir="${push-presentation}"/>
     <mkdir dir="${push-MartusAmplifier}"/>
     <mkdir dir="${push-DeleteOnStartup}"/>
-    
+    <mkdir dir="${push-presentationNonSSL}"/>
 
     <!-- Remove all files from main push dir. -->
     <delete verbose="true">
@@ -55,6 +58,11 @@
     <!-- Remove all files from push presentation dir. -->
     <delete verbose="true">
         <fileset dir="${push-presentation}" includes="*.*"/>
+    </delete>
+
+    <!-- Remove all files from push presentationNonSSL dir. -->
+    <delete verbose="true">
+        <fileset dir="${push-presentationNonSSL}" includes="*.*"/>
     </delete>
 
     <!-- Remove all files from push DeleteOnStartup dir. -->
@@ -68,8 +76,6 @@
 <!-- B U I L D                                                          -->
 <!-- ================================================================== -->
   <target name="build" depends="init">
-     
-    <mkdir dir="${push-dir}"/>
     
     <!-- Jar up martus-common and throw it in the push dir -->
     <jar jarfile="${push-dir}/amplifier.jar"
@@ -111,6 +117,11 @@
     <!-- Copy keystore ssl certificate -->
 	<copy todir="${push-DeleteOnStartup}" file="keystore"/>
 	
+    <!-- Copy all presentationNonSSL -->
+	<copy todir="${push-presentationNonSSL}">
+         <fileset dir="${presentationNonSSL-dir}/"/>
+	</copy>
+
   </target>
 
 </project>
