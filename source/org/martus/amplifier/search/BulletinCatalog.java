@@ -25,8 +25,6 @@ Boston, MA 02111-1307, USA.
 */
 package org.martus.amplifier.search;
 
-import java.util.logging.Logger;
-
 import org.martus.amplifier.lucene.LuceneBulletinSearcher;
 import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.common.packet.UniversalId;
@@ -49,33 +47,26 @@ public class BulletinCatalog
 		return instance;
 	}
    
-	public boolean bulletinHasBeenIndexed(UniversalId universalId)
+	public boolean bulletinHasBeenIndexed(UniversalId universalId) throws Exception
 	{
 		BulletinSearcher searcher = null;
+		searcher = new LuceneBulletinSearcher(MartusAmplifier.getStaticAmplifierDataPath());
 		try
 		{
-			searcher = new LuceneBulletinSearcher(MartusAmplifier.getStaticAmplifierDataPath());
 			return (searcher.lookup(universalId) != null);
-		}
-		catch (Exception e)
-		{
-			Logger.getLogger("catalog").severe("Catalog error: " + e.getMessage());
 		}
 		finally
 		{
-			if (searcher != null)
-			{
-				try
-				{
-					searcher.close();
-				}
-				catch (Exception e)
-				{
-					Logger.getLogger("catalog").severe("Catalog error: " + e.getMessage());
-				}
-			}
+			searcher.close();
 		}
-		return false;
+	}
+	
+	public static class DuplicateBulletinException extends BulletinIndexException
+	{
+		public DuplicateBulletinException(String message)
+		{
+			super(message);
+		}
 	}
 	
 	private static BulletinCatalog instance = new BulletinCatalog();

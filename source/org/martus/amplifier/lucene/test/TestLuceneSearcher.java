@@ -38,6 +38,7 @@ import junit.framework.Assert;
 import org.martus.amplifier.common.DateUtilities;
 import org.martus.amplifier.common.SearchParameters;
 import org.martus.amplifier.common.SearchResultConstants;
+import org.martus.amplifier.lucene.LuceneBulletinSearcher;
 import org.martus.amplifier.presentation.SearchResults;
 import org.martus.amplifier.search.AttachmentInfo;
 import org.martus.amplifier.search.BulletinField;
@@ -65,16 +66,35 @@ public class TestLuceneSearcher extends CommonSearchTest
 		bulletinId1 = UniversalId.createDummyUniversalId();
 		bulletinId2 = UniversalId.createDummyUniversalId();
 		bulletinIdForeign = UniversalId.createDummyUniversalId();
+		oldVersionId = UniversalId.createDummyUniversalId();
 
 		fdp1 	= generateSampleData(bulletinId1);		
 		fdp2 	= generateSampleFlexiData(bulletinId2);
 		fdpForeign = generateSampleForeignCharData(bulletinIdForeign);
 		
 		history = new BulletinHistory();
-		history.add(bulletinId1.getLocalId());
+		history.add(oldVersionId.getLocalId());
 		
 		indexer = openBulletinIndexer();
 		indexer.clearIndex();
+	}
+	
+	public void testExtractLeafDocuments() throws Exception
+	{
+		indexBulletin1And2();
+		
+		LuceneBulletinSearcher searcher = (LuceneBulletinSearcher)openBulletinSearcher();
+		assertEquals("not 2 leafs?", 2, searcher.getAllLeafUids().size());
+		
+
+		HashMap fields = new HashMap();
+		fields.put(RESULT_BASIC_QUERY_KEY, "Lunch");								
+		Results leafs = searcher.search( fields);
+
+		assertEquals(2, leafs.getCount());
+		assertEquals("id1 not a leaf?", bulletinId1, leafs.getBulletinInfo(0).getBulletinId());
+		assertEquals("id2 not a leaf?", bulletinId2, leafs.getBulletinInfo(1).getBulletinId());
+		searcher.close();
 	}
 
 	public void testNewSearcherWithNoIndexDirectory() throws Exception
@@ -949,6 +969,7 @@ public class TestLuceneSearcher extends CommonSearchTest
 	{
 		try 
 		{
+			indexer.indexFieldData(oldVersionId, fdp2, new BulletinHistory());
 			indexer.indexFieldData(bulletinId2, fdp2, history);
 		} 
 		finally 
@@ -962,6 +983,7 @@ public class TestLuceneSearcher extends CommonSearchTest
 		try 
 		{
 			indexer.indexFieldData(bulletinId1, fdp1, new BulletinHistory());
+			indexer.indexFieldData(oldVersionId, fdp2, new BulletinHistory());
 			indexer.indexFieldData(bulletinId2, fdp2, history);
 		} 
 		finally 
@@ -985,6 +1007,7 @@ public class TestLuceneSearcher extends CommonSearchTest
 	UniversalId bulletinId1;
 	UniversalId bulletinId2;
 	UniversalId bulletinIdForeign;
+	UniversalId oldVersionId;
 	FieldDataPacket fdp1;	
 	FieldDataPacket fdp2;
 	FieldDataPacket fdpForeign;

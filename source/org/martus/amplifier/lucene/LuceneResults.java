@@ -180,7 +180,7 @@ public class LuceneResults implements Results, LuceneSearchConstants, SearchCons
 		return size;
 	}
 
-	private static UniversalId getBulletinId(Document doc) 
+	static UniversalId getBulletinId(Document doc) 
 		throws BulletinIndexException
 	{
 		String bulletinIdString = doc.get(BULLETIN_UNIVERSAL_ID_INDEX_FIELD);

@@ -28,6 +28,7 @@ package org.martus.amplifier.lucene;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
@@ -38,10 +39,12 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
 import org.martus.amplifier.common.SearchResultConstants;
+import org.martus.amplifier.search.BulletinCatalog;
 import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinInfo;
 import org.martus.amplifier.search.BulletinSearcher;
 import org.martus.amplifier.search.Results;
+import org.martus.common.packet.BulletinHistory;
 import org.martus.common.packet.UniversalId;
 
 public class LuceneBulletinSearcher implements BulletinSearcher
@@ -72,9 +75,9 @@ public class LuceneBulletinSearcher implements BulletinSearcher
 		if (numResults == 1)
 			return results.getBulletinInfo(0);
 
-		throw new BulletinIndexException(
-			"Found more than one field data set for the same bulletin id: " +
-				bulletinId + "; found " + numResults + " results");
+		String message = "Found more than one field data set for the same bulletin id: " +
+				bulletinId + "; found " + numResults + " results";
+		throw new BulletinCatalog.DuplicateBulletinException(message);
 	}
 
 	public void close() throws Exception
@@ -88,12 +91,12 @@ public class LuceneBulletinSearcher implements BulletinSearcher
 		return (queryString == null);
 	}
 
-	private Results getSingleBulletinResults(UniversalId bulletinId) throws IOException
+	private Results getSingleBulletinResults(UniversalId bulletinId) throws Exception
 	{
 		String fieldToSearch = LuceneSearchConstants.BULLETIN_UNIVERSAL_ID_INDEX_FIELD;
 		Term term = new Term(fieldToSearch, bulletinId.toString());
 		TermQuery query = new TermQuery(term);
-		return getResults(query);
+		return new LuceneResults(getRawResults(query));
 	}
 
 	private Results getComplexSearchResults(Map fields)
@@ -107,11 +110,38 @@ public class LuceneBulletinSearcher implements BulletinSearcher
 		throws Exception, IOException
 	{
 		String queryString = (String) fields.get(SearchResultConstants.RESULT_BASIC_QUERY_KEY);
-		Query query = new QueryBuilder(queryString, SEARCH_ALL_TEXT_FIELDS).getQuery();				
+		Query query = buildSimpleSearchQuery(queryString);				
 		return getResults(query);
 	}
 	
-	private Results getResults(Query query) throws IOException
+	private Query buildSimpleSearchQuery(String queryString) throws Exception
+	{
+		Query query = new QueryBuilder(queryString, SEARCH_ALL_TEXT_FIELDS).getQuery();
+		return query;
+	}
+	
+	private Query buildAllBulletinsQuery() throws Exception
+	{
+		HashMap fields = new HashMap();
+		fields.put("anyWordsQuery", "");
+		fields.put("sortBy", "entrydate");
+		fields.put("exactPhraseQuery", "");
+		fields.put("allWordsQuery", "");
+		fields.put("eventStartDate", "1900-01-01");
+		fields.put("fields", "all");
+		fields.put("eventEndDate", "2099-12-31");
+		fields.put("entrydate", "1900-01-01");
+		return new QueryBuilder(fields).getQuery();
+	}
+
+	private Results getResults(Query query) throws Exception
+	{
+		Vector matchingDocs = getRawResults(query);
+		Vector matchingLeafs = extractLeafDocuments(matchingDocs);
+		return new LuceneResults(matchingLeafs);
+	}
+	
+	private Vector getRawResults(Query query) throws IOException
 	{
 		Hits hits = searcher.search(query);
 		Vector docs = new Vector();
@@ -120,12 +150,61 @@ public class LuceneBulletinSearcher implements BulletinSearcher
 			Document doc = hits.doc(i);
 			docs.add(doc);
 		}
-		return new LuceneResults(getLeafDocuments(docs));
-	}
-	
-	public Vector getLeafDocuments(Vector docs)
-	{
 		return docs;
+	}
+
+	public Vector extractLeafDocuments(Vector docs) throws Exception
+	{
+		Vector results = new Vector();
+		
+		Vector leafs = getAllLeafUids();
+		for(int i=0; i < docs.size(); ++i)
+		{
+			Document doc = (Document)docs.get(i);
+			UniversalId uid = LuceneResults.getBulletinId(doc);
+			if(leafs.contains(uid))
+				results.add(doc);
+		}
+		
+		return results;
+	}
+
+	public Vector getAllLeafUids() throws IOException, Exception, BulletinIndexException
+	{
+		Query query = buildAllBulletinsQuery();
+		Hits allBulletins = searcher.search(query);
+		Vector leafCandidates = extractAllUidsFromHits(allBulletins);
+		
+		for(int i=0; i < allBulletins.length(); ++i)
+		{
+			Document doc = allBulletins.doc(i);
+			String accountId = LuceneResults.getBulletinId(doc).getAccountId();
+			String historyString = doc.get(LuceneSearchConstants.HISTORY_INDEX_FIELD);
+			if(historyString == null)
+				continue;
+
+			BulletinHistory history = BulletinHistory.createFromHistoryString(historyString);
+			for(int version = 0; version < history.size(); ++version)
+			{
+				String localId = history.get(version);
+				UniversalId nonLeafUid = UniversalId.createFromAccountAndLocalId(accountId, localId);
+				leafCandidates.remove(nonLeafUid);
+			}
+		}
+		
+		return leafCandidates;
+	}
+
+	private Vector extractAllUidsFromHits(Hits allBulletins) throws IOException, BulletinIndexException
+	{
+		Vector leafs = new Vector();
+		for(int i=0; i < allBulletins.length(); ++i)
+		{
+			Document doc = allBulletins.doc(i);
+			UniversalId uid = LuceneResults.getBulletinId(doc);
+			leafs.add(uid);
+		}
+		return leafs;
 	}
 
 	private IndexSearcher searcher;	
