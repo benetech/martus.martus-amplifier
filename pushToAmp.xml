@@ -127,11 +127,11 @@
                         alias="ssmtsjar"
                         />
                         
-        <property name="zip-filename"  value="martus_amp-${DSTAMP}.zip"/>
-                        
-          <zip destfile="${zip-filename}" basedir="${push-dir}" >
+        <property name="zip-filename"  value="${$push-dir}/martus_amp-${DSTAMP}.zip"/>
+	    <delete verbose="true" file="${zip-filename}"/>
+        <zip destfile="${zip-filename}">
           	<fileset dir="${push-dir}" includes="**/*"/>
-          </zip>
+        </zip>
   </target>
     
 <!-- ================================================================== -->
