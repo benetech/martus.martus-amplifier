@@ -81,7 +81,7 @@ public class MartusAmplifier
 			System.out.println("***** Key pair file not found *****");
 			serverExit(2);
 		}
-		String passphrase = insecurePassword;
+		char[] passphrase = insecurePassword;
 		if(passphrase == null)
 			passphrase = getPassphraseFromConsole();
 		amp.loadAccount(passphrase);
@@ -164,7 +164,7 @@ public class MartusAmplifier
 		security = new MartusSecurity();
 	}
 
-	void start(String password) throws Exception
+	void start(char[] password) throws Exception
 	{
 		deleteLuceneLockFile();
 		String packetsDirectory = new File(getBasePath(), "ampPackets").getPath();
@@ -226,7 +226,7 @@ public class MartusAmplifier
 		return new File(getStartupConfigDirectory(), ACCOUNTS_NOT_AMPLIFIED_FILE);
 	}
 
-	private void startServers(String password) throws IOException, MultiException
+	private void startServers(char[] password) throws IOException, MultiException
 	{
 		startSSLServer(password);
 		startNonSSLServer();
@@ -243,12 +243,12 @@ public class MartusAmplifier
 		nonsslServer.start();
 	}
 
-	private void startSSLServer(String password) throws IOException, MultiException
+	private void startSSLServer(char[] password) throws IOException, MultiException
 	{
 		SunJsseListener sslListener = new SunJsseListener(new InetAddrPort(443));
 		sslListener.setInetAddress(getAmpIpAddress());
-		sslListener.setPassword(password);
-		sslListener.setKeyPassword(password);
+		sslListener.setPassword(new String(password));
+		sslListener.setKeyPassword(new String(password));
 		sslListener.setMaxIdleTimeMs(MAX_IDLE_TIME_MS);
 		sslListener.setMaxThreads(MAX_THREADS);
 		sslListener.setMinThreads(MIN_THREADS);
@@ -284,7 +284,7 @@ public class MartusAmplifier
 			if(argument.equals("secure"))
 				enterSecureMode();
 			if(argument.equals("nopassword"))
-				insecurePassword = "password";
+				insecurePassword = "password".toCharArray();
 			if(argument.startsWith(ampipTag))
 				ampIpAddress = argument.substring(ampipTag.length());
 
@@ -419,7 +419,7 @@ public class MartusAmplifier
 		context.addHandler(handler);
 	}
 	
-	private static String getPassphraseFromConsole()
+	private static char[] getPassphraseFromConsole()
 	{
 		System.out.print("Enter passphrase: ");
 		System.out.flush();
@@ -433,6 +433,7 @@ public class MartusAmplifier
 		String passphrase = null;
 		try
 		{
+			//Security issue passphrase is a String
 			passphrase = reader.readLine();
 		}
 		catch(Exception e)
@@ -440,10 +441,10 @@ public class MartusAmplifier
 			System.out.println("MartusServer.main: " + e);
 			System.exit(3);
 		}
-		return passphrase;
+		return passphrase.toCharArray();
 	}
 
-	void loadAccount(String passphrase) throws AuthorizationFailedException, InvalidKeyPairFileVersionException, IOException
+	void loadAccount(char[] passphrase) throws AuthorizationFailedException, InvalidKeyPairFileVersionException, IOException
 	{
 		FileInputStream in = new FileInputStream(getKeyPairFile());
 		readKeyPair(in, passphrase);
@@ -451,7 +452,7 @@ public class MartusAmplifier
 		System.out.println("Passphrase correct.");			
 	}
 	
-	void readKeyPair(InputStream in, String passphrase) throws 
+	void readKeyPair(InputStream in, char[] passphrase) throws 
 		IOException,
 		MartusCrypto.AuthorizationFailedException,
 		MartusCrypto.InvalidKeyPairFileVersionException
@@ -701,7 +702,7 @@ public class MartusAmplifier
 
 	boolean secureMode;
 	private static String ampIpAddress;
-	static String insecurePassword;
+	static char[] insecurePassword;
 	public static File dataDirectory;	
 
 	public static MartusSecurity security;
