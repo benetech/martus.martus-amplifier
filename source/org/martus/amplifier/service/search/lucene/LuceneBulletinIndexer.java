@@ -19,6 +19,7 @@ import org.martus.amplifier.service.search.BulletinIndexer;
 import org.martus.common.bulletin.AttachmentProxy;
 import org.martus.common.packet.FieldDataPacket;
 import org.martus.common.packet.UniversalId;
+import org.martus.util.MartusFlexidate;
 
 public class LuceneBulletinIndexer 
 	implements BulletinIndexer, LuceneSearchConstants
@@ -131,10 +132,14 @@ public class LuceneBulletinIndexer
 	private static void addField(Document doc, BulletinField field, String value)
 		throws BulletinIndexException
 	{
-		if (field.isDateField()||field.isDateRangeField()) 
+		if (field.isDateField()) 
 		{
 			doc.add(Field.Keyword(field.getIndexId(), 
 				convertDateToSearchableString(value)));
+		}
+		else if (field.isDateRangeField())
+		{
+			convertDateRangeToSearchableString(doc, field, value);
 		}
 		else 
 		{
@@ -185,6 +190,20 @@ public class LuceneBulletinIndexer
 				"Unable to convert date to indexable value: " + dateString, 
 				e);
 		}
+	}
+
+	private static void convertDateRangeToSearchableString(Document doc, BulletinField field, String value) throws BulletinIndexException
+	{
+		MartusFlexidate mfd = MartusFlexidate.createFromMartusDateString(value);
+	
+		String beginDate = MartusFlexidate.toStoredDateFormat(mfd.getBeginDate());
+		String endDate = MartusFlexidate.toStoredDateFormat(mfd.getEndDate());							
+	
+		doc.add(Field.Keyword(field.getIndexId(), convertDateToSearchableString(beginDate))); 		
+		if (mfd.hasDateRange())			
+			doc.add(Field.Keyword(field.getIndexId(), convertDateToSearchableString(endDate)));
+					
+		doc.add(Field.Text(field.getIndexId(), value));				
 	}
 	
 	private File indexDir;

@@ -111,6 +111,23 @@ public class LuceneBulletinSearcher
 			"Found more than one field data set for the same bulletin id: " +
 				bulletinId + "; found " + numResults + " results");
 	}
+
+	private static String convertDateRange(String value)
+	{
+		MartusFlexidate mfd = MartusFlexidate.createFromMartusDateString(value);
+	
+		String beginDate = MartusFlexidate.toStoredDateFormat(mfd.getBeginDate());
+		String endDate = MartusFlexidate.toStoredDateFormat(mfd.getEndDate());
+	
+		String display = "";
+	
+		if (mfd.hasDateRange())
+			display = beginDate + "/"+ endDate;		
+		else
+			display = beginDate;	
+	
+		return display;
+	}
 	
 	private static class LuceneResults implements Results
 	{
@@ -149,10 +166,11 @@ public class LuceneBulletinSearcher
 				String value = doc.get(field.getIndexId());
 				if (value != null) 
 				{
-					if (field.isDateField() || field.isDateRangeField()) 														
+					if (field.isDateField()) 														
 					 	value = DATE_FORMAT.format(DateField.stringToDate(value));
-//					if (field.isDateRangeField())																																						
-  //						value = convertDateRange(value);
+					 	
+					if (field.isDateRangeField())																																						
+  						value = LuceneBulletinSearcher.convertDateRange(value);
 																										
 					info.set(field.getIndexId(), value);
 				}
@@ -160,23 +178,6 @@ public class LuceneBulletinSearcher
 		}
 		
 
-		private static String convertDateRange(String value)
-		{
-			MartusFlexidate mfd = MartusFlexidate.createFromMartusDateString(value);
-		
-			String beginDate = MartusFlexidate.toStoredDateFormat(mfd.getBeginDate());
-			String endDate = MartusFlexidate.toStoredDateFormat(mfd.getEndDate());
-		
-			String display = "";
-
-			if (mfd.hasDateRange())
-				display = beginDate + "/"+ endDate;		
-			else
-				display = beginDate;	
-
-			return display;
-		}
-		
 		private static void addAttachments(BulletinInfo info, Document doc) 
 			throws BulletinIndexException
 		{

@@ -10,7 +10,7 @@ public interface SearchConstants
 	String KEYWORDS_INDEX_FIELD = "keywords";
 	String TITLE_INDEX_FIELD = "title";
 	String EVENT_DATE_INDEX_FIELD = "eventDate";
-	String PUBLIC_INFO_INDEX_FIELD = "publicInfo";
+	String DETAILS_INDEX_FIELD = "publicInfo";
 	String SUMMARY_INDEX_FIELD = "summary";
 	String LOCATION_INDEX_FIELD = "location";
 	String ENTRY_DATE_INDEX_FIELD = "entryDate";

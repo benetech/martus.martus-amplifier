@@ -127,7 +127,7 @@ public class BulletinField implements BulletinConstants, SearchConstants
 		addField(TAGKEYWORDS, KEYWORDS_INDEX_FIELD, "Keywords");
 		addField(TAGTITLE, TITLE_INDEX_FIELD, "Title");
 		addField(TAGEVENTDATE, EVENT_DATE_INDEX_FIELD, "Event Date");
-		addField(TAGPUBLICINFO, PUBLIC_INFO_INDEX_FIELD, "Public Info");
+		addField(TAGPUBLICINFO, DETAILS_INDEX_FIELD, "Details");
 		addField(TAGSUMMARY, SUMMARY_INDEX_FIELD, "Summary");
 		addField(TAGLOCATION, LOCATION_INDEX_FIELD, "Location");
 		addField(TAGENTRYDATE, ENTRY_DATE_INDEX_FIELD, "Entry Date");
