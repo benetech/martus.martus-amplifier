@@ -138,11 +138,8 @@ public class DoSearch extends AbstractSearchResultsServlet
 		raw.saveSearchInSession(session);
 		
 		SearchParameters sp = new SearchParameters(raw);
-		if (sp.getSearchFields().isEmpty())
-		{	
-			RawSearchParameters.clearAdvancedSearch(session);		
-			return new ArrayList();
-		}		
+		if (sp.getSearchFields().isEmpty())		
+			return new ArrayList();	
 	
 		Map fields = sp.getSearchFields();
 		return getResults(fields);
