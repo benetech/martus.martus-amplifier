@@ -27,11 +27,11 @@ Boston, MA 02111-1307, USA.
 package org.martus.amplifier.lucene;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
 import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.search.BulletinIndexException;
@@ -49,31 +49,19 @@ public class LuceneBulletinSearcher implements BulletinSearcher
 		searcher = new IndexSearcher(indexDir.getPath());
 	}	
 	
-	public Results search(String field, String queryString) throws Exception 
-	{
-		ComplexQuery query = new ComplexQuery(queryString, field);
-		return new LuceneResults(searcher, query.getQuery());
-	}
-
 	public Results search(HashMap fields) throws Exception 
 	{	
-		String queryString = (String) fields.get(SearchResultConstants.RESULT_BASIC_QUERY_KEY);
-		ComplexQuery query = null;
-		if (queryString != null)
-			query = new ComplexQuery(queryString, SEARCH_ALL_TEXT_FIELDS);				
-		else
-			query = new ComplexQuery(fields);
+		if (isComplexSearch(fields))
+			return getComplexSearchResults(fields);
 
-		return new LuceneResults(searcher, query.getQuery());
+		return getSimpleSearchResults(fields);
 	}
 
 	public BulletinInfo lookup(UniversalId bulletinId) throws Exception 
 	{
 		Term term = new Term(LuceneSearchConstants.BULLETIN_UNIVERSAL_ID_INDEX_FIELD, 
 								bulletinId.toString());
-		Query query = new TermQuery(term);
-		
-		Results results = new LuceneResults(searcher, query);
+		Results results = new LuceneResults(searcher, new TermQuery(term));
 
 		int numResults = results.getCount();
 		if (numResults == 0)
@@ -92,5 +80,34 @@ public class LuceneBulletinSearcher implements BulletinSearcher
 		searcher.close();
 	}
 
+	// This method is ONLY used by tests. 
+	// We should find a way to get rid of it! 
+	public Results search(String field, String queryString) throws Exception 
+	{
+		ComplexQuery query = new ComplexQuery(queryString, field);
+		return new LuceneResults(searcher, query.getQuery());
+	}
+
+	private boolean isComplexSearch(HashMap fields)
+	{
+		String queryString = (String) fields.get(SearchResultConstants.RESULT_BASIC_QUERY_KEY);
+		return (queryString == null);
+	}
+
+	private Results getComplexSearchResults(HashMap fields)
+		throws Exception, IOException
+	{
+		ComplexQuery query = new ComplexQuery(fields);
+		return new LuceneResults(searcher, query.getQuery());
+	}
+
+	private Results getSimpleSearchResults(HashMap fields)
+		throws Exception, IOException
+	{
+		String queryString = (String) fields.get(SearchResultConstants.RESULT_BASIC_QUERY_KEY);
+		ComplexQuery query = new ComplexQuery(queryString, SEARCH_ALL_TEXT_FIELDS);				
+		return new LuceneResults(searcher, query.getQuery());
+	}
+	
 	private IndexSearcher searcher;	
 }
