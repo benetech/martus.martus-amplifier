@@ -64,14 +64,14 @@ public class TestMartusAmplifier extends TestCaseEnhanced
 		List oneServer = amp.loadServersWeWillCall(dir, security);
 		assertEquals(1, oneServer.size());
 
-		BackupServerInfo testInfo = (BackupServerInfo)oneServer.get(0);
-		String result = testInfo.getAddress();
+		BackupServerInfo info = (BackupServerInfo)oneServer.get(0);
+		String result = info.getAddress();
 		assertEquals("ip", ip, result);
 		
-		result = testInfo.getName();
+		result = info.getName();
 		assertEquals("name", ip, result);
 		
-		int intResult = testInfo.getPort();
+		int intResult = info.getPort();
 		assertEquals(985, intResult);
 		
 		keyFile.delete();

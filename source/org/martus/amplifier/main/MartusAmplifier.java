@@ -170,20 +170,20 @@ public class MartusAmplifier
 
 	public boolean canExitNow()
 	{
-		boolean isSyncing = isAmplifierSyncing();
-		if(!isSyncing && !loggedCanExitYes)
+		boolean isAmplifierSyncing = isAmplifierSyncing();
+		if(!isAmplifierSyncing && !loggedCanExitYes)
 		{	
 			log("can exit now.");
 			loggedCanExitNoAmpSyncing = false;
 			loggedCanExitYes = true;
 		}
-		else if(isSyncing && !loggedCanExitNoAmpSyncing)
+		else if(isAmplifierSyncing && !loggedCanExitNoAmpSyncing)
 		{	
 			log("Unable to exit, amplifier Syncing.");
 			loggedCanExitNoAmpSyncing = true;
 			loggedCanExitYes = false;
 		}
-		return !isSyncing;
+		return !isAmplifierSyncing;
 	}
 	
 	public boolean isAmplifierSyncing()

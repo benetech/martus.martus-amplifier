@@ -65,20 +65,20 @@ public class RawSearchParameters
 	
 	private Map loadFromRequest(AmplifierServletRequest request)
 	{
-		Map inputParameters = new HashMap();
+		Map requestParameters = new HashMap();
 		for(int i=0; i< SearchResultConstants.ADVANCED_KEYS.length; i++)
 		{
 			String key = SearchResultConstants.ADVANCED_KEYS[i];
 			String value = request.getParameter(key);	
 			if (value != null)
-				inputParameters.put(key, value);				
+				requestParameters.put(key, value);				
 			
 			if (value == null && isQueryString(key))				
-				inputParameters.put(SearchResultConstants.ADVANCED_KEYS[i], "");
+				requestParameters.put(SearchResultConstants.ADVANCED_KEYS[i], "");
 			
 		}
 		
-		return inputParameters;
+		return requestParameters;
 	}
 	
 	private boolean isQueryString(String key)

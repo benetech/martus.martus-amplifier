@@ -74,9 +74,9 @@ public class TestFoundBulletin extends TestCaseEnhanced
 		assertEquals("previousBulletin not -1?", new Integer(-1), context.get("previousBulletin"));
 		assertEquals("nextBulletin not 2?", new Integer(2), context.get("nextBulletin"));		
 
-		BulletinInfo bulletinInfo1 = (BulletinInfo)context.get("bulletin");
-		assertEquals("Bulletin 1's ID didn't match", uid1, bulletinInfo1.getBulletinId());
-		assertEquals("Bulletin 1's title didn't match", bulletin1Title, bulletinInfo1.get("title"));
+		BulletinInfo bulletinInfo = (BulletinInfo)context.get("bulletin");
+		assertEquals("Bulletin 1's ID didn't match", uid1, bulletinInfo.getBulletinId());
+		assertEquals("Bulletin 1's title didn't match", bulletin1Title, bulletinInfo.get("title"));
 		assertEquals("Total bulletin count incorrect?", new Integer(3), context.get("totalBulletins"));
 		
 		request.parameters.put("index","2");
@@ -84,7 +84,7 @@ public class TestFoundBulletin extends TestCaseEnhanced
 		assertEquals("previousBulletin not 1?", new Integer(1), context.get("previousBulletin"));
 		assertEquals("nextBulletin not 3?", new Integer(3), context.get("nextBulletin"));
 		BulletinInfo bulletinInfo2 = (BulletinInfo)context.get("bulletin");
-		assertNotEquals("both bulletin id's equal?",bulletinInfo1.getBulletinId(), bulletinInfo2.getBulletinId());
+		assertNotEquals("both bulletin id's equal?",bulletinInfo.getBulletinId(), bulletinInfo2.getBulletinId());
 		assertEquals("Bulletin 2's ID didn't match", uid2, bulletinInfo2.getBulletinId());
 		assertEquals("Bulletin 2's title didn't match", bulletin2Title, bulletinInfo2.get("title"));
 
@@ -156,10 +156,10 @@ public class TestFoundBulletin extends TestCaseEnhanced
 	
 		FoundBulletin servlet = new FoundBulletin();
 		servlet.selectTemplate(request, response, context);
-		BulletinInfo bulletinInfo1 = (BulletinInfo)context.get("bulletin");
-		assertEquals("Bulletin 1's ID didn't match", uid1, bulletinInfo1.getBulletinId());
+		BulletinInfo bulletinInfo = (BulletinInfo)context.get("bulletin");
+		assertEquals("Bulletin 1's ID didn't match", uid1, bulletinInfo.getBulletinId());
 
-		assertFalse("Bulletin 1 should not have any contact info", bulletinInfo1.hasContactInfo());
+		assertFalse("Bulletin 1 should not have any contact info", bulletinInfo.hasContactInfo());
 		String noContactInfo = (String)context.get("contactInfo");
 		assertNull("ContactInfo should not be set", noContactInfo);
 

@@ -75,8 +75,8 @@ public class TestDownloadAttachment extends TestCaseEnhanced
 		DownloadAttachment servlet = new DownloadAttachment(basePath);
 		servlet.internalDoGet(request, response);
 		
-		String attachment1 = response.getDataString();
-		assertEquals("Attachment 1's data not the same?", data1, attachment1);
+		String attachment1String = response.getDataString();
+		assertEquals("Attachment 1's data not the same?", data1, attachment1String);
 		assertTrue("response Should have Content-Type", response.containsHeader("Content-Type"));
 		assertTrue("response Should have Content-Disposition", response.containsHeader("Content-Disposition"));
 		assertTrue("response Should have Content-Length", response.containsHeader("Content-Length"));
@@ -85,8 +85,8 @@ public class TestDownloadAttachment extends TestCaseEnhanced
 		request.parameters.put("attachmentIndex","2");
 		MockAmplifierResponse response2 = new MockAmplifierResponse();
 		servlet.internalDoGet(request, response2);
-		String attachment2 = response2.getDataString();
-		assertEquals("Attachment 2's data not the same?", data2, attachment2);
+		String attachment2String = response2.getDataString();
+		assertEquals("Attachment 2's data not the same?", data2, attachment2String);
 		assertTrue("response2 Should have Content-Type", response2.containsHeader("Content-Type"));
 		assertTrue("response2 Should have Content-Disposition", response2.containsHeader("Content-Disposition"));
 		assertTrue("response2 Should have Content-Length", response2.containsHeader("Content-Length"));
@@ -95,8 +95,8 @@ public class TestDownloadAttachment extends TestCaseEnhanced
 		request.parameters.put("attachmentIndex","1");
 		MockAmplifierResponse response3 = new MockAmplifierResponse();
 		servlet.internalDoGet(request, response3);
-		String attachment3 = response3.getDataString();
-		assertEquals("Attachment 3's data not the same?", data3, attachment3);
+		String attachment3String = response3.getDataString();
+		assertEquals("Attachment 3's data not the same?", data3, attachment3String);
 		assertTrue("response3 Should have Content-Type", response3.containsHeader("Content-Type"));
 		assertTrue("response3 Should have Content-Disposition", response3.containsHeader("Content-Disposition"));
 		assertTrue("response3 Should have Content-Length", response3.containsHeader("Content-Length"));
@@ -166,8 +166,8 @@ public class TestDownloadAttachment extends TestCaseEnhanced
 	private void writeAttachment(BulletinInfo bulletinInfo1,int index, String data) throws AttachmentStorageException, UnsupportedEncodingException
 	{
 		AttachmentInfo attachInfo = (AttachmentInfo)bulletinInfo1.getAttachments().get(index);
-		UniversalId uid1 = UniversalId.createFromAccountAndLocalId(attachInfo.getAccountId(), attachInfo.getLocalId());
-		MartusAmplifier.dataManager.putAttachment(uid1, new StringInputStream(data));
+		UniversalId uid = UniversalId.createFromAccountAndLocalId(attachInfo.getAccountId(), attachInfo.getLocalId());
+		MartusAmplifier.dataManager.putAttachment(uid, new StringInputStream(data));
 	}
 	
 	final String basePath = createTempDirectory().getPath();

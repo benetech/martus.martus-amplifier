@@ -56,6 +56,4 @@ public class Today
 	{
 		return new Integer(getDay()).toString();
 	}		
-		
-	public Today(){}
 }
