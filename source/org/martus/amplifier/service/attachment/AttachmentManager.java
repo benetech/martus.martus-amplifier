@@ -71,8 +71,8 @@ public class AttachmentManager implements IAttachmentConstants, IAttachmentManag
 
 	public void putAttachmentId(UniversalId universalId, UniversalId attachmentId)
 	{
-		AttachmentNameKeyDbt key = new AttachmentNameKeyDbt(universalId);
-		AttachmentNameValueDbt value = new AttachmentNameValueDbt(attachmentId.toString());
+		UniversalIdDbt key = new UniversalIdDbt(universalId);
+		StringDbt value = new StringDbt(attachmentId.toString());
 		int error = 0;
 		try
 		{
@@ -86,8 +86,8 @@ public class AttachmentManager implements IAttachmentConstants, IAttachmentManag
 
 	public List getAttachmentIds(UniversalId UniversalBulletinId)
 	{
-		AttachmentNameKeyDbt key = new AttachmentNameKeyDbt(UniversalBulletinId);
-		AttachmentNameValueDbt returnValue = new AttachmentNameValueDbt();
+		UniversalIdDbt key = new UniversalIdDbt(UniversalBulletinId);
+		StringDbt returnValue = new StringDbt();
 		File result = null;
 		List attachmentIdList = new ArrayList();
 		int error = 0;
@@ -120,8 +120,8 @@ public class AttachmentManager implements IAttachmentConstants, IAttachmentManag
 	
 	public void putAttachmentName(UniversalId universalId, String attachmentName)
 	{
-		AttachmentNameKeyDbt key = new AttachmentNameKeyDbt(universalId);
-		AttachmentNameValueDbt value = new AttachmentNameValueDbt(attachmentName);
+		UniversalIdDbt key = new UniversalIdDbt(universalId);
+		StringDbt value = new StringDbt(attachmentName);
 		int error = 0;
 		try
 		{
@@ -135,8 +135,8 @@ public class AttachmentManager implements IAttachmentConstants, IAttachmentManag
 
 	public String getAttachmentName(UniversalId UniversalBulletinId)
 	{
-		AttachmentNameKeyDbt key = new AttachmentNameKeyDbt(UniversalBulletinId);
-		AttachmentNameValueDbt returnValue = new AttachmentNameValueDbt();
+		UniversalIdDbt key = new UniversalIdDbt(UniversalBulletinId);
+		StringDbt returnValue = new StringDbt();
 		File result = null;
 		int error = 0;
 		try
@@ -154,8 +154,8 @@ public class AttachmentManager implements IAttachmentConstants, IAttachmentManag
 
 	public void putAttachmentFile(UniversalId universalId, File attachment)
 	{
-		AttachmentFileKeyDbt key = new AttachmentFileKeyDbt(universalId);
-		AttachmentFileValueDbt value = new AttachmentFileValueDbt(attachment);
+		UniversalIdDbt key = new UniversalIdDbt(universalId);
+		FileDbt value = new FileDbt(attachment);
 		int error = 0;
 		try
 		{
@@ -169,8 +169,8 @@ public class AttachmentManager implements IAttachmentConstants, IAttachmentManag
 	
 	public File getAttachmentFile(UniversalId UniversalBulletinId, String filePath)
 	{
-		AttachmentFileKeyDbt key = new AttachmentFileKeyDbt(UniversalBulletinId);
-		AttachmentFileValueDbt returnValue = new AttachmentFileValueDbt();
+		UniversalIdDbt key = new UniversalIdDbt(UniversalBulletinId);
+		FileDbt returnValue = new FileDbt();
 		File result = null;
 		int error = 0;
 		try
