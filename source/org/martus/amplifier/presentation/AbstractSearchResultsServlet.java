@@ -63,29 +63,23 @@ public abstract class AbstractSearchResultsServlet extends AmplifierServlet
 	public static void setSearchedForInContextAndSession(AmplifierServletRequest request, Context context)
 	{
 		String basicQueryString = request.getParameter(SearchResultConstants.RESULT_BASIC_QUERY_KEY);
-		String advancedQueryString = "Advanced Search";		
+		String searchedForString = (String)request.getSession().getAttribute("searchedFor");
 		
 		if(basicQueryString != null)
 		{
-			context.put("searchedFor", basicQueryString);
-			request.getSession().setAttribute("searchedFor", basicQueryString);
-			
-			String simpleQuery = request.getParameter("query");		
-			context.put("defaultSimpleSearch", basicQueryString);	
-			request.getSession().setAttribute("defaultSimpleSearch", simpleQuery);
+			searchedForString = basicQueryString;
 		}
-		else if (advancedQueryString != null)
+		else
 		{
-			context.put("searchedFor", advancedQueryString);
-			request.getSession().setAttribute("searchedFor", advancedQueryString);
-			context.put("defaultSimpleSearch", "");
+			searchedForString = "Advanced Search";
+			basicQueryString = "";
 		}
-		else		
-		{
-			String searchedForString = (String)request.getSession().getAttribute("searchedFor");
-			context.put("searchedFor", searchedForString);
-			request.getSession().setAttribute("searchedFor", searchedForString);
-		}
+
+		request.getSession().setAttribute("searchedFor", searchedForString);
+		request.getSession().setAttribute("defaultSimpleSearch", basicQueryString);
+
+		context.put("searchedFor", searchedForString);
+		context.put("defaultSimpleSearch", basicQueryString);
 	}
 
 	public static void sortBulletins(List bulletinList, final String sortByFieldTag)
