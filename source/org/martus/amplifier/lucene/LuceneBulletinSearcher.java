@@ -120,7 +120,12 @@ public class LuceneBulletinSearcher implements BulletinSearcher
 			Document doc = hits.doc(i);
 			docs.add(doc);
 		}
-		return new LuceneResults(docs);
+		return new LuceneResults(getLeafDocuments(docs));
+	}
+	
+	public Vector getLeafDocuments(Vector docs)
+	{
+		return docs;
 	}
 
 	private IndexSearcher searcher;	
