@@ -10,3 +10,5 @@
 	  SELECT{ font-size: -1;font-family: sans-serif;}
 	-->
 	</STYLE>
+	
+	<title>Martus $pageTitle</title>

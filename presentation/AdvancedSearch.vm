@@ -1,15 +1,14 @@
 <html>
+	#set ($pageTitle="Advanced Search")
     <head>
-    	#parse ("Meta.vm")
-        <title>Martus Amplifier Search Query</title>
+    	#parse ("Meta.vm")     
     </head>
     
 	#set ($years = [1970..2004])	
     #set ($days = [1..31])
     #set ($info = $defaultAdvancedSearch)
 
-    <body>
-    	#set ($pageTitle="Advanced Search")
+    <body>    	
     	#set ($pageInfo="")
 		#set ($showSearchForm = false)
 		#parse ("ResultHeader.vm")

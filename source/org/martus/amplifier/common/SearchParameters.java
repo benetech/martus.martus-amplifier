@@ -188,8 +188,8 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 		}
 		
 		public String getFormattedString(String rawString)
-		{
-			return "\"" + rawString + "\"";
+		{		
+			return "\"" + rawString.replace('\"',' ').trim() + "\"";
 		}
 	}
 	

@@ -1,7 +1,7 @@
 <html>
+	#set ($pageTitle= "Searched for: $searchedFor")
     <head>
-    		#parse("Meta.vm")
-            <title>Martus Amplifier Search Results</title>
+    		#parse("Meta.vm")            
     </head>
     <body>
     	#set ($pageTitle="Searched Martus for: $searchedFor")

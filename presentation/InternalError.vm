@@ -1,11 +1,10 @@
 <html>
+	#set ($pageTitle="Internal Error")
     <head>
-     	#parse("Meta.vm")
-        <title>Martus Amplifier Internal Error</title>
+     	#parse("Meta.vm")       
     </head>
     
-    <body>
-    	#set ($pageTitle="Internal Error")
+    <body>    	
     	#set ($pageInfo="An internal error occured.")
 		#set ($showSearchForm = false)
 		#parse ("ResultHeader.vm")

@@ -1,14 +1,13 @@
 <html>
+	#if ($problemReport)
+	    #set ($pageTitle="Report Technical Problems")
+	#else
+	    #set ($pageTitle="Dissatisfied with Search Results?")
+	#end
     <head>
-    		#parse("Meta.vm")
-            <title>Martus Amplifier Feedback</title>
+    		#parse("Meta.vm")           
     </head>
     <body>
-		#if ($problemReport)
-	    	#set ($pageTitle="Report Technical Problems")
-	    #else
-	    	#set ($pageTitle="Dissatisfied with Search Results?")
-	    #end
 	   	#set ($pageInfo="")
 		#set ($showSearchForm = false)
 		#parse ("ResultHeader.vm")

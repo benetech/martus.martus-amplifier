@@ -1,7 +1,7 @@
 <html>
+	#set ($pageTitle="Print Bulletin")
     <head>
-   		#parse("Meta.vm")
-    	<title>Martus Amplifier Search Query</title>
+   		#parse("Meta.vm")    	
     </head>
     
     <body  bgColor=ffffff>
