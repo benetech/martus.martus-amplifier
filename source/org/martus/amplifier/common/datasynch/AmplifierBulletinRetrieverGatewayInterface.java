@@ -2,6 +2,8 @@ package org.martus.amplifier.common.datasynch;
 
 
 import org.martus.common.BulletinRetrieverGatewayInterface;
+import org.martus.common.MartusCrypto;
+import org.martus.common.NetworkResponse;
 
 /**
  * @author skoneru
@@ -13,4 +15,8 @@ import org.martus.common.BulletinRetrieverGatewayInterface;
  */
 public interface AmplifierBulletinRetrieverGatewayInterface extends BulletinRetrieverGatewayInterface {
 
+
+	public NetworkResponse getAccountIds(MartusCrypto signer) throws 
+			MartusCrypto.MartusSignatureException;
+			
 }

@@ -11,10 +11,11 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 
 import org.apache.xmlrpc.XmlRpcClient;
+
 import org.martus.common.NetworkInterface;
 import org.martus.common.NetworkInterfaceConstants;
-import org.martus.common.NetworkInterfaceXmlRpcConstants;
 
+import org.martus.amplifier.common.datasynch.AmplifierNetworkInterfaceXmlRpcConstants;
 /**
  * @author skoneru
  *
@@ -25,7 +26,7 @@ import org.martus.common.NetworkInterfaceXmlRpcConstants;
  */
 
 public class AmplifierClientSideNetworkHandlerUsingXMLRPC 
-	implements NetworkInterfaceConstants, NetworkInterfaceXmlRpcConstants, AmplifierNetworkInterface
+	implements NetworkInterfaceConstants, AmplifierNetworkInterfaceXmlRpcConstants, AmplifierNetworkInterface
 {
 
 	public class SSLSocketSetupException extends Exception {}
@@ -54,7 +55,16 @@ public class AmplifierClientSideNetworkHandlerUsingXMLRPC
 		params.add(signature);
 		return (Vector)callServer(server, cmdGetBulletinChunk, params);
 	}
-					
+		
+	public Vector getAccountIds(String myAccountId, Vector parameters, String signature)
+	{
+		Vector params = new Vector();
+		params.add(myAccountId);
+		//to check if we need this
+		params.add(parameters);
+		params.add(signature);
+		return (Vector)callServer(server, cmdGetAccountIds, params);
+	}			
 	
 	public Object callServer(String serverName, String method, Vector params)
 	{

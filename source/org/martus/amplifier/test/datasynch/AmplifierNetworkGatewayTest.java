@@ -16,7 +16,7 @@ public class AmplifierNetworkGatewayTest extends AbstractAmplifierDataSynchTest
 	{
 		super();
 	}
-	
+	/*
 	public void testGetAllBulletinIds()
 	{
 		System.out.println("in testGetAllBulletinIds");
@@ -33,7 +33,7 @@ public class AmplifierNetworkGatewayTest extends AbstractAmplifierDataSynchTest
 			counter++;
 		}			
 	}	
-	
+	*/
 	public void testGetBulletin()
 	{
 		System.out.println("in testGetBulletin");

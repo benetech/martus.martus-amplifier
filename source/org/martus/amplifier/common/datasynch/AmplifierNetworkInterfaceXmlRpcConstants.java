@@ -1,18 +1,18 @@
 package org.martus.amplifier.common.datasynch;
 
-import java.util.Vector;
+
+import org.martus.common.NetworkInterfaceXmlRpcConstants;
 
 /**
- * @author skoneru
+ * @author SKoneru
  *
  * To change this generated comment edit the template variable "typecomment":
  * Window>Preferences>Java>Templates.
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-public interface AmplifierNetworkInterface {
+public interface AmplifierNetworkInterfaceXmlRpcConstants extends NetworkInterfaceXmlRpcConstants {
 	
-	public Vector getBulletinChunk(String myAccountId, Vector parameters, String signature);
-	public Vector getAccountIds(String myAccountId, Vector parameters, String signature);
+	public static final String cmdGetAccountIds = "getAccountIds";
 
 }

@@ -37,5 +37,15 @@ public class AmplifierClientSideNetworkGateway implements AmplifierBulletinRetri
 		return new NetworkResponse(server.getBulletinChunk(signer.getPublicKeyString(), parameters, signature));
 	}
 	
+	//to check if we need signature even for no parameters
+	public NetworkResponse getAccountIds(MartusCrypto signer) throws 
+			MartusCrypto.MartusSignatureException
+	{
+		Vector parameters = new Vector();
+		String signature = MartusUtilities.sign(parameters, signer);
+		return new NetworkResponse(server.getAccountIds(signer.getPublicKeyString(), parameters, signature));
+	}
+
+	
 	AmplifierNetworkInterface server;
 }

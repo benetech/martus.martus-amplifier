@@ -16,11 +16,25 @@
 <p><b>(in order of priority...1 indicates minutes long story, 2 indicates hours
 long story, 3 indicates days long story)</b></p>
     <ul>
-    <li> Set Server Up and Running with Test Data (3)
+       <li>Setting Server Up and Running with Test Data
+	<ul>
+	<li>server side coding</li>
+	<li> server up and running</li>
+	<li> valid test data </li>
+	</ul>
+       </li>
+      <li>[dan] Timer story (2)
         <ul>
-          <li> server side coding</li>
-          <li> server up and running</li>
-          <li> valid test data </li>
+          <li>when amp starts, it sets up a chron-like timer</li>
+          <li>whenever timer rings (e.g. once a day) log a friendly message</li>
+          <li>kevin says once per day polling should be adequate</li>
+        </ul>
+      </li>
+      <li>Server List Timer story (2)
+        <ul>
+          <li>get list from some sort of config file set up by admin person who
+            installed amp</li>
+          <li>logs it once a day</li>
         </ul>
       </li>
       <li>[sri] List All Bulletins story (3)
@@ -99,29 +113,11 @@ long story, 3 indicates days long story)</b></p>
           <li>Notifies admin if backup server is down</li>
         </ul>
       </li>
-      <li>Common parsing story (3)
-        <ul>
-          <li>Refactor xml parsing to use common code</li>
-        </ul>
-      </li>
     </ul>
+<p>&nbsp;</p>
 &nbsp;
 <p><b>Finished User Stories&nbsp;</b></p>
 <ul>
-      <li>[dan] Server List Timer story (2)
-        <ul>
-          <li>get list from some sort of config file set up by admin person who
-            installed amp</li>
-          <li>logs it once a day</li>
-        </ul>
-      </li>
-      <li>[dan] Timer story (2)
-        <ul>
-          <li>when amp starts, it sets up a chron-like timer</li>
-          <li>whenever timer rings (e.g. once a day) log a friendly message</li>
-          <li>kevin says once per day polling should be adequate</li>
-        </ul>
-      </li>
   <li>search page
     <ul>
       <li>[working] user types URL in browser, browser returns amp search page</li>

@@ -33,6 +33,7 @@ import org.martus.amplifier.exception.MartusAmplifierApplicationException;
 import org.martus.common.MartusCrypto;
 import org.martus.common.MartusSecurity;
 import org.martus.common.MartusUtilities;
+import org.martus.common.NetworkResponse;
 import org.martus.common.NetworkInterfaceConstants;
 import org.martus.common.NetworkInterfaceXmlRpcConstants;
 import org.martus.common.Base64.InvalidBase64Exception;
@@ -84,7 +85,7 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
 		return instance;
 	}
 	
-	
+	/*
 	public List getAllAccountIds()
 	{
 		//fake data
@@ -93,6 +94,27 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
 		fakeAccountIds.add("2");
 		return fakeAccountIds;
 	}
+	*/
+	public Vector getAllAccountIds() throws ServerErrorException
+	{
+		Vector result = new Vector();
+		try
+		{
+			NetworkResponse response = gateway.getAccountIds(security);
+			String resultCode = response.getResultCode();
+			if(!resultCode.equals(NetworkInterfaceConstants.OK))
+				throw new ServerErrorException(resultCode);
+			result= response.getResultVector();
+		}
+		catch(Exception e)
+		{
+			logger.severe("AmplifierNetworkGateway.getAllAccountIds(): Unable to retrieve AccountIds: " + e.getMessage());
+		}
+		return result;
+	}
+	
+	
+	/*
 	
 	public List getAccountBulletinIds(String accountId)
 	{
@@ -112,7 +134,9 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
 		}
 		return fakeBulletinIds;
 	}
+	*/
 	
+	/*
 	public List getAllBulletinIds()
 	{
 		List allBulletinIds = new ArrayList();
@@ -131,7 +155,7 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
 		return allBulletinIds;
 	}
 	
-	
+	*/
 	public Vector getBulletin(UniversalId uid)
 	{
 		Vector result = new Vector();
