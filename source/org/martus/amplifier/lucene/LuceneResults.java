@@ -28,9 +28,7 @@ package org.martus.amplifier.lucene;
 import java.io.File;
 import java.io.IOException;
 import java.util.Vector;
-
 import org.apache.lucene.document.Document;
-import org.martus.amplifier.common.DateUtilities;
 import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.amplifier.search.AttachmentInfo;
 import org.martus.amplifier.search.BulletinField;
@@ -38,6 +36,7 @@ import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinInfo;
 import org.martus.amplifier.search.Results;
 import org.martus.amplifier.search.SearchConstants;
+import org.martus.common.clientside.DateUtilities;
 import org.martus.common.packet.UniversalId;
 import org.martus.common.packet.UniversalId.NotUniversalIdException;
 

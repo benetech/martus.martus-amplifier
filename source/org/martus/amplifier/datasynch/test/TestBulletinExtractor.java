@@ -35,13 +35,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-
 import junit.framework.Assert;
-
 import org.martus.amplifier.attachment.AttachmentStorageException;
 import org.martus.amplifier.attachment.DataManager;
 import org.martus.amplifier.attachment.FileSystemDataManager;
-import org.martus.amplifier.common.DateUtilities;
 import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.datasynch.BulletinExtractor;
 import org.martus.amplifier.lucene.LuceneBulletinIndexer;
@@ -61,6 +58,7 @@ import org.martus.common.BulletinStore;
 import org.martus.common.bulletin.AttachmentProxy;
 import org.martus.common.bulletin.Bulletin;
 import org.martus.common.bulletin.BulletinForTesting;
+import org.martus.common.clientside.DateUtilities;
 import org.martus.common.crypto.MartusCrypto;
 import org.martus.common.crypto.MockMartusSecurity;
 import org.martus.common.crypto.MartusCrypto.CryptoException;

@@ -33,10 +33,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-
 import junit.framework.Assert;
-
-import org.martus.amplifier.common.DateUtilities;
 import org.martus.amplifier.common.SearchParameters;
 import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.lucene.LuceneBulletinSearcher;
@@ -49,6 +46,7 @@ import org.martus.amplifier.search.BulletinInfo;
 import org.martus.amplifier.search.BulletinSearcher;
 import org.martus.amplifier.search.Results;
 import org.martus.common.bulletin.AttachmentProxy;
+import org.martus.common.clientside.DateUtilities;
 import org.martus.common.packet.BulletinHistory;
 import org.martus.common.packet.FieldDataPacket;
 import org.martus.common.packet.UniversalId;
