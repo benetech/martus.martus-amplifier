@@ -8,6 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.martus.common.FieldSpec;
 import org.martus.common.bulletin.Bulletin;
 import org.martus.common.bulletin.BulletinConstants;
 
@@ -36,7 +37,7 @@ public class BulletinField implements BulletinConstants, SearchConstants
 	
 	public boolean isDateField()
 	{
-		return (Bulletin.getFieldType(xmlId) == DATE);
+		return (FieldSpec.getStandardType(xmlId) == FieldSpec.TYPE_DATE);
 	}
 	
 	public static BulletinField getFieldByXmlId(String xmlId)
