@@ -6,7 +6,6 @@
     <classpathentry kind="var" path="LuceneEngine"/>
     <classpathentry kind="var" path="Xerces"/>
     <classpathentry kind="var" path="berkeleydb"/>
-    <classpathentry kind="src" path="/martus-readonly"/>
     <classpathentry kind="var" path="jsse"/>
     <classpathentry kind="var" path="xmlrpc"/>
     <classpathentry kind="var" path="jstl_standard"/>
@@ -14,5 +13,6 @@
     <classpathentry kind="var" path="bccrypto"/>
     <classpathentry kind="lib" path="buildfiles/jars/jasper-runtime.jar"/>
     <classpathentry kind="var" path="TOMCAT_HOME"/>
+    <classpathentry kind="src" path="/martus"/>
     <classpathentry kind="output" path="presentation/WEB-INF/classes"/>
 </classpath>

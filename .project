@@ -3,7 +3,7 @@
 	<name>martus-amplifier</name>
 	<comment></comment>
 	<projects>
-		<project>martus-readonly</project>
+		<project>martus</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
