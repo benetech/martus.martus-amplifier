@@ -4,7 +4,7 @@
     	<title>Martus Amplifier Search Query</title>
     </head>
     
-    <body>
+    <body  bgColor=ffffff>
     	#set ($pageTitle="Searched Martus for: $searchedFor")
     	#set ($pageInfo="Bulletin $currentBulletin of $totalBulletins")
 		#set ($showSearchForm = false)
