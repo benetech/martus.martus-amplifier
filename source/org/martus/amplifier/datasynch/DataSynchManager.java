@@ -60,6 +60,7 @@ public class DataSynchManager
 		List accountsListAll = new ArrayList(amplifierGateway.getAllAccountIds());
 		
 		List accountsToBeAmplified = removeAccountsFromList(accountsListAll, accountsNotAmplified);
+		amplifierGateway.log("returned " + accountsToBeAmplified.size() + " accounts to be amplified.");
 		
 		BulletinExtractor bulletinExtractor = 
 			amplifierGateway.createBulletinExtractor(
@@ -70,6 +71,7 @@ public class DataSynchManager
 			if(amp.isShutdownRequested())
 				return;
 			String accountId = (String) accountsToBeAmplified.get(index);
+			amplifierGateway.log("account: " + MartusCrypto.formatAccountIdForLog(accountId));
 			pullContactInfoForAccount(accountId);
 			pullNewBulletinsForAccount(accountId, bulletinExtractor);
 		}
@@ -94,9 +96,13 @@ public class DataSynchManager
 	{
 		Vector response = amplifierGateway.getContactInfo(accountId);
 		if(response == null)
+		{
+			amplifierGateway.log("no Contact Info");
 			return;
+		}
 		try
 		{
+			amplifierGateway.log("contact Info saved");
 			MartusAmplifier.dataManager.writeContactInfoToFile(accountId, response);
 		}
 		catch (IOException e)
@@ -110,21 +116,32 @@ public class DataSynchManager
 	{
 		BulletinCatalog catalog = BulletinCatalog.getInstance();
 		Vector response = amplifierGateway.getAccountPublicBulletinLocalIds(accountId);
+		Vector newBulletinIds = new Vector();
 		for(int i = 0; i < response.size(); i++)
 		{
-			if(amp.isShutdownRequested())
-				return;
-			UniversalId uid = null;
+			UniversalId uid = UniversalId.createFromAccountAndLocalId(accountId, (String)response.get(i));
+			
 			try
 			{
-				
-				uid = UniversalId.createFromAccountAndLocalId(accountId, (String)response.get(i));
-
 				if( !catalog.bulletinHasBeenIndexed(uid) )
-				{
-					//logger.info("DataSynchManager.checkAndRetrieveBulletinsForUIDs():before calling  amplifierGateway.retrieveAndManageBulletin on UID = "+ uid.toString());
-					amplifierGateway.retrieveAndManageBulletin(uid, bulletinExtractor, amp);
-				}
+					newBulletinIds.add(uid);
+			}
+			catch (Exception e)
+			{
+				logger.severe("Unable to check if indexed: " + uid + ": " + e.getMessage());
+				e.printStackTrace();
+			}
+		}
+		amplifierGateway.log(response.size() +" public bulletin Ids returned. ("+newBulletinIds.size()+") new.");
+		for(int j = 0; j < newBulletinIds.size(); ++j)
+		{
+			UniversalId uid = (UniversalId) newBulletinIds.get(j);
+			try
+			{
+				//logger.info("DataSynchManager.checkAndRetrieveBulletinsForUIDs():before calling  amplifierGateway.retrieveAndManageBulletin on UID = "+ uid.toString());
+				if(amp.isShutdownRequested())
+					return;
+				amplifierGateway.retrieveAndManageBulletin(uid, bulletinExtractor, amp);
 			}
 			catch (Exception e)
 			{

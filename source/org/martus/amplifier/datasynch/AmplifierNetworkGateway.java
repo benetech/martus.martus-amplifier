@@ -270,7 +270,7 @@ public class AmplifierNetworkGateway
 		}
 	}
 	
-	private void log(String message)
+	void log(String message)
 	{
 		String serversPublicCodeWeAreCalling = MartusCrypto.formatAccountIdForLog(serverToPullFrom.getServerPublicKey());
 		String serversIPAddressWeAreCalling = serverToPullFrom.getAddress();
