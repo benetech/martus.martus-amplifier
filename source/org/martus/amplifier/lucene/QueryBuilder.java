@@ -92,18 +92,6 @@ public class QueryBuilder
 			"Improperly formed advanced find entry date type in bulletin query: ");		
 	}	
 	
-	static Query parseLanguageQuery(Map fields)
-			throws Exception
-	{
-		Query query = null;
-		String fieldString = (String) fields.get(SearchResultConstants.RESULT_LANGUAGE_KEY);
-
-		if (fieldString != null)				
-			query = parseSingleFieldQuery(fieldString,SearchConstants.SEARCH_LANGUAGE_INDEX_FIELD, "Improperly formed advanced find language type in bulletin query: ");
-		
-		return query;
-	} 	
-
 	static Query parseAnyWordsQuery(Map fields) throws Exception
 	{
 		return parseStringQuery(fields, SearchResultConstants.ANYWORD_TAG);
@@ -162,16 +150,24 @@ public class QueryBuilder
 		if (foudWithoutWordsQuery != null)
 			query.add(foudWithoutWordsQuery, true, false);
 			
-		Query foundLanguageQuery = parseLanguageQuery(fields);
-		if (foundLanguageQuery != null)
-			query.add(foundLanguageQuery, true, false);
+		addLanguageQuery(query, fields);
 			
 		Query foudEntryDateQuery = parseEntryDateQuery(fields);
-
 		if (foudEntryDateQuery != null)
 			query.add(foudEntryDateQuery, true, false);			
 			
 		return query;	
+	}
+
+	private static void addLanguageQuery(BooleanQuery wholeQuery, Map fields)
+		throws Exception
+	{
+		String fieldString = (String) fields.get(SearchResultConstants.RESULT_LANGUAGE_KEY);
+		if (fieldString != null)
+		{				
+			Query newQuery = parseSingleFieldQuery(fieldString,SearchConstants.SEARCH_LANGUAGE_INDEX_FIELD, "Improperly formed advanced find language type in bulletin query: ");
+			wholeQuery.add(newQuery, true, false);
+		}
 	}			
 
 	static Query parseMultiFieldQuery(String query, String[] fields, String msg)

@@ -26,7 +26,6 @@ Boston, MA 02111-1307, USA.
 package org.martus.amplifier.presentation;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -80,56 +79,53 @@ public class DoSearch extends AbstractSearchResultsServlet
 	public List getSearchResults(AmplifierServletRequest request)
 		throws Exception
 	{
-		String simpleQueryString = request.getParameter(SearchResultConstants.RESULT_BASIC_QUERY_KEY);			
-	 
-		if (simpleQueryString != null)
+		AmplifierServletSession session = request.getSession();
+		if (isSimpleSearch(request))
 		{
+			String simpleQueryString = getSimpleSearchString(request);
+			RawSearchParameters.clearAdvancedSearch(session);			
+			
 			simpleQueryString = CharacterUtil.removeRestrictCharacters(simpleQueryString);
-
+			RawSearchParameters raw = new RawSearchParameters(simpleQueryString);
+			
 			if (simpleQueryString.equals(""))
 				return new ArrayList();
-							
-			return getSimpleSearchResults(request.getSession(), simpleQueryString);
+			return getSearchResults(session, raw);
 		}
-
-		return getComplexSearchResults(request);
+		else
+		{
+			RawSearchParameters.clearSimpleSearch(session);								
+			
+			RawSearchParameters raw = new RawSearchParameters(request);
+			return getSearchResults(session, raw);
+		}
 	}
 
-	private List getComplexSearchResults(AmplifierServletRequest request)
+	private boolean isSimpleSearch(AmplifierServletRequest request)
+	{
+		if(getSimpleSearchString(request) == null)
+			return false;
+
+		return true;
+	}
+
+	private String getSimpleSearchString(AmplifierServletRequest request)
+	{
+		return request.getParameter(SearchResultConstants.RESULT_BASIC_QUERY_KEY);
+	}
+
+	private List getSearchResults(
+		AmplifierServletSession session,
+		RawSearchParameters raw)
 		throws Exception
 	{
-		AmplifierServletSession session = request.getSession();
-
-		RawSearchParameters raw = new RawSearchParameters(request);
 		raw.saveSearchInSession(session);
-		RawSearchParameters.clearSimpleSearch(session);								
-
+		
 		SearchParameters sp = new SearchParameters(raw);
 		Map fields = sp.getSearchFields();
 		return getResults(fields);
 	}
 
-	private List getSimpleSearchResults(
-		AmplifierServletSession session,
-		String simpleQueryString)
-		throws Exception
-	{
-		if (simpleQueryString.equals(""))
-			return new ArrayList();
-		Map fields = new HashMap();				
-		fields.put(SearchResultConstants.RESULT_BASIC_QUERY_KEY, simpleQueryString);
-		RawSearchParameters.clearAdvancedSearch(session);			
-		return getResults(fields);
-	}	
-		
-	BulletinSearcher openBulletinSearcher() throws Exception
-	{
-		AmplifierConfiguration config = AmplifierConfiguration.getInstance();
-		String indexPath = config.getBasePath();
-
-		return new LuceneBulletinSearcher(indexPath);
-	}
-	
 	public List getResults(Map fields) throws Exception
 	{
 		BulletinSearcher searcher = openBulletinSearcher();
@@ -153,6 +149,14 @@ public class DoSearch extends AbstractSearchResultsServlet
 			searcher.close();
 		}
 		return list;
+	}
+	
+	BulletinSearcher openBulletinSearcher() throws Exception
+	{
+		AmplifierConfiguration config = AmplifierConfiguration.getInstance();
+		String indexPath = config.getBasePath();
+
+		return new LuceneBulletinSearcher(indexPath);
 	}
 	
 	public void convertLanguageCode(BulletinInfo bulletinInfo)

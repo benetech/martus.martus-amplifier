@@ -36,6 +36,12 @@ import org.martus.util.MartusFlexidate;
 
 public class RawSearchParameters
 {
+	public RawSearchParameters(String simpleSearch)
+	{
+		inputParameters = getDefaultAdvancedFields();
+		inputParameters.put(SearchResultConstants.THESE_WORD_TAG, simpleSearch);
+	}
+
 	public RawSearchParameters(AmplifierServletRequest request)
 	{
 		inputParameters = loadFromRequest(request);
@@ -100,6 +106,10 @@ public class RawSearchParameters
 		defaultMap.put(SearchResultConstants.RESULT_ENTRY_DATE_KEY, SearchResultConstants.ENTRY_ANYTIME_TAG);
 		defaultMap.put(SearchResultConstants.RESULT_LANGUAGE_KEY, SearchResultConstants.LANGUAGE_ANYLANGUAGE_LABEL);
 		defaultMap.put(SearchResultConstants.RESULT_SORTBY_KEY, SearchResultConstants.SORT_BY_TITLE_TAG);
+
+		defaultMap.put(SearchResultConstants.RESULT_START_DAY_KEY, "1");
+		defaultMap.put(SearchResultConstants.RESULT_START_MONTH_KEY, "1");
+		defaultMap.put(SearchResultConstants.RESULT_START_YEAR_KEY, "1970");
 		
 		defaultMap.put(SearchResultConstants.RESULT_END_DAY_KEY, Today.getDayString());
 		defaultMap.put(SearchResultConstants.RESULT_END_MONTH_KEY, Today.getMonth());

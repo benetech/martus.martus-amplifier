@@ -25,7 +25,6 @@ Boston, MA 02111-1307, USA.
 */
 package org.martus.amplifier.presentation;
 
-import java.util.HashMap;
 import java.util.Vector;
 
 import org.apache.velocity.context.Context;
@@ -33,8 +32,7 @@ import org.martus.amplifier.common.AdvancedSearchInfo;
 import org.martus.amplifier.common.AmplifierLocalization;
 import org.martus.amplifier.common.ChoiceEntry;
 import org.martus.amplifier.common.FindBulletinsFields;
-import org.martus.amplifier.common.SearchResultConstants;
-import org.martus.amplifier.common.Today;
+import org.martus.amplifier.common.RawSearchParameters;
 import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.amplifier.velocity.AmplifierServlet;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
@@ -63,27 +61,15 @@ public class AdvancedSearch extends AmplifierServlet
 		
 		AdvancedSearchInfo defaultFields = (AdvancedSearchInfo) request.getSession().getAttribute("defaultAdvancedSearch");
 		if (defaultFields == null)
-			defaultFields = getDefaultAdvancedSearchInfo();
+		{
+			defaultFields = new AdvancedSearchInfo(RawSearchParameters.getDefaultAdvancedFields());
+		}
 			
 		context.put("defaultAdvancedSearch", defaultFields);	
 
 		return "AdvancedSearch.vm";
 	}
 	
-	private AdvancedSearchInfo getDefaultAdvancedSearchInfo()
-	{
-		HashMap map = new HashMap();
-		map.put(SearchResultConstants.EXACTPHRASE_TAG, "");	
-		map.put(SearchResultConstants.ANYWORD_TAG, "");
-		map.put(SearchResultConstants.THESE_WORD_TAG, "");
-		map.put(SearchResultConstants.RESULT_END_DAY_KEY, Today.getDayString());
-		map.put(SearchResultConstants.RESULT_END_MONTH_KEY, Today.getMonth());
-		map.put(SearchResultConstants.RESULT_END_YEAR_KEY, Today.getYearString());
-	
-			
-		return new AdvancedSearchInfo(map);		
-	}
-
 	Vector getAvailableLanguageChoices()
 	{
 		Vector languageCodes = MartusAmplifier.languagesIndexed.getListOfLanguagesIndexed();
