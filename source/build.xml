@@ -20,6 +20,7 @@
 
   <property name="amp-dir" value="${martus-dir}/amplifier"/>
   <property name="amp-jar" value= "${dist}/martus-amplifier.jar"/>
+  <property name="amp-war" value= "${dist}/martus-amplifier.war"/>
   <property name="amp-package" value="${martus-package}.amplifier"/>
   <property name="amp-files" value="${amp-dir}/*.class,
   					${amp-dir}/**/*.class,
