@@ -31,6 +31,7 @@ import java.util.Map;
 
 import org.martus.common.CustomFields;
 import org.martus.common.FieldSpec;
+import org.martus.common.LegacyCustomFields;
 import org.martus.common.bulletin.BulletinConstants;
 
 public class BulletinField implements BulletinConstants, SearchConstants
@@ -93,7 +94,7 @@ public class BulletinField implements BulletinConstants, SearchConstants
 		FieldSpec[] defaultSearchFieldSpecs = new FieldSpec[length];
 		for(int i = 0; i < length; ++i)
 		{
-			defaultSearchFieldSpecs[i] = (new FieldSpec(ids[i].toString(), CustomFields.getStandardType(ids[i].toString())));
+			defaultSearchFieldSpecs[i] = LegacyCustomFields.createFromLegacy(ids[i].toString());
 		}
 		return defaultSearchFieldSpecs;
 	}	
