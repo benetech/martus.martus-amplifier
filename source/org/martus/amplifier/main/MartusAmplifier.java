@@ -23,6 +23,7 @@ import org.martus.common.LoggerToConsole;
 import org.martus.common.MartusUtilities;
 import org.martus.common.crypto.MartusCrypto;
 import org.martus.common.crypto.MartusSecurity;
+import org.mortbay.http.HttpContext;
 import org.mortbay.jetty.Server;
 
 public class MartusAmplifier
@@ -46,8 +47,12 @@ public class MartusAmplifier
 		File backupServersDirectory = new File(configDirectory, "serversWhoWeCall");
 		backupServersList = loadServersWeWillCall(backupServersDirectory, security);
 		
+		//Code.setDebug(true);
 		Server server = new Server("jettyConfiguration.xml");
 		server.addWebApplication("/","presentation/");
+		HttpContext context = server.getContext("/");
+		AccessHandler handler = new AccessHandler();
+		context.addHandler(handler);
 		server.start();
 		timer.scheduleAtFixedRate(timedTask, IMMEDIATELY, dataSynchIntervalMillis);
 		
@@ -55,6 +60,8 @@ public class MartusAmplifier
 		{
 		}
 	}
+	
+	
 	
 	boolean isShutdownRequested()
 	{
