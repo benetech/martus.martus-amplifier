@@ -31,7 +31,9 @@ import java.io.IOException;
 import java.util.Map;
 
 import org.apache.lucene.index.Term;
+import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
 import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.search.BulletinIndexException;
@@ -59,9 +61,7 @@ public class LuceneBulletinSearcher implements BulletinSearcher
 
 	public BulletinInfo lookup(UniversalId bulletinId) throws Exception 
 	{
-		Term term = new Term(LuceneSearchConstants.BULLETIN_UNIVERSAL_ID_INDEX_FIELD, 
-								bulletinId.toString());
-		Results results = new LuceneResults(searcher, new TermQuery(term));
+		Results results = getSingleBulletinResults(bulletinId);
 
 		int numResults = results.getCount();
 		if (numResults == 0)
@@ -86,21 +86,34 @@ public class LuceneBulletinSearcher implements BulletinSearcher
 		return (queryString == null);
 	}
 
+	private Results getSingleBulletinResults(UniversalId bulletinId) throws IOException
+	{
+		String fieldToSearch = LuceneSearchConstants.BULLETIN_UNIVERSAL_ID_INDEX_FIELD;
+		Term term = new Term(fieldToSearch, bulletinId.toString());
+		TermQuery query = new TermQuery(term);
+		return getResults(query);
+	}
+
 	private Results getComplexSearchResults(Map fields)
 		throws Exception, IOException
 	{
-		QueryBuilder query = new QueryBuilder(fields);
-		return new LuceneResults(searcher, query.getQuery());
+		Query query = new QueryBuilder(fields).getQuery();
+		return getResults(query);
 	}
 
 	private Results getSimpleSearchResults(Map fields)
 		throws Exception, IOException
 	{
 		String queryString = (String) fields.get(SearchResultConstants.RESULT_BASIC_QUERY_KEY);
-				
-		QueryBuilder query = new QueryBuilder(queryString, SEARCH_ALL_TEXT_FIELDS);				
-		return new LuceneResults(searcher, query.getQuery());
+		Query query = new QueryBuilder(queryString, SEARCH_ALL_TEXT_FIELDS).getQuery();				
+		return getResults(query);
 	}
 	
+	private Results getResults(Query query) throws IOException
+	{
+		Hits hits = searcher.search(query);
+		return new LuceneResults(hits);
+	}
+
 	private IndexSearcher searcher;	
 }

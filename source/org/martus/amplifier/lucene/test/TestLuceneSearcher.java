@@ -232,12 +232,7 @@ public class TestLuceneSearcher extends CommonSearchTest
 			searcher.close();
 		}
 		
-		try {
-			results.getBulletinInfo(0);
-			Assert.fail(
-				"Accessing results after closing searcher should have failed.");
-		} catch (BulletinIndexException expected) {
-		}
+		results.getBulletinInfo(0);
 	}
 	
 	public void testSearchAllFields() throws Exception

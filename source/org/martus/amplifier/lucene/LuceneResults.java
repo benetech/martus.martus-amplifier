@@ -27,11 +27,10 @@ package org.martus.amplifier.lucene;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Vector;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.search.Hits;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
 import org.martus.amplifier.common.DateUtilities;
 import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.amplifier.search.AttachmentInfo;
@@ -46,30 +45,25 @@ import org.martus.common.packet.UniversalId.NotUniversalIdException;
 
 public class LuceneResults implements Results, LuceneSearchConstants, SearchConstants
 {
-	public LuceneResults(IndexSearcher searcher, Query query) throws IOException
+	public LuceneResults(Hits hits) throws IOException
 	{
-		hits = searcher.search(query);
+		docs = new Vector();
+		for(int i=0; i < hits.length(); ++i)
+		{
+			Document doc = hits.doc(i);
+			docs.add(doc);
+		}
 	}
 		
-	public int getCount() throws BulletinIndexException
+	public int getCount()
 	{
-		return hits.length();
+		return docs.size();
 	}
 
 	public BulletinInfo getBulletinInfo(int n)
 		throws BulletinIndexException 
 	{
-		Document doc;
-		try
-		{
-			doc = hits.doc(n);
-		}
-		catch (IOException ioe)
-		{
-			throw new BulletinIndexException(
-				"Unable to retrieve FieldDataPacket " + n,
-				ioe);
-		}
+		Document doc = (Document)docs.get(n);
 		BulletinInfo info = new BulletinInfo(getBulletinId(doc));
 		
 		addAllEmptyFields(info);
@@ -212,6 +206,7 @@ public class LuceneResults implements Results, LuceneSearchConstants, SearchCons
 				e);
 		}
 	}
-	private Hits hits;		
+	
+	private Vector docs;		
 }
 	

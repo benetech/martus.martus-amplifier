@@ -144,26 +144,25 @@ public class DoSearch extends AbstractSearchResultsServlet
 	public List getResults(Map fields) throws Exception
 	{
 		BulletinSearcher searcher = openBulletinSearcher();
-		ArrayList list = new ArrayList();
 		
 		try
 		{
 			Results results = searcher.search(fields);
 
-			int numResults = results.getCount();
-			for (int i = 0; i < numResults; i++)
+			ArrayList list = new ArrayList();
+			for (int i = 0; i < results.getCount(); i++)
 			{
 				BulletinInfo bulletinInfo = results.getBulletinInfo(i);
 				convertLanguageCode(bulletinInfo);
 				formatDataForHtmlDisplay(bulletinInfo.getFields());
 				list.add(bulletinInfo);
 			}
+			return list;
 		}
 		finally
 		{
 			searcher.close();
 		}
-		return list;
 	}
 	
 	BulletinSearcher openBulletinSearcher() throws Exception
