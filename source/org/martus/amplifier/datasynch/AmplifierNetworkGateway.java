@@ -94,18 +94,16 @@ public class AmplifierNetworkGateway
 		}
 		catch(IOException e)
 		{
-			//e.printStackTrace();
-			//logger.info("No server available");
 			log("No server available");
 		}
 		catch(NotAuthorizedException e)
 		{
-			log("AmplifierNetworkGateway.getAllAccountIds() NOT AUTHORIZED");
+			log("getAllAccountIds() NOT AUTHORIZED");
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			log("AmplifierNetworkGateway.getAllAccountIds(): ERROR: " + e.getMessage());
+			log("getAllAccountIds(): ERROR: " + e.getMessage());
 		}
 		return result;
 	}
@@ -144,15 +142,8 @@ public class AmplifierNetworkGateway
 		}	
 		catch(Exception e)
 		{
-			String accountInfo = accountId;
-			try
-			{
-				accountInfo = MartusSecurity.getFormattedPublicCode(accountId);
-			}
-			catch (InvalidBase64Exception justUseAccountIdInstead)
-			{
-			}
-			log("AmplifierNetworkGateway.getAccountBulletinLocalIds(): ERROR " + e.getMessage() + ": " + accountInfo);
+			String accountInfo = MartusSecurity.formatAccountIdForLog(accountId);
+			log("getAccountBulletinLocalIds(): ERROR " + e.getMessage() + ": " + accountInfo);
 		}
 		return result;
 	}
