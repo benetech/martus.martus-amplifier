@@ -4,8 +4,8 @@
     <classpathentry kind="src" path="configuration"/>
     <classpathentry exported="true" kind="var" path="JRE_LIB"
         rootpath="JRE_SRCROOT" sourcepath="JRE_SRC"/>
-    <classpathentry exported="true" kind="var" path="Xerces"/>
-    <classpathentry exported="true" kind="var" path="JUnit"/>
-    <classpathentry exported="true" kind="var" path="LuceneEngine"/>
+    <classpathentry kind="var" path="JUnit"/>
+    <classpathentry kind="var" path="LuceneEngine"/>
+    <classpathentry kind="var" path="Xerces"/>
     <classpathentry kind="output" path="bin"/>
 </classpath>
