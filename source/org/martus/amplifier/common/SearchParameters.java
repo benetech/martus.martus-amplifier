@@ -42,6 +42,7 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 	public SearchParameters(AmplifierServletRequest request)
 	{
 		searchRequest = request;
+		parameters 	= new HashMap();
 		searchFields  = new HashMap();
 		loadFromRequest();		
 		rememberAdvancedFields(request);	
@@ -59,7 +60,7 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 			String value = getParameterValue(ADVANCED_KEYS[i]);
 			if (value != null)
 			{				
-				resultList.put(ADVANCED_KEYS[i], value);				
+				parameters.put(ADVANCED_KEYS[i], value);				
 			}
 		}
 		setEventDate();
@@ -159,7 +160,7 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 	
 	public boolean containsKey(String key)
 	{
-		return resultList.containsKey(key);
+		return parameters.containsKey(key);
 	}	
 		
 	private String getParameterValue(String param)
@@ -169,12 +170,12 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 	
 	public String getValue(String key)
 	{
-		return (String) resultList.get(key);
+		return (String) parameters.get(key);
 	}	
 	
 	public HashMap getSearchResultValues()
 	{
-		return resultList;
+		return parameters;
 	}	
 	
 	public String getStartDate()
@@ -202,19 +203,19 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 	
 	private void rememberAdvancedFields(AmplifierServletRequest request)
 	{		
-		String exactPhraseWords = (String) resultList.get(SearchResultConstants.EXACTPHRASE_TAG);
+		String exactPhraseWords = (String) parameters.get(SearchResultConstants.EXACTPHRASE_TAG);
 		if (exactPhraseWords == null)			
-			resultList.put(SearchResultConstants.EXACTPHRASE_TAG, "");
+			parameters.put(SearchResultConstants.EXACTPHRASE_TAG, "");
 			
-		String anyWords = (String) resultList.get(SearchResultConstants.ANYWORD_TAG);
+		String anyWords = (String) parameters.get(SearchResultConstants.ANYWORD_TAG);
 		if (anyWords == null)			
-			resultList.put(SearchResultConstants.ANYWORD_TAG, "");
+			parameters.put(SearchResultConstants.ANYWORD_TAG, "");
 			
-		String theseWords = (String) resultList.get(SearchResultConstants.THESE_WORD_TAG);
+		String theseWords = (String) parameters.get(SearchResultConstants.THESE_WORD_TAG);
 		if (theseWords == null)			
-			resultList.put(SearchResultConstants.THESE_WORD_TAG, "");	
+			parameters.put(SearchResultConstants.THESE_WORD_TAG, "");	
 			
-		request.getSession().setAttribute("defaultAdvancedSearch", new AdvancedSearchInfo(resultList));	
+		request.getSession().setAttribute("defaultAdvancedSearch", new AdvancedSearchInfo(parameters));	
 	}	
 	
 	public static void clearAdvancedSearch(AmplifierServletSession session)
@@ -249,7 +250,7 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 	}
 
 	AmplifierServletRequest searchRequest;
-	HashMap resultList 	= new HashMap();
+	HashMap parameters;
 	HashMap	searchFields;
 	final static String PLUS 	= "+";
 	final static String NOT 	= "-";	
