@@ -15,8 +15,7 @@ public class TestLuceneSearcher extends AbstractSearchTestCase
 		super(name);
 	}
 	
-	public void testNewSearcherWithNoIndexDirectory()
-		throws BulletinIndexException
+	public void testNewSearcherWithNoIndexDirectory() throws Exception
 	{
 		deleteIndexDir();
 		BulletinSearcher searcher = openBulletinSearcher();

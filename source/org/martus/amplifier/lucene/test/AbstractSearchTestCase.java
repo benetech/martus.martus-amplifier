@@ -1,7 +1,6 @@
 package org.martus.amplifier.lucene.test;
 
 import java.io.File;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -52,8 +51,7 @@ public abstract class AbstractSearchTestCase
 		DirectoryTreeRemover.deleteEntireDirectoryTree(new File(basePath));
 	}
 	
-	public void testClearIndex() 
-		throws BulletinIndexException
+	public void testClearIndex() throws Exception
 	{
 		UniversalId bulletinId = UniversalId.createDummyUniversalId();
 		FieldDataPacket fdp = generateFieldDataPacket(bulletinId);
@@ -90,8 +88,7 @@ public abstract class AbstractSearchTestCase
 		} 		
 	}
 	
-	public void testFindBulletin() 
-		throws BulletinIndexException
+	public void testFindBulletin() throws Exception
 	{
 		UniversalId bulletinId = UniversalId.createDummyUniversalId();
 		FieldDataPacket fdp = generateFieldDataPacket(bulletinId);
@@ -113,8 +110,7 @@ public abstract class AbstractSearchTestCase
 		}
 	}
 	
-	public void testIndexAndSearch() 
-		throws BulletinIndexException, ParseException
+	public void testIndexAndSearch() throws Exception
 	{
 		UniversalId bulletinId = UniversalId.createDummyUniversalId();
 		FieldDataPacket fdp = generateSampleData(bulletinId);		
@@ -148,8 +144,7 @@ public abstract class AbstractSearchTestCase
 		
 	}
 	
-	public void testReconstructFieldDataPacket()
-		throws BulletinIndexException
+	public void testReconstructFieldDataPacket()  throws Exception
 	{
 		UniversalId bulletinId = UniversalId.createDummyUniversalId();
 		FieldDataPacket fdp = generateSampleData(bulletinId);		
@@ -204,7 +199,7 @@ public abstract class AbstractSearchTestCase
 		}
 	}
 	
-	public void testInterleavedAccess() throws BulletinIndexException
+	public void testInterleavedAccess()  throws Exception
 	{
 		BulletinIndexer indexer = null;
 		BulletinSearcher searcher = null;
@@ -236,7 +231,7 @@ public abstract class AbstractSearchTestCase
 		
 	}
 	
-	public void testSearchResultsAfterClose() throws BulletinIndexException
+	public void testSearchResultsAfterClose() throws Exception
 	{
 		UniversalId bulletinId 	= UniversalId.createDummyUniversalId();
 		FieldDataPacket fdp 	= generateSampleData(bulletinId);		
@@ -266,7 +261,7 @@ public abstract class AbstractSearchTestCase
 		}
 	}
 	
-	public void testSearchAllFields() throws BulletinIndexException
+	public void testSearchAllFields() throws Exception
 	{
 		UniversalId bulletinId 	= UniversalId.createDummyUniversalId();
 		FieldDataPacket fdp 	= generateSampleData(bulletinId);		
@@ -341,7 +336,7 @@ public abstract class AbstractSearchTestCase
 		}
 	}
 
-	public void testSearchForStopWords() throws BulletinIndexException
+	public void testSearchForStopWords() throws Exception
 	{
 		UniversalId bulletinId 	= UniversalId.createDummyUniversalId();
 		FieldDataPacket fdp 	= generateSampleData(bulletinId);		
@@ -379,7 +374,7 @@ public abstract class AbstractSearchTestCase
 		}
 	}
 
-	public void testSearchForWildCards() throws BulletinIndexException
+	public void testSearchForWildCards() throws Exception
 	{
 		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
 		FieldDataPacket fdp1 	= generateSampleData(bulletinId1);		
@@ -441,7 +436,7 @@ public abstract class AbstractSearchTestCase
 		}
 	}
 
-	public void testSearchForLanguageReturned() throws BulletinIndexException
+	public void testSearchForLanguageReturned() throws Exception
 	{
 		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
 		FieldDataPacket fdp1 	= generateSampleData(bulletinId1);		
@@ -474,7 +469,7 @@ public abstract class AbstractSearchTestCase
 		}
 	}
 
-	public void testSearchEmptyField() throws BulletinIndexException
+	public void testSearchEmptyField() throws Exception
 	{
 		UniversalId bulletinId 	= UniversalId.createDummyUniversalId();
 		FieldDataPacket fdp 	= generateSampleFlexiData(bulletinId);		
@@ -519,7 +514,7 @@ public abstract class AbstractSearchTestCase
 		}
 	}
 	
-	public void testLuceneSearchQueries() throws BulletinIndexException,ParseException
+	public void testLuceneSearchQueries() throws Exception
 	{
 		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
 		FieldDataPacket fdp1 	= generateSampleData(bulletinId1);		
@@ -558,7 +553,7 @@ public abstract class AbstractSearchTestCase
 		}
 	}
 	
-	public void testAdvancedSearchEventDateOnly() throws BulletinIndexException,ParseException
+	public void testAdvancedSearchEventDateOnly() throws Exception
 	{
 		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
 		FieldDataPacket fdp1 	= generateSampleData(bulletinId1);		
@@ -597,7 +592,7 @@ public abstract class AbstractSearchTestCase
 		}
 	}	
 	
-	public void testAdvancedSearchCombineEventDateAndBulletineField() throws BulletinIndexException,ParseException
+	public void testAdvancedSearchCombineEventDateAndBulletineField() throws Exception
 	{
 		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
 		FieldDataPacket fdp1 = generateSampleData(bulletinId1);		
@@ -638,7 +633,7 @@ public abstract class AbstractSearchTestCase
 		}
 	}
 	
-	public void testAdvancedSearchCombineEventDateAndEntryDate() throws BulletinIndexException,ParseException
+	public void testAdvancedSearchCombineEventDateAndEntryDate() throws Exception
 	{
 		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
 		FieldDataPacket fdp1 	= generateSampleData(bulletinId1);		
@@ -688,7 +683,7 @@ public abstract class AbstractSearchTestCase
 		}
 	}
 	
-	public void testAdvancedSearchCombineEventDateAndBulletineFieldAndLanguage() throws BulletinIndexException,ParseException
+	public void testAdvancedSearchCombineEventDateAndBulletineFieldAndLanguage() throws Exception
 	{
 		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
 		FieldDataPacket fdp1 	= generateSampleData(bulletinId1);		
@@ -746,7 +741,7 @@ public abstract class AbstractSearchTestCase
 		}
 	}
 	
-	public void testAdvancedSearchCombineEventDateAndBulletineFieldAndLanguageAndEntryDate() throws BulletinIndexException,ParseException
+	public void testAdvancedSearchCombineEventDateAndBulletineFieldAndLanguageAndEntryDate() throws Exception
 	{
 		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
 		FieldDataPacket fdp1 = generateSampleData(bulletinId1);		
@@ -828,7 +823,7 @@ public abstract class AbstractSearchTestCase
 		}
 	}
 	
-	public void testAdvancedSearchCombineEventDateAndFilterWords() throws BulletinIndexException,ParseException
+	public void testAdvancedSearchCombineEventDateAndFilterWords() throws Exception
 	{
 		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
 		FieldDataPacket fdp1 	= generateSampleData(bulletinId1);		
@@ -902,7 +897,7 @@ public abstract class AbstractSearchTestCase
 		}
 	}
 	
-	public void test4FieldsQuery() throws BulletinIndexException,ParseException
+	public void test4FieldsQuery() throws Exception
 	{
 		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
 		FieldDataPacket fdp1 	= generateSampleData(bulletinId1);		
@@ -969,7 +964,7 @@ public abstract class AbstractSearchTestCase
 		fields.remove(WITHOUTWORDS_TAG);			
 	}
 	
-	public void testAdvancedSearchSortByTitle() throws BulletinIndexException,ParseException
+	public void testAdvancedSearchSortByTitle() throws Exception
 	{
 		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
 		FieldDataPacket fdp1 	= generateSampleData(bulletinId1);		
@@ -1028,7 +1023,7 @@ public abstract class AbstractSearchTestCase
 		}
 	}				
 		
-	public void testAdvancedSearchSortByEventDate() throws BulletinIndexException,ParseException
+	public void testAdvancedSearchSortByEventDate() throws Exception
 	{
 		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
 		FieldDataPacket fdp1 	= generateSampleData(bulletinId1);		

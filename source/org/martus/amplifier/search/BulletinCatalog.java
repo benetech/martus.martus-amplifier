@@ -26,24 +26,32 @@ public class BulletinCatalog
    
 	public boolean bulletinHasBeenIndexed(UniversalId universalId)
 	{
-        AmplifierConfiguration config = AmplifierConfiguration.getInstance();
-        BulletinSearcher searcher = null;
-        try {
-        	searcher = 
-        		new LuceneBulletinSearcher(config.getBasePath());
-        	return (searcher.lookup(universalId) != null);
-        } catch (BulletinIndexException e) {
-        	Logger.getLogger("catalog").severe("Catalog error: " + e.getMessage());
-        } finally {
-        	if (searcher != null) {
-        		try {
-        			searcher.close();
-        		} catch (BulletinIndexException e) {
-        			Logger.getLogger("catalog").severe("Catalog error: " + e.getMessage());
-        		}
-        	}
-        }
-        return false;
+		AmplifierConfiguration config = AmplifierConfiguration.getInstance();
+		BulletinSearcher searcher = null;
+		try
+		{
+			searcher = new LuceneBulletinSearcher(config.getBasePath());
+			return (searcher.lookup(universalId) != null);
+		}
+		catch (Exception e)
+		{
+			Logger.getLogger("catalog").severe("Catalog error: " + e.getMessage());
+		}
+		finally
+		{
+			if (searcher != null)
+			{
+				try
+				{
+					searcher.close();
+				}
+				catch (Exception e)
+				{
+					Logger.getLogger("catalog").severe("Catalog error: " + e.getMessage());
+				}
+			}
+		}
+		return false;
 	}
 	
 	private static BulletinCatalog instance = new BulletinCatalog();

@@ -71,7 +71,7 @@ public class DoSearch extends AmplifierServlet implements SearchResultConstants
 	}
 
 	public List getSearchResults(AmplifierServletRequest request)
-		throws Exception, BulletinIndexException
+		throws Exception
 	{
 		HashMap fields = new HashMap();				
 		String queryString = request.getParameter(RESULT_BASIC_QUERY_KEY);
@@ -97,31 +97,34 @@ public class DoSearch extends AmplifierServlet implements SearchResultConstants
 		return new LuceneBulletinSearcher(indexPath);
 	}
 	
-	public List getResults(HashMap fields) throws BulletinIndexException
+	public List getResults(HashMap fields) throws Exception
 	{
 		BulletinSearcher searcher = openBulletinSearcher();
 		ArrayList list = new ArrayList();
 		
-		try {
+		try
+		{
 			Results results = searcher.search(fields);
-						
+
 			int numResults = results.getCount();
 			for (int i = 0; i < numResults; i++)
 			{
 				BulletinInfo bulletinInfo = results.getBulletinInfo(i);
-				convertLanguageCode(bulletinInfo);																						
+				convertLanguageCode(bulletinInfo);
 				formatDataForHtmlDisplay(bulletinInfo.getFields());
 				list.add(bulletinInfo);
 			}
-			
+
 			String sortField = (String) fields.get(RESULT_SORTBY_KEY);
 			if (sortField != null)
-				SearchResults.sortBulletins(list, sortField);					
-	
-		} finally {
+				SearchResults.sortBulletins(list, sortField);
+
+		}
+		finally
+		{
 			searcher.close();
 		}
-		return list;	
+		return list;
 	}
 	
 	public void convertLanguageCode(BulletinInfo bulletinInfo)

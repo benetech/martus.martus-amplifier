@@ -57,24 +57,32 @@ public class LuceneBulletinSearcher
 		throws BulletinIndexException
 	{
 		File indexDir = LuceneBulletinIndexer.getIndexDir(baseDirName);
-		try {
+		try
+		{
 			LuceneBulletinIndexer.createIndexIfNecessary(indexDir);
 			searcher = new IndexSearcher(indexDir.getPath());
-		} catch (IOException e) {
+		}
+		catch (IOException e)
+		{
 			throw new BulletinIndexException(
-				"Could not create LuceneBulletinSearcher", e);
+				"Could not create LuceneBulletinSearcher",
+				e);
 		}
 	}	
 	
 	private Results getLuceneResults(Query query)
 		throws BulletinIndexException 
 	{
-		try {
+		try
+		{
 			return new LuceneResults(searcher.search(query));
-		} catch (IOException e) {
+		}
+		catch (IOException e)
+		{
 			throw new BulletinIndexException(
-				"An error occurred while executing query " + query.toString(), e);
-		}		
+				"An error occurred while executing query " + query.toString(),
+				e);
+		}
 	}
 	
 	public Results search(String field, String queryString)
@@ -100,24 +108,34 @@ public class LuceneBulletinSearcher
 	private Query queryParser(String query, String field, String msg)
 			throws BulletinIndexException 
 	{
-		try {
-			return QueryParser.parse(query, field, 		
+		try
+		{
+			return QueryParser.parse(
+				query,
+				field,
 				LuceneBulletinIndexer.getAnalyzer());
-		} catch(ParseException pe) {
-			throw new BulletinIndexException( msg + query, pe);
+		}
+		catch (ParseException pe)
+		{
+			throw new BulletinIndexException(msg + query, pe);
 		}
 	}
 
 	private Query multiFieldQueryParser(String query, String[] fields, String msg)
 			throws BulletinIndexException 
 	{
-		try {
-			return MultiFieldQueryParser.parse(query, fields, 		
+		try
+		{
+			return MultiFieldQueryParser.parse(
+				query,
+				fields,
 				LuceneBulletinIndexer.getAnalyzer());
-		} catch(ParseException pe) {
-			throw new BulletinIndexException( msg + query, pe);
 		}
-	}				
+		catch (ParseException pe)
+		{
+			throw new BulletinIndexException(msg + query, pe);
+		}
+	}
 	
 	private Query queryEventDate(HashMap fields)
 			throws BulletinIndexException 
@@ -250,15 +268,17 @@ public class LuceneBulletinSearcher
 		Query query = new TermQuery(term);
 		
 		Results results;
-		try {
+		try
+		{
 			results = new LuceneResults(searcher.search(query));
-		} catch (IOException e) {
+		}
+		catch (IOException e)
+		{
 			throw new BulletinIndexException(
-				"An error occurred while searching query " + 
-					query.toString(BULLETIN_UNIVERSAL_ID_INDEX_FIELD), 
+				"An error occurred while searching query "
+					+ query.toString(BULLETIN_UNIVERSAL_ID_INDEX_FIELD),
 				e);
 		}
-		
 		int numResults = results.getCount();
 		if (numResults == 0) {
 			return null;
@@ -271,14 +291,9 @@ public class LuceneBulletinSearcher
 				bulletinId + "; found " + numResults + " results");
 	}
 
-	public void close() throws BulletinIndexException
+	public void close() throws Exception
 	{
-		try {
-			searcher.close();
-		} catch (IOException e) {
-			throw new BulletinIndexException(
-				"Unable to close the searcher: ", e);
-		}
+		searcher.close();
 	}
 
 	public static String getStartDateRange(String value)
