@@ -128,18 +128,18 @@ public class SearchBean implements Serializable
 		startIndex = 0;
 	}
 	
-	private BulletinSearcher openBulletinSearcher() 
+	BulletinSearcher openBulletinSearcher() 
 		throws BulletinIndexException
 	{
 		return new LuceneBulletinSearcher(indexPath);
 	}
 	
-	private String query;
-	private Date startDate;
-	private Date endDate;
-	private String field;
-	private int maxCacheSize;
-	private int startIndex;
+	String query;
+	Date startDate;
+	Date endDate;
+	String field;
+	int maxCacheSize;
+	int startIndex;
 	private String indexPath;
 	private SearchResultsBean results;
 	

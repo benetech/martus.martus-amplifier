@@ -148,7 +148,7 @@ public class LuceneBulletinSearcher
 				bulletinId + "; found " + numResults + " results");
 	}
 
-	private static String convertDateRange(String value)
+	static String convertDateRange(String value)
 	{
 		MartusFlexidate mfd = MartusFlexidate.createFromMartusDateString(value);
 	
