@@ -1,0 +1,182 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>User Stories</title>
+</head>
+
+<body>
+
+<p><b>Benetech Martus Amplifier</b></p>
+<hr>
+
+<p><b>User Stories</b></p>
+<ul>
+  <li>user searches for a bulletin that just got added to backup server, and the
+    search returns that result
+    <ul>
+      <li>polling
+        <ul>
+          <li>when amp starts, it sets up a chron-like timer</li>
+          <li>whenever timer rings (e.g. once an hour), amp polls the servers</li>
+        </ul>
+      </li>
+      <li>[dan] amp gets list of servers to sync with
+        <ul>
+          <li>get list from some sort of config file set up by admin person who
+            installed amp</li>
+        </ul>
+      </li>
+      <li>[sri] amp makes request to server to get list of new bulletins
+        <ul>
+          <li>request handled at first just by gateway stub, later by the
+            gateway calling the handler interface</li>
+        </ul>
+      </li>
+      <li>[brian] amp gets list of bulletins it already has</li>
+      <li>[brian] amp compares the new list to the old list of what it already has</li>
+      <li>[sri] amp gets new bulletins (and attachments) from server
+        <ul>
+          <li>gateway does decryption and unzipping</li>
+        </ul>
+      </li>
+      <li>[dan] amp indexes new documents</li>
+      <li>[dan] amp deals with user any access concurrency problems during re-indexing</li>
+    </ul>
+  </li>
+  <li>search page
+    <ul>
+      <li>[working] user types URL in browser, browser returns amp search page</li>
+      <li>[working] amp search page has a text field and a search button</li>
+      <li>[dan] user hits search button with search-text field empty, browser returns
+        something</li>
+      <li> [in progress] Have a checkbox for case sensitive/insensitive (default should be insensitive)</li>
+      <li> [in progress] Have a checkbox for whole word/partial word (default should be partial word)</li>
+      <li> [in progress] Have a different search page that allows searching a date range in EventDate</li>
+      <li>[in progress] User specifies which field(s) to search (using a multi-select dropdown)</li>
+    </ul>
+  </li>
+  <li>contact page
+    <ul>
+      <li>[brian] user reports bug to Benetech</li>
+    </ul>
+  </li>
+  <li>faq page
+    <ul>
+      <li>[dan, brian] user sees list of questions and answers</li>
+    </ul>
+  </li>
+  <li>result list page
+    <ul>
+      <li>[working] Display search results in a table</li>
+      <li>[working] results table has exactly one row for each search result</li>
+      <li>[working] results table has one column for each field: Author, EventDate, Title</li>
+      <li>[working] results table has one bulletin-link in each row</li>
+      <li>[working] user clicks on bulletin-link in results tables, browser goes to
+        bulletin page</li>
+      <li>[sri] user can sort by column (e.g. author, title, entry date) by clicking
+        on the field title</li>
+      <li>[dan] if results don't fit on one page, results are split between pages</li>
+      <li>[working?] user prints results page (using browser print button)</li>
+      <li>[working?] user sends copy of results page in e-mail (by copy &amp; paste?)</li>
+    </ul>
+  </li>
+  <li>bulletin page&nbsp;
+    <ul>
+      <li>[working] bulletin page is a single-page view of all the fields in that bulletin</li>
+      <li>[dan] bulletin page shows attachments</li>
+      <li>[working] Add a "next" button to the single bulletin view page that takes you to the next match</li>
+      <li>[working] Add a "previous" button to the single bulletin view page</li>
+      <li>[working?] user prints results page (using browser print button)</li>
+      <li>[working?] user sends copy of bulletin page in e-mail (by copy &amp; paste?)</li>
+    </ul>
+  </li>
+  <li>error page (error.jsp?)
+    <ul>
+      <li>[sri] user sees clear message if back-up server is down</li>
+      <li>[sri] user sees clear message if search returned no results</li>
+    </ul>
+  </li>
+</ul>
+<p><b>Things that are <font color="#FF0000"> not</font> user stories</b></p>
+<ul>
+  <li>user searches private bulletins</li>
+  <li>user searches private fields</li>
+  <li> user searches private bulletin attachments</li>
+  <li>user searches public bulletin attachments</li>
+  <li>user subscribes to e-mail follow-up announcements about a bulletin</li>
+  <li>amplifier sends e-mail to subscribing users when a bulletin is updated</li>
+      <li>search page has a pop-up list of authors</li>
+</ul>
+<p><b>Admin Stories</b></p>
+<ul>
+  <li>CD-ROM
+    <ul>
+      <li>admin installs amplifier from a CD-ROM</li>
+    </ul>
+  </li>
+  <li>download page
+    <ul>
+      <li>admin reads FAQ about installing amp</li>
+      <li>admin downloads current version of martus amp separate from server</li>
+      <li>admin downloads martus server, which includes amp</li>
+    </ul>
+  </li>
+  <li>installation
+    <ul>
+      <li>admin installs martus amp at same time as martus server</li>
+      <li>admin installs martus amp independent of martus server</li>
+      <li>admin installs martus amp in under 5 minutes</li>
+      <li>admin installs martus amp without typing</li>
+      <li>admin installs martus amp without agreeing to more than one set of license agreements</li>
+      <li>admin installs new martus amp over old installation, with old
+        installation running</li>
+    </ul>
+  </li>
+  <li>ongoing admin
+    <ul>
+      <li>admin starts server</li>
+      <li>admin stops server</li>
+      <li>admin checks on status of server</li>
+      <li> amp server finds backup servers without admin help</li>
+    </ul>
+  </li>
+  <li>admin reports bug to Benetech (simple e-mail link from web page?)</li>
+</ul>
+<p><b>Developer stories</b></p>
+<ul>
+  <li>start here
+    <ul>
+      <li>new developer comes to amp project and is given a &quot;start
+        here&quot; document</li>
+      <li>&quot;start here&quot; document includes complete instructions for
+        installing tools (e.g. eclipse)</li>
+      <li>&quot;start here&quot; document includes complete instructions for
+        checking out source</li>
+      <li>&quot;start here&quot; document includes complete instructions for
+        getting clean build</li>
+      <li>&quot;start here&quot; document includes complete instructions for
+        running unit tests</li>
+    </ul>
+  </li>
+  <li>tech docs
+    <ul>
+      <li>tech docs (e.g. list of jars used)</li>
+      <li>[dan] package dependencies</li>
+      <li>[brian] brief project history</li>
+    </ul>
+  </li>
+</ul>
+<p><b>Legal stories</b></p>
+<ul>
+  <li>add copyright statements to code</li>
+  <li>review license agreements for included components (e.g. lucene) and see in
+    what ways they limit distribution of the amplifier</li>
+  <li>buy licenses for WinZip</li>
+</ul>
+
+</body>
+
+</html>
