@@ -33,6 +33,7 @@ import org.martus.amplifier.velocity.AmplifierServlet;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
 import org.martus.amplifier.velocity.AmplifierServletResponse;
 import org.martus.amplifier.velocity.AmplifierServletSession;
+import org.martus.common.crypto.MartusCrypto;
 
 public class FoundBulletin extends AmplifierServlet
 {
@@ -46,6 +47,9 @@ public class FoundBulletin extends AmplifierServlet
 		int index = Integer.parseInt(request.getParameter("index"));
 		BulletinInfo info = (BulletinInfo)bulletins.get(index - 1);
 		context.put("bulletin", info);
+		context.put("accountPublicCode", MartusCrypto.formatPublicCode(MartusCrypto.computePublicCode(info.getAccountId())));
+		context.put("bulletinLocalId", info.getLocalId());
+
 		if(info.hasContactInfo())
 			context.put("contactInfo", "true");
 		int previousIndex = index - 1;

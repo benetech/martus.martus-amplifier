@@ -78,6 +78,11 @@ public class BulletinInfo implements Serializable
 	{
 		return bulletinId.getAccountId();
 	}
+
+	public String getLocalId()
+	{
+		return bulletinId.getLocalId();
+	}
 	
 	public void putContactInfo(File infoFile)
 	{

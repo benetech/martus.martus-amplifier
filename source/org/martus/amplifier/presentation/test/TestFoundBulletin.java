@@ -37,6 +37,7 @@ import org.martus.amplifier.presentation.SimpleSearch;
 import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinInfo;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
+import org.martus.common.crypto.MartusCrypto;
 import org.martus.common.packet.UniversalId;
 import org.martus.common.test.TestCaseEnhanced;
 
@@ -104,6 +105,21 @@ public class TestFoundBulletin extends TestCaseEnhanced
 		servlet.selectTemplate(request, response, context);
 		assertEquals("Didn't get searchedFor correct", "title", context.get("searchedFor"));
 	}
+	
+	public void testAccountBulletinIds() throws Exception
+	{
+		MockAmplifierRequest request = new MockAmplifierRequest();
+		MockAmplifierResponse response = null;
+		Context context = createSampleSearchResults(request, response);
+	
+	
+		FoundBulletin servlet = new FoundBulletin();
+		servlet.selectTemplate(request, response, context);
+		String publicCode = MartusCrypto.formatPublicCode(MartusCrypto.computePublicCode(bulletinInfo1.getAccountId()));
+		assertEquals("Didn't get account public code correct", publicCode, context.get("accountPublicCode"));
+		assertEquals("Didn't get bulletin local ID correct", bulletinInfo1.getLocalId(), context.get("bulletinLocalId"));
+	}
+	
 	
 	public void testPopulateSimpleSearch() throws Exception
 	{
@@ -205,7 +221,7 @@ public class TestFoundBulletin extends TestCaseEnhanced
 				throw new Exception("malformed query");
 			
 			Vector infos = new Vector();
-			BulletinInfo bulletinInfo1 = new BulletinInfo(uid1);
+			bulletinInfo1 = new BulletinInfo(uid1);
 			bulletinInfo1.set("title", bulletin1Title);
 			infos.add(bulletinInfo1);
 			
@@ -222,5 +238,6 @@ public class TestFoundBulletin extends TestCaseEnhanced
 			return infos;
 		}
 	}
+	BulletinInfo bulletinInfo1;
 }
 
