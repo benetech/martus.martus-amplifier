@@ -36,11 +36,6 @@ public class AdvancedSearchInfo
 		fields = defaultFields;		
 	}
 
-	public void set(String field, String value)
-	{
-		fields.put(field, value);
-	}
-
 	public String get(String field)
 	{
 		return (String) fields.get(field);
