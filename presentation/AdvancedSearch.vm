@@ -1,5 +1,6 @@
 <html>
     <head>
+    	#include ("Meta.vm")
         <title>Martus Amplifier Search Query</title>
     </head>
     
@@ -175,9 +176,7 @@
 		</table>
 		<br/>
 		<center>
-			<font size='-2'>
-		        ©2003 Benetech - Technology serving humanity
-		    </font>
+    		#include("Copyright.vm")
 		</center>
     </body>
 </html>
