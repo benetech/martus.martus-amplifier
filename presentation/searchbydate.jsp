@@ -33,8 +33,8 @@
                                 </c:forEach>
                             </select>
                             is 
-			</p>
-			<p> &nbsp;&nbsp;&nbsp;between 
+			</p>		
+			<p> &nbsp;&nbsp;&nbsp;&nbsp;between 
                             <select name="startMonth">
                                 <c:forEach begin="0" end="11" var="i">
                                     <option value="<c:out value="${i}"/>">
@@ -53,9 +53,8 @@
                                 </c:forEach>
                             </select>
                             
-                        </p>
-                        <p>                                
-                            &nbsp;&nbsp;&nbsp;and
+                        </p>				
+                        <p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and &nbsp;&nbsp;&nbsp&nbsp;&nbsp
                             <select name="endMonth">
                                 <c:forEach begin="0" end="11" var="i">
                                     <option value="<c:out value="${i}"/>">
@@ -75,9 +74,13 @@
                             </select>
                             
                             <input type="submit" value="Search"/>
-                        </p><p></p>
+                        </p><p>&nbsp;</p>	
                         <p>
-                            <input name="resultsPerPage" size="4" value="100"/>&nbsp;Results Per Page&nbsp;
+			     <select name="requltsPerPage">
+                                <c:forEach begin="20" end="100" var="i">
+                                    <option><c:out value="${i}"/></option>
+                                </c:forEach>
+                            </select> &nbsp;Results Per Page&nbsp;                           
                         </p>
                         </form>
                     </td>
