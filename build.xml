@@ -46,6 +46,9 @@
 <!-- ================================================================== -->
   <target name="build" depends="init">
     
+    <!-- Create web lib dir, if necessary. -->
+    <mkdir dir="${web-app-lib}"/>
+    
     <!-- Jar up martus-common and throw it in the web app dir -->
     <jar jarfile="${web-app-lib}/martus-common.jar"
    		basedir="${martus-dir}"
