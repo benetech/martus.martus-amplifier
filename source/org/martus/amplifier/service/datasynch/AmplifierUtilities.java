@@ -60,6 +60,8 @@ public class AmplifierUtilities{
 			{
 				bufferedOutputStream.write(buffer, 0, len);	
 			}
+			bufferedOutputStream.flush();
+			fileOutputStream.flush();
 			in.close();
 			bufferedOutputStream.close();
 			fileOutputStream.close();

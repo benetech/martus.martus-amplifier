@@ -1,6 +1,8 @@
 package org.martus.amplifier.service.datasynch;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.FileNotFoundException;
@@ -135,9 +137,9 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
 		Vector result = new Vector();
 		File tempFile = null;
 		File bulletinZippedFile = null;
-		String tempFileName = "";
 		String bulletinPrefix = "F-";
 		String attachmentPrefix = "A-";
+		String dir = "";
 			  
 		// 1) retrieve Bulletin in Chunks and get the Zip file
 		//bulletinZippedFile = retrieveOneBulletin(uid);
@@ -159,21 +161,19 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
 			for(int i= 0; i< result.size(); i++)
 			{
 				tempFile = (File)result.get(i);	
-				System.out.println("FileName is "+ tempFile.getName());
-				tempFileName = tempFile.getName();
-				if( tempFileName.startsWith(bulletinPrefix) )
+				if( tempFile.getName().startsWith(bulletinPrefix) )
 				{
-					//save to Bulletin folder
+					dir = bulletinWorkingDirectory;
+					saveFileToFolder(tempFile, dir);
 				}
 				else
 				{
-					if( tempFileName.startsWith(attachmentPrefix) )
+					if( tempFile.getName().startsWith(attachmentPrefix) )
 					{
-						//save to attachment folder	
-					}
-					
+						dir = attachmentWorkingDirectory;
+						saveFileToFolder(tempFile, dir);
+					}				
 				}
-			
 			}
 		}	
 		else
@@ -182,6 +182,44 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
 		}	
 			
 		return result;		
+	}
+	
+	
+	
+	public  void saveFileToFolder(File fileToSave, String dir)
+	{
+		
+		String outFileName = fileToSave.getName();
+		String path = dir + File.separator + outFileName;	
+		logger.info("saving file "+ path);
+		try
+		{
+			
+			File outFile = new File(dir);
+			if(! outFile.exists())
+			{			
+				logger.info("Creating directory "+ dir);
+				outFile.mkdir();
+			}
+			FileInputStream inStream = new FileInputStream(fileToSave);
+			FileOutputStream outStream = new FileOutputStream(path);
+			BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outStream);
+			byte[] buffer = new byte[1024];
+			int len = 0;
+			while( (len=inStream.read(buffer)) >= 0)
+			{
+				bufferedOutputStream.write(buffer, 0, len);	
+			}
+			bufferedOutputStream.flush();
+			outStream.flush();
+			inStream.close();
+			bufferedOutputStream.close();
+			outStream.close();	
+		}
+		catch(IOException ioe)
+		{
+		  logger.severe("AmplifierNetworkGateway.saveFileToFolder:IOException "+ioe.getMessage());
+		}
 	}
 	
 	
