@@ -18,11 +18,12 @@ public class AmplifierNetworkGatewayTest extends AbstractAmplifierDataSynchTest
 	
 	public void testGetAllBulletinIds()
 	{
-		List testBulletinsList = AmplifierNetworkGateway.getAllBulletinIds();
+		System.out.println("in testGetAllBulletinIds");
+		AmplifierNetworkGateway amplifierGateway = AmplifierNetworkGateway.getInstance();
+		List testBulletinsList = amplifierGateway.getAllBulletinIds();
 		Iterator testBulletinIterator = testBulletinsList.iterator();
 		String currentBulletinId = null;
 		String[] correctData = {"11", "12", "21", "22"};
-		System.out.println("in testGetAllBulletinIds");
 		int counter = 0;
 		while(testBulletinIterator.hasNext())
 		{
@@ -35,8 +36,9 @@ public class AmplifierNetworkGatewayTest extends AbstractAmplifierDataSynchTest
 	public void testGetBulletin()
 	{
 		System.out.println("in testGetBulletin");
+		AmplifierNetworkGateway amplifierGateway = AmplifierNetworkGateway.getInstance();		
 		UniversalId uid = UniversalId.createFromAccountAndLocalId(sampleAccountId, sampleLocalId);
-		Vector list = AmplifierNetworkGateway.getBulletin(uid);				
+		Vector list = amplifierGateway.getBulletin(uid);				
 		assertEquals(list.size(), 3);			
 
 	}	

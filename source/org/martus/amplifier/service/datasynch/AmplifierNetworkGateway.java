@@ -12,13 +12,24 @@ import java.util.zip.ZipFile;
 import java.util.zip.ZipEntry;
 import java.util.logging.Logger;
 
+
+import org.martus.amplifier.service.datasynch.BackupServerInfo;
+import org.martus.amplifier.service.datasynch.BackupServerManager;
+
+import org.martus.amplifier.common.datasynch.AmplifierBulletinRetrieverGatewayInterface;
 import org.martus.amplifier.common.datasynch.AmplifierClientSideNetworkGateway;
-import org.martus.amplifier.common.datasynch.AmplifierMartusUtilities;
+import org.martus.amplifier.common.datasynch.AmplifierNetworkInterface;
+import org.martus.amplifier.common.datasynch.AmplifierClientSideNetworkHandlerUsingXMLRPC;
+import org.martus.amplifier.common.datasynch.AmplifierClientSideNetworkHandlerUsingXMLRPC.SSLSocketSetupException;
+
+
 import org.martus.amplifier.exception.MartusAmplifierApplicationException;
 
-import org.martus.common.BulletinRetrieverGatewayInterface;
+
 import org.martus.common.MartusCrypto;
+import org.martus.common.MartusUtilities;
 import org.martus.common.NetworkInterfaceConstants;
+import org.martus.common.NetworkInterfaceXmlRpcConstants;
 import org.martus.common.Base64.InvalidBase64Exception;
 import org.martus.common.MartusCrypto.MartusSignatureException;
 import org.martus.common.MartusUtilities.ServerErrorException;
@@ -29,13 +40,35 @@ import org.martus.common.UniversalId;
 
 public class AmplifierNetworkGateway implements IDataSynchConstants
 {
-	public AmplifierNetworkGateway(BulletinRetrieverGatewayInterface gatewayToUse, MartusCrypto securityToUse)
+	private static AmplifierNetworkGateway instance = null;
+	private static AmplifierBulletinRetrieverGatewayInterface gateway;
+	private static MartusCrypto security;
+	private static Logger logger = Logger.getLogger(DATASYNC_LOGGER);
+	private static List serverInfoList = null;
+	
+	
+	public AmplifierNetworkInterface currentNetworkInterfaceHandler;
+	public AmplifierClientSideNetworkGateway currentNetworkInterfaceGateway;
+	
+
+	protected AmplifierNetworkGateway()
 	{
-		gateway = gatewayToUse;
-		security = securityToUse;
+		super();
+		//have to initialize gateway and security
+		gateway = getCurrentNetworkInterfaceGateway();
+//		security
+		serverInfoList = BackupServerManager.getInstance().getBackupServersList();
 	}
 	
-	private static List getAllAccountIds()
+	public static AmplifierNetworkGateway getInstance()
+	{
+		if(instance == null)
+		instance = new AmplifierNetworkGateway();
+		return instance;
+	}
+	
+	
+	public List getAllAccountIds()
 	{
 		//fake data
 		List fakeAccountIds = new ArrayList();
@@ -44,7 +77,7 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
 		return fakeAccountIds;
 	}
 	
-	private static List getAccountBulletinIds(String accountId)
+	public List getAccountBulletinIds(String accountId)
 	{
 		if(accountId == null)
 			return null;
@@ -63,7 +96,7 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
 		return fakeBulletinIds;
 	}
 	
-	public static List getAllBulletinIds()
+	public List getAllBulletinIds()
 	{
 		List allBulletinIds = new ArrayList();
 		List allAccountIds = getAllAccountIds();
@@ -82,7 +115,7 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
 	}
 	
 	
-	public static Vector getBulletin(UniversalId uid)
+	public Vector getBulletin(UniversalId uid)
 	{
 		Vector result = new Vector();
 		File tempFile = null;
@@ -105,7 +138,7 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
 	}
 	
 	
-	public static File retrieveOneBulletin(UniversalId uid)
+	public File retrieveOneBulletin(UniversalId uid)
 	{
 		File tempFile = null;
 		FileOutputStream out = null;
@@ -118,7 +151,8 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
         	out = new FileOutputStream(tempFile);		
 		    try
 		 	{	
-				totalLength = AmplifierMartusUtilities.retrieveBulletinZipToStream(uid, out, chunkSize, gateway, security, null, null);
+				totalLength = MartusUtilities.retrieveBulletinZipToStream
+									(uid, out, chunkSize, gateway, security, null, null);
 			}
 			catch(Exception e)
 			{
@@ -143,8 +177,50 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
 		return tempFile;
 	}
 	
-	private static BulletinRetrieverGatewayInterface gateway;
-	//To initialize gateway with a server.
-	private static MartusCrypto security;
-	private static Logger logger = Logger.getLogger(DATASYNC_LOGGER);
+//methods copied/modified from MartusAPP	
+	private AmplifierClientSideNetworkGateway getCurrentNetworkInterfaceGateway()
+	{
+		if(currentNetworkInterfaceGateway == null)
+		{
+			currentNetworkInterfaceGateway = new AmplifierClientSideNetworkGateway(getCurrentNetworkInterfaceHandler());
+		}
+		
+		return currentNetworkInterfaceGateway;
+	}
+	
+	private AmplifierNetworkInterface getCurrentNetworkInterfaceHandler()
+	{
+		if(currentNetworkInterfaceHandler == null)
+		{
+			currentNetworkInterfaceHandler = createXmlRpcNetworkInterfaceHandler();
+		}
+
+		return currentNetworkInterfaceHandler;
+	}
+
+	private AmplifierNetworkInterface createXmlRpcNetworkInterfaceHandler() 
+	{
+		int index = 0;
+		BackupServerInfo serverInfo = (BackupServerInfo) serverInfoList.get(index);
+		String ourServer = serverInfo.getName();
+//		int ourPort = NetworkInterfaceXmlRpcConstants.MARTUS_PORT_FOR_SSL;
+		int ourPort = serverInfo.getPort();
+		try 
+		{
+			AmplifierClientSideNetworkHandlerUsingXMLRPC handler = new AmplifierClientSideNetworkHandlerUsingXMLRPC(ourServer, ourPort);
+		//	handler.getSimpleX509TrustManager().setExpectedPublicKey(getConfigInfo().getServerPublicKey());
+		    handler.getSimpleX509TrustManager().setExpectedPublicKey(serverInfo.getServerPublicKey());
+			return handler;
+		} 
+		catch (SSLSocketSetupException e) 
+		{
+			//TODO propagate to UI and needs a test.
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	
+	
+
 }
