@@ -1,4 +1,4 @@
-package org.martus.amplifier.test.presentation;
+package org.martus.amplifier.presentation.test;
 
 import java.util.List;
 import java.util.Vector;

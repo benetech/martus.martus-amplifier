@@ -1,4 +1,4 @@
-package org.martus.amplifier.test.datasynch;
+package org.martus.amplifier.service.datasynch.test;
 
 
 /**

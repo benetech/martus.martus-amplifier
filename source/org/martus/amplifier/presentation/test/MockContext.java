@@ -23,29 +23,43 @@ Software Foundation, Inc., 59 Temple Place - Suite 330,
 Boston, MA 02111-1307, USA.
 
 */
-package org.martus.amplifier.test.presentation;
+package org.martus.amplifier.presentation.test;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.martus.amplifier.common.AmplifierServletSession;
+import org.apache.velocity.context.Context;
 
-
-public class MockHttpSession implements AmplifierServletSession
+public class MockContext implements Context
 {
-	
-	public Object getAttribute(String key)
+
+	public Object put(String key, Object value)
 	{
-		if(attributes.containsKey(key))
-			return attributes.get(key);
+		return values.put(key, value);
+	}
+
+	public Object get(String key)
+	{
+		return values.get(key);
+	}
+
+	public boolean containsKey(Object arg0)
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public Object[] getKeys()
+	{
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public void setAttribute(String key , Object value)
+	public Object remove(Object arg0)
 	{
-		attributes.put(key, value);
+		// TODO Auto-generated method stub
+		return null;
 	}
 
-	Map attributes = new HashMap();
-
+	Map values = new HashMap();
 }

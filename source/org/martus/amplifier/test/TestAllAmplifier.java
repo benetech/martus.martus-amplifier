@@ -5,8 +5,8 @@ import junit.framework.TestSuite;
 
 import org.martus.amplifier.service.attachment.TestAllAttachment;
 import org.martus.amplifier.service.search.TestAllSearch;
-import org.martus.amplifier.test.datasynch.TestAllDataSynch;
-import org.martus.amplifier.test.presentation.TestAllPresentation;
+import org.martus.amplifier.service.datasynch.test.TestAllDataSynch;
+import org.martus.amplifier.presentation.test.TestAllPresentation;
 
 public class TestAllAmplifier extends TestSuite
 {

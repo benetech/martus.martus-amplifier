@@ -23,7 +23,7 @@ Software Foundation, Inc., 59 Temple Place - Suite 330,
 Boston, MA 02111-1307, USA.
 
 */
-package org.martus.amplifier.test.presentation;
+package org.martus.amplifier.presentation.test;
 
 import java.util.HashMap;
 import java.util.Map;
