@@ -94,7 +94,7 @@ use an uppercase OR between terms.
 <li><strong>Language:</strong> specify which language you would like your results returned in.  
 	If an author assigned a language to a bulletin, 
 	that language will be offered as a search option.</li>
-<li><strong>Display order:</strong>  specify how to sort your results – by author, 
+<li><strong>Display order:</strong>  specify how to sort your results - by author, 
 	title, event date, event location or by organization sponsoring the author.</li>
 </ul>
 
