@@ -263,12 +263,12 @@ public class MartusAmplifier
 				if(!toCallFile.isDirectory())
 				{
 					serversWeWillCall.add(getServerToCall(toCallFile, security));
-					log("Amp will call: " + toCallFile.getName());
+					log("will call: " + toCallFile.getName());
 				}
 			}
 		}
 
-		log("Amp Configured to call " + serversWeWillCall.size() + " servers");
+		log("Configured to call " + serversWeWillCall.size() + " servers");
 		return serversWeWillCall;
 	}
 
@@ -288,7 +288,7 @@ public class MartusAmplifier
 	
 	void log(String message)
 	{
-		coreServer.log(message);
+		coreServer.log("Amp: " + message);
 	}
 	
 	public static String getPresentationBasePath()
