@@ -39,28 +39,43 @@ public class AmplifierConfiguration implements IConfigurationConstants
 		return getGenericProperty(AMPLIFIER_WORKING_PATH);
 	}
 	
+	public String buildAmplifierBasePath(String directoryOrFile)
+	{
+		return buildGenericPath(getBasePath(), directoryOrFile);
+	}
+	
+	public String buildAmplifierBasePath(String folder, String file)
+	{
+		return buildGenericPath(getBasePath(), folder, file);
+	}
+
 	public String buildAmplifierWorkingPath(String directoryOrFile)
 	{
-		StringBuffer newWorkingPath = new StringBuffer(200); 
-		newWorkingPath.append(getWorkingPath());
-		newWorkingPath.append(File.separator);
-		newWorkingPath.append(directoryOrFile);
-		return newWorkingPath.toString();
-
+		return buildGenericPath(getWorkingPath(), directoryOrFile);
 	}
 	
 	public String buildAmplifierWorkingPath(String folder, String file)
 	{
-		StringBuffer newWorkingPath = new StringBuffer(200); 
-		newWorkingPath.append(getWorkingPath());
-		newWorkingPath.append(File.separator);
-		newWorkingPath.append(folder);
-		newWorkingPath.append(File.separator);
-		newWorkingPath.append(file);
-		return newWorkingPath.toString();
-
+		return buildGenericPath(getWorkingPath(), folder, file);
 	}
 
+	private String buildGenericPath(String basePath, String folder, String file)
+	{
+		StringBuffer newPath = new StringBuffer(buildGenericPath(basePath, folder));
+		newPath.append(File.separator);
+		newPath.append(file);
+		return newPath.toString();
+	}
+	
+	private String buildGenericPath(String basePath, String directoryOrFile)
+	{
+		StringBuffer newPath = new StringBuffer(200); 
+		newPath.append(basePath);
+		newPath.append(File.separator);
+		newPath.append(directoryOrFile);
+		return newPath.toString();
+	}
+	
 	private String getGenericProperty(String propertyKey)
 	{
 		String propertyValue = null;
