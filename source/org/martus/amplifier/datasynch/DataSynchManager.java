@@ -20,10 +20,10 @@ public class DataSynchManager
 	private static Logger logger = Logger.getLogger(AmplifierConfiguration.DATASYNC_LOGGER);
 	boolean isIndexingNeeded;
 
-	public DataSynchManager(List backupServersList, MartusCrypto securityToUse)
+	public DataSynchManager(BackupServerInfo backupServerToCall , MartusCrypto securityToUse)
 	{
 		super();
-		amplifierGateway = new AmplifierNetworkGateway(backupServersList, securityToUse);
+		amplifierGateway = new AmplifierNetworkGateway(backupServerToCall, securityToUse);
 	}
 	
 	

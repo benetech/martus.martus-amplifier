@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Vector;
 
 import org.martus.amplifier.datasynch.AmplifierNetworkGateway;
+import org.martus.amplifier.datasynch.BackupServerInfo;
 import org.martus.amplifier.network.AmplifierBulletinRetrieverGatewayInterface;
 import org.martus.common.crypto.MartusCrypto;
 import org.martus.common.crypto.MockMartusSecurity;
@@ -22,8 +23,8 @@ public class TestAmplifierNetworkGateway extends TestAbstractAmplifierDataSynch
 	{
 		//System.out.println("AmplifierNetworkGatewayTest:testGetAllAccountIds");
 		AmplifierBulletinRetrieverGatewayInterface abrgi = new MockGatewayInterface();
-		Vector emptyList = new Vector();
-		AmplifierNetworkGateway amplifierGateway = new AmplifierNetworkGateway(abrgi, emptyList, MockMartusSecurity.createOtherServer());
+		BackupServerInfo serverToCall = null;
+		AmplifierNetworkGateway amplifierGateway = new AmplifierNetworkGateway(abrgi, serverToCall, MockMartusSecurity.createOtherServer());
 		Vector list = amplifierGateway.getAllAccountIds();
 		for(int i =0; i<list.size(); i++)
 		{
@@ -36,8 +37,8 @@ public class TestAmplifierNetworkGateway extends TestAbstractAmplifierDataSynch
 	{
 		//System.out.println("AmplifierNetworkGatewayTest:testGetAccountUniversalIds");
 		AmplifierBulletinRetrieverGatewayInterface abrgi = new MockGatewayInterface();
-		Vector emptyList = new Vector();
-		AmplifierNetworkGateway amplifierGateway = new AmplifierNetworkGateway(abrgi, emptyList,  MockMartusSecurity.createOtherServer());
+		BackupServerInfo serverToCall = null;
+		AmplifierNetworkGateway amplifierGateway = new AmplifierNetworkGateway(abrgi, serverToCall,  MockMartusSecurity.createOtherServer());
 		
 		Vector list = amplifierGateway.getAccountUniversalIds(sampleAccountId);
 		//.out.println("AccountId2 = "+ sampleAccountId +"  Number of Universal IDs = "+ list.size());

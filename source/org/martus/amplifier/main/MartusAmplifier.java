@@ -285,10 +285,11 @@ public class MartusAmplifier
 		if(backupServersList.size() == 0)
 			return;
 				
+		BackupServerInfo backupServerToCall = (BackupServerInfo)backupServersList.get(0);
 		BulletinIndexer indexer = null;
 		try
 		{
-			DataSynchManager dataManager = new DataSynchManager(backupServersList, getSecurity());
+			DataSynchManager dataManager = new DataSynchManager(backupServerToCall, getSecurity());
 			AmplifierConfiguration config = 
 				AmplifierConfiguration.getInstance();
 			indexer = new LuceneBulletinIndexer(

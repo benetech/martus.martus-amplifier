@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
 
@@ -33,18 +32,18 @@ import org.martus.util.Base64.InvalidBase64Exception;
 
 public class AmplifierNetworkGateway
 {
-	public AmplifierNetworkGateway(List backupServersToCall, MartusCrypto securityToUse)
+	public AmplifierNetworkGateway(BackupServerInfo backupServerToCall, MartusCrypto securityToUse)
 	{
-		this(null, backupServersToCall, securityToUse);
+		this(null, backupServerToCall, securityToUse);
 	}
 	
 	public AmplifierNetworkGateway(AmplifierBulletinRetrieverGatewayInterface gatewayToUse, 
-				List backupServersToCall,
+				BackupServerInfo backupServerToCall,
 				MartusCrypto securityToUse)
 	{
 		super();
 	
-		serverInfoList = backupServersToCall;
+		serverToPullFrom = backupServerToCall;
 		gateway = gatewayToUse;
 		if(gateway == null)
 			gateway = getCurrentNetworkInterfaceGateway();
@@ -184,8 +183,7 @@ public class AmplifierNetworkGateway
 
 	private AmplifierNetworkInterface createXmlRpcNetworkInterfaceHandler() 
 	{
-		int index = 0;
-		BackupServerInfo serverInfo = (BackupServerInfo) serverInfoList.get(index);
+		BackupServerInfo serverInfo = serverToPullFrom;
 		String ourServer = serverInfo.getName();
 //		int ourPort = NetworkInterfaceXmlRpcConstants.MARTUS_PORT_FOR_SSL;
 		int ourPort = serverInfo.getPort();
@@ -206,7 +204,7 @@ public class AmplifierNetworkGateway
 	private AmplifierBulletinRetrieverGatewayInterface gateway;
 	private MartusCrypto security;
 	private Logger logger = Logger.getLogger(AmplifierConfiguration.DATASYNC_LOGGER);
-	private List serverInfoList = null;
+	BackupServerInfo serverToPullFrom;
 	private AmplifierNetworkInterface currentNetworkInterfaceHandler = null;
 	private AmplifierClientSideNetworkGateway currentNetworkInterfaceGateway = null;
 }
