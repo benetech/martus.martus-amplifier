@@ -333,7 +333,7 @@ public class MartusAmplifier
 				presentationBasePath += "\\";
 		}
 		else
-			presentationBasePath = "/usrlocal/martus/htdocs/MartusAmplifier/";
+			presentationBasePath = "/usrlocal/martus/www/MartusAmplifier/";
 		return presentationBasePath;
 		
 	}
