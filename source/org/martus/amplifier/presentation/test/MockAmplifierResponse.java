@@ -28,13 +28,17 @@ package org.martus.amplifier.presentation.test;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.HashMap;
 
 import org.martus.amplifier.velocity.AmplifierServletResponse;
 
 
 public class MockAmplifierResponse implements AmplifierServletResponse
 {
-	
+	public MockAmplifierResponse()
+	{
+		map = new HashMap();
+	}
 	public OutputStream getOutputStream() throws IOException
 	{
 		if(output == null)
@@ -47,5 +51,15 @@ public class MockAmplifierResponse implements AmplifierServletResponse
 		return output.toString("UTF-8");
 	}
 	
+	public void addHeader(String name, String value)
+	{
+		map.put(name, value);
+	}
+
+	public boolean containsHeader(String name)
+	{
+		return map.containsKey(name);
+	}
+	HashMap map;
 	ByteArrayOutputStream output;
 }

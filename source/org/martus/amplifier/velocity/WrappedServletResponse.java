@@ -42,6 +42,16 @@ public class WrappedServletResponse implements AmplifierServletResponse
 	{
 		return response.getOutputStream();
 	}
+	
+	public void addHeader(String name, String value)
+	{
+		response.addHeader(name, value);
+	}
+	
+	public boolean containsHeader(String name)
+	{
+		return response.containsHeader(name);	
+	}
 
 	HttpServletResponse response;	
 }

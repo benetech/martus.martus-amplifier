@@ -68,6 +68,7 @@ public class DownloadAttachment extends HttpServlet
 	{
 		WrappedServletRequest ampRequest = new WrappedServletRequest(request);
 		WrappedServletResponse ampResponse = new WrappedServletResponse(response);
+
 		internalDoGet(ampRequest, ampResponse);	
 	}
 
@@ -92,7 +93,9 @@ public class DownloadAttachment extends HttpServlet
 			//requesting the static member results in null 
 			if(manager == null) 
 				manager = new FileSystemAttachmentManager(basePath);
-				
+			
+			response.addHeader( "Content-Type", "application/octet-stream" );
+			response.addHeader( "Content-Disposition","attatchment; filename="+info.getLabel());
 			InputStream in = manager.getAttachment(uId);
 			OutputStream out = response.getOutputStream();
 			new StreamCopier().copyStream(in, out);

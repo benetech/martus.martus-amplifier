@@ -76,6 +76,8 @@ public class TestDownloadAttachment extends TestCaseEnhanced
 		
 		String attachment1 = response.getDataString();
 		assertEquals("Attachment 1's data not the same?", data1, attachment1);
+		assertTrue("Should have Content-Type", response.containsHeader("Content-Type"));
+		assertTrue("Should have Content-Disposition", response.containsHeader("Content-Disposition"));
 		 
 		request.parameters.put("bulletinIndex","1");
 		request.parameters.put("attachmentIndex","2");
@@ -83,6 +85,8 @@ public class TestDownloadAttachment extends TestCaseEnhanced
 		servlet.internalDoGet(request, response2);
 		String attachment2 = response2.getDataString();
 		assertEquals("Attachment 2's data not the same?", data2, attachment2);
+		assertTrue("Should have Content-Type", response2.containsHeader("Content-Type"));
+		assertTrue("Should have Content-Disposition", response2.containsHeader("Content-Disposition"));
 
 		request.parameters.put("bulletinIndex","2");
 		request.parameters.put("attachmentIndex","1");
@@ -90,7 +94,22 @@ public class TestDownloadAttachment extends TestCaseEnhanced
 		servlet.internalDoGet(request, response3);
 		String attachment3 = response3.getDataString();
 		assertEquals("Attachment 3's data not the same?", data3, attachment3);
+		assertTrue("Should have Content-Type", response3.containsHeader("Content-Type"));
+		assertTrue("Should have Content-Disposition", response3.containsHeader("Content-Disposition"));
 	}
+	
+	public void testSetHeaders() throws Exception
+	{
+		MockAmplifierResponse response = new MockAmplifierResponse();
+		assertFalse("Should not already have the header Content-Type", response.containsHeader("Content-Type"));				
+		assertFalse("Should not already have the header Content-Disposition", response.containsHeader("Content-Disposition"));				
+
+		response.addHeader( "Content-Type", "application/octet-stream" );
+		response.addHeader( "Content-Disposition","attatchment; filename=some name" );
+
+		assertTrue("Should now have the header Content-Type", response.containsHeader("Content-Type"));				
+		assertTrue("Should now have the header Content-Disposition", response.containsHeader("Content-Disposition"));				
+	}	
 
 	private void createSampleSearchResults(MockAmplifierRequest request, MockAmplifierResponse response) throws Exception
 	{

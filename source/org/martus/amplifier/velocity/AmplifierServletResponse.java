@@ -31,5 +31,7 @@ import java.io.OutputStream;
 public interface AmplifierServletResponse
 {
 	OutputStream getOutputStream() throws IOException;
+	public void addHeader(String name, String value);
+	public boolean containsHeader(String name);
 }
 
