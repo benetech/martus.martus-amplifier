@@ -1,5 +1,6 @@
 package org.martus.amplifier.service.datasynch;
 
+import java.io.File;
 import java.io.IOException;
 
 import java.util.ArrayList;
@@ -7,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 import java.util.zip.ZipFile;
+import java.util.zip.ZipEntry;
 
 public class AmplifierNetworkGateway
 {
@@ -63,17 +65,26 @@ public class AmplifierNetworkGateway
 	}
 	
 	
-	public Vector getBulletin(int BulletinId)
+	public Vector getBulletin(String BulletinId)
 	{
 		Vector result = new Vector();
-		//to do later.. retrieve Bulletin in chunks
-		try
+		File tempFile = null;
+		/*
+		 * 1) retrieve Bulletin in Chunks and get the Zip file
+		 * 2) Unzip the file and retrieve the bulletin and attachments
+		 * 3) 
+		 * 
+		 */
+		 
+		File bulletinZippedFile = new File("c:/srilatha/martus_data/Firebombing of NGO O13806.mbf");
+		result = AmplifierUtilities.unZip(bulletinZippedFile);
+		for(int i=0; i<result.size(); i++)
 		{
-			ZipFile bulletinZip = new ZipFile("C:/srilatha/martus_data/Firebombing of NGO O13806.mbf");
-		}
-		catch(IOException ie)
-		{ ie.printStackTrace(); }
-				
+			tempFile = (File)result.get(i);
+			System.out.println("FileName is "+ tempFile.getName());
+		}		
+		
+		
 		return result;		
 	}
 
