@@ -65,9 +65,9 @@ import org.martus.common.crypto.MartusCrypto;
 import org.martus.common.crypto.MockMartusSecurity;
 import org.martus.common.crypto.MartusCrypto.CryptoException;
 import org.martus.common.crypto.MartusCrypto.EncryptionException;
-import org.martus.common.database.Database;
-import org.martus.common.database.MockServerDatabase;
+import org.martus.common.database.ReadableDatabase;
 import org.martus.common.packet.UniversalId;
+import org.martus.common.test.MockBulletinStore;
 import org.martus.util.DirectoryUtils;
 import org.martus.util.StreamCopier;
 import org.martus.util.StringInputStream;
@@ -88,7 +88,7 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 		attachmentManager = 
 			new FileSystemDataManager(getTestBasePath(), security);
 		MartusAmplifier.dataManager = attachmentManager;
-		db = new MockServerDatabase();
+		store = new MockBulletinStore(this);
 		LanguagesIndexedList.languagesIndexedSingleton = new LanguagesIndexedList(new File(getTestBasePath(),"langIndex"));
 
 	}
@@ -216,7 +216,7 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 		attachments[0] = createAttachment("Attachment 1");
 		attachments[1] = createAttachment("Attachment 2");
 		Bulletin b = createSampleBulletin(attachments);
-		BulletinStore.saveToClientDatabase(b, db, false, security);
+		store.saveBulletinForTesting(b);
 		File f = createBulletinZipFile(b);
 		
 		try {
@@ -367,7 +367,7 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 		throws IOException, CryptoException			
 	{
 		File tempFile = createTempFileFromName("$$$MartusAmpBulletinExtractorTest");
-		BulletinForTesting.saveToFile(db, b, tempFile, security);
+		BulletinForTesting.saveToFile(getDatabase(), b, tempFile, security);
 		return tempFile;
 	}
 
@@ -396,7 +396,12 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 		return new LuceneBulletinSearcher(getTestBasePath());
 	}
 	
+	private ReadableDatabase getDatabase()
+	{
+		return store.getDatabase();
+	}
+
 	private DataManager attachmentManager;
 	private MartusCrypto security;
-	private Database db;
+	private BulletinStore store;
 }
