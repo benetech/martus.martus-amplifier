@@ -117,7 +117,7 @@ public class FileSystemAttachmentManager implements AttachmentManager
 	throws AttachmentStorageException
 	{
 		long sizeInBytes = getAttachmentSizeInBytes(attachmentId);
-		long sizeInKb = (sizeInBytes + 500) / 1000;
+		long sizeInKb = (sizeInBytes + (Kbytes /2)) / Kbytes;
 		if(sizeInKb == 0)
 			sizeInKb = 1;
 		return sizeInKb;
@@ -211,4 +211,5 @@ public class FileSystemAttachmentManager implements AttachmentManager
 	
 	public static final String ACCOUNT_MAP_FILE_NAME = "acctmap.txt";
 	private static final String ACCOUNT_DIR_PREFIX = "acct";
+	public static final long Kbytes = 1024;
 }
