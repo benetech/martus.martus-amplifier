@@ -52,6 +52,11 @@ public class DoSearch extends AmplifierServlet implements SearchResultConstants
 			AmplifierServletResponse response, Context context) 
 					throws Exception
 	{
+		super.selectTemplate(request, response, context);
+		
+		String simpleQuery = request.getParameter("query");
+		request.getSession().setAttribute("simpleQuery", simpleQuery);
+
 		SearchResults.setSearchedFor(request, context);
 
 		List results = getSearchResults(request);

@@ -5,6 +5,7 @@ import java.util.Vector;
 
 import org.apache.velocity.context.Context;
 import org.martus.amplifier.presentation.DoSearch;
+import org.martus.amplifier.presentation.SimpleSearch;
 import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinInfo;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
@@ -25,9 +26,11 @@ public class TestDoSearch extends TestCaseEnhanced
 		Context context = new MockContext();
 		
 		DoSearch sr = new DoSearch();
-		request.putParameter("query", "owiefijweofiejoifoiwjefoiwef");
+		String sampleQueryString = "owiefijweofiejoifoiwjefoiwef";
+		request.putParameter("query", sampleQueryString);
 		String templateName = sr.selectTemplate(request, response, context);
 		assertEquals("NoSearchResults.vm", templateName);
+		assertEquals(sampleQueryString, request.getSession().getAttribute("simpleQuery"));
 	}
 
 	public void testYesResults() throws Exception
@@ -73,6 +76,28 @@ public class TestDoSearch extends TestCaseEnhanced
 		assertEquals("Unknown LanguageCode should be returned unchanged?", bulletin3Language, bulletinInfo3.get("language"));
 		
 	}
+	
+	public void testPopulateSimpleSearch() throws Exception
+	{
+		MockAmplifierRequest request = new MockAmplifierRequest();
+		MockAmplifierResponse response = null;		
+		Context context = new MockContext();
+		
+		SimpleSearch servlet = new SimpleSearch();					
+		String templateName = servlet.selectTemplate(request, response, context);
+					
+		assertEquals("SimpleSearch.vm", templateName);				
+		assertEquals("The defaultSimpleSearch is empty", "", context.get("defaultSimpleSearch"));		
+		
+		String sampleQuery = "this is what the user is searching for";		
+		request.getSession().setAttribute("simpleQuery", sampleQuery);		
+		
+		servlet = new SimpleSearch();
+		servlet.selectTemplate(request, response, context);
+		
+		assertEquals("The defaultSimpleSearch match.", sampleQuery, context.get("defaultSimpleSearch"));				
+	}	
+
 	
 /*	private Context createSampleSearchResults(MockAmplifierRequest request, HttpServletResponse response) throws Exception
 	{

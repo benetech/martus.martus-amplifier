@@ -88,8 +88,12 @@ abstract public class AmplifierServlet extends VelocityServlet
 		return p;
 	}
 
-	abstract public String selectTemplate(AmplifierServletRequest request,
-			AmplifierServletResponse response, Context context) throws Exception;
+	public String selectTemplate(AmplifierServletRequest request,
+			AmplifierServletResponse response, Context context) throws Exception
+	{
+		setSimpleQueryFromSession(request, context);
+		return null;
+	}
 			
 			
 	public Template handleRequest(HttpServletRequest request,
@@ -135,10 +139,18 @@ abstract public class AmplifierServlet extends VelocityServlet
 		return null;
 	}
     
+	private void setSimpleQueryFromSession(AmplifierServletRequest request, Context context) 
+	{
+		String data = (String) request.getSession().getAttribute("simpleQuery");
+		if (data == null)
+			data = "";
+
+		context.put("defaultSimpleSearch", data);
+	}
+
 	protected void displayError(String message, Exception e)
 	{
-		System.out.println(getClass().getName() + ": " + message + " " + e.getMessage());
-		e.printStackTrace();
+		System.out.println(getClass().getName() + ": " + message + " " + e);
 	}
 	
 	static public void formatDataForHtmlDisplay(Map mapToFormat)

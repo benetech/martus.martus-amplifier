@@ -46,6 +46,8 @@ public class SearchResults extends AmplifierServlet implements SearchResultConst
 			AmplifierServletResponse response, Context context) 
 					throws Exception
 	{
+		super.selectTemplate(request, response, context);
+		
 		setSearchedFor(request, context);
 
 		String sortField = request.getParameter(RESULT_SORTBY_KEY);
@@ -72,10 +74,15 @@ public class SearchResults extends AmplifierServlet implements SearchResultConst
 	{
 		String basicQueryString = request.getParameter(RESULT_BASIC_QUERY_KEY);
 		String advanceQueryString = request.getParameter(ANYWORD_TAG);
+		
 		if(basicQueryString != null)
 		{
 			context.put("searchedFor", basicQueryString);
 			request.getSession().setAttribute("searchedFor", basicQueryString);
+			
+			String simpleQuery = request.getParameter("query");		
+			context.put("defaultSimpleSearch", basicQueryString);	
+			request.getSession().setAttribute("defaultSimpleSearch", simpleQuery);
 		}
 		else if (advanceQueryString != null)
 		{

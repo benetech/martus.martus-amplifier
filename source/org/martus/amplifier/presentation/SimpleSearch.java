@@ -34,9 +34,9 @@ public class SimpleSearch extends AmplifierServlet
 {
     public String selectTemplate(AmplifierServletRequest request,
 				AmplifierServletResponse response, 
-				Context context)
+				Context context) throws Exception
 	{
-		context.put("name", request.getParameter("query"));
+		super.selectTemplate(request, response, context);
 		return "SimpleSearch.vm";
     }
 }

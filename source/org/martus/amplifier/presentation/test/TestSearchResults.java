@@ -6,6 +6,7 @@ import org.apache.velocity.context.Context;
 import org.martus.amplifier.common.FindBulletinsFields;
 import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.presentation.SearchResults;
+import org.martus.amplifier.presentation.SimpleSearch;
 import org.martus.amplifier.search.BulletinInfo;
 import org.martus.common.packet.UniversalId;
 import org.martus.common.test.TestCaseEnhanced;
@@ -78,6 +79,28 @@ public class TestSearchResults extends TestCaseEnhanced
 
 		assertEquals("SearchTag not the same?", mySearchByTag, context.get("currentlySortingBy"));		
 	}
+	
+	public void testPopulateSimpleSearch() throws Exception
+	{
+		MockAmplifierRequest request = new MockAmplifierRequest();
+		MockAmplifierResponse response = null;		
+		Context context = new MockContext();
+		
+		SimpleSearch servlet = new SimpleSearch();					
+		String templateName = servlet.selectTemplate(request, response, context);
+					
+		assertEquals("SimpleSearch.vm", templateName);				
+		assertEquals("The defaultSimpleSearch is empty", "", context.get("defaultSimpleSearch"));		
+		
+		String sampleQuery = "this is what the user is searching for";		
+		request.getSession().setAttribute("simpleQuery", sampleQuery);		
+		
+		servlet = new SimpleSearch();
+		servlet.selectTemplate(request, response, context);
+		
+		assertEquals("The defaultSimpleSearch match.", sampleQuery, context.get("defaultSimpleSearch"));				
+	}	
+
 
 	final UniversalId uid1 = UniversalId.createDummyUniversalId();
 	final UniversalId uid2 = UniversalId.createDummyUniversalId();

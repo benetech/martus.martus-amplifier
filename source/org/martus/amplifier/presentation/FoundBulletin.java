@@ -37,7 +37,10 @@ import org.martus.amplifier.velocity.AmplifierServletSession;
 public class FoundBulletin extends AmplifierServlet
 {
 	public String selectTemplate(AmplifierServletRequest request, AmplifierServletResponse response, Context context)
+			throws Exception
 	{
+		super.selectTemplate(request, response, context);
+		
 		AmplifierServletSession session = request.getSession();
 		Vector bulletins = (Vector)session.getAttribute("foundBulletins");
 		int index = Integer.parseInt(request.getParameter("index"));

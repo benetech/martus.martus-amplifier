@@ -1,7 +1,8 @@
 <form name="search" action="DoSearch" method="post">
     <p>
-        <input name="query" size="44"/>&nbsp;
-        <input type="submit" value="Search"/>
+        <input name="query" size="44" value=$defaultSimpleSearch></input>&nbsp;
+        <input type="submit" value="Search"/>       
+   
     </p>
 </form>
 <font>

@@ -4,8 +4,9 @@ import java.util.List;
 import java.util.Vector;
 
 import org.apache.velocity.context.Context;
-import org.martus.amplifier.presentation.FoundBulletin;
 import org.martus.amplifier.presentation.DoSearch;
+import org.martus.amplifier.presentation.FoundBulletin;
+import org.martus.amplifier.presentation.SimpleSearch;
 import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinInfo;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
@@ -76,6 +77,28 @@ public class TestFoundBulletin extends TestCaseEnhanced
 		servlet.selectTemplate(request, response, context);
 		assertEquals("Didn't get searchedFor correct", "title", context.get("searchedFor"));
 	}
+	
+	public void testPopulateSimpleSearch() throws Exception
+	{
+		MockAmplifierRequest request = new MockAmplifierRequest();
+		MockAmplifierResponse response = null;		
+		Context context = new MockContext();
+		
+		SimpleSearch servlet = new SimpleSearch();					
+		String templateName = servlet.selectTemplate(request, response, context);
+					
+		assertEquals("SimpleSearch.vm", templateName);				
+		assertEquals("The defaultSimpleSearch is empty", "", context.get("defaultSimpleSearch"));		
+		
+		String sampleQuery = "this is what the user is searching for";		
+		request.getSession().setAttribute("simpleQuery", sampleQuery);		
+		
+		servlet = new SimpleSearch();
+		servlet.selectTemplate(request, response, context);
+		
+		assertEquals("The defaultSimpleSearch match.", sampleQuery, context.get("defaultSimpleSearch"));				
+	}	
+
 
 	private Context createSampleSearchResults(MockAmplifierRequest request, MockAmplifierResponse response) throws Exception
 	{
