@@ -6,7 +6,6 @@ import java.util.logging.Logger;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.index.IndexWriter;
-import org.martus.amplifier.common.logging.ILoggerConstants;
 
 /**
  * @author Daniel Chu
@@ -15,7 +14,7 @@ import org.martus.amplifier.common.logging.ILoggerConstants;
  * deleting the index of Bulletins.
  *  
  */
-public class BulletinIndexer implements IBulletinConstants, ILoggerConstants
+public class BulletinIndexer implements IBulletinConstants, ISearchConstants
 {
 	
 	private static BulletinIndexer instance = new BulletinIndexer();

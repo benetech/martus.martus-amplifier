@@ -7,11 +7,11 @@ import java.util.logging.Logger;
 import junit.framework.Assert;
 
 import org.apache.lucene.document.Document;
-import org.martus.amplifier.common.logging.ILoggerConstants;
 import org.martus.amplifier.service.search.BulletinDocument;
+import org.martus.amplifier.service.search.ISearchConstants;
 
 public class BulletinDocumentTest extends AbstractAmplifierSearchTest
-implements ILoggerConstants
+implements ISearchConstants
 {
 	public void testConvertXmlToDocument()
 	{

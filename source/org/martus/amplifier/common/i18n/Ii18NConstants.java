@@ -2,6 +2,7 @@ package org.martus.amplifier.common.i18n;
 
 public interface Ii18NConstants
 {
+	public static final String I18N_LOGGER = "I18N_LOGGER";
 	public static final String I18N_PROPERTIES_FILE = "/i18n.properties";
 	public static final String LANGUAGE_PROPERTIES_KEY = "language";
 	public static final String COUNTRY_PROPERTIES_KEY = "country";

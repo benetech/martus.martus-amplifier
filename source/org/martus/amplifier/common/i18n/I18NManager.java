@@ -8,9 +8,7 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
-import org.martus.amplifier.common.logging.ILoggerConstants;
-
-public class I18NManager implements Ii18NConstants, ILoggerConstants
+public class I18NManager implements Ii18NConstants
 {
 	
 	protected I18NManager()

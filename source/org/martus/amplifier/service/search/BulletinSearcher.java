@@ -20,7 +20,6 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.PrefixQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.RangeQuery;
-import org.martus.amplifier.common.logging.ILoggerConstants;
 import org.martus.amplifier.service.search.api.IBulletinSearcher;
 
 /**
@@ -31,7 +30,7 @@ import org.martus.amplifier.service.search.api.IBulletinSearcher;
  * gets too unwieldy we may need to break it up.
  */
 public class BulletinSearcher 
-implements IBulletinSearcher, IBulletinConstants, ILoggerConstants
+implements IBulletinSearcher, IBulletinConstants, ISearchConstants
 {
 	protected BulletinSearcher()
 	{}
