@@ -46,7 +46,17 @@ public class Today
 	public static int getDay()
 	{
 		return new GregorianCalendar().get(Calendar.DATE);
-	}				
+	}	
+	
+	public static String getYearString()
+	{
+		return new Integer(getYear()).toString();
+	}	
+	
+	public static String getDayString()
+	{
+		return new Integer(getDay()).toString();
+	}		
 		
 	public Today(){}
 }

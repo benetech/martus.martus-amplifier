@@ -88,6 +88,7 @@ public class SearchResults extends AmplifierServlet implements SearchResultConst
 		{
 			context.put("searchedFor", advanceQueryString);
 			request.getSession().setAttribute("searchedFor", advanceQueryString);
+			context.put("defaultSimpleSearch", "");
 		}
 		else		
 		{

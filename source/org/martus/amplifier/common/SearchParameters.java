@@ -42,6 +42,7 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 		searchRequest = request;
 		searchFields  = fields;
 		loadFromRequest();		
+		storeAdvancedFields(request);	
 	}
 	
 	private void loadFromRequest()
@@ -50,19 +51,19 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 		{
 			String value = getParameterValue(ADVANCED_KEYS[i]);
 			if (value != null)
-			{		
+			{				
 				resultList.put(ADVANCED_KEYS[i], value);				
 			}
 		}
 		setEventDate();
 		setFilterKeyWords();
-		setNormalFields();																	
+		setNormalFields();																
 	}	
 
 	private void addField(String key, Object value)
 	{
 		searchFields.put(key, value);
-	}	
+	}		
 	
 	private void setFilterKeyWords()
 	{
@@ -191,6 +192,54 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 	{
 		return new GregorianCalendar(year, month, day).getTime();
 	}	
+	
+	private void storeAdvancedFields(AmplifierServletRequest request)
+	{		
+		String exactPhraseWords = (String) resultList.get(SearchResultConstants.EXACTPHRASE_TAG);
+		if (exactPhraseWords == null)			
+		resultList.put(SearchResultConstants.EXACTPHRASE_TAG, "");
+			
+		String anyWords = (String) resultList.get(SearchResultConstants.ANYWORD_TAG);
+		if (anyWords == null)			
+		resultList.put(SearchResultConstants.ANYWORD_TAG, "");
+			
+		String theseWords = (String) resultList.get(SearchResultConstants.THESE_WORD_TAG);
+		if (theseWords == null)			
+		resultList.put(SearchResultConstants.THESE_WORD_TAG, "");	
+			
+		request.getSession().setAttribute("defaultAdvancedSearch", new AdvancedSearchInfo(resultList));	
+	}
+	
+	public static void clearAdvancedSearch(AmplifierServletRequest request)
+	{
+		AdvancedSearchInfo info = new AdvancedSearchInfo(setDefaultAdvancedFields());
+		request.getSession().setAttribute("defaultAdvancedSearch", info);	
+	}
+	
+	public static void clearSimpleSearch(AmplifierServletRequest request)
+	{
+		request.getSession().setAttribute("simpleQuery", "");
+		request.getSession().setAttribute("defaultSimpleSearch", "");
+	}
+	
+	public static HashMap setDefaultAdvancedFields()
+	{
+		HashMap defaultMap = new HashMap();
+		defaultMap.put(SearchResultConstants.EXACTPHRASE_TAG, "");
+		defaultMap.put(SearchResultConstants.ANYWORD_TAG, "");
+		defaultMap.put(SearchResultConstants.THESE_WORD_TAG, "");	
+		defaultMap.put(SearchResultConstants.WITHOUTWORDS_TAG, "");
+		defaultMap.put(SearchResultConstants.RESULT_FIELDS_KEY, SearchResultConstants.IN_ALL_FIELDS);
+		defaultMap.put(SearchResultConstants.RESULT_ENTRY_DATE_KEY, SearchResultConstants.ENTRY_ANYTIME_LABEL);
+		defaultMap.put(SearchResultConstants.RESULT_LANGUAGE_KEY, SearchResultConstants.LANGUAGE_ANYLANGUAGE_LABEL);
+		defaultMap.put(SearchResultConstants.RESULT_SORTBY_KEY, SearchResultConstants.SORT_BY_TITLE_TAG);
+		
+		defaultMap.put(SearchResultConstants.RESULT_END_DAY_KEY, Today.getDayString());
+		defaultMap.put(SearchResultConstants.RESULT_END_MONTH_KEY, Today.getMonth());
+		defaultMap.put(SearchResultConstants.RESULT_END_YEAR_KEY, Today.getYearString());
+				
+		return defaultMap;	
+	}
 
 	AmplifierServletRequest searchRequest;
 	HashMap resultList 	= new HashMap();
