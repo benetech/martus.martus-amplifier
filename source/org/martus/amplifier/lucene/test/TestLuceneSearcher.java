@@ -70,6 +70,9 @@ public class TestLuceneSearcher extends CommonSearchTest
 		fdp2 	= generateSampleFlexiData(bulletinId2);
 		fdpForeign = generateSampleForeignCharData(bulletinIdForeign);
 		
+		history = new BulletinHistory();
+		history.add(bulletinId1.getLocalId());
+		
 		indexer = openBulletinIndexer();
 		indexer.clearIndex();
 	}
@@ -118,6 +121,26 @@ public class TestLuceneSearcher extends CommonSearchTest
 			searcher.close();
 		}
 		
+	}
+	
+	public void testHistory() throws Exception
+	{
+		indexBulletin1And2();
+		BulletinSearcher searcher = openBulletinSearcher();
+		try
+		{
+			BulletinInfo noHistory = searcher.lookup(bulletinId1);
+			assertNotNull("didn't find 1?", noHistory);
+			assertEquals("1", noHistory.getVersion());
+
+			BulletinInfo hasHistory = searcher.lookup(bulletinId2);
+			assertNotNull("didn't find 2?", hasHistory);
+			assertEquals("2", hasHistory.getVersion());
+		}
+		finally
+		{
+			searcher.close();
+		}
 	}
 	
 	public void testReconstructFieldDataPacket()  throws Exception
@@ -931,7 +954,7 @@ public class TestLuceneSearcher extends CommonSearchTest
 	{
 		try 
 		{
-			indexer.indexFieldData(bulletinId2, fdp2, new BulletinHistory());
+			indexer.indexFieldData(bulletinId2, fdp2, history);
 		} 
 		finally 
 		{
@@ -944,7 +967,7 @@ public class TestLuceneSearcher extends CommonSearchTest
 		try 
 		{
 			indexer.indexFieldData(bulletinId1, fdp1, new BulletinHistory());
-			indexer.indexFieldData(bulletinId2, fdp2, new BulletinHistory());
+			indexer.indexFieldData(bulletinId2, fdp2, history);
 		} 
 		finally 
 		{
@@ -970,5 +993,6 @@ public class TestLuceneSearcher extends CommonSearchTest
 	FieldDataPacket fdp1;	
 	FieldDataPacket fdp2;
 	FieldDataPacket fdpForeign;
+	BulletinHistory history;
 	BulletinIndexer indexer;
 }

@@ -105,7 +105,8 @@ public class LuceneBulletinIndexer
 			throw new BulletinIndexException(
 				"Unable to index field data for " + bulletinId, e1);
 		}
-		addAttachmentIds(doc, fdp.getAccountId(), fdp.getAttachments());		
+		addAttachmentIds(doc, fdp.getAccountId(), fdp.getAttachments());
+		addHistory(doc, history);
 		
 		try {
 			writer.addDocument(doc);
@@ -199,6 +200,13 @@ public class LuceneBulletinIndexer
 			doc.add(Field.UnIndexed(
 				ATTACHMENT_LIST_INDEX_FIELD, buf.toString()));
 		}
+	}
+	
+	private static void addHistory(Document doc, BulletinHistory history)
+	{
+		doc.add(Field.UnIndexed(
+				HISTORY_INDEX_FIELD, history.toString()));
+		
 	}
 	
 	private static void convertDateRangeToSearchableString(Document doc, BulletinField field, String value) throws BulletinIndexException

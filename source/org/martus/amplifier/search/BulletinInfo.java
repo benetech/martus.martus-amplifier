@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.martus.common.packet.BulletinHistory;
 import org.martus.common.packet.UniversalId;
 
 public class BulletinInfo implements Serializable
@@ -62,9 +63,16 @@ public class BulletinInfo implements Serializable
 		attachments.add(attachment);
 	}
 	
+	public void setHistory(String historyString)
+	{
+		if(historyString == null)
+			historyString = "";
+		history = BulletinHistory.createFromHistoryString(historyString);
+	}
+	
 	public String getVersion()
 	{
-		return "1";
+		return Integer.toString(1 + history.size());
 	}
 	
 	public Map getFields()
@@ -111,5 +119,6 @@ public class BulletinInfo implements Serializable
 	private List attachments;
 	private UniversalId bulletinId;
 	private File contactInfoFile;
+	BulletinHistory history;
 
 }
