@@ -42,30 +42,24 @@ import org.martus.common.UniversalId;
 
 public class AmplifierNetworkGateway implements IDataSynchConstants
 {
-	private static AmplifierNetworkGateway instance = null;
-	private static AmplifierBulletinRetrieverGatewayInterface gateway;
-	private static MartusCrypto security;
-	private static Logger logger = Logger.getLogger(DATASYNC_LOGGER);
-	private static List serverInfoList = null;
 	
-	
-	public AmplifierNetworkInterface currentNetworkInterfaceHandler;
-	public AmplifierClientSideNetworkGateway currentNetworkInterfaceGateway;
 	
 
 	protected AmplifierNetworkGateway()
 	{
 		super();
+		
+		serverInfoList = BackupServerManager.getInstance().getBackupServersList();
+		gateway = getCurrentNetworkInterfaceGateway();
 		try
 		{
-			gateway = getCurrentNetworkInterfaceGateway();
 			security = new MartusSecurity();
 		}
 		catch(Exception e)
 		{
 			logger.severe("CryptoInitialization Exception " + e.getMessage());		
 		}
-		serverInfoList = BackupServerManager.getInstance().getBackupServersList();
+		
 	}
 	
 	public static AmplifierNetworkGateway getInstance()
@@ -130,16 +124,23 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
 		File bulletinZippedFile = null;
 			  
 		// 1) retrieve Bulletin in Chunks and get the Zip file
-		bulletinZippedFile = retrieveOneBulletin(uid);
-		//bulletinZippedFile = new File("c:/srilatha/martus_data/Firebombing of NGO O13806.mbf");
+		//bulletinZippedFile = retrieveOneBulletin(uid);
+		bulletinZippedFile = new File("c:/srilatha/martus_data/Firebombing of NGO O13806.mbf");
 		
 		// 2) Unzip the file and retrieve the bulletin and attachments
-		result = AmplifierUtilities.unZip(bulletinZippedFile);
-		for(int i=0; i<result.size(); i++)
+		if(bulletinZippedFile != null)
 		{
-			tempFile = (File)result.get(i);
-			System.out.println("FileName is "+ tempFile.getName());
-		}	
+			result = AmplifierUtilities.unZip(bulletinZippedFile);
+			for(int i=0; i<result.size(); i++)
+			{
+				tempFile = (File)result.get(i);
+				System.out.println("FileName is "+ tempFile.getName());
+			}	
+		}
+		else
+		{
+			logger.severe("BulletinZippedFile is empty" );
+		}
 		//TODO:
 		//3.Put attachments in Bulletin Folder and and attachments folder 
 		//Decryption of attachments and indexing in taken care of Attachment manager
@@ -230,6 +231,14 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
 		}
 	}
 	
+	private static AmplifierNetworkGateway instance = null;
+	private static AmplifierBulletinRetrieverGatewayInterface gateway;
+	private static MartusCrypto security;
+	private static Logger logger = Logger.getLogger(DATASYNC_LOGGER);
+	private static List serverInfoList = null;
+	
+	private AmplifierNetworkInterface currentNetworkInterfaceHandler = null;
+	private AmplifierClientSideNetworkGateway currentNetworkInterfaceGateway = null;
 	
 	
 

@@ -1,5 +1,6 @@
 package org.martus.amplifier.test.datasynch;
 
+import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -40,8 +41,18 @@ public class AmplifierNetworkGatewayTest extends AbstractAmplifierDataSynchTest
 		UniversalId uid = UniversalId.createFromAccountAndLocalId(sampleAccountId, sampleLocalId);
 		Vector list = amplifierGateway.getBulletin(uid);				
 		assertEquals(list.size(), 3);			
-
 	}	
+	
+	public void testRetrieveBulletin()
+	{
+		System.out.println("in testRetrieveBulletin");
+		AmplifierNetworkGateway amplifierGateway = AmplifierNetworkGateway.getInstance();
+		UniversalId uid = UniversalId.createFromAccountAndLocalId(sampleAccountId, sampleLocalId);
+		File file = amplifierGateway.retrieveOneBulletin(uid);
+		//assertTrue(file.length() >0);		
+	}
+	
+
 	
 	final String sampleAccountId = "an account id";
 	final String sampleLocalId = "a local id";
