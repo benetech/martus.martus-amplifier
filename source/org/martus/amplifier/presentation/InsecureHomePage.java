@@ -66,17 +66,14 @@ public class InsecureHomePage extends HttpServlet
 					reader.close();
 					break;
 				}
-				else
-				{
-					int index = currentLine.indexOf(REDIRECT_LINK);
-					if (index > 0)
-					{						
-						int nextKeywordPos = currentLine.indexOf("servlet/SimpleSearch");
-						String oldLink = currentLine.substring(index, nextKeywordPos);				
-						currentLine = currentLine.replaceFirst(oldLink,replaceHost);												
-					}						
-					writer.write(currentLine);
-				}  		
+				int index = currentLine.indexOf(REDIRECT_LINK);
+				if (index > 0)
+				{						
+					int nextKeywordPos = currentLine.indexOf("servlet/SimpleSearch");
+					String oldLink = currentLine.substring(index, nextKeywordPos);				
+					currentLine = currentLine.replaceFirst(oldLink,replaceHost);												
+				}						
+				writer.write(currentLine);
 			}			
 		}
 		catch(IOException e)
