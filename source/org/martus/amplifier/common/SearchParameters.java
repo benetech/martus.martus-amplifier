@@ -110,13 +110,6 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 		return today.getTime();
 	}
 	
-	public void setSearchFields(HashMap result)
-	{
-		String fields = getParameterValue(RESULT_FIELDS_KEY);
-		if (fields != null)
-			result.put(fields, fields);
-	}	
-
 	public boolean containsKey(String key)
 	{
 		return resultList.containsKey(key);
