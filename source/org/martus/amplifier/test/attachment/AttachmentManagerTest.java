@@ -20,8 +20,8 @@ public class AttachmentManagerTest extends AbstractAttachmentTest
 		manager.createDatabase();
 		UniversalBulletinId id = new UniversalBulletinId("test");
 		File testDoc = new File("D:\\test.doc");
-		manager.putAttachment(id, testDoc);
-		File returnDoc = manager.getAttachment(id);
+		manager.putAttachmentFile(id, testDoc);
+		File returnDoc = manager.getAttachmentFile(id);
 		assertNotNull(returnDoc);
 	}
 	
@@ -30,8 +30,8 @@ public class AttachmentManagerTest extends AbstractAttachmentTest
 		AttachmentManager manager = AttachmentManager.getInstance();
 		manager.createDatabase();
 		UniversalBulletinId id = new UniversalBulletinId("testString");
-		manager.putString(id, "yeah baby");
-		String result = manager.getString(id);
+		manager.putAttachmentName(id, "yeah baby");
+		String result = manager.getAttachmentName(id);
 		assertNotNull(result);
 	}
 }

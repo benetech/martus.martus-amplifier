@@ -44,10 +44,10 @@ public class AttachmentManager implements IAttachmentConstants
         
 	}
 	
-	public void putString(UniversalBulletinId universalId, String attachmentName)
+	public void putAttachmentName(UniversalBulletinId universalId, String attachmentName)
 	{
-		UniversalIdDbt key = new UniversalIdDbt(universalId);
-		StringDbt value = new StringDbt(attachmentName);
+		AttachmentNameKeyDbt key = new AttachmentNameKeyDbt(universalId);
+		AttachmentNameValueDbt value = new AttachmentNameValueDbt(attachmentName);
 		int error = 0;
 		try
 		{
@@ -59,10 +59,10 @@ public class AttachmentManager implements IAttachmentConstants
 		}
 	}
 
-	public String getString(UniversalBulletinId UniversalBulletinId)
+	public String getAttachmentName(UniversalBulletinId UniversalBulletinId)
 	{
-		UniversalIdDbt key = new UniversalIdDbt(UniversalBulletinId);
-		StringDbt returnValue = new StringDbt();
+		AttachmentNameKeyDbt key = new AttachmentNameKeyDbt(UniversalBulletinId);
+		AttachmentNameValueDbt returnValue = new AttachmentNameValueDbt();
 		File result = null;
 		int error = 0;
 		try
@@ -78,10 +78,10 @@ public class AttachmentManager implements IAttachmentConstants
 		return returnValue.getString();
 	}
 
-	public void putAttachment(UniversalBulletinId universalId, File attachment)
+	public void putAttachmentFile(UniversalBulletinId universalId, File attachment)
 	{
-		UniversalIdDbt key = new UniversalIdDbt(universalId);
-		AttachmentDbt value = new AttachmentDbt(attachment);
+		AttachmentFileKeyDbt key = new AttachmentFileKeyDbt(universalId);
+		AttachmentFileValueDbt value = new AttachmentFileValueDbt(attachment);
 		int error = 0;
 		try
 		{
@@ -93,10 +93,10 @@ public class AttachmentManager implements IAttachmentConstants
 		}
 	}
 	
-	public File getAttachment(UniversalBulletinId UniversalBulletinId)
+	public File getAttachmentFile(UniversalBulletinId UniversalBulletinId)
 	{
-		UniversalIdDbt key = new UniversalIdDbt(UniversalBulletinId);
-		AttachmentDbt returnValue = new AttachmentDbt();
+		AttachmentFileKeyDbt key = new AttachmentFileKeyDbt(UniversalBulletinId);
+		AttachmentFileValueDbt returnValue = new AttachmentFileValueDbt();
 		File result = null;
 		int error = 0;
 		try
