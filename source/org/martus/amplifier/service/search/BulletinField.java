@@ -130,7 +130,7 @@ public class BulletinField implements BulletinConstants, SearchConstants
 		addField(TAGPUBLICINFO, DETAILS_INDEX_FIELD, "Details");
 		addField(TAGSUMMARY, SUMMARY_INDEX_FIELD, "Summary");
 		addField(TAGLOCATION, LOCATION_INDEX_FIELD, "Location");
-		addField(TAGENTRYDATE, ENTRY_DATE_INDEX_FIELD, "Entry Date");
+		addField(TAGENTRYDATE, ENTRY_DATE_INDEX_FIELD, "Entry Date");	
 	}
 	
 	private static void addField(String xmlId, String indexId, String displayName)

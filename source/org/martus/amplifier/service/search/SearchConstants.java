@@ -14,6 +14,8 @@ public interface SearchConstants
 	String SUMMARY_INDEX_FIELD = "summary";
 	String LOCATION_INDEX_FIELD = "location";
 	String ENTRY_DATE_INDEX_FIELD = "entryDate";
+	String EVENT_START_DATE_INDEX_FIELD = "eventStartDate";
+	String EVENT_END_DATE_INDEX_FIELD = "eventEndDate";
 	
 	String DATE_FORMAT_PATTERN = "yyyy-MM-dd";
 	DateFormat DATE_FORMAT = 

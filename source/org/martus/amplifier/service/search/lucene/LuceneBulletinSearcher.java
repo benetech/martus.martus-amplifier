@@ -9,6 +9,7 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
+import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
@@ -18,6 +19,7 @@ import org.martus.amplifier.service.search.BulletinField;
 import org.martus.amplifier.service.search.BulletinIndexException;
 import org.martus.amplifier.service.search.BulletinInfo;
 import org.martus.amplifier.service.search.BulletinSearcher;
+import org.martus.amplifier.service.search.SearchConstants;
 import org.martus.common.packet.UniversalId;
 import org.martus.common.packet.UniversalId.NotUniversalIdException;
 import org.martus.util.MartusFlexidate;
@@ -71,18 +73,71 @@ public class LuceneBulletinSearcher
 		}
 	}
 	
+	public Results searchFlexiDateRange(String field, String startQuery, String endQuery)
+		throws BulletinIndexException 
+	{		
+			
+		BooleanQuery booleanQuery = new BooleanQuery();				
+		Query query = null;				
+		try {
+	
+			query = QueryParser.parse(
+				startQuery, SearchConstants.EVENT_START_DATE_INDEX_FIELD, 
+				LuceneBulletinIndexer.getAnalyzer());
+		} catch(ParseException pe) {
+			throw new BulletinIndexException(
+				"Improperly formed start query: " + startQuery, pe);
+		}			
+	
+		booleanQuery.add(query, true, false);		
+	
+		try {
+   		    query = QueryParser.parse(
+			endQuery, SearchConstants.EVENT_END_DATE_INDEX_FIELD, 
+				LuceneBulletinIndexer.getAnalyzer());
+		} catch(ParseException pe) {
+			throw new BulletinIndexException(
+				"Improperly formed end query: " + endQuery, pe);
+		}
+		
+		booleanQuery.add(query, true, false);	
+		
+		try {
+			return new LuceneResults(searcher.search(booleanQuery));
+		} catch (IOException e) {
+			throw new BulletinIndexException(
+				"An error occurred while executing query " + 
+					query.toString(field), 
+				e);
+		}
+	}
+	
 	public Results searchDateRange(String field, Date startDate, Date endDate)
 		throws BulletinIndexException
 	{
-		String startDateString = 
-			((startDate == null) ? "null" : DateField.dateToString(startDate));
-		String endDateString = 
-			((endDate == null) ? "null" : DateField.dateToString(endDate));
-		return search(
-			field, 
-			"[ " + startDateString + " to " + endDateString + " ]");
+		try{
+											
+			Date endDefaultDate = SearchConstants.DATE_FORMAT.parse("2038-12-31");	
+														
+			String startDateString = 
+				((startDate == null) ? "*" : DateField.dateToString(startDate));
+			String endDateString = 
+				((endDate == null) ?  DateField.dateToString(endDefaultDate): DateField.dateToString(endDate));
+					
+			if (field.equals(SearchConstants.ENTRY_DATE_INDEX_FIELD))		
+				return search(field, "[ " + startDateString + " TO " + endDateString + " ]");
+																				
+			String startQuery = "[ " +  "*" + " TO " + endDateString + " ]";			
+			String endQuery = "[ " + startDateString + " TO " + DateField.dateToString(endDefaultDate) + " ]";			
+			
+			return searchFlexiDateRange(field, startQuery, endQuery);
+													
+		} catch(java.text.ParseException pe) {
+			throw new BulletinIndexException(
+				"Default SearchConstants error: " + "[startDate TO 2038-12-31]", pe);
+		}				
 	}
-	
+
 	public BulletinInfo lookup(UniversalId bulletinId)
 		throws BulletinIndexException 
 	{
