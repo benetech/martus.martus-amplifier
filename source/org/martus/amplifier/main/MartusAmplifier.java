@@ -148,7 +148,12 @@ public class MartusAmplifier
 				log("We will call: " + toCallFile.getName());
 			}
 		}
-	
+
+		if(serversWeWillCall.size() > 1)
+		{
+			log("ERROR: Can only call one server. Aborting.");
+			System.exit(55);
+		}
 		log("Configured to call " + serversWeWillCall.size() + " servers");
 		return serversWeWillCall;
 	}
