@@ -27,7 +27,6 @@ Boston, MA 02111-1307, USA.
 package org.martus.amplifier.common;
 
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -176,9 +175,9 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 		return (String) resultList.get(key);
 	}	
 	
-	public Collection getSearchResultValues()
+	public HashMap getSearchResultValues()
 	{
-		return resultList.values();
+		return resultList;
 	}
 	
 	public boolean hasEventFieldKeys()

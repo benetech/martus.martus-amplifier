@@ -5,7 +5,8 @@
     </head>
     
 	#set ($years = [1970..2004])	
-    #set ($days = [1..31])
+    #set ($days = [1..31])]
+    #set ($info = $defaultAdvancedSearch)
 
     <body>
     	#set ($pageTitle="Advanced Search")
@@ -22,19 +23,19 @@
 				<tr bgcolor='#dddddd' color='#000000'>
 					<td><strong>Find bulletins </strong></td>
 					<td>with <strong>all</strong> of the words</td>
-					<td><input name="allWordsQuery" size="44"/></td>
+					<td><input name="allWordsQuery" size="44" value=$info.fields.allWordsQuery></input></td>
 					<td bgcolor='#ffffff' color='#000000'><input type="submit" value="Search"/></td>
 				</tr>
 				<tr bgcolor='#dddddd' color='#000000'>
 					<td></td>
 					<td>with <strong>at least one</strong> of the words</td>
-					<td><input name="anyWordsQuery" size="44"/></td>
+					<td><input name="anyWordsQuery" size="44" value=$info.fields.anyWordsQuery></input></td>
 					<td bgcolor='#ffffff' ></td>
 				</tr>
 				<tr bgcolor='#dddddd' color='#000000'>
 					<td></td>
 					<td>with the <strong>exact phrase</strong></td>
-					<td><input name="exactPhraseQuery" size="44"/></td>
+					<td><input name="exactPhraseQuery" size="44" value=$info.fields.exactPhraseQuery></input></td>
 					<td bgcolor='#ffffff' ></td>
 				</tr>
 ##			<tr bgcolor='#dddddd' color='#000000'>
@@ -50,7 +51,11 @@
 						in the 
 						<select name='fields'>
 							#foreach ($fieldChoice in $bulletinFields)	
-									<option value="$fieldChoice.tag"> 
+									<option 
+										#if ($fieldChoice.tag == $info.fields.fields)
+											 selected
+										#end	
+										value="$fieldChoice.tag"> 
 		                                $fieldChoice.label	
 		                            </option>                              
 							#end							
@@ -65,7 +70,11 @@
 					<td>
 						<select name='language'>
 							#foreach ($languageChoice in $languageFields)	
-								<option value="$languageChoice.tag"> 
+								<option 
+									#if ($languageChoice.tag == $info.fields.language)
+										selected
+									#end	
+									value="$languageChoice.tag"> 
 	                                $languageChoice.label	
 	                            </option>                              
 						    #end	
@@ -81,7 +90,11 @@
 								<td>
 									<select name="startMonth">                    	
 										#foreach ($monthChoice in $monthFields)
-											<option value="$monthChoice.tag">
+											<option 
+												#if ($monthChoice.tag == $info.fields.startMonth)
+													selected
+												#end
+												value="$monthChoice.tag">
 												$monthChoice.label
 											</option>		                            
 										#end
@@ -89,7 +102,11 @@
 										
 									<select name="startDay">                    	
 										#foreach ($day in $days)
-											<option value="$day">
+											<option 
+												#if ($day == $info.fields.startDay)
+													selected
+												#end												
+												value="$day">
 												$day
 											</option>
 										#end
@@ -97,7 +114,11 @@
 										  
 									<select name="startYear">                    	
 										#foreach ($year in $years)
-											<option value="$year">
+											<option 
+												#if ($year == $info.fields.startYear)
+													selected
+												#end
+												value="$year">
 												$year
 											</option>
 										#end
@@ -153,7 +174,11 @@
 					<td>					
 						<select name='entryDate'>
 							#foreach ($dateChoice in $entryDateFields)	
-									<option value="$dateChoice.tag"> 
+									<option 
+										#if ($dateChoice.tag == $info.fields.entryDate)
+									         	selected                            
+									    #end
+										value="$dateChoice.tag"> 
 		                                $dateChoice.label	
 		                            </option>                              
 							#end		

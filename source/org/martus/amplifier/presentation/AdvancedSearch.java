@@ -25,12 +25,14 @@ Boston, MA 02111-1307, USA.
 */
 package org.martus.amplifier.presentation;
 
+import java.util.HashMap;
 import java.util.Vector;
 
 import org.apache.velocity.context.Context;
+import org.martus.amplifier.common.AdvancedSearchInfo;
+import org.martus.amplifier.common.AmplifierLocalization;
 import org.martus.amplifier.common.ChoiceEntry;
 import org.martus.amplifier.common.FindBulletinsFields;
-import org.martus.amplifier.common.AmplifierLocalization;
 import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.velocity.AmplifierServlet;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
@@ -38,8 +40,8 @@ import org.martus.amplifier.velocity.AmplifierServletResponse;
 
 public class AdvancedSearch extends AmplifierServlet
 {
-	public String selectTemplate(AmplifierServletRequest request, AmplifierServletResponse response, Context context)
-	{		
+	public String selectTemplate(AmplifierServletRequest request, AmplifierServletResponse response, Context context) throws Exception
+	{				
 		context.put("monthFields", FindBulletinsFields.getMonthFieldDisplayNames());
 		context.put("today", FindBulletinsFields.getToday());
 				
@@ -57,8 +59,24 @@ public class AdvancedSearch extends AmplifierServlet
 		
 		Vector sortByFields = FindBulletinsFields.getSortByFieldDisplayNames();
 		context.put("sortByFields", sortByFields);
+		
+		AdvancedSearchInfo defaultFields = (AdvancedSearchInfo) request.getSession().getAttribute("defaultAdvancedSearch");
+		if (defaultFields == null)
+			defaultFields = getDefaultAdvancedSearchInfo();
+			
+		context.put("defaultAdvancedSearch", defaultFields);	
 
 		return "AdvancedSearch.vm";
+	}
+	
+	private AdvancedSearchInfo getDefaultAdvancedSearchInfo()
+	{
+		HashMap map = new HashMap();
+		map.put(SearchResultConstants.EXACTPHRASE_TAG, "");	
+		map.put(SearchResultConstants.ANYWORD_TAG, "");
+		map.put(SearchResultConstants.THESE_WORD_TAG, "");
+			
+		return new AdvancedSearchInfo(map);		
 	}
 
 	Vector getAvailableLanguageChoices()

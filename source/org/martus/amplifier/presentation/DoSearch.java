@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Vector;
 
 import org.apache.velocity.context.Context;
+import org.martus.amplifier.common.AdvancedSearchInfo;
 import org.martus.amplifier.common.AmplifierConfiguration;
 import org.martus.amplifier.common.AmplifierLocalization;
 import org.martus.amplifier.common.SearchParameters;
@@ -81,17 +82,36 @@ public class DoSearch extends AmplifierServlet implements SearchResultConstants
 		String queryString = request.getParameter(RESULT_BASIC_QUERY_KEY);
 	 
 		if (queryString != null)
-		{
+		{	
 			if (queryString.equals(""))
 				return new ArrayList();
 			fields.put(RESULT_BASIC_QUERY_KEY, queryString);
 			return getResults(fields);
 		}
 				
-		new SearchParameters(request, fields);									
+		SearchParameters info = new SearchParameters(request, fields);
+		setDefaultAdvancedFields(request, info.getSearchResultValues());								
 										
 		return getResults(fields);
 	}
+	
+	private void setDefaultAdvancedFields(AmplifierServletRequest request, HashMap info )
+	{		
+		String exactPhraseWords = (String) info.get(SearchResultConstants.EXACTPHRASE_TAG);
+		if (exactPhraseWords == null)			
+			info.put(SearchResultConstants.EXACTPHRASE_TAG, "");
+			
+		String anyWords = (String) info.get(SearchResultConstants.ANYWORD_TAG);
+		if (anyWords == null)			
+			info.put(SearchResultConstants.ANYWORD_TAG, "");
+			
+		String theseWords = (String) info.get(SearchResultConstants.THESE_WORD_TAG);
+		if (theseWords == null)			
+			info.put(SearchResultConstants.THESE_WORD_TAG, "");	
+			
+		request.getSession().setAttribute("defaultAdvancedSearch", new AdvancedSearchInfo(info));	
+	}
+	
 	
 	BulletinSearcher openBulletinSearcher() throws Exception
 	{
