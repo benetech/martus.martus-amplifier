@@ -42,10 +42,6 @@ If a common word is essential to getting the results you want,
 you can include it by putting a "+" sign in front of it. 
 (Be sure to include a space before the "+" sign.)
 
-##ISSUE:  if I type in the term: test martus, I will get only bulletins 
-##with that exact phrase – not bulletins that have both terms. 
-##No different than “test martus”, but should be.
-
 Another method for doing this is conducting a phrase search, 
 which simply means putting quotation marks around two or more words. 
 Common words in a phrase search (e.g., "in the yard") are included in the search. 
