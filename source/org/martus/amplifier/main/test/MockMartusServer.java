@@ -48,10 +48,7 @@ public class MockMartusServer implements ServerCallbackInterface
 	{
 		return false;
 	}
-	public void log(String message)
-	{
-		logger.log(message);
-	}
+	
 	public File getStartupConfigDirectory()
 	{
 		return null;
@@ -69,6 +66,31 @@ public class MockMartusServer implements ServerCallbackInterface
 		return logger;
 	}
 	
+	public void log(String message)
+	{
+		logger.log(message);
+	}
+	
+	public void logERROR(String message)
+	{
+		log(message);
+	}
+	
+	public void logInfo(String message)
+	{
+		log(message);
+		
+	}
+	public void logNotice(String message)
+	{
+		log(message);
+		
+	}
+	public void logVerbose(String message)
+	{
+		log(message);
+	}
+
 	public boolean wantsDevelopmentMode()
 	{
 		return false;
@@ -77,4 +99,5 @@ public class MockMartusServer implements ServerCallbackInterface
 	MartusCrypto security;
 	LoggerInterface logger;
 	File dataDirectory;
+	
 }
