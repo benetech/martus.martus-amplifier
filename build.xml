@@ -19,6 +19,7 @@
 
   <property name="thirdparty-dir"   value="thirdparty/jarsNeededToRunAmp/"/>
 
+  <property name="hrvd-dir" value="../martus-hrdag/bin"/>
   <property name="hrvdproperties-dir"   value="hrvd/date"/>
   <property name="hrvddate-dir"   value="org/hrvd/util/date"/>
   <property name="hrvdobj-dir"   value="org/hrvd/util/object"/>
@@ -102,7 +103,7 @@
     <!-- Jar up hrvd and throw it in the push dir -->
     <jar jarfile="${ampjar-filename}"
         update="true"
-   		basedir="${martus-dir}"
+   		basedir="${hrvd-dir}"
    		includes="${hrvdproperties-dir}/**/*.properties,${hrvddate-dir}/**/*.class,${hrvdobj-dir}/**/*.class,${hrvdres-dir}/**/*.class"/>
 
     <!-- Jar up amplifier and throw it in the push dir -->
