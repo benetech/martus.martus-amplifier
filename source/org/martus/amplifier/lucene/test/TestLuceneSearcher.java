@@ -32,6 +32,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Vector;
 
 import junit.framework.Assert;
 
@@ -90,10 +91,13 @@ public class TestLuceneSearcher extends CommonSearchTest
 		HashMap fields = new HashMap();
 		fields.put(RESULT_BASIC_QUERY_KEY, "Lunch");								
 		Results leafs = searcher.search( fields);
+		Vector leafUids = new Vector();
+		for(int i=0; i < leafs.getCount(); ++i)
+			leafUids.add(leafs.getBulletinInfo(i).getBulletinId());
 
-		assertEquals(2, leafs.getCount());
-		assertEquals("id1 not a leaf?", bulletinId1, leafs.getBulletinInfo(0).getBulletinId());
-		assertEquals("id2 not a leaf?", bulletinId2, leafs.getBulletinInfo(1).getBulletinId());
+		assertEquals(2, leafUids.size());
+		assertContains("id1 not a leaf?", bulletinId1, leafUids);
+		assertContains("id2 not a leaf?", bulletinId2, leafUids);
 		searcher.close();
 	}
 
@@ -500,6 +504,12 @@ public class TestLuceneSearcher extends CommonSearchTest
 			fields.put(RESULT_BASIC_QUERY_KEY,  query);	
 			results = searcher.search(fields);	
 			assertEquals("Combine witt these words and exactphrase? ", 1, results.getCount());	
+			
+			query = "+(Francisco) AND +(Sample)";
+			fields.remove(RESULT_BASIC_QUERY_KEY);	
+			fields.put(RESULT_BASIC_QUERY_KEY,  query);	
+			results = searcher.search(fields);	
+			assertEquals("and across multiple fields failed? ", 1, results.getCount());	
 		}
 		finally 
 		{
@@ -739,7 +749,7 @@ public class TestLuceneSearcher extends CommonSearchTest
 			results = searcher.search(fields);
 			assertEquals("search for all of these words? ", 1, results.getCount());
 										
-			query = ed.getFormattedString("egg salad sandwich");
+			query = ed.getFormattedString("ZZZ for Lunch?");
 			clear4Fields(fields);		
 			fields.put(EXACTPHRASE_TAG, query);			
 			results = searcher.search(fields);

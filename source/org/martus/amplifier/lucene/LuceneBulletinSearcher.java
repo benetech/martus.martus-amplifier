@@ -116,7 +116,7 @@ public class LuceneBulletinSearcher implements BulletinSearcher
 	
 	private Query buildSimpleSearchQuery(String queryString) throws Exception
 	{
-		Query query = new QueryBuilder(queryString, SEARCH_ALL_TEXT_FIELDS).getQuery();
+		Query query = new QueryBuilder(queryString).getQuery();
 		return query;
 	}
 	

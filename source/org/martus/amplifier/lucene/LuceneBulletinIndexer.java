@@ -31,11 +31,12 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.analysis.SimpleAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
+import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.main.LanguagesIndexedList;
 import org.martus.amplifier.search.BulletinField;
 import org.martus.amplifier.search.BulletinIndexException;
@@ -154,6 +155,7 @@ public class LuceneBulletinIndexer
 	private static void addFields(Document doc, FieldDataPacket fdp) 
 		throws BulletinIndexException, IOException 
 	{
+		StringBuffer allFieldData = new StringBuffer();
 		Collection fields = BulletinField.getSearchableFields();
 		for (Iterator iter = fields.iterator(); iter.hasNext();) 
 		{
@@ -165,7 +167,12 @@ public class LuceneBulletinIndexer
 			{
 				addField(doc, field, value);
 			}
+			
+			allFieldData.append("    |    ");
+			allFieldData.append(value);
 		}
+		
+		doc.add(Field.Text(SearchResultConstants.IN_ALL_FIELDS, new String(allFieldData)));
 	}
 	
 	private static void addField(Document doc, BulletinField field, String value)
@@ -224,7 +231,7 @@ public class LuceneBulletinIndexer
 	
 	private File indexDir;
 	private IndexWriter writer;
-	private final static Analyzer ANALYZER = new StandardAnalyzer(new String[]{""});
+	private final static Analyzer ANALYZER = new SimpleAnalyzer();
 	
 	private static final String INDEX_DIR_NAME = "ampIndex";
 }

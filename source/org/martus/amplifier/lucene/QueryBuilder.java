@@ -49,11 +49,9 @@ public class QueryBuilder
 		query = parseAdvancedQuery(fields);
 	}
 	
-	// This method is ONLY used by tests. 
-	// We should find a way to get rid of it! 
-	QueryBuilder(String queryString, String field) throws Exception
+	QueryBuilder(String searchFor) throws Exception
 	{
-		query = parseSingleFieldQuery(queryString, field, ERROR_PARSING_QUERY);
+		query = parseSingleFieldQuery(searchFor, SearchResultConstants.IN_ALL_FIELDS, ERROR_PARSING_QUERY);
 	}
 
 	public Query getQuery()
@@ -121,9 +119,6 @@ public class QueryBuilder
 		if (queryString == null || queryString.length() <= 1)
 			return null;
 			
-		if (fieldString.equals(SearchResultConstants.IN_ALL_FIELDS))
-			return parseMultiFieldQuery(queryString, SearchConstants.SEARCH_ALL_TEXT_FIELDS, "Improperly formed advanced find bulletin multiquery: ");
-						
 		return parseSingleFieldQuery(queryString, fieldString, "Improperly formed advanced find bulletin query: ");
 	}	
 
