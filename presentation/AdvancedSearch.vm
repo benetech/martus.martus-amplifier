@@ -6,7 +6,6 @@
     
 	#set ($years = [1970..2004])	
     #set ($days = [1..31])
-    #set ($today = $today)
 
     <body>
 		    <img src="../images/MartusLogo.gif" 
