@@ -22,7 +22,7 @@ public class AmplifierNetworkGatewayTest extends AbstractAmplifierDataSynchTest
 		super(name);
 	}
 	
-	
+	/*
 	public void testGetAllAccountIds()
 	{
 		System.out.println("in testGetAllAccountIds");
@@ -31,7 +31,7 @@ public class AmplifierNetworkGatewayTest extends AbstractAmplifierDataSynchTest
 		assertTrue(list.size() >0);	
 	}
 	
-	/*
+	
 	public void testGetAccountUniversalIds()
 	{
 		System.out.println("in testGetAccountUniversalIds");
@@ -39,9 +39,8 @@ public class AmplifierNetworkGatewayTest extends AbstractAmplifierDataSynchTest
 		Vector list = amplifierGateway.getAccountUniversalIds(sampleAccountId);
 		assertTrue(list.size() >0);	
 	}
-	*/
+
 	
-	/*
 	public void testgetBulletin()
 	{
 		System.out.println("in testGetBulletin");
@@ -50,7 +49,8 @@ public class AmplifierNetworkGatewayTest extends AbstractAmplifierDataSynchTest
 		File file = amplifierGateway.getBulletin(uid);
 		assertTrue(file.length() >0);		
 	}
-	
+*/
+
 	public void testRetrieveAndManageBulletin()
 	{
 		System.out.println("in testRetrieveAndManageBulletin");
@@ -60,11 +60,11 @@ public class AmplifierNetworkGatewayTest extends AbstractAmplifierDataSynchTest
 		assertEquals(list.size(), 3);			
 	}
 	
-	*/
+	
 	
 
 	
-	final String sampleAccountId = "an account id";
-	final String sampleLocalId = "a local id";
+	final String sampleAccountId = "MIIBIDANBgkqhkiG9w0BAQEFAAOCAQ0AMIIBCAKCAQEA0yZzR54EIRdasI8OegAR5K5X5KCzFbgXTF+jQ97xv41puyTS14H0DnukR52+kZaSW5lIJZFo4Tw7jyVZLoEeavAy76QH6InFx9hH1bxzU+AzGfjvTQTRWEstv8MOiDOclvj94hecwe60ikyWSASRblUqWGJNxFqhQkeWyBaQW7WYUe5WwQ43B5laCvZ4W719dQDAZEA1qCZloqBJ4RHptl1cgUZAzwN6ELQ0PiQqvdyRfAC1MeufSpq58bdTZc2qlqxbyApIIx42s+cmbRNI+kl0xm8VWdRDX2egQeMfSFtKMWif12+C0xLHAIPCiGwrYhKe5JEjBarVdh/1sWjS6QIBEQ==";
+	final String sampleLocalId = "F-97617-edb26b21c8--7ffe";
 
 }
