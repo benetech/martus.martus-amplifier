@@ -5,8 +5,6 @@ Martus Amplifier Developer Installation Instructions
 
 2. Set up Eclipse using the "Set up Eclipse" instructions.
 
-3. Set up BerkeleyDB using the "Set up BerkeleyDB" instructions.
-
 4. Install Tomcat 4.1.12. There is an installation executable at martus-amplifier/tools/jakarta-tomcat-4.1.12.exe.
 
 5. Set up Tomcat using the "Set up Tomcat" instructions.
