@@ -18,10 +18,10 @@ public class DataSynchManager implements IDataSynchConstants
 	private static Logger logger = Logger.getLogger(DATASYNC_LOGGER);
 	boolean isIndexingNeeded;
 
-	public DataSynchManager()
+	public DataSynchManager(List backupServersList)
 	{
 		super();
-		amplifierGateway = new AmplifierNetworkGateway();
+		amplifierGateway = new AmplifierNetworkGateway(backupServersList);
 	}
 	
 	

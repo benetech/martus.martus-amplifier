@@ -3,6 +3,7 @@ package org.martus.amplifier.test.datasynch;
 import java.util.Vector;
 
 import org.martus.amplifier.service.datasynch.AmplifierNetworkGateway;
+import org.martus.amplifier.service.datasynch.BackupServerManager;
 
 public class TestAmplifierNetworkGateway extends TestAbstractAmplifierDataSynch
 {	
@@ -14,7 +15,7 @@ public class TestAmplifierNetworkGateway extends TestAbstractAmplifierDataSynch
 	public void testGetAllAccountIds()
 	{
 		System.out.println("AmplifierNetworkGatewayTest:testGetAllAccountIds");
-		AmplifierNetworkGateway amplifierGateway = new AmplifierNetworkGateway();
+		AmplifierNetworkGateway amplifierGateway = new AmplifierNetworkGateway(new BackupServerManager().getBackupServersList());
 		Vector list = amplifierGateway.getAllAccountIds();
 		for(int i =0; i<list.size(); i++)
 		{
@@ -26,7 +27,7 @@ public class TestAmplifierNetworkGateway extends TestAbstractAmplifierDataSynch
 	public void testGetAccountUniversalIds()
 	{
 		System.out.println("AmplifierNetworkGatewayTest:testGetAccountUniversalIds");
-		AmplifierNetworkGateway amplifierGateway = new AmplifierNetworkGateway();
+		AmplifierNetworkGateway amplifierGateway = new AmplifierNetworkGateway(new BackupServerManager().getBackupServersList());
 		
 		Vector list = amplifierGateway.getAccountUniversalIds(sampleAccountId);
 		System.out.println("AccountId2 = "+ sampleAccountId +"  Number of Universal IDs = "+ list.size());

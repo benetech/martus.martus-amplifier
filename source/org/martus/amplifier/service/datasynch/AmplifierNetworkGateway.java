@@ -34,11 +34,11 @@ import org.martus.util.Base64.InvalidBase64Exception;
 public class AmplifierNetworkGateway implements IDataSynchConstants
 {
 	
-	public AmplifierNetworkGateway()
+	public AmplifierNetworkGateway(List backupServersToCall)
 	{
 		super();
 	
-		serverInfoList = new BackupServerManager().getBackupServersList();
+		serverInfoList = backupServersToCall;
 		gateway = getCurrentNetworkInterfaceGateway();
 		try
 		{
