@@ -2,31 +2,24 @@ package org.martus.amplifier.service.search.lucene;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.DateFormat;
 import java.util.Date;
-import java.util.logging.Logger;
 
 import org.apache.lucene.document.DateField;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
-import org.apache.lucene.search.RangeQuery;
 import org.apache.lucene.search.TermQuery;
 import org.martus.amplifier.service.search.AttachmentInfo;
 import org.martus.amplifier.service.search.BulletinField;
 import org.martus.amplifier.service.search.BulletinIndexException;
 import org.martus.amplifier.service.search.BulletinInfo;
 import org.martus.amplifier.service.search.BulletinSearcher;
-import org.martus.amplifier.service.search.BulletinSearcher.Results;
-import org.martus.common.AttachmentProxy;
-import org.martus.common.FieldDataPacket;
-import org.martus.common.UniversalId;
-import org.martus.common.UniversalId.NotUniversalIdException;
+import org.martus.common.packet.UniversalId;
+import org.martus.common.packet.UniversalId.NotUniversalIdException;
 
 public class LuceneBulletinSearcher 
 	implements BulletinSearcher, LuceneSearchConstants

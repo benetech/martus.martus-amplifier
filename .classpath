@@ -2,9 +2,7 @@
 <classpath>
     <classpathentry kind="src" path="source"/>
     <classpathentry kind="src" path="configuration"/>
-    <classpathentry exported="true" kind="var" path="JRE_LIB"
-        rootpath="JRE_SRCROOT" sourcepath="JRE_SRC"/>
-    <classpathentry kind="var" path="JUnit"/>
+    <classpathentry exported="true" kind="var" path="JRE_LIB" sourcepath="JRE_SRC"/>
     <classpathentry kind="var" path="LuceneEngine"/>
     <classpathentry kind="var" path="Xerces"/>
     <classpathentry kind="var" path="berkeleydb"/>
@@ -12,7 +10,8 @@
     <classpathentry kind="var" path="jsse"/>
     <classpathentry kind="var" path="xmlrpc"/>
     <classpathentry kind="var" path="TOMCAT_HOME/common/lib/servlet.jar"/>
-    <classpathentry kind="var" path="TOMCAT_HOME/common/lib/jasper-runtime.jar"/>
     <classpathentry kind="var" path="jstl_standard"/>
-    <classpathentry kind="output" path="presentation\WEB-INF\classes"/>
+    <classpathentry kind="var" path="junit"/>
+    <classpathentry kind="var" path="bccrypto"/>
+    <classpathentry kind="output" path="presentation/WEB-INF/classes"/>
 </classpath>

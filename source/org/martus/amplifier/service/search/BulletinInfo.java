@@ -1,15 +1,12 @@
 package org.martus.amplifier.service.search;
 
 import java.io.Serializable;
-import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import org.martus.common.UniversalId;
+import org.martus.common.packet.UniversalId;
 
 public class BulletinInfo implements Serializable
 {

@@ -3,14 +3,13 @@ package org.martus.amplifier.service.attachment.filesystem;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 
 import junit.framework.Assert;
 
 import org.martus.amplifier.service.attachment.AbstractAttachmentManagerTest;
 import org.martus.amplifier.service.attachment.AttachmentManager;
 import org.martus.amplifier.service.attachment.AttachmentStorageException;
-import org.martus.common.UniversalId;
+import org.martus.common.packet.UniversalId;
 
 public class TestFileSystemAttachmentManager 
 	extends AbstractAttachmentManagerTest

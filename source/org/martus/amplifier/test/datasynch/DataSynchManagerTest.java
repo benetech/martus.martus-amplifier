@@ -1,8 +1,5 @@
 package org.martus.amplifier.test.datasynch;
 
-import java.io.File;
-
-import org.martus.amplifier.common.configuration.AmplifierConfiguration;
 import org.martus.amplifier.service.datasynch.DataSynchManager;
 
 /**

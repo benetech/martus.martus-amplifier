@@ -2,11 +2,10 @@ package org.martus.amplifier.service.search;
 
 import java.util.logging.Logger;
 
-import org.apache.lucene.search.Hits;
 import org.martus.amplifier.common.configuration.AmplifierConfiguration;
 import org.martus.amplifier.service.search.api.IBulletinCatalog;
 import org.martus.amplifier.service.search.lucene.LuceneBulletinSearcher;
-import org.martus.common.UniversalId;
+import org.martus.common.packet.UniversalId;
 
 /**
  * A class that represents a catalog of all of the 

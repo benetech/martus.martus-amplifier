@@ -1,7 +1,6 @@
 package org.martus.amplifier.service.search.lucene;
 
 import java.io.File;
-import java.text.DateFormat;
 
 import org.martus.amplifier.service.search.AbstractSearchTest;
 import org.martus.amplifier.service.search.BulletinIndexException;

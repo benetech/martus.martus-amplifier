@@ -2,7 +2,7 @@ package org.martus.amplifier.service.attachment;
 
 import java.io.InputStream;
 
-import org.martus.common.UniversalId;
+import org.martus.common.packet.UniversalId;
 
 /**
  * This class defines the interface through which attachments are saved

@@ -12,20 +12,19 @@ import org.martus.amplifier.service.attachment.AttachmentStorageException;
 import org.martus.amplifier.service.search.BulletinField;
 import org.martus.amplifier.service.search.BulletinIndexException;
 import org.martus.amplifier.service.search.BulletinIndexer;
-import org.martus.common.AttachmentPacket;
-import org.martus.common.AttachmentProxy;
-import org.martus.common.BulletinHeaderPacket;
-import org.martus.common.FieldDataPacket;
-import org.martus.common.MartusCrypto;
 import org.martus.common.MartusUtilities;
-import org.martus.common.UniversalId;
-import org.martus.common.ZipEntryInputStream;
-import org.martus.common.Base64.InvalidBase64Exception;
-import org.martus.common.MartusCrypto.DecryptionException;
-import org.martus.common.MartusCrypto.NoKeyPairException;
-import org.martus.common.Packet.InvalidPacketException;
-import org.martus.common.Packet.SignatureVerificationException;
-import org.martus.common.Packet.WrongPacketTypeException;
+import org.martus.common.bulletin.AttachmentProxy;
+import org.martus.common.crypto.MartusCrypto;
+import org.martus.common.crypto.MartusCrypto.DecryptionException;
+import org.martus.common.crypto.MartusCrypto.NoKeyPairException;
+import org.martus.common.packet.BulletinHeaderPacket;
+import org.martus.common.packet.FieldDataPacket;
+import org.martus.common.packet.UniversalId;
+import org.martus.common.packet.Packet.InvalidPacketException;
+import org.martus.common.packet.Packet.SignatureVerificationException;
+import org.martus.common.packet.Packet.WrongPacketTypeException;
+import org.martus.util.ZipEntryInputStream;
+import org.martus.util.Base64.InvalidBase64Exception;
 
 
 /**

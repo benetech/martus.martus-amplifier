@@ -1,6 +1,6 @@
 package org.martus.amplifier.service.search.api;
 
-import org.martus.common.UniversalId;
+import org.martus.common.packet.UniversalId;
 
 /**
  * An interface that represents a catalog of all of the 

@@ -1,7 +1,7 @@
 package org.martus.amplifier.service.search;
 
-import org.martus.common.FieldDataPacket;
-import org.martus.common.UniversalId;
+import org.martus.common.packet.FieldDataPacket;
+import org.martus.common.packet.UniversalId;
 
 public interface BulletinIndexer extends SearchConstants
 {

@@ -7,11 +7,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
-import org.martus.amplifier.common.configuration.AmplifierConfiguration;
-import org.martus.amplifier.service.search.SearchConstants;
-import org.martus.common.StreamCopier;
-
 import junit.framework.TestCase;
+
+import org.martus.amplifier.common.configuration.AmplifierConfiguration;
+import org.martus.util.StreamCopier;
 
 /**
  * @author dchu

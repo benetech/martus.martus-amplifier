@@ -1,15 +1,12 @@
 package org.martus.amplifier.service.datasynch;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
-import java.util.zip.ZipFile;
 
 import org.martus.amplifier.common.configuration.AmplifierConfiguration;
 import org.martus.amplifier.common.datasynch.AmplifierBulletinRetrieverGatewayInterface;
@@ -21,19 +18,19 @@ import org.martus.amplifier.service.attachment.AttachmentManager;
 import org.martus.amplifier.service.attachment.AttachmentStorageException;
 import org.martus.amplifier.service.search.BulletinIndexException;
 import org.martus.amplifier.service.search.BulletinIndexer;
-import org.martus.common.MartusCrypto;
-import org.martus.common.MartusSecurity;
-import org.martus.common.MartusUtilities;
-import org.martus.common.NetworkInterfaceConstants;
-import org.martus.common.NetworkResponse;
-import org.martus.common.UniversalId;
-import org.martus.common.Base64.InvalidBase64Exception;
-import org.martus.common.MartusCrypto.DecryptionException;
-import org.martus.common.MartusCrypto.NoKeyPairException;
 import org.martus.common.MartusUtilities.ServerErrorException;
-import org.martus.common.Packet.InvalidPacketException;
-import org.martus.common.Packet.SignatureVerificationException;
-import org.martus.common.Packet.WrongPacketTypeException;
+import org.martus.common.bulletin.BulletinZipUtilities;
+import org.martus.common.crypto.MartusCrypto;
+import org.martus.common.crypto.MartusSecurity;
+import org.martus.common.crypto.MartusCrypto.DecryptionException;
+import org.martus.common.crypto.MartusCrypto.NoKeyPairException;
+import org.martus.common.network.NetworkInterfaceConstants;
+import org.martus.common.network.NetworkResponse;
+import org.martus.common.packet.UniversalId;
+import org.martus.common.packet.Packet.InvalidPacketException;
+import org.martus.common.packet.Packet.SignatureVerificationException;
+import org.martus.common.packet.Packet.WrongPacketTypeException;
+import org.martus.util.Base64.InvalidBase64Exception;
 
 public class AmplifierNetworkGateway implements IDataSynchConstants
 {
@@ -133,7 +130,7 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
         	out = new FileOutputStream(tempFile);		
 		    try
 		 	{	
-				totalLength = MartusUtilities.retrieveBulletinZipToStream
+				totalLength = BulletinZipUtilities.retrieveBulletinZipToStream
 									(uid, out, chunkSize, gateway, security, null, null);
 			}
 			catch(Exception e)

@@ -8,8 +8,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.martus.common.Bulletin;
-import org.martus.common.BulletinConstants;
+import org.martus.common.bulletin.Bulletin;
+import org.martus.common.bulletin.BulletinConstants;
 
 /**
  * This class is used to encapsulate information about a field

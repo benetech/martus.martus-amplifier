@@ -1,7 +1,7 @@
 package org.martus.amplifier.common.datasynch;
 
 
-import org.martus.common.NetworkInterfaceXmlRpcConstants;
+import org.martus.common.network.NetworkInterfaceXmlRpcConstants;
 
 /**
  * @author SKoneru

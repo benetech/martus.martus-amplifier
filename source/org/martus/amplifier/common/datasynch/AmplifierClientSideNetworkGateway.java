@@ -3,9 +3,9 @@ package org.martus.amplifier.common.datasynch;
 import java.io.IOException;
 import java.util.Vector;
 
-import org.martus.common.MartusCrypto;
+import org.martus.common.crypto.MartusCrypto;
 import org.martus.common.MartusUtilities;
-import org.martus.common.NetworkResponse;
+import org.martus.common.network.NetworkResponse;
 
 /**
  * @author skoneru
@@ -27,7 +27,7 @@ public class AmplifierClientSideNetworkGateway implements AmplifierBulletinRetri
 			MartusCrypto.MartusSignatureException, IOException
 	{
 		Vector parameters = new Vector();
-		String signature = MartusUtilities.sign(parameters, signer);
+		String signature = MartusCrypto.sign(parameters, signer);
 		return new NetworkResponse(server.getAccountIds(signer.getPublicKeyString(), parameters, signature));
 	}
 

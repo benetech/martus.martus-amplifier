@@ -8,8 +8,8 @@ import java.util.logging.Logger;
 import org.martus.amplifier.service.attachment.AttachmentManager;
 import org.martus.amplifier.service.search.BulletinCatalog;
 import org.martus.amplifier.service.search.BulletinIndexer;
-import org.martus.common.UniversalId;
-import org.martus.common.UniversalId.NotUniversalIdException;
+import org.martus.common.packet.UniversalId;
+import org.martus.common.packet.UniversalId.NotUniversalIdException;
 
 public class DataSynchManager implements IDataSynchConstants
 {

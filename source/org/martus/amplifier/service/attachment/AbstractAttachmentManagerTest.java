@@ -6,7 +6,7 @@ import java.io.InputStream;
 import junit.framework.Assert;
 
 import org.martus.amplifier.test.AbstractAmplifierTest;
-import org.martus.common.UniversalId;
+import org.martus.common.packet.UniversalId;
 
 public abstract class AbstractAttachmentManagerTest 
 	extends AbstractAmplifierTest

@@ -6,8 +6,8 @@ import java.security.cert.X509Certificate;
 
 import javax.net.ssl.X509TrustManager;
 
-import org.martus.common.MartusSecurity;
-import org.martus.common.MartusUtilities;
+import org.martus.common.crypto.MartusCrypto;
+import org.martus.common.crypto.MartusSecurity;
 
 public class AmplifierSimpleX509TrustManager implements X509TrustManager 
 {
@@ -42,7 +42,7 @@ public class AmplifierSimpleX509TrustManager implements X509TrustManager
 			if(tryPublicKey == null)
 			{
 				String certPublicKeyString = MartusSecurity.getKeyString(cert2.getPublicKey());
-				String certPublicCode = MartusUtilities.computePublicCode(certPublicKeyString);
+				String certPublicCode = MartusCrypto.computePublicCode(certPublicKeyString);
 				if(expectedPublicCode.equals(certPublicCode))
 					tryPublicKey = cert2.getPublicKey();
 			}

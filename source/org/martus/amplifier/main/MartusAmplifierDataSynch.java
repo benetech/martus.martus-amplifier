@@ -1,14 +1,12 @@
 package org.martus.amplifier.main;
 
 
-import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.martus.amplifier.common.configuration.AmplifierConfiguration;
 import org.martus.amplifier.service.attachment.AttachmentManager;
 import org.martus.amplifier.service.attachment.AttachmentStorageException;
 import org.martus.amplifier.service.attachment.filesystem.FileSystemAttachmentManager;
-import org.martus.amplifier.service.datasynch.BulletinExtractor;
 import org.martus.amplifier.service.datasynch.DataSynchManager;
 import org.martus.amplifier.service.search.BulletinIndexException;
 import org.martus.amplifier.service.search.BulletinIndexer;

@@ -5,13 +5,13 @@ import java.io.OutputStream;
 import java.io.StringReader;
 import java.util.Vector;
 
-import org.martus.common.Base64;
-import org.martus.common.MartusCrypto;
+import org.martus.util.Base64;
+import org.martus.common.crypto.MartusCrypto;
 import org.martus.common.MartusUtilities;
-import org.martus.common.NetworkInterfaceConstants;
-import org.martus.common.NetworkResponse;
+import org.martus.common.network.NetworkInterfaceConstants;
+import org.martus.common.network.NetworkResponse;
 import org.martus.common.ProgressMeterInterface;
-import org.martus.common.UniversalId;
+import org.martus.common.packet.UniversalId;
 
 /**
  * @author skoneru
@@ -38,7 +38,10 @@ public class AmplifierMartusUtilities extends MartusUtilities {
 		int chunkOffset = 0;
 		String lastResponse = "";
 		if(progressMeter != null)
-			progressMeter.updateProgressMeter(progressTag, 0, 1);	
+		{
+			progressMeter.setStatusMessageTag(progressTag);
+			progressMeter.updateProgressMeter(0, 1);	
+		}
 		while(!lastResponse.equals(NetworkInterfaceConstants.OK))
 		{
 			NetworkResponse response = gateway.getBulletinChunk(security, 
@@ -76,11 +79,15 @@ public class AmplifierMartusUtilities extends MartusUtilities {
 			{
 				if(progressMeter.shouldExit())
 					break;					
-				progressMeter.updateProgressMeter(progressTag, chunkOffset, masterTotalSize);	
+				progressMeter.setStatusMessageTag(progressTag);
+				progressMeter.updateProgressMeter(chunkOffset, masterTotalSize);	
 			}
 		}
 		if(progressMeter != null)
-			progressMeter.updateProgressMeter(progressTag, chunkOffset, masterTotalSize);	
+		{
+			progressMeter.setStatusMessageTag(progressTag);
+			progressMeter.updateProgressMeter(chunkOffset, masterTotalSize);	
+		}
 		return masterTotalSize;
 	}
 

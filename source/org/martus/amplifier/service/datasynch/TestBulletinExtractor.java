@@ -25,19 +25,17 @@ import org.martus.amplifier.service.search.SearchConstants;
 import org.martus.amplifier.service.search.lucene.LuceneBulletinIndexer;
 import org.martus.amplifier.service.search.lucene.LuceneBulletinSearcher;
 import org.martus.amplifier.test.AbstractAmplifierTest;
-import org.martus.common.AttachmentProxy;
-import org.martus.common.Bulletin;
-import org.martus.common.BulletinSaver;
-import org.martus.common.Database;
-import org.martus.common.FieldDataPacket;
-import org.martus.common.MartusCrypto;
-import org.martus.common.MockBulletin;
-import org.martus.common.MockMartusSecurity;
-import org.martus.common.MockServerDatabase;
-import org.martus.common.StreamCopier;
-import org.martus.common.UniversalId;
-import org.martus.common.MartusCrypto.CryptoException;
-import org.martus.common.MartusCrypto.EncryptionException;
+import org.martus.common.bulletin.AttachmentProxy;
+import org.martus.common.bulletin.Bulletin;
+import org.martus.common.bulletin.BulletinSaver;
+import org.martus.common.crypto.MartusCrypto;
+import org.martus.common.crypto.MockMartusSecurity;
+import org.martus.common.crypto.MartusCrypto.CryptoException;
+import org.martus.common.crypto.MartusCrypto.EncryptionException;
+import org.martus.common.database.Database;
+import org.martus.common.database.MockServerDatabase;
+import org.martus.common.packet.UniversalId;
+import org.martus.util.StreamCopier;
 
 public class TestBulletinExtractor extends AbstractAmplifierTest
 	implements SearchConstants

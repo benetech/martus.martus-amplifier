@@ -2,8 +2,7 @@ package org.martus.amplifier.service.search;
 
 import java.util.Date;
 
-import org.martus.common.FieldDataPacket;
-import org.martus.common.UniversalId;
+import org.martus.common.packet.UniversalId;
 
 public interface BulletinSearcher extends SearchConstants
 {

@@ -16,11 +16,9 @@ import org.apache.lucene.index.IndexWriter;
 import org.martus.amplifier.service.search.BulletinField;
 import org.martus.amplifier.service.search.BulletinIndexException;
 import org.martus.amplifier.service.search.BulletinIndexer;
-import org.martus.amplifier.service.search.BulletinSearchException;
-import org.martus.common.AttachmentProxy;
-import org.martus.common.Bulletin;
-import org.martus.common.FieldDataPacket;
-import org.martus.common.UniversalId;
+import org.martus.common.bulletin.AttachmentProxy;
+import org.martus.common.packet.FieldDataPacket;
+import org.martus.common.packet.UniversalId;
 
 public class LuceneBulletinIndexer 
 	implements BulletinIndexer, LuceneSearchConstants

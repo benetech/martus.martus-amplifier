@@ -13,8 +13,8 @@ import java.util.Properties;
 import org.martus.amplifier.service.attachment.AttachmentManager;
 import org.martus.amplifier.service.attachment.AttachmentNotFoundException;
 import org.martus.amplifier.service.attachment.AttachmentStorageException;
-import org.martus.common.StreamCopier;
-import org.martus.common.UniversalId;
+import org.martus.util.StreamCopier;
+import org.martus.common.packet.UniversalId;
 
 public class FileSystemAttachmentManager implements AttachmentManager
 {

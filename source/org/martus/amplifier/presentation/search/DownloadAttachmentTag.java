@@ -8,13 +8,12 @@ import java.util.logging.Logger;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 
-import org.apache.taglibs.standard.lang.support.ExpressionEvaluatorManager;
 import org.martus.amplifier.common.configuration.AmplifierConfiguration;
 import org.martus.amplifier.service.attachment.AttachmentManager;
 import org.martus.amplifier.service.attachment.AttachmentStorageException;
 import org.martus.amplifier.service.attachment.filesystem.FileSystemAttachmentManager;
-import org.martus.common.StreamCopier;
-import org.martus.common.UniversalId;
+import org.martus.common.packet.UniversalId;
+import org.martus.util.StreamCopier;
 
 public class DownloadAttachmentTag extends TagSupport
 {
