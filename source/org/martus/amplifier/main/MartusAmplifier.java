@@ -41,9 +41,9 @@ import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinIndexer;
 import org.martus.common.MartusUtilities;
 import org.martus.common.crypto.MartusCrypto;
-import org.martus.common.crypto.MartusSecurity;
 import org.martus.common.crypto.MartusCrypto.CryptoInitializationException;
 import org.martus.common.network.MartusXmlrpcClient.SSLSocketSetupException;
+import org.martus.server.forclients.MartusServer;
 import org.martus.util.UnicodeReader;
 import org.mortbay.http.HttpContext;
 import org.mortbay.http.SunJsseListener;
@@ -328,9 +328,9 @@ public class MartusAmplifier
 		return coreServer.isShutdownRequested();
 	}
 	
-	static public MartusSecurity getSecurity()
+	static public MartusCrypto getSecurity()
 	{
-		return StubServer.security;
+		return MartusServer.getStaticSecurity();
 	}
 
 	private File getServersWhoWeCallDirectory()

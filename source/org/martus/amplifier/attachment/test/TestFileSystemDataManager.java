@@ -10,11 +10,11 @@ import junit.framework.Assert;
 import org.martus.amplifier.attachment.AttachmentStorageException;
 import org.martus.amplifier.attachment.DataManager;
 import org.martus.amplifier.attachment.FileSystemDataManager;
-import org.martus.amplifier.main.StubServer;
 import org.martus.common.crypto.MockMartusSecurity;
 import org.martus.common.database.FileDatabase.MissingAccountMapException;
 import org.martus.common.database.FileDatabase.MissingAccountMapSignatureException;
 import org.martus.common.packet.UniversalId;
+import org.martus.server.forclients.MartusServer;
 import org.martus.util.DirectoryUtils;
 import org.martus.util.StringInputStream;
 
@@ -156,7 +156,7 @@ public class TestFileSystemDataManager
 	{
 		MockMartusSecurity client = new MockMartusSecurity();
 		client.createKeyPair();
-		StubServer.security = client;
+		MartusServer.setStaticSecurity(client);
 
 		String id = "test";
 		String data1 = "data 1";

@@ -10,6 +10,7 @@ import org.martus.common.LoggerForTesting;
 import org.martus.common.MartusUtilities;
 import org.martus.common.crypto.MockMartusSecurity;
 import org.martus.common.test.TestCaseEnhanced;
+import org.martus.util.DirectoryUtils;
 import org.martus.util.UnicodeWriter;
 
 public class TestMartusAmplifier extends TestCaseEnhanced
@@ -26,7 +27,7 @@ public class TestMartusAmplifier extends TestCaseEnhanced
 		dir.delete();
 		dir.mkdirs();
 		
-		StubServer server = new StubServer(dir, new LoggerForTesting());
+		StubServer server = new StubServer(dir, new LoggerForTesting(), security);
 		MartusAmplifier amp = server.amp;
 		
 		List noServers = amp.loadServersWeWillCall(dir, security);
@@ -50,14 +51,16 @@ public class TestMartusAmplifier extends TestCaseEnhanced
 		assertEquals(985, intResult);
 		
 		keyFile.delete();
-		dir.delete();
+		DirectoryUtils.deleteEntireDirectoryTree(dir);
 		assertFalse(dir.getPath() + " still exists?", dir.exists());	
 	}
 	
 	public void testLoadAccountsWeWillNotAmplify() throws Exception
 	{
 		File unamplified = createTempFile();
-		StubServer server = new StubServer(unamplified, new LoggerForTesting());
+
+		MockMartusSecurity security = MockMartusSecurity.createServer();
+		StubServer server = new StubServer(unamplified, new LoggerForTesting(), security);
 		MartusAmplifier amp = server.amp;
 		assertNull("List should be null", amp.getListOfAccountsWeWillNotAmplify());
 		

@@ -37,7 +37,6 @@ import org.martus.amplifier.lucene.LuceneBulletinIndexer;
 import org.martus.amplifier.lucene.LuceneBulletinSearcher;
 import org.martus.amplifier.main.LanguagesIndexedList;
 import org.martus.amplifier.main.MartusAmplifier;
-import org.martus.amplifier.main.StubServer;
 import org.martus.amplifier.search.BulletinField;
 import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinIndexer;
@@ -49,6 +48,7 @@ import org.martus.common.bulletin.AttachmentProxy;
 import org.martus.common.crypto.MockMartusSecurity;
 import org.martus.common.packet.FieldDataPacket;
 import org.martus.common.packet.UniversalId;
+import org.martus.server.forclients.MartusServer;
 import org.martus.util.DirectoryUtils;
 
 public abstract class CommonSearchTest 
@@ -62,7 +62,7 @@ public abstract class CommonSearchTest
 	public void setUp() throws Exception
 	{
 		super.setUp();
-		StubServer.security = new MockMartusSecurity();
+		MartusServer.setStaticSecurity(new MockMartusSecurity());
 		MartusAmplifier.getSecurity().createKeyPair();
 		MartusAmplifier.dataManager = new FileSystemDataManager(getTestBasePath());
 		LanguagesIndexedList.languagesIndexedSingleton = new LanguagesIndexedList(new File(getTestBasePath(),"langIndex"));
