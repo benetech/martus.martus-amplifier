@@ -26,12 +26,11 @@ Boston, MA 02111-1307, USA.
 
 package org.martus.amplifier.presentation.test;
 
-import junit.framework.TestCase;
-
 import org.apache.velocity.context.Context;
 import org.martus.amplifier.presentation.UserFeedbackForm;
+import org.martus.common.test.TestCaseEnhanced;
 
-public class TestUserFeedbackForm extends TestCase
+public class TestUserFeedbackForm extends TestCaseEnhanced
 {
 	public TestUserFeedbackForm(String name)
 	{
