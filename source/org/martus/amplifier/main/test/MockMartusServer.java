@@ -69,6 +69,11 @@ public class MockMartusServer implements ServerCallbackInterface
 		return logger;
 	}
 	
+	public boolean wantsDevelopmentMode()
+	{
+		return false;
+	}
+
 	MartusCrypto security;
 	LoggerInterface logger;
 	File dataDirectory;

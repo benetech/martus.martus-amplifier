@@ -31,6 +31,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Vector;
+
 import org.martus.amplifier.ServerCallbackInterface;
 import org.martus.amplifier.attachment.DataManager;
 import org.martus.amplifier.attachment.FileSystemDataManager;
@@ -102,25 +103,8 @@ public class MartusAmplifier
 			log("Error: LanguagesIndex" + e);
 		}
 		
-		try
-		{
-			//Code.setDebug(true);
-			startServers(password);
-		} catch (MultiException multi)
-		{
-			int realExceptionCount = 0;
-			for(int i = 0; i < multi.size(); ++i)
-			{
-				Exception e = multi.getException(i);
-				if(isExceptionWeCareAbout(e))
-				{
-					e.printStackTrace();
-					++realExceptionCount;
-				}
-			}
-			if(realExceptionCount > 0)
-				throw new Exception();
-		}
+		//Code.setDebug(true);
+		startServers(password);
 	}
 
 	private boolean isExceptionWeCareAbout(Exception e)
@@ -133,17 +117,51 @@ public class MartusAmplifier
 		return new File(coreServer.getDataDirectory(), "ampPackets");
 	}
 
-	private void startServers(char[] password) throws IOException, MultiException
+	private void startServers(char[] password) throws Exception
 	{
-		startSSLServer(password);
-		startNonSSLServer();
+		try
+		{
+			log("Starting SSL server");
+			startSSLServer(password);
+		} catch (MultiException multi)
+		{
+			discardSillyExceptions(multi);
+		}
+
+		try
+		{
+			log("Starting non-SSL server");
+			startNonSSLServer();
+		} catch (MultiException multi)
+		{
+			discardSillyExceptions(multi);
+		}
+	}
+
+	private void discardSillyExceptions(MultiException multi) throws Exception
+	{
+		int realExceptionCount = 0;
+		for(int i = 0; i < multi.size(); ++i)
+		{
+			Exception e = multi.getException(i);
+			if(isExceptionWeCareAbout(e))
+			{
+				e.printStackTrace();
+				++realExceptionCount;
+			}
+		}
+		if(realExceptionCount > 0)
+			throw new Exception();
 	}
 
 	private void startNonSSLServer() throws IOException, MultiException
 	{
 		Server nonsslServer = new Server();
 		
-		InetAddrPort nonssllistener = new InetAddrPort(80);
+		int port = 80;
+		if(coreServer.wantsDevelopmentMode())
+			port += ServerCallbackInterface.DEVELOPMENT_MODE_PORT_DELTA;
+		InetAddrPort nonssllistener = new InetAddrPort(port);
 		nonsslServer.addWebApplication("/images/", getPresentationBasePath() + "presentationNonSSL/images");	
 		nonssllistener.setInetAddress(getAmpIpAddress());
 		nonsslServer.addListener(nonssllistener);
@@ -161,7 +179,10 @@ public class MartusAmplifier
 
 	private void startSSLServer(char[] password) throws IOException, MultiException
 	{
-		SunJsseListener sslListener = new SunJsseListener(new InetAddrPort(443));
+		int port = 443;
+		if(coreServer.wantsDevelopmentMode())
+			port += ServerCallbackInterface.DEVELOPMENT_MODE_PORT_DELTA;
+		SunJsseListener sslListener = new SunJsseListener(new InetAddrPort(port));
 		sslListener.setInetAddress(getAmpIpAddress());
 		sslListener.setPassword(new String(password));
 		sslListener.setKeyPassword(new String(password));

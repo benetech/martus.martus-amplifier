@@ -38,4 +38,7 @@ public interface ServerCallbackInterface
 	public abstract File getDataDirectory();
 	public abstract String getAmpIpAddress();
 	public abstract LoggerInterface getLogger();
+	public abstract boolean wantsDevelopmentMode(); 
+
+	public static final int DEVELOPMENT_MODE_PORT_DELTA = 9000;
 }
