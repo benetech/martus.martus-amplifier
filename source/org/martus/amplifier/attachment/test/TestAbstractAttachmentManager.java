@@ -174,6 +174,26 @@ public abstract class TestAbstractAttachmentManager
 			}
 		}
 	}
+
+	public void testSizeOfFile() 
+		throws AttachmentStorageException, IOException
+	{
+		AttachmentManager attachmentManager = getAttachmentManager();
+		attachmentManager.clearAllAttachments();
+		UniversalId id = 
+			UniversalId.createFromAccountAndLocalId("Account1", "Test");
+		String testString = "PutAndGetTwoDifferentAccounts";
+		InputStream sin = new StringInputStream(testString);
+		try 
+		{
+			attachmentManager.putAttachment(id, sin);
+		} 
+		finally 
+		{
+			sin.close();
+		}
+		assertEquals("Size of file incorrect?",testString.length(),(int)attachmentManager.getAttachmentSize(id));
+	}
 	
 	public void testOverwriteExistingAttachment() 
 		throws AttachmentStorageException, IOException
