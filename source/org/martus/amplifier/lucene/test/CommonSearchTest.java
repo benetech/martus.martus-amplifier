@@ -80,173 +80,113 @@ public abstract class CommonSearchTest
 	
 	protected FieldDataPacket generateSampleData(UniversalId bulletinId)
 	{
-		String author = "Paul";
-		String keyword = "ate";
-		String keywords = keyword + " egg salad root beer";
-		String title = "ZZZ for Lunch?";
-		String eventdate = "2003-04-10";
-		String entrydate = "2003-05-11";
-		String publicInfo = "menu";
-		String language = "en";
-		String organization = "test sample";
 		String summary = 
-			"Today Paul ate an egg salad sandwich and a root beer " +
-			"for lunch.";
-		String location = "San Francisco, CA";
+			"Today Paul ate an egg salad sandwich and a root beer for lunch.";
+
+		HashMap fieldPairs = new HashMap();
+		fieldPairs.put(SEARCH_AUTHOR_INDEX_FIELD, "Paul"); 
+		fieldPairs.put(SEARCH_KEYWORDS_INDEX_FIELD, "ate egg salad root beer"); 
+		fieldPairs.put(SEARCH_TITLE_INDEX_FIELD, "ZZZ for Lunch?");
+		fieldPairs.put(SEARCH_ENTRY_DATE_INDEX_FIELD, "2003-05-11"); 
+		fieldPairs.put(SEARCH_EVENT_DATE_INDEX_FIELD, "2003-04-10");
+		fieldPairs.put(SEARCH_DETAILS_INDEX_FIELD, "menu");
+		fieldPairs.put(SEARCH_LANGUAGE_INDEX_FIELD, "en");
+		fieldPairs.put(SEARCH_ORGANIZATION_INDEX_FIELD, "test sample");
+		fieldPairs.put(SEARCH_SUMMARY_INDEX_FIELD, summary);
+		fieldPairs.put(SEARCH_LOCATION_INDEX_FIELD, "San Francisco, CA");
+
+		String[] attachmentLabels = new String[] {
+				"att1Id", "Eggs.gif", 
+				"att2Id", "Recipe.txt"
+			};
 		
-		String attachment1LocalId = "att1Id";
-		String attachment1Label = "Eggs.gif";
-		String attachment2LocalId = "att2Id";
-		String attachment2Label = "Recipe.txt";
-		
-		FieldDataPacket fdp = createFieldDataPacket(bulletinId, author, keywords, title, eventdate, entrydate, publicInfo, summary, location, attachment1LocalId, attachment1Label, attachment2LocalId, attachment2Label, language, organization);
+		FieldDataPacket fdp = generateFieldDataPacket(bulletinId, fieldPairs, attachmentLabels);
 		return fdp;
 	}
 
 	protected FieldDataPacket generateOtherLanguageData(UniversalId bulletinId)
 	{
-		String author = "Paul";
-		String keyword = "ate";
-		String keywords = keyword + " egg salad root beer";
-		String title = "other language?";
-		String eventdate = "2003-04-10";
-		String entrydate = "2003-05-11";
-		String publicInfo = "menu";
-		String language = "?";
-		String organization = "test sample";
 		String summary = 
-			"Today Paul ate an egg salad sandwich and a root beer " +
-			"for lunch.";
-		String location = "San Francisco, CA";
+			"Today Paul ate an egg salad sandwich and a root beer for lunch.";
+
+		HashMap fieldPairs = new HashMap();
+		fieldPairs.put(SEARCH_AUTHOR_INDEX_FIELD, "Paul"); 
+		fieldPairs.put(SEARCH_KEYWORDS_INDEX_FIELD, "ate egg salad root beer"); 
+		fieldPairs.put(SEARCH_TITLE_INDEX_FIELD, "other language?");
+		fieldPairs.put(SEARCH_ENTRY_DATE_INDEX_FIELD, "2003-05-11"); 
+		fieldPairs.put(SEARCH_EVENT_DATE_INDEX_FIELD, "2003-04-10");
+		fieldPairs.put(SEARCH_DETAILS_INDEX_FIELD, "menu");
+		fieldPairs.put(SEARCH_LANGUAGE_INDEX_FIELD, "?");
+		fieldPairs.put(SEARCH_ORGANIZATION_INDEX_FIELD, "test sample");
+		fieldPairs.put(SEARCH_SUMMARY_INDEX_FIELD, summary);
+		fieldPairs.put(SEARCH_LOCATION_INDEX_FIELD, "San Francisco, CA");
+
+		String[] attachmentLabels = new String[] {
+				"att1Id", "Eggs.gif", 
+				"att2Id", "Recipe.txt"
+			};
 		
-		String attachment1LocalId = "att1Id";
-		String attachment1Label = "Eggs.gif";
-		String attachment2LocalId = "att2Id";
-		String attachment2Label = "Recipe.txt";
-		
-		FieldDataPacket fdp = createFieldDataPacket(bulletinId, author, keywords, title, eventdate, entrydate, publicInfo, summary, location, attachment1LocalId, attachment1Label, attachment2LocalId, attachment2Label, language, organization);
+		FieldDataPacket fdp = generateFieldDataPacket(bulletinId, fieldPairs, attachmentLabels);
 		return fdp;
 	}
 	
-	protected FieldDataPacket generateEmptyBullteinData(UniversalId bulletinId)
-	{
-		String author = "Test";
-		String keywords = "something";
-		String title = "";
-		String eventdate = "2003-04-10";
-		String entrydate = "2003-05-11";
-		String publicInfo = "something";
-		String language = "en";
-		String organization = "somewhere";
-		String summary = "test summary";
-		String location = "Space, Moon";	
-		
-		String attachment1LocalId = "att1Id";
-		String attachment1Label = "Eggs.gif";
-		String attachment2LocalId = "att2Id";
-		String attachment2Label = "Recipe.txt";		
-		
-		FieldDataPacket fdp = createFieldDataPacket(bulletinId, author, keywords, title, eventdate, entrydate, publicInfo, summary, location, attachment1LocalId, attachment1Label, attachment2LocalId, attachment2Label, language, organization);
-		
-		return fdp;
-	}
-
 	protected FieldDataPacket generateSampleFlexiData(UniversalId bulletinId)
 	{
-		String author = "Chuck";	
-		String keywords = "2003-08-20";
-		String title = "What's for Lunch?";
-		String entrydate="2003-09-15";
-		String eventdate = "2003-08-20,20030820+3";
-		String publicInfo = "menu3";
-		String language = "es";
-		String organization = "test complex";
-		String summary = 
-			"Today Chuck ate an egg2 salad2 sandwich and a root beer2 " +
-			"for lunch.";
-		//String location = "San Francisco, CA";
-		
-		String attachment1LocalId = "att1Id";
-		String attachment1Label = "Eggs.gif";
-		String attachment2LocalId = "att2Id";
-		String attachment2Label = "Recipe.txt";
-		
-		FieldDataPacket fdp = createFieldDataPacket(bulletinId, author, keywords, title, eventdate, entrydate, publicInfo, summary, null, attachment1LocalId, attachment1Label, attachment2LocalId, attachment2Label, language, organization);
+		HashMap fieldPairs = new HashMap();
+		fieldPairs.put(SEARCH_AUTHOR_INDEX_FIELD, "Chuck"); 
+		fieldPairs.put(SEARCH_KEYWORDS_INDEX_FIELD, "2003-08-20"); 
+		fieldPairs.put(SEARCH_TITLE_INDEX_FIELD, "What's for Lunch?");
+		fieldPairs.put(SEARCH_ENTRY_DATE_INDEX_FIELD, "2003-09-15"); 
+		fieldPairs.put(SEARCH_EVENT_DATE_INDEX_FIELD, "2003-08-20,20030820+3");
+		fieldPairs.put(SEARCH_DETAILS_INDEX_FIELD, "menu3");
+		fieldPairs.put(SEARCH_LANGUAGE_INDEX_FIELD, "es");
+		fieldPairs.put(SEARCH_ORGANIZATION_INDEX_FIELD, "test complex");
+		fieldPairs.put(SEARCH_SUMMARY_INDEX_FIELD, "Today Chuck ate an egg2 salad2 sandwich and a root beer2 for lunch.");
+		fieldPairs.put(SEARCH_LOCATION_INDEX_FIELD, "");
+
+		FieldDataPacket fdp = generateFieldDataPacket(bulletinId, fieldPairs);
 		return fdp;
 	}
 
 	protected FieldDataPacket generateSampleForeignCharData(UniversalId bulletinId)
 	{
-		String author = "Charles";	
-		String keywords = "foreign";
-		String title = "Foreign Chars ni" + UnicodeConstants.TILDE_N_LOWER + "os";
-		String entrydate="2003-09-15";
-		String eventdate = "2003-08-20,20030820+3";
-		String publicInfo = "menu3";
-		String language = "es";
-		String organization = "test";
-		String summary = "ni" + UnicodeConstants.TILDE_N_LOWER + "os";
-		String attachment1LocalId = "att1Id";
-		String attachment1Label = "no.gif";
-		String attachment2LocalId = "att2Id";
-		String attachment2Label = "none.txt";
-		FieldDataPacket fdp = createFieldDataPacket(bulletinId, author, keywords, title, eventdate, entrydate, publicInfo, summary, null, attachment1LocalId, attachment1Label, attachment2LocalId, attachment2Label, language, organization);
-		return fdp;
-	}
-	
-	
-	private FieldDataPacket createFieldDataPacket(UniversalId bulletinId, String author, String keywords, String title, String eventdate, String entrydate, String publicInfo, String summary, String location, String attachment1LocalId, String attachment1Label, String attachment2LocalId, String attachment2Label, String language, String organization)
-	{
-		String[] fields = new String[] { 
-				SEARCH_AUTHOR_INDEX_FIELD, author, 
-				SEARCH_KEYWORDS_INDEX_FIELD, keywords, 
-				SEARCH_TITLE_INDEX_FIELD, title,
-				SEARCH_ENTRY_DATE_INDEX_FIELD, entrydate, 
-				SEARCH_EVENT_DATE_INDEX_FIELD, eventdate,
-				SEARCH_DETAILS_INDEX_FIELD, publicInfo, 
-				SEARCH_SUMMARY_INDEX_FIELD, summary,
-				SEARCH_LOCATION_INDEX_FIELD, location,
-				SEARCH_LANGUAGE_INDEX_FIELD, language,
-				SEARCH_ORGANIZATION_INDEX_FIELD, organization
-			};
+		HashMap fieldPairs = new HashMap();
+		fieldPairs.put(SEARCH_AUTHOR_INDEX_FIELD, "Charles"); 
+		fieldPairs.put(SEARCH_KEYWORDS_INDEX_FIELD, "foreign"); 
+		fieldPairs.put(SEARCH_TITLE_INDEX_FIELD, "Foreign Chars ni" + UnicodeConstants.TILDE_N_LOWER + "os");
+		fieldPairs.put(SEARCH_ENTRY_DATE_INDEX_FIELD, "2003-09-15"); 
+		fieldPairs.put(SEARCH_EVENT_DATE_INDEX_FIELD, "2003-08-20,20030820+3");
+		fieldPairs.put(SEARCH_DETAILS_INDEX_FIELD, "menu3");
+		fieldPairs.put(SEARCH_LANGUAGE_INDEX_FIELD, "es");
+		fieldPairs.put(SEARCH_ORGANIZATION_INDEX_FIELD, "test");
+		fieldPairs.put(SEARCH_SUMMARY_INDEX_FIELD, "ni" + UnicodeConstants.TILDE_N_LOWER + "os");
+		fieldPairs.put(SEARCH_LOCATION_INDEX_FIELD, "");
+
 		String[] attachmentLabels = new String[] {
-				attachment1LocalId, attachment1Label, 
-				attachment2LocalId, attachment2Label
+				"att1Id", "no.gif", 
+				"att2Id", "none.txt"
 			};
 		
-		FieldDataPacket fdp = generateFieldDataPacket(
-			bulletinId, fields, attachmentLabels);
+		FieldDataPacket fdp = generateFieldDataPacket(bulletinId, fieldPairs, attachmentLabels);
 		return fdp;
 	}
-
+	
+	
 	protected FieldDataPacket generateEmptyFieldDataPacket(UniversalId bulletinId)
 	{
-		return generateFieldDataPacket(bulletinId, new String[0]);
+		return generateFieldDataPacket(bulletinId, new HashMap());
 	}
 	
-	protected FieldDataPacket generateFieldDataPacket(
-		UniversalId bulletinId, String[] fieldsAssocList)
+	protected FieldDataPacket generateFieldDataPacket(UniversalId bulletinId, HashMap fieldPairs)
 	{
-		return generateFieldDataPacket(
-			bulletinId, fieldsAssocList, new String[0]);
+		return generateFieldDataPacket(bulletinId, fieldPairs, new String[0]);
 	}
 	
 	
 	protected FieldDataPacket generateFieldDataPacket(
-		UniversalId bulletinId, String[] fieldsAssocList,
+		UniversalId bulletinId, HashMap fieldPairs,
 		String[] attachmentsAssocList)
 	{
-		Assert.assertEquals(
-				"Uneven assoc list: " + Arrays.asList(fieldsAssocList), 
-				0, fieldsAssocList.length % 2);
-
-		HashMap fieldPairs = new HashMap();
-		for (int i = 0; i < fieldsAssocList.length; i += 2) 
-		{
-			String tag = fieldsAssocList[i];
-			String value = fieldsAssocList[i + 1];
-			fieldPairs.put(tag, value);
-		}
 
 		UniversalId fieldUid = UniversalId.createFromAccountAndLocalId(
 			bulletinId.getAccountId(), "TestField");
