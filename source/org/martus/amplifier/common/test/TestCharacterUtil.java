@@ -47,6 +47,8 @@ public class TestCharacterUtil extends TestCase
 		String test6 = "<html> test* test?";
 		String test7 = "*";		
 		String test8 = "tést";
+		String test9 = "\"?\"";		
+		String test10 = "*\"*\"*";		
 		
 		try
 		{
@@ -61,12 +63,15 @@ public class TestCharacterUtil extends TestCase
 			outStr = CharacterUtil.removeRestrictCharacters(test5);
 			assertEquals("removed :\"@.", "http  test testagain com", outStr);
 			outStr = CharacterUtil.removeRestrictCharacters(test6);
-			assertEquals("removed <>)", "html  test  test", outStr);
+			assertEquals("removed <>", "html  test  test", outStr);
 			outStr = CharacterUtil.removeRestrictCharacters(test7);		
-			assertEquals("removed *)", "", outStr);
-				
+			assertEquals("removed *", "", outStr);
 			outStr = CharacterUtil.removeRestrictCharacters(test8);								
 			assertEquals("Should not removed : ", "tést", outStr);
+			outStr = CharacterUtil.removeRestrictCharacters(test9);		
+			assertEquals("should not removed ? inside quotes", test9, outStr);
+			outStr = CharacterUtil.removeRestrictCharacters(test10);		
+			assertEquals("should not removed * inside quotes but strip * ouside of quotes", "\"*\"", outStr);
 
 		}
 		catch(Exception e)

@@ -29,11 +29,12 @@ package org.martus.amplifier.common;
 public class CharacterUtil
 {	
 	public static String removeRestrictCharacters(String str)
-	{			
+	{	
+		insideQuotes = false;
 		char[] strArray = str.toCharArray();		
 		for (int j=0; j<strArray.length;j++)
 		{							
-			if (!isAllowed(strArray[j]))
+			if (!isAllowed(strArray[j]) && !insideQuotes)
 				strArray[j] = ' ';													
 		}																		
 		return new String(strArray).trim();
@@ -41,11 +42,17 @@ public class CharacterUtil
 	
 	public static boolean isAllowed(char ch)
 	{
-		if (Character.isLetterOrDigit(ch)||
-			ch == '\"' || ch == '\'' || 
-			ch >= 128)
+		if (ch == '\"')
+		{	
+			insideQuotes = !insideQuotes;
+			return true;
+		}
+		
+		if (Character.isLetterOrDigit(ch)|| 
+				ch == '\'' || ch >= 128)
 			return true;
 			
 		return false;	
 	}
+	static boolean insideQuotes;
 }
