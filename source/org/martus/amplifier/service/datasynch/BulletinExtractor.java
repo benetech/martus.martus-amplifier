@@ -12,6 +12,7 @@ import org.martus.amplifier.service.attachment.AttachmentStorageException;
 import org.martus.amplifier.service.search.BulletinField;
 import org.martus.amplifier.service.search.BulletinIndexException;
 import org.martus.amplifier.service.search.BulletinIndexer;
+import org.martus.common.FieldSpec;
 import org.martus.common.MartusUtilities;
 import org.martus.common.bulletin.AttachmentProxy;
 import org.martus.common.crypto.MartusCrypto;
@@ -76,8 +77,8 @@ public class BulletinExtractor
 		UniversalId fieldUid = UniversalId.createFromAccountAndLocalId(
 			bhp.getAccountId(), fieldDataPacketId);
 			
-		String[] fieldTags = BulletinField.getSearchableXmlIds();
-		FieldDataPacket fdp = new FieldDataPacket(fieldUid, fieldTags);
+		FieldSpec[] fieldSpec = BulletinField.getDefaultSearchFieldSpecs();
+		FieldDataPacket fdp = new FieldDataPacket(fieldUid, fieldSpec);
 		
 		ZipEntry fieldDataEntry = bulletinZipFile.getEntry(fieldDataPacketId);
 		if (fieldDataEntry == null) {

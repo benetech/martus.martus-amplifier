@@ -83,6 +83,19 @@ public class BulletinField implements BulletinConstants, SearchConstants
 		return (String[]) FIELDS.keySet().toArray(new String[0]);
 	}
 	
+	public static FieldSpec[] getDefaultSearchFieldSpecs()
+	{
+		String[] ids = getSearchableXmlIds();
+		int length = ids.length;
+
+		FieldSpec[] defaultSearchFieldSpecs = new FieldSpec[length];
+		for(int i = 0; i < length; ++i)
+		{
+			defaultSearchFieldSpecs[i] = (new FieldSpec(ids[i].toString(), FieldSpec.getStandardType(ids[i].toString())));
+		}
+		return defaultSearchFieldSpecs;
+	}	
+	
 	private BulletinField(String xmlId, String indexId, String displayName)
 	{
 		this.xmlId = xmlId;

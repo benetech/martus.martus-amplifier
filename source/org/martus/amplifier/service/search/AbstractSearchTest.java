@@ -10,6 +10,7 @@ import java.util.List;
 import junit.framework.Assert;
 
 import org.martus.amplifier.test.AbstractAmplifierTest;
+import org.martus.common.FieldSpec;
 import org.martus.common.bulletin.AttachmentProxy;
 import org.martus.common.packet.FieldDataPacket;
 import org.martus.common.packet.UniversalId;
@@ -374,10 +375,11 @@ public abstract class AbstractSearchTest
 		UniversalId bulletinId, String[] fieldsAssocList,
 		String[] attachmentsAssocList)
 	{
-		String[] fieldIds = BulletinField.getSearchableXmlIds();
+		FieldSpec[] fieldSpecs = BulletinField.getDefaultSearchFieldSpecs();
 		UniversalId fieldUid = UniversalId.createFromAccountAndLocalId(
 			bulletinId.getAccountId(), "TestField");
-		FieldDataPacket fdp = new FieldDataPacket(fieldUid, fieldIds);
+		
+		FieldDataPacket fdp = new FieldDataPacket(fieldUid, fieldSpecs);
 		Assert.assertEquals(
 			"Uneven assoc list: " + Arrays.asList(fieldsAssocList), 
 			0, fieldsAssocList.length % 2);
