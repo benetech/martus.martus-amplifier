@@ -264,61 +264,29 @@ public class TestLuceneSearcher extends CommonSearchTest
 	public void testSearchAllFields() throws Exception
 	{
 		indexBulletin1();
+			
+		verifyHitCount("author", 1, fdp1.get(BulletinField.SEARCH_AUTHOR_INDEX_FIELD));
+		verifyHitCount("details", 1, fdp1.get(BulletinField.SEARCH_DETAILS_INDEX_FIELD));
+		verifyHitCount("keyword", 1, fdp1.get(BulletinField.SEARCH_KEYWORDS_INDEX_FIELD));
+		verifyHitCount("location", 1, fdp1.get(BulletinField.SEARCH_LOCATION_INDEX_FIELD));
+		verifyHitCount("summary", 1, fdp1.get(BulletinField.SEARCH_SUMMARY_INDEX_FIELD));
+		verifyHitCount("title", 1, fdp1.get(BulletinField.SEARCH_TITLE_INDEX_FIELD));
+		verifyHitCount("Lunch", 1, "Lunch");
+		verifyHitCount("Luch", 0, "Luch");
+		verifyHitCount("Attachment Label", 1, "Eggs.gif");
+		verifyHitCount("Custom Field", 1, "custom");
+	}
+	
+	private void verifyHitCount(String field, int expectedCount, String searchFor) throws Exception
+	{
+		HashMap fields = new HashMap();
+		fields.put(RESULT_BASIC_QUERY_KEY, searchFor);								
 		BulletinSearcher searcher = openBulletinSearcher();
-		Results results = null;
-		try 
+		try
 		{
-			HashMap fields = new HashMap();
-			
-			fields.put(RESULT_BASIC_QUERY_KEY, fdp1.get(BulletinField.SEARCH_AUTHOR_INDEX_FIELD));								
-			results = searcher.search(fields);							
-			assertEquals("Should have found a result for author", 1, results.getCount());
-			
-			fields.remove(RESULT_BASIC_QUERY_KEY);
-			fields.put(RESULT_BASIC_QUERY_KEY, fdp1.get(SEARCH_DETAILS_INDEX_FIELD));								
-			results = searcher.search( fields);							
-			assertEquals("Should have found a result for details", 1, results.getCount());
-						
-			fields.remove(RESULT_BASIC_QUERY_KEY);
-			fields.put(RESULT_BASIC_QUERY_KEY, fdp1.get(SEARCH_KEYWORDS_INDEX_FIELD));								
-			results = searcher.search( fields);	
-			assertEquals("Should have found a result for keyword", 1, results.getCount());
-			
-			fields.remove(RESULT_BASIC_QUERY_KEY);
-			fields.put(RESULT_BASIC_QUERY_KEY, fdp1.get(SEARCH_LOCATION_INDEX_FIELD));								
-			results = searcher.search(fields);				
-			assertEquals("Should have found a result for location", 1, results.getCount());
-			
-			
-			fields.remove(RESULT_BASIC_QUERY_KEY);
-			fields.put(RESULT_BASIC_QUERY_KEY, fdp1.get(SEARCH_SUMMARY_INDEX_FIELD));								
-			results = searcher.search( fields);				
-			assertEquals("Should have found a result for summary", 1, results.getCount());
-			
-			fields.remove(RESULT_BASIC_QUERY_KEY);
-			fields.put(RESULT_BASIC_QUERY_KEY, fdp1.get(SEARCH_TITLE_INDEX_FIELD));								
-			results = searcher.search( fields);		
-			assertEquals("Should have found a result for title", 1, results.getCount());
-			
-			
-			fields.remove(RESULT_BASIC_QUERY_KEY);
-			fields.put(RESULT_BASIC_QUERY_KEY, "Lunch");								
-			results = searcher.search( fields);			
-			assertEquals("Should have found a result for the word Lunch", 1, results.getCount());
-			
-			fields.remove(RESULT_BASIC_QUERY_KEY);
-			fields.put(RESULT_BASIC_QUERY_KEY, "Luch");								
-			results = searcher.search( fields);	
-			assertEquals("Should not have found a result for a word 'Luch' not in the bulletin", 0, results.getCount());
-			
-			
-			fields.remove(RESULT_BASIC_QUERY_KEY);
-			fields.put(RESULT_BASIC_QUERY_KEY, "Eggs.gif");								
-			results = searcher.search( fields);	
-			assertEquals("Didn't search attachment labels?", 1, results.getCount());
-			
-			
-		} 
+			Results results = searcher.search(fields);							
+			assertEquals("wrong hit count for " + field, expectedCount, results.getCount());
+		}
 		finally 
 		{
 			searcher.close();

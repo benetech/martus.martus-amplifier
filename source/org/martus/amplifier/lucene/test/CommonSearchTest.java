@@ -94,6 +94,7 @@ public abstract class CommonSearchTest
 		fieldPairs.put(SEARCH_ORGANIZATION_INDEX_FIELD, "test sample");
 		fieldPairs.put(SEARCH_SUMMARY_INDEX_FIELD, summary);
 		fieldPairs.put(SEARCH_LOCATION_INDEX_FIELD, "San Francisco, CA");
+		fieldPairs.put(SAMPLE_CUSTOM_TAG, "I am a custom field");
 
 		String[] attachmentLabels = new String[] {
 				"att1Id", "Eggs.gif", 

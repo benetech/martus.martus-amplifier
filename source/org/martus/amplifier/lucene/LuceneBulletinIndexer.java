@@ -42,6 +42,7 @@ import org.martus.amplifier.search.BulletinField;
 import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinIndexer;
 import org.martus.amplifier.search.SearchConstants;
+import org.martus.common.FieldSpec;
 import org.martus.common.bulletin.AttachmentProxy;
 import org.martus.common.packet.BulletinHistory;
 import org.martus.common.packet.FieldDataPacket;
@@ -155,7 +156,6 @@ public class LuceneBulletinIndexer
 	private static void addFields(Document doc, FieldDataPacket fdp) 
 		throws BulletinIndexException, IOException 
 	{
-		StringBuffer allFieldData = new StringBuffer();
 		Collection fields = BulletinField.getSearchableFields();
 		for (Iterator iter = fields.iterator(); iter.hasNext();) 
 		{
@@ -168,14 +168,22 @@ public class LuceneBulletinIndexer
 				addField(doc, field, value);
 			}
 			
-			allFieldData.append("    |    ");
+		}
+		
+		StringBuffer allFieldData = new StringBuffer();
+		FieldSpec[] specs = fdp.getFieldSpecs();
+		for(int i=0; i < specs.length; ++i)
+		{
+			String tag = specs[i].getTag();
+			String value = fdp.get(tag);
+			allFieldData.append(ALL_FIELD_VALUE_SEPARATOR);
 			allFieldData.append(value);
 		}
 		
 		AttachmentProxy[] attachments = fdp.getAttachments();
 		for(int i = 0; i < attachments.length; ++i)
 		{
-			allFieldData.append("    |    ");
+			allFieldData.append(ALL_FIELD_VALUE_SEPARATOR);
 			allFieldData.append(attachments[i].getLabel());
 		}
 		
@@ -241,4 +249,5 @@ public class LuceneBulletinIndexer
 	private final static Analyzer ANALYZER = new SimpleAnalyzer();
 	
 	private static final String INDEX_DIR_NAME = "ampIndex";
+	private static final String ALL_FIELD_VALUE_SEPARATOR = "    |    ";
 }
