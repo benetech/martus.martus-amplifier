@@ -57,10 +57,10 @@ import org.martus.amplifier.search.BulletinSearcher;
 import org.martus.amplifier.search.Results;
 import org.martus.amplifier.search.SearchConstants;
 import org.martus.amplifier.test.AbstractAmplifierTestCase;
+import org.martus.common.BulletinStore;
 import org.martus.common.bulletin.AttachmentProxy;
 import org.martus.common.bulletin.Bulletin;
 import org.martus.common.bulletin.BulletinForTesting;
-import org.martus.common.bulletin.BulletinSaver;
 import org.martus.common.crypto.MartusCrypto;
 import org.martus.common.crypto.MockMartusSecurity;
 import org.martus.common.crypto.MartusCrypto.CryptoException;
@@ -216,7 +216,7 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 		attachments[0] = createAttachment("Attachment 1");
 		attachments[1] = createAttachment("Attachment 2");
 		Bulletin b = createSampleBulletin(attachments);
-		BulletinSaver.saveToClientDatabase(b, db, false, security);
+		BulletinStore.saveToClientDatabase(b, db, false, security);
 		File f = createBulletinZipFile(b);
 		
 		try {
