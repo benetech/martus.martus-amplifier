@@ -1,17 +1,18 @@
-package org.martus.amplifier.test.datasynch;
+package org.martus.amplifier.test;
 
 import java.io.File;
 import java.util.List;
 
+import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.amplifier.service.datasynch.BackupServerInfo;
-import org.martus.amplifier.service.datasynch.BackupServerManager;
+import org.martus.common.LoggerForTesting;
 import org.martus.common.MartusUtilities;
 import org.martus.common.crypto.MockMartusSecurity;
 import org.martus.common.test.TestCaseEnhanced;
 
-public class TestBackupServerManager extends TestCaseEnhanced
+public class TestMartusAmplifier extends TestCaseEnhanced
 {
-	public TestBackupServerManager(String name)
+	public TestMartusAmplifier(String name)
 	{
 		super(name);
 	}
@@ -23,14 +24,16 @@ public class TestBackupServerManager extends TestCaseEnhanced
 		dir.delete();
 		dir.mkdirs();
 		
-		List noServers = BackupServerManager.loadServersWeWillCall(dir, security);
+		MartusAmplifier amp = new MartusAmplifier(new LoggerForTesting());
+		
+		List noServers = amp.loadServersWeWillCall(dir, security);
 		assertEquals(0, noServers.size());
 		
 		String ip = "2.4.6.8";
 		File keyFile = new File(dir, "ip=" + ip);
 		MartusUtilities.exportServerPublicKey(security, keyFile);
 		
-		List oneServer = BackupServerManager.loadServersWeWillCall(dir, security);
+		List oneServer = amp.loadServersWeWillCall(dir, security);
 		assertEquals(1, oneServer.size());
 
 		BackupServerInfo testInfo = (BackupServerInfo)oneServer.get(0);

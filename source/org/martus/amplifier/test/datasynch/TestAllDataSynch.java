@@ -29,7 +29,6 @@ public class TestAllDataSynch extends TestSuite
 			new TestSuite("All Martus Amplifier Data Synch Tests");
 
 		suite.addTest(new TestSuite(TestAmplifierNetworkGateway.class));
-		suite.addTest(new TestSuite(TestBackupServerManager.class));
 		suite.addTest(new TestSuite(TestDataSynchManager.class));
 		suite.addTest(new TestSuite(TestBulletinExtractor.class));
 

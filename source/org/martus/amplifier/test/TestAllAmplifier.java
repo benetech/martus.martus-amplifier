@@ -35,6 +35,9 @@ public class TestAllAmplifier extends TestSuite
 		suite.addTest(TestAllConfiguration.suite());
 		suite.addTest(TestAllDataSynch.suite());
 		suite.addTest(TestAllPresentation.suite());
+		
+		suite.addTest(new TestSuite(TestMartusAmplifier.class));
+		
 	    return suite;
 	}
 }
