@@ -24,7 +24,7 @@ public class TestMartusAmplifier extends TestCaseEnhanced
 		dir.delete();
 		dir.mkdirs();
 		
-		MartusAmplifier amp = new MartusAmplifier(new LoggerForTesting());
+		MartusAmplifier amp = new MartusAmplifier(dir, new LoggerForTesting());
 		
 		List noServers = amp.loadServersWeWillCall(dir, security);
 		assertEquals(0, noServers.size());

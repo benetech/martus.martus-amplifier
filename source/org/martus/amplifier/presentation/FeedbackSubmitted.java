@@ -32,8 +32,8 @@ import java.util.Vector;
 
 import org.apache.velocity.context.Context;
 import org.martus.amplifier.common.AdvancedSearchInfo;
-import org.martus.amplifier.common.AmplifierConfiguration;
 import org.martus.amplifier.common.SearchResultConstants;
+import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.amplifier.velocity.AmplifierServlet;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
 import org.martus.amplifier.velocity.AmplifierServletResponse;
@@ -46,7 +46,7 @@ public class FeedbackSubmitted extends AmplifierServlet
 
 	public FeedbackSubmitted()
 	{
-		this(AmplifierConfiguration.getInstance().getFeedbackDirectory());
+		this(new File(MartusAmplifier.getBasePath(), "feedback").getPath());
 	}
 
 	public FeedbackSubmitted(String basePathToUse)

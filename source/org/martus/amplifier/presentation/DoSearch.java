@@ -29,13 +29,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.martus.amplifier.common.AmplifierConfiguration;
 import org.martus.amplifier.common.AmplifierLocalization;
 import org.martus.amplifier.common.CharacterUtil;
 import org.martus.amplifier.common.RawSearchParameters;
 import org.martus.amplifier.common.SearchParameters;
 import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.lucene.LuceneBulletinSearcher;
+import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.amplifier.search.BulletinInfo;
 import org.martus.amplifier.search.BulletinSearcher;
 import org.martus.amplifier.search.Results;
@@ -153,8 +153,7 @@ public class DoSearch extends AbstractSearchResultsServlet
 	
 	BulletinSearcher openBulletinSearcher() throws Exception
 	{
-		AmplifierConfiguration config = AmplifierConfiguration.getInstance();
-		String indexPath = config.getBasePath();
+		String indexPath = MartusAmplifier.getBasePath();
 
 		return new LuceneBulletinSearcher(indexPath);
 	}

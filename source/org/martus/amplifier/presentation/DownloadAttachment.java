@@ -35,9 +35,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.martus.amplifier.attachment.DataManager;
 import org.martus.amplifier.attachment.AttachmentStorageException;
-import org.martus.amplifier.common.AmplifierConfiguration;
+import org.martus.amplifier.attachment.DataManager;
 import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.amplifier.search.AttachmentInfo;
 import org.martus.amplifier.search.BulletinInfo;
@@ -53,7 +52,7 @@ public class DownloadAttachment extends HttpServlet
 {
 	public DownloadAttachment()
 	{
-		this(AmplifierConfiguration.getInstance().getBasePath());
+		this(MartusAmplifier.getBasePath());
 	}
 
 	public DownloadAttachment(String testBasePathToUse)
@@ -91,7 +90,7 @@ public class DownloadAttachment extends HttpServlet
 		int attachmentIndex = Integer.parseInt(request.getParameter("attachmentIndex"));
 		AttachmentInfo info = (AttachmentInfo)bulletin.getAttachments().get(attachmentIndex-1);
 		if(basePath == null)
-			basePath =	AmplifierConfiguration.getInstance().getBasePath();
+			basePath =	MartusAmplifier.getBasePath();
 
 		UniversalId uId = UniversalId.createFromAccountAndLocalId(info.getAccountId(), info.getLocalId());
 		DataManager manager = MartusAmplifier.dataManager;

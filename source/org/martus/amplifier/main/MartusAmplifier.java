@@ -14,7 +14,6 @@ import java.util.Vector;
 
 import org.martus.amplifier.attachment.DataManager;
 import org.martus.amplifier.attachment.FileSystemDataManager;
-import org.martus.amplifier.common.AmplifierConfiguration;
 import org.martus.amplifier.common.AmplifierConstants;
 import org.martus.amplifier.datasynch.BackupServerInfo;
 import org.martus.amplifier.datasynch.DataSynchManager;
@@ -39,7 +38,9 @@ public class MartusAmplifier
 	public static void main(String[] args) throws Exception
 	{
 		displayVersion();
-		MartusAmplifier amp = new MartusAmplifier(new LoggerToConsole());
+
+		File dataDirectory = MartusAmplifier.getDefaultDataDirectory();
+		MartusAmplifier amp = new MartusAmplifier(dataDirectory, new LoggerToConsole());
 		
 		amp.processCommandLine(args);
 		amp.deleteRunningFile();
@@ -57,8 +58,9 @@ public class MartusAmplifier
 		amp.start();
 	}
 	
-	public MartusAmplifier(LoggerInterface loggerToUse) throws CryptoInitializationException
+	public MartusAmplifier(File dataDirectoryToUse, LoggerInterface loggerToUse) throws CryptoInitializationException
 	{
+		dataDirectory = dataDirectoryToUse;
 		logger = loggerToUse;
 		security = new MartusSecurity();
 	}
@@ -66,8 +68,8 @@ public class MartusAmplifier
 	void start() throws Exception
 	{
 		deleteLuceneLockFile();
-		String basePath = AmplifierConfiguration.getInstance().getBasePath();
-		String packetsDirectory = AmplifierConfiguration.getInstance().getPacketsDirectory();
+		String basePath = getBasePath();
+		String packetsDirectory = new File(getBasePath(), "packets").getPath();
 
 		dataManager = new FileSystemDataManager(packetsDirectory);
 		
@@ -81,7 +83,7 @@ public class MartusAmplifier
 		
 		addPasswordAuthentication(server);
 
-		File indexDir = LuceneBulletinIndexer.getIndexDir(AmplifierConfiguration.getInstance().getBasePath());
+		File indexDir = LuceneBulletinIndexer.getIndexDir(getBasePath());
 		File languages = new File(indexDir, "languagesIndexed.txt");
 		languagesIndexed = new LanguagesIndexedList(languages);
 		try
@@ -173,9 +175,9 @@ public class MartusAmplifier
 		
 	}
 
-	String getBasePath()
+	public static String getBasePath()
 	{
-		return AmplifierConfiguration.getInstance().getBasePath();
+		return getDataDirectory().getPath();
 	}
 	
 	public File getStartupConfigDirectory()
@@ -195,13 +197,18 @@ public class MartusAmplifier
 
 	void deleteLuceneLockFile()
 	{
-		File indexDirectory = new File(AmplifierConfiguration.getInstance().getBasePath(), "index");
+		File indexDirectory = getLuceneIndexDirectory();
 		File lockFile = new File(indexDirectory, "write.lock");
 		if(lockFile.exists())
 		{
 			log("Deleting lucene lock file: " + lockFile.getPath());
 			lockFile.delete();
 		}
+	}
+
+	private File getLuceneIndexDirectory()
+	{
+		return new File(getBasePath(), "index");
 	}
 
 	void addPasswordAuthentication(Server server)
@@ -271,7 +278,7 @@ public class MartusAmplifier
 
 	private File getWorkingDirectory()
 	{
-		return new File(AmplifierConfiguration.getInstance().getBasePath());
+		return new File(getBasePath());
 	}
 	
 	public boolean isAmplifierSyncing()
@@ -304,10 +311,7 @@ public class MartusAmplifier
 		try
 		{
 			DataSynchManager dataSyncManager = new DataSynchManager(backupServerToCall, logger, getSecurity());
-			AmplifierConfiguration config = 
-				AmplifierConfiguration.getInstance();
-			indexer = new LuceneBulletinIndexer(
-				config.getBasePath());
+			indexer = new LuceneBulletinIndexer(getBasePath());
 		
 			dataSyncManager.getAllNewData(dataManager, indexer);
 		}
@@ -415,8 +419,39 @@ public class MartusAmplifier
 		}
 	}
 
+	public static String getDefaultDataDirectoryPath()
+	{
+		String dataDirectory = null;
+		if(System.getProperty("os.name").indexOf("Windows") >= 0)
+		{
+			dataDirectory = "C:/MartusAmp/";
+		}
+		else
+		{
+			dataDirectory = "/var/MartusAmp/";
+		}
+		return dataDirectory;
+	}
+	
+	public static File getDefaultDataDirectory()
+	{
+		File file = new File(getDefaultDataDirectoryPath());
+		if(!file.exists())
+		{
+			file.mkdirs();
+		}
+		
+		return file;
+	}
+	
+	public static File getDataDirectory()
+	{
+		return dataDirectory;
+	}
+
 	boolean secureMode;
 	static String insecurePassword;
+	public static File dataDirectory;	
 
 	public static MartusSecurity security;
 	static final long IMMEDIATELY = 0;

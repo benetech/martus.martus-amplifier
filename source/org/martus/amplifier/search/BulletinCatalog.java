@@ -2,8 +2,8 @@ package org.martus.amplifier.search;
 
 import java.util.logging.Logger;
 
-import org.martus.amplifier.common.AmplifierConfiguration;
 import org.martus.amplifier.lucene.LuceneBulletinSearcher;
+import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.common.packet.UniversalId;
 
 /**
@@ -26,11 +26,10 @@ public class BulletinCatalog
    
 	public boolean bulletinHasBeenIndexed(UniversalId universalId)
 	{
-		AmplifierConfiguration config = AmplifierConfiguration.getInstance();
 		BulletinSearcher searcher = null;
 		try
 		{
-			searcher = new LuceneBulletinSearcher(config.getBasePath());
+			searcher = new LuceneBulletinSearcher(MartusAmplifier.getBasePath());
 			return (searcher.lookup(universalId) != null);
 		}
 		catch (Exception e)

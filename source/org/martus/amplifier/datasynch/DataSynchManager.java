@@ -7,7 +7,6 @@ import java.util.Vector;
 import java.util.logging.Logger;
 
 import org.martus.amplifier.attachment.DataManager;
-import org.martus.amplifier.common.AmplifierConfiguration;
 import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.amplifier.search.BulletinCatalog;
 import org.martus.amplifier.search.BulletinIndexer;
@@ -19,7 +18,7 @@ public class DataSynchManager
 {
 
 	private AmplifierNetworkGateway amplifierGateway = null;
-	private static Logger logger = Logger.getLogger(AmplifierConfiguration.DATASYNC_LOGGER);
+	private static Logger logger = Logger.getLogger("DATASYNC_LOGGER");
 	boolean isIndexingNeeded;
 
 	public DataSynchManager(BackupServerInfo backupServerToCall, LoggerInterface loggerToUse, MartusCrypto securityToUse)

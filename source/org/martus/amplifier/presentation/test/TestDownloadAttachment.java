@@ -32,7 +32,6 @@ import java.util.Vector;
 
 import org.martus.amplifier.attachment.AttachmentStorageException;
 import org.martus.amplifier.attachment.FileSystemDataManager;
-import org.martus.amplifier.common.AmplifierConfiguration;
 import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.amplifier.presentation.DownloadAttachment;
 import org.martus.amplifier.search.AttachmentInfo;
@@ -46,7 +45,7 @@ import org.martus.util.StringInputStream;
 
 public class TestDownloadAttachment extends TestCaseEnhanced
 {
-	public TestDownloadAttachment(String name)
+	public TestDownloadAttachment(String name) throws Exception
 	{
 		super(name);
 	}
@@ -169,5 +168,5 @@ public class TestDownloadAttachment extends TestCaseEnhanced
 		MartusAmplifier.dataManager.putAttachment(uid1, new StringInputStream(data));
 	}
 	
-	final String basePath = AmplifierConfiguration.getInstance().getBasePath() + "/testing";
+	final String basePath = createTempDirectory().getPath();
 }
