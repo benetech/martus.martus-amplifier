@@ -1,49 +1,67 @@
 package org.martus.amplifier.main;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.Vector;
 import java.util.logging.Logger;
 
 import org.martus.amplifier.common.configuration.AmplifierConfiguration;
+import org.martus.amplifier.common.datasynch.AmplifierClientSideNetworkHandlerUsingXMLRPC.SSLSocketSetupException;
 import org.martus.amplifier.service.attachment.AttachmentManager;
 import org.martus.amplifier.service.attachment.AttachmentStorageException;
 import org.martus.amplifier.service.attachment.filesystem.FileSystemAttachmentManager;
-import org.martus.amplifier.service.datasynch.BackupServerManager;
+import org.martus.amplifier.service.datasynch.BackupServerInfo;
 import org.martus.amplifier.service.datasynch.DataSynchManager;
 import org.martus.amplifier.service.search.BulletinIndexException;
 import org.martus.amplifier.service.search.BulletinIndexer;
 import org.martus.amplifier.service.search.lucene.LuceneBulletinIndexer;
+import org.martus.common.LoggerInterface;
+import org.martus.common.LoggerToConsole;
+import org.martus.common.MartusUtilities;
+import org.martus.common.crypto.MartusCrypto;
 import org.martus.common.crypto.MartusSecurity;
 import org.mortbay.http.SocketListener;
 import org.mortbay.jetty.Server;
 
 public class MartusAmplifier
 {
+	public MartusAmplifier(LoggerInterface loggerToUse)
+	{
+		logger = loggerToUse;
+	}
+
 	public static void main(String[] args) throws Exception
 	{
+		MartusAmplifier amp = new MartusAmplifier(new LoggerToConsole());
+		amp.start();
+	}
+	
+	void start() throws Exception
+	{
 		MartusSecurity security = new MartusSecurity();
-
+		
 		File configDirectory = new File(AmplifierConfiguration.getInstance().getBasePath());
 		File backupServersDirectory = new File(configDirectory, "serversWhoWeCall");
-		backupServersList = BackupServerManager.loadServersWeWillCall(backupServersDirectory, security);
-
+		backupServersList = loadServersWeWillCall(backupServersDirectory, security);
+		
 		SocketListener listener = new SocketListener();
 		listener.setPort(8080); 
-
+		
 		Server server = new Server();
 		server.addListener(listener);
 		server.addWebApplication("/","presentation/");
 		server.start();
 		timer.scheduleAtFixedRate(timedTask, IMMEDIATELY, dataSynchIntervalMillis);
-
+		
 		while(! isShutdownRequested() )
 		{
 		}
 	}
 	
-	static boolean isShutdownRequested()
+	boolean isShutdownRequested()
 	{
 		String ampDir = AmplifierConfiguration.getInstance().getWorkingPath();
 		File shutdownFile = new File(ampDir, "shutdown");
@@ -56,24 +74,24 @@ public class MartusAmplifier
 		return doShutdown;
 	}
 	
-	static public boolean isAmplifierSyncing()
+	public boolean isAmplifierSyncing()
 	{
 		return isSyncing;
 	}
 	
-	static public void startSynch()
+	public void startSynch()
 	{
 		isSyncing = true;
 	}
 	
-	static public void endSynch()
+	public void endSynch()
 	{
 		isSyncing = false;
 	}
 
-	static public void pullNewBulletinsFromServers(List backupServersList) 
+	public void pullNewBulletinsFromServers(List backupServersList) 
 	{
-		Logger logger = Logger.getLogger("MainTask");
+		Logger fancyLogger = Logger.getLogger("MainTask");
 		
 		if(backupServersList.size() == 0)
 			return;
@@ -94,7 +112,7 @@ public class MartusAmplifier
 		}
 		catch(Exception e)
 		{
-			logger.severe("MartusAmplifierDataSynch.execute(): " + e.getMessage());
+			fancyLogger.severe("MartusAmplifierDataSynch.execute(): " + e.getMessage());
 			e.printStackTrace();
 		} 
 		finally
@@ -103,7 +121,7 @@ public class MartusAmplifier
 				try {
 					indexer.close();
 				} catch (BulletinIndexException e) {
-					logger.severe(
+					fancyLogger.severe(
 						"Unable to close the indexer: " + e.getMessage());
 				}
 			}
@@ -112,15 +130,54 @@ public class MartusAmplifier
 				try {
 					attachmentManager.close();
 				} catch (AttachmentStorageException e) {
-					logger.severe(
+					fancyLogger.severe(
 						"Unable to close the attachment manager: " +
 						e.getMessage());
 				}
 			}
 		}
 	}
+
+	public List loadServersWeWillCall(File directory, MartusCrypto security) throws 
+			IOException, MartusUtilities.InvalidPublicKeyFileException, MartusUtilities.PublicInformationInvalidException, SSLSocketSetupException
+	{
+		List serversWeWillCall = new Vector();
 	
-	static class UpdateFromServerTask extends TimerTask
+		File[] toCallFiles = directory.listFiles();
+		if(toCallFiles != null)
+		{
+			for (int i = 0; i < toCallFiles.length; i++)
+			{
+				File toCallFile = toCallFiles[i];
+				serversWeWillCall.add(getServerToCall(toCallFile, security));
+				log("We will call: " + toCallFile.getName());
+			}
+		}
+	
+		log("Configured to call " + serversWeWillCall.size() + " servers");
+		return serversWeWillCall;
+	}
+
+	BackupServerInfo getServerToCall(File publicKeyFile, MartusCrypto security) throws
+			IOException, 
+			MartusUtilities.InvalidPublicKeyFileException, 
+			MartusUtilities.PublicInformationInvalidException, 
+			SSLSocketSetupException
+	{
+		String ip = MartusUtilities.extractIpFromFileName(publicKeyFile.getName());
+		int port = 985;
+		Vector publicInfo = MartusUtilities.importServerPublicKeyFromFile(publicKeyFile, security);
+		String publicKey = (String)publicInfo.get(0);
+	
+		return new BackupServerInfo(ip, ip, port, publicKey);		
+	}
+	
+	void log(String message)
+	{
+		logger.log(message);
+	}
+	
+	class UpdateFromServerTask extends TimerTask
 	{	
 		public void run()
 		{
@@ -129,18 +186,22 @@ public class MartusAmplifier
 				startSynch();
 				//System.out.println("Scheduled Task started " + System.currentTimeMillis());
 
-				MartusAmplifier.pullNewBulletinsFromServers(backupServersList);
+				pullNewBulletinsFromServers(backupServersList);
 				
 				//System.out.println("Scheduled Task finished " + System.currentTimeMillis() + "\n");
 				endSynch();
 			}
 		}
 	}
-	static Timer timer = new Timer(true);
-	static TimerTask timedTask = new UpdateFromServerTask();
+
 	static final long IMMEDIATELY = 0;
 	static final long dataSynchIntervalMillis = 100000;
-	static boolean isSyncing;
+
+	Timer timer = new Timer(true);
+	TimerTask timedTask = new UpdateFromServerTask();
+	boolean isSyncing;
 	
-	static List backupServersList;
+	List backupServersList;
+	
+	LoggerInterface logger;
 }
