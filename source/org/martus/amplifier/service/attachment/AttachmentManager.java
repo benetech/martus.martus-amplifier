@@ -83,6 +83,14 @@ public class AttachmentManager implements IAttachmentConstants, IAttachmentManag
 		}	
 	}
 
+	public boolean hasAttachments(UniversalId bulletinId)
+	{
+		List attachmentIds = getAttachmentIds(bulletinId);
+		if(attachmentIds != null && !attachmentIds.isEmpty())
+			return true;
+		return false;
+	}
+	
 	public void putAttachmentId(UniversalId universalId, UniversalId attachmentId)
 	{
 		UniversalIdDbt key = new UniversalIdDbt(universalId);
