@@ -17,7 +17,12 @@ import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
+import org.martus.amplifier.attachment.AttachmentManager;
+import org.martus.amplifier.attachment.AttachmentStorageException;
+import org.martus.amplifier.attachment.FileSystemAttachmentManager;
+import org.martus.amplifier.common.AmplifierConfiguration;
 import org.martus.amplifier.common.SearchResultConstants;
+import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.amplifier.search.AttachmentInfo;
 import org.martus.amplifier.search.BulletinField;
 import org.martus.amplifier.search.BulletinIndexException;
@@ -330,7 +335,7 @@ public class LuceneBulletinSearcher
 		}
 		
 
-		private static void addAttachments(BulletinInfo info, Document doc) 
+		private static void addAttachments(BulletinInfo bulletinInfo, Document doc) 
 			throws BulletinIndexException
 		{
 			String attachmentsString = doc.get(ATTACHMENT_LIST_INDEX_FIELD);
@@ -343,14 +348,48 @@ public class LuceneBulletinSearcher
 						attachmentsString);
 				}
 				for (int i = 0; i < attachmentsAssocList.length; i += 2) {
-					info.addAttachment(new AttachmentInfo(
-						info.getAccountId(),
+					AttachmentInfo attachmentInfo = new AttachmentInfo(
+						bulletinInfo.getAccountId(),
 						attachmentsAssocList[i],
-						attachmentsAssocList[i + 1]));	
+						attachmentsAssocList[i + 1]);
+					
+					setAttachmentSize(attachmentInfo);
+					bulletinInfo.addAttachment(attachmentInfo);
 				}
 			}
 		}
 		
+		private static void setAttachmentSize(AttachmentInfo attachmentInfo)
+		{
+			AttachmentManager manager = MartusAmplifier.attachmentManager;
+
+			//MartusAmplifier.attachmentManager is set in tests but live code since
+			//Two different classloaders construct the MartusAmplifier && DownloadAttachment
+			//requesting the static member results in null 
+			if(manager == null) 
+			{
+				String basePath = AmplifierConfiguration.getInstance().getBasePath();
+				try
+				{
+					manager = new FileSystemAttachmentManager(basePath);
+				}
+				catch (AttachmentStorageException e)
+				{
+					e.printStackTrace();
+				}
+			}
+			UniversalId uId = UniversalId.createFromAccountAndLocalId(attachmentInfo.getAccountId(), attachmentInfo.getLocalId());
+			try
+			{
+				attachmentInfo.setSize(manager.getAttachmentSizeInKb(uId));
+			}
+			catch (Exception e)
+			{
+				attachmentInfo.setSize(-1);
+				e.printStackTrace();
+			}
+		}
+
 		private static UniversalId getBulletinId(Document doc) 
 			throws BulletinIndexException
 		{

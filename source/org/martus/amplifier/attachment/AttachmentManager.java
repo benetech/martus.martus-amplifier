@@ -15,7 +15,10 @@ public interface AttachmentManager
 	InputStream getAttachment(UniversalId attachmentId) 
 		throws AttachmentStorageException;
 	
-	public long getAttachmentSize(UniversalId attachmentId) 
+	public long getAttachmentSizeInKb(UniversalId attachmentId) 
+		throws AttachmentStorageException;
+
+	public long getAttachmentSizeInBytes(UniversalId attachmentId) 
 		throws AttachmentStorageException;
 
 	void putAttachment(UniversalId attachmentId, InputStream data)

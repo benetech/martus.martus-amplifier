@@ -52,7 +52,18 @@ public class AttachmentInfo implements Serializable
 		return label;
 	}
 	
+	public void setSize(long sizeInKb)
+	{
+		this.sizeInKb = sizeInKb;
+	}
+
+	public long getSize()
+	{
+		return sizeInKb;
+	}
+	
 	private String accountId;
 	private String localId;
 	private String label;
+	private long sizeInKb;
 }

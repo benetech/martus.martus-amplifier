@@ -1,5 +1,6 @@
 package org.martus.amplifier.lucene.test;
 
+import java.io.File;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,8 +15,11 @@ import java.util.List;
 
 import junit.framework.Assert;
 
+import org.martus.amplifier.attachment.FileSystemAttachmentManager;
+import org.martus.amplifier.common.AmplifierConfiguration;
 import org.martus.amplifier.common.SearchParameters;
 import org.martus.amplifier.common.SearchResultConstants;
+import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.amplifier.search.AttachmentInfo;
 import org.martus.amplifier.search.BulletinField;
 import org.martus.amplifier.search.BulletinIndexException;
@@ -28,10 +32,23 @@ import org.martus.common.FieldSpec;
 import org.martus.common.bulletin.AttachmentProxy;
 import org.martus.common.packet.FieldDataPacket;
 import org.martus.common.packet.UniversalId;
+import org.martus.util.DirectoryTreeRemover;
 
 public abstract class AbstractSearchTestCase 
 	extends AbstractAmplifierTestCase implements SearchConstants, SearchResultConstants
 {
+	public void setUp() throws Exception
+	{
+		String basePath = AmplifierConfiguration.getInstance().getBasePath() + "/testing";
+		MartusAmplifier.attachmentManager = new FileSystemAttachmentManager(basePath);
+	}
+	
+	public void tearDown() throws Exception
+	{
+		MartusAmplifier.attachmentManager.clearAllAttachments();
+		String basePath = AmplifierConfiguration.getInstance().getBasePath() + "/testing";
+		DirectoryTreeRemover.deleteEntireDirectoryTree(new File(basePath));
+	}
 	
 	public void testClearIndex() 
 		throws BulletinIndexException

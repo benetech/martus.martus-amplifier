@@ -107,10 +107,20 @@ public class FileSystemAttachmentManager implements AttachmentManager
 		accountDir.delete();
 	}
 	
-	public long getAttachmentSize(UniversalId attachmentId) 
-	throws AttachmentStorageException
+	public long getAttachmentSizeInBytes(UniversalId attachmentId)
+		throws AttachmentStorageException
 	{
 		return getAttachmentFile(attachmentId).length();
+	}
+
+	public long getAttachmentSizeInKb(UniversalId attachmentId) 
+	throws AttachmentStorageException
+	{
+		long sizeInBytes = getAttachmentSizeInBytes(attachmentId);
+		long sizeInKb = (sizeInBytes + 500) / 1000;
+		if(sizeInKb == 0)
+			sizeInKb = 1;
+		return sizeInKb;
 	}
 	
 	private File getAttachmentFile(UniversalId attachmentId) 

@@ -192,7 +192,8 @@ public abstract class TestAbstractAttachmentManager
 		{
 			sin.close();
 		}
-		assertEquals("Size of file incorrect?",testString.length(),(int)attachmentManager.getAttachmentSize(id));
+		assertEquals("Size not correct?", testString.length(), (int)attachmentManager.getAttachmentSizeInBytes(id));
+		assertEquals("Size of file <1K should be 1Kb?",1,(int)attachmentManager.getAttachmentSizeInKb(id));
 	}
 	
 	public void testOverwriteExistingAttachment() 

@@ -19,6 +19,7 @@ import org.martus.amplifier.common.AmplifierConfiguration;
 import org.martus.amplifier.datasynch.BulletinExtractor;
 import org.martus.amplifier.lucene.LuceneBulletinIndexer;
 import org.martus.amplifier.lucene.LuceneBulletinSearcher;
+import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.amplifier.search.AttachmentInfo;
 import org.martus.amplifier.search.BulletinField;
 import org.martus.amplifier.search.BulletinIndexException;
@@ -49,7 +50,32 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 	{
 		super(name);
 	}
-	
+
+	protected void setUp() throws Exception 
+	{
+		super.setUp();
+		attachmentManager = 
+			new FileSystemAttachmentManager(getTestBasePath());
+		MartusAmplifier.attachmentManager = attachmentManager;
+		security = new MockMartusSecurity();
+		security.createKeyPair();
+		db = new MockServerDatabase();
+	}
+
+	protected void tearDown() throws Exception 
+	{
+		try 
+		{
+			attachmentManager.clearAllAttachments();
+			String basePath = AmplifierConfiguration.getInstance().getBasePath() + "/test";
+			DirectoryTreeRemover.deleteEntireDirectoryTree(new File(basePath));
+		} 
+		finally 
+		{
+			super.tearDown();
+		}
+	}
+
 	public void testSimpleExtraction() 
 		throws Exception
 	{
@@ -145,29 +171,6 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 		}
 	}
 	
-	protected void setUp() throws Exception 
-	{
-		super.setUp();
-		attachmentManager = 
-			new FileSystemAttachmentManager(getTestBasePath());
-		security = new MockMartusSecurity();
-		security.createKeyPair();
-		db = new MockServerDatabase();
-	}
-
-	protected void tearDown() throws Exception 
-	{
-		try 
-		{
-			attachmentManager.clearAllAttachments();
-			String basePath = AmplifierConfiguration.getInstance().getBasePath() + "/test";
-			DirectoryTreeRemover.deleteEntireDirectoryTree(new File(basePath));
-		} 
-		finally 
-		{
-			super.tearDown();
-		}
-	}
 	
 	private void compareBulletins(
 		Bulletin bulletin, BulletinInfo retrievedData) 

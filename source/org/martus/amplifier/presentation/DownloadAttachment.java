@@ -96,7 +96,7 @@ public class DownloadAttachment extends HttpServlet
 			
 			response.addHeader( "Content-Type", "application/octet-stream" );
 			response.addHeader( "Content-Disposition","attatchment; filename="+info.getLabel());
-			response.addHeader( "Content-Length",Long.toString(manager.getAttachmentSize(uId)));
+			response.addHeader( "Content-Length",Long.toString(manager.getAttachmentSizeInBytes(uId)));
 
 			InputStream in = manager.getAttachment(uId);
 			OutputStream out = response.getOutputStream();
