@@ -23,6 +23,40 @@
         String entryDate = document.get("entry_date");
 %>
 <img src="images/big_logo.gif" width="184" height="126" alt="Martus Amplifier"/>
+<% 
+        boolean showPrevious = true;
+        int previousBulletinNumber = documentNumber - 1;
+        boolean showNext = true;
+        int nextBulletinNumber = documentNumber + 1;
+        if(previousBulletinNumber < 0) 
+                showPrevious = false;
+        if(nextBulletinNumber >= hits.length())
+                showNext = false;
+%>
+<table border="0" width="840">
+<tr>
+<td>
+<%
+if(showPrevious)
+{
+%>
+        <a href="viewbulletin.jsp?doc=<%=previousBulletinNumber%>">Previous Bulletin</a>
+<%
+}
+%>        
+</td>
+<td><img src="images/spacer.gif" height="0" width="700"/></td>
+<td>
+<%
+if(showNext)
+{
+%>
+        <a href="viewbulletin.jsp?doc=<%=nextBulletinNumber%>">Next Bulletin</a>
+<%
+}
+%>        
+</td>
+</table>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
 <td>
