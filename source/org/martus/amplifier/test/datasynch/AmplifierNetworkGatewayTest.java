@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Vector;
 
 import org.martus.common.UniversalId;
-
 import org.martus.amplifier.service.datasynch.AmplifierNetworkGateway;
 
 public class AmplifierNetworkGatewayTest extends AbstractAmplifierDataSynchTest
@@ -23,10 +22,9 @@ public class AmplifierNetworkGatewayTest extends AbstractAmplifierDataSynchTest
 	}
 	
 	
-	
 	public void testGetAllAccountIds()
 	{
-		System.out.println("in testGetAllAccountIds");
+		System.out.println("AmplifierNetworkGatewayTest:testGetAllAccountIds");
 		AmplifierNetworkGateway amplifierGateway = AmplifierNetworkGateway.getInstance();
 		Vector list = amplifierGateway.getAllAccountIds();
 		for(int i =0; i<list.size(); i++)
@@ -35,15 +33,15 @@ public class AmplifierNetworkGatewayTest extends AbstractAmplifierDataSynchTest
 		}
 		assertTrue(list.size() >0);	
 	}
-	
+
 	
 	
 	public void testGetAccountUniversalIds()
 	{
-		System.out.println("in testGetAccountUniversalIds");
+		System.out.println("AmplifierNetworkGatewayTest:testGetAccountUniversalIds");
 		AmplifierNetworkGateway amplifierGateway = AmplifierNetworkGateway.getInstance();
 		Vector list = amplifierGateway.getAccountUniversalIds(sampleAccountId);
-		System.out.println("AccountId = "+ sampleAccountId );
+		System.out.println("AccountId = "+ sampleAccountId +"  Number of Universal IDs = "+ list.size());
 		for(int i =0; i<list.size(); i++)
 		{
 			System.out.println("UniversalIDs = "+(list.elementAt(i)).toString() );
@@ -51,10 +49,11 @@ public class AmplifierNetworkGatewayTest extends AbstractAmplifierDataSynchTest
 		assertTrue(list.size() >0);	
 	}
 
+
 	
 	public void testgetBulletin()
 	{
-		System.out.println("in testGetBulletin");
+		System.out.println("AmplifierNetworkGatewayTest: testGetBulletin");
 		AmplifierNetworkGateway amplifierGateway = AmplifierNetworkGateway.getInstance();
 		UniversalId uid = UniversalId.createFromAccountAndLocalId(sampleAccountId, sampleLocalId);
 		File file = amplifierGateway.getBulletin(uid);
@@ -62,20 +61,17 @@ public class AmplifierNetworkGatewayTest extends AbstractAmplifierDataSynchTest
 	}
 
 
+
 	public void testRetrieveAndManageBulletin()
 	{
-		System.out.println("in testRetrieveAndManageBulletin");
+		System.out.println("AmplifierNetworkGatewayTest:testRetrieveAndManageBulletin");
 		AmplifierNetworkGateway amplifierGateway = AmplifierNetworkGateway.getInstance();		
 		UniversalId uid = UniversalId.createFromAccountAndLocalId(sampleAccountId, sampleLocalId);
 		Vector list = amplifierGateway.retrieveAndManageBulletin(uid);				
 		assertTrue(list.size() > 0);			
 	}
-	
-
-	
-
-	
-	final String sampleAccountId = "MIIBIDANBgkqhkiG9w0BAQEFAAOCAQ0AMIIBCAKCAQEAl9NDWiuXjljLkZ4cscHcpcOoK0BaZ6KwaV8UG23n5gdY6A43aoK+y2jTxAl1Krh57Y1cfxKFbTI2cdQ/NQzNHSPat8xJxu8Cao9N1XJk3njBCqRVIvFKIbzUvkZ64eMDP668Zmrp0fLOj1UQedBWyyYwU+5ixUCLFfx3u/WWSE0XszDc+dbWouKCIQLmGaMtn8UuQCMg5JTv3CMNufVNe2UYRF+x68LvCz3lCmFAQ06akxE5ahgUV7MAvVyTBAHM8YQj5TvuwvwffZPgJuDAS9Rs2j4qUnYNtLJCGax+BUfaBE/N5Urj+s/8fE+pwDE2Xpd2alD76Wt54bQBAX6tFwIBEQ==";
-	final String sampleLocalId = "B-1adb7b8-f166248fec--8000";
+		
+	final String sampleAccountId = "MIIBIDANBgkqhkiG9w0BAQEFAAOCAQ0AMIIBCAKCAQEAt+9X7kLTLx8fTfXIogRK5ySJnVL1s2Wi/L9MYMxHWkddpD5XBibQjOM/RkW2tn7oXM9SdQrU16EvEJtTnIZ+z5D6uXuq37vffHcfV9x5vQ3p5PEtKLinvvbqwbVgka+OXbMsjoV6seeAtXAxop9qme9yk4d1/Pco+RdLOX/Toyt9prSqlr2epu+hpZ6Qv8X9C4IF80eajPJd0x5cKsTZPpAmC5Iy5oh2uE0dy9iP6Esz3Ob1X3dn/QLaHJhQQp49um6UCbuN57wof/m4k703txDzxpZdKYUDaCQvKslpBpfiqjLTZ2FbaUodkkcckky9U9xzMDdrNxSvuG9LpjFr0QIBEQ==";
+	final String sampleLocalId = "B-111ded2-f19d90f997--7ffd";
 
 }

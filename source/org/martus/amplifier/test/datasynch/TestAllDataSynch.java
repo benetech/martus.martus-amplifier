@@ -28,6 +28,7 @@ public class TestAllDataSynch extends TestSuite
 
 		suite.addTest(new TestSuite(AmplifierNetworkGatewayTest.class));
 		suite.addTest(new TestSuite(BackupServerManagerTest.class));
+		suite.addTest(new TestSuite(DataSynchManagerTest.class));
 
 		return suite;
 	}

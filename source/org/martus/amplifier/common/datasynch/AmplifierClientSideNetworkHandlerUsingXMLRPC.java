@@ -50,7 +50,6 @@ public class AmplifierClientSideNetworkHandlerUsingXMLRPC
 		
 	public Vector getAccountIds(String myAccountId, Vector parameters, String signature)
 	{
-		System.out.println("in AmplifierClientSideNetworkHandlerUsingXMLRPC.getAccountIds()");
 		Vector params = new Vector();
 		params.add(myAccountId);
 		params.add(parameters);
@@ -82,7 +81,6 @@ public class AmplifierClientSideNetworkHandlerUsingXMLRPC
 	{
 		
 		final String serverUrl = "https://" + serverName + ":" + port + "/RPC2";
-		System.out.println("ServerInterfaceXmlRpcHandler:callServer serverUrl=" + serverUrl);
 		Object result = null;
 		try
 		{

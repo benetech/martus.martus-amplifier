@@ -26,7 +26,6 @@ public class AmplifierClientSideNetworkGateway implements AmplifierBulletinRetri
 	public NetworkResponse getAccountIds(MartusCrypto signer) throws 
 			MartusCrypto.MartusSignatureException
 	{
-		System.out.println("in AmplifierClientSideNetworkGateway.getAccountIds()");
 		Vector parameters = new Vector();
 		String signature = MartusUtilities.sign(parameters, signer);
 		return new NetworkResponse(server.getAccountIds(signer.getPublicKeyString(), parameters, signature));

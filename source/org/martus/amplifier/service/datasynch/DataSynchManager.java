@@ -3,8 +3,6 @@ package org.martus.amplifier.service.datasynch;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.logging.Logger;
-import java.util.Vector;
-
 
 import org.martus.common.UniversalId;
 import org.martus.amplifier.service.datasynch.AmplifierNetworkGateway;
@@ -31,65 +29,72 @@ public class DataSynchManager implements IDataSynchConstants
 		return instance;
 	}
 	
-	/*
-	 * This method retrieves existing Server UID list
-	 * 
+	
+	
+	/**
+	 * This methods retrieves account and UniversalIds.
+	 * This calls the method checkAndRetrieveBulletinsForUIDs() for new bulletins and attachments 
+	 * Saving the attachments and bulletin files is done in AmplifierNetworkGateway.retrieveAndManageBulletin()
 	 */
-	public List getAllServerUniversalIds()
+	public void getAllNewBulletins()
 	{
-		logger.info("in DataSynchManager.getNewUniversalIds(): ");	
-		List accountList = new ArrayList();
-		List accountUIDs = new ArrayList(); //all UniversalIds in each account
-		List totalMartusUIDList = new ArrayList();//all universalIds from Martus
-		
-		int i=0;
+		logger.info("in DataSynchManager.getAllNewBulletins(): ");	
+	
 		String accountId = "";
-		//compare that with the local UID list.
+		List accountList = null;
+		List uidList = null;
+		
 		//Step1: Retrieve all the accountids from Martus Server
-		accountList = (List) amplifierGateway.getAllAccountIds();
+		accountList = new ArrayList(amplifierGateway.getAllAccountIds());
 		if(accountList == null)
 		{
-			logger.severe("DataSynchManager.getNewUniversalIds(): accountList is null");
+			logger.severe("DataSynchManager.getAllNewBulletins(): accountList is null");
 			System.exit(0);
 		}
-		//Step2: Retrieve the universal ids for each account and create a list
-		for(i=0; i<accountList.size();i++)
-		{
-			accountId = (String) accountList.get(i);
-			accountUIDs = (List) amplifierGateway.getAccountUniversalIds(accountId) ;
-			totalMartusUIDList.addAll(accountUIDs);
-		}
 		
+		//Step2: Retrieve the universal ids and bulletins for each account
+		for(int index=0; index <accountList.size();index++)
+		{
+			accountId = (String) accountList.get(index);
+			uidList  = new ArrayList(amplifierGateway.getAccountUniversalIds(accountId));
+			checkAndRetrieveBulletinsForUIDs(uidList, accountId);		
+		}
 				
-		return totalMartusUIDList;
 	}
 	
 	
-	/*
-	 * This methods retrieves new bulletins and attachments 
-	 * Saving the attachments and bulletin files is done in retrieveAndManageBulletin()
-	 */
-	public void getALLNewBulletinObjects(List uidList)
-	{ 
-		logger.info("in DataSynchManager.getALLNewBulletinObjects()");	
-		int index=0;
-		int size = uidList.size();
-		UniversalId tempUID = null;
+	private void  checkAndRetrieveBulletinsForUIDs(List uidList, String accountId)
+	{
+		logger.info("DataSynchManager:checkAndRetrieveBulletinsForUIDs()");
+		int fromIndex = 0;
+		int toIndex = 0;
+		String localId = "";
+		String uidStr = "";
+		UniversalId uid = null;
+		BulletinCatalog catalog = BulletinCatalog.getInstance();
 		
-		BulletinCatalog catalog = BulletinCatalog.getInstance();	
-		for(index=0; index<size; index++)
-		{
-			tempUID = (UniversalId)uidList.get(index);	
-			if( !catalog.bulletinHasBeenIndexed(tempUID) )
+		for(int index=0; index<uidList.size(); index++)
 			{
-			  logger.info("before calling  amplifierGateway.retrieveAndManageBulletin on UID = "+ tempUID.toString());
-			  amplifierGateway.retrieveAndManageBulletin(tempUID );
-			}
-		}
+				Object obj = (Object) uidList.get(index);
+			    uidStr = obj.toString();
+			    
+			    fromIndex = uidStr.indexOf('[');
+			    toIndex = uidStr.indexOf(',');
+			    localId = uidStr.substring(fromIndex+1, toIndex);
+			    logger.info("DataSynchManager.checkAndRetrieveBulletinsForUIDs()--localID = "+ localId);
+				uid = UniversalId.createFromAccountAndLocalId(accountId, localId);	
+				if( !catalog.bulletinHasBeenIndexed(uid) )
+				{
+			  		logger.info("DataSynchManager.checkAndRetrieveBulletinsForUIDs():before calling  amplifierGateway.retrieveAndManageBulletin on UID = "+ uid.toString());
+			  		amplifierGateway.retrieveAndManageBulletin(uid);
+				}				
+			}			
 	}
 	
 	
-	/*
+	
+	
+   /**
 	 * This will take care of indexing bulletins and 
 	 * calling AttachmentManager
 	 * we initiate the indexing on the field data packet folder

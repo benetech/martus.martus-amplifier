@@ -24,7 +24,7 @@ import org.martus.amplifier.service.attachment.AttachmentManager;
 import org.martus.amplifier.service.attachment.api.*;
 import org.martus.amplifier.service.search.IBulletinConstants;
 import org.martus.amplifier.service.search.ISearchConstants;
-import org.martus.client.core.Bulletin;
+import org.martus.common.Bulletin;
 import org.martus.common.BulletinHeaderPacket;
 import org.martus.common.FieldDataPacket;
 import org.martus.common.MartusCrypto;

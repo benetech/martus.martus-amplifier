@@ -133,7 +133,7 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
 		//3.Put Field Data packets in Bulletin Folder and
 		// attachment XML files on attachments folder 
 		
-		if( result!=null)
+		if( result != null)
 		{
 			for(int i= 0; i< result.size(); i++)
 			{
