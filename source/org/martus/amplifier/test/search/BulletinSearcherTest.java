@@ -30,15 +30,15 @@ public class BulletinSearcherTest extends AbstractAmplifierSearchTest {
 	{
 		BulletinSearcher bulletinSearch = BulletinSearcher.getInstance();
 		
-		Hits hits = bulletinSearch.fieldSearch(AUTHOR_FIELD, "Sri Lanka Peace Institute");
+		Hits hits = bulletinSearch.searchField(AUTHOR_FIELD, "Sri Lanka Peace Institute");
 		System.out.println(hits.length());
 		Assert.assertEquals("Found author?", 1, hits.length());
 
-		hits = bulletinSearch.fieldSearch(KEYWORDS_FIELD, "explosion");
+		hits = bulletinSearch.searchField(KEYWORDS_FIELD, "explosion");
 		System.out.println(hits.length());
 		Assert.assertEquals("Found keyword?", 1, hits.length());
 
-		hits = bulletinSearch.fieldSearch(TITLE_FIELD, "NGO Office");
+		hits = bulletinSearch.searchField(TITLE_FIELD, "NGO Office");
 		System.out.println(hits.length());
 		Assert.assertEquals("Found title?", 1, hits.length());
 		
@@ -46,15 +46,15 @@ public class BulletinSearcherTest extends AbstractAmplifierSearchTest {
 //		System.out.println(hits.length());
 //		Assert.assertEquals("Found event date?", 1, hits.length());
 
-		hits = bulletinSearch.fieldSearch(PUBLIC_INFO_FIELD, "staff members were");
+		hits = bulletinSearch.searchField(PUBLIC_INFO_FIELD, "staff members were");
 		System.out.println(hits.length());
 		Assert.assertEquals("Found public info?", 1, hits.length());
 
-		hits = bulletinSearch.fieldSearch(SUMMARY_FIELD, "attacked by men");
+		hits = bulletinSearch.searchField(SUMMARY_FIELD, "attacked by men");
 		System.out.println(hits.length());
 		Assert.assertEquals("Found summary?", 1, hits.length());
 
-		hits = bulletinSearch.fieldSearch(LOCATION_FIELD, "Colombo");
+		hits = bulletinSearch.searchField(LOCATION_FIELD, "Colombo");
 		System.out.println(hits.length());
 		Assert.assertEquals("Found location?", 1, hits.length());
 

@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 import junit.framework.Assert;
 
 import org.apache.lucene.document.Document;
-import org.martus.amplifier.LoggerConstants;
+import org.martus.amplifier.common.logging.LoggerConstants;
 import org.martus.amplifier.service.search.BulletinDocument;
 
 public class BulletinDocumentTest extends AbstractAmplifierSearchTest
