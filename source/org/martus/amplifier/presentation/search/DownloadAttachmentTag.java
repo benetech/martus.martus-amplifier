@@ -3,7 +3,6 @@ package org.martus.amplifier.presentation.search;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.logging.Logger;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
@@ -88,9 +87,5 @@ public class DownloadAttachmentTag extends TagSupport
 	private String accountIdEL;
 	private String localIdEL;
 	private String indexPath;
-	
-	private static final Logger LOG = 
-		Logger.getLogger("DownloadAttachmentTag");
-
 	
 }

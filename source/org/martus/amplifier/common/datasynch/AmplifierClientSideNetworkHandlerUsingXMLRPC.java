@@ -2,7 +2,6 @@ package org.martus.amplifier.common.datasynch;
 
 import java.io.IOException;
 import java.security.SecureRandom;
-import java.sql.Timestamp;
 import java.util.Vector;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -117,13 +116,6 @@ public class AmplifierClientSideNetworkHandlerUsingXMLRPC
 		return tm;
 	}
 
-	private void logging(String message)
-	{
-		Timestamp stamp = new Timestamp(System.currentTimeMillis());
-		System.out.println(stamp + " " + message);
-	}
-
-	
 	SimpleX509TrustManager tm;
 	String server;
 	int port;
