@@ -63,6 +63,11 @@ Boston, MA 02111-1307, USA.
 		<td></td>
 	</tr>
 	<tr>
+		<td valign='top'>Version:</td>
+		<td valign='top'>$bulletin.version</td>
+		<td></td>
+	</tr>
+	<tr>
 		<td valign='top'>Date Submitted:</td>
 		<td valign='top'>$bulletin.fields.entrydate</td>
 		<td></td>

@@ -110,7 +110,7 @@ public class BulletinExtractor
 			new ZipEntryInputStreamWithSeek(bulletinZipFile, fieldDataEntry),
 			verifier);
 			
-		bulletinIndexer.indexFieldData(bhp.getUniversalId(), fdp);
+		bulletinIndexer.indexFieldData(bhp.getUniversalId(), fdp, bhp.getHistory());
 		
 		return fdp;
 	}

@@ -48,6 +48,7 @@ import org.martus.common.bulletin.AttachmentProxy;
 import org.martus.common.crypto.MockMartusSecurity;
 import org.martus.common.packet.FieldDataPacket;
 import org.martus.common.packet.UniversalId;
+import org.martus.common.test.UnicodeConstants;
 import org.martus.util.DirectoryUtils;
 
 public abstract class CommonSearchTest 
@@ -175,13 +176,13 @@ public abstract class CommonSearchTest
 	{
 		String author = "Charles";	
 		String keywords = "foreign";
-		String title = "Foreign Chars niños";
+		String title = "Foreign Chars ni" + UnicodeConstants.TILDE_N_LOWER + "os";
 		String entrydate="2003-09-15";
 		String eventdate = "2003-08-20,20030820+3";
 		String publicInfo = "menu3";
 		String language = "es";
 		String organization = "test";
-		String summary = "niños";
+		String summary = "ni" + UnicodeConstants.TILDE_N_LOWER + "os";
 		String attachment1LocalId = "att1Id";
 		String attachment1Label = "no.gif";
 		String attachment2LocalId = "att2Id";

@@ -42,6 +42,7 @@ import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinIndexer;
 import org.martus.amplifier.search.SearchConstants;
 import org.martus.common.bulletin.AttachmentProxy;
+import org.martus.common.packet.BulletinHistory;
 import org.martus.common.packet.FieldDataPacket;
 import org.martus.common.packet.UniversalId;
 import org.martus.common.utilities.MartusFlexidate;
@@ -90,7 +91,7 @@ public class LuceneBulletinIndexer
 		}		
 	}
 	
-	public void indexFieldData(UniversalId bulletinId, FieldDataPacket fdp) 
+	public void indexFieldData(UniversalId bulletinId, FieldDataPacket fdp, BulletinHistory history) 
 		throws BulletinIndexException
 	{
 		Document doc = new Document();

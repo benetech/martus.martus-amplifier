@@ -47,8 +47,10 @@ import org.martus.amplifier.search.BulletinInfo;
 import org.martus.amplifier.search.BulletinSearcher;
 import org.martus.amplifier.search.Results;
 import org.martus.common.bulletin.AttachmentProxy;
+import org.martus.common.packet.BulletinHistory;
 import org.martus.common.packet.FieldDataPacket;
 import org.martus.common.packet.UniversalId;
+import org.martus.common.test.UnicodeConstants;
 
 public class TestLuceneSearcher extends CommonSearchTest
 {
@@ -72,7 +74,7 @@ public class TestLuceneSearcher extends CommonSearchTest
 		BulletinIndexer indexer = openBulletinIndexer();
 		try {
 			indexer.clearIndex();
-			indexer.indexFieldData(bulletinId, fdp);
+			indexer.indexFieldData(bulletinId, fdp, new BulletinHistory());
 		} finally {
 			indexer.close();
 		}
@@ -94,7 +96,7 @@ public class TestLuceneSearcher extends CommonSearchTest
 		BulletinIndexer indexer = openBulletinIndexer();
 		try {
 			indexer.clearIndex();
-			indexer.indexFieldData(bulletinId, fdp);
+			indexer.indexFieldData(bulletinId, fdp, new BulletinHistory());
 		} finally {
 			indexer.close();
 		}
@@ -128,7 +130,7 @@ public class TestLuceneSearcher extends CommonSearchTest
 		BulletinIndexer indexer = openBulletinIndexer();
 		try {
 			indexer.clearIndex();
-			indexer.indexFieldData(bulletinId, fdp);
+			indexer.indexFieldData(bulletinId, fdp, new BulletinHistory());
 		} finally {
 			indexer.close();
 		}
@@ -215,7 +217,7 @@ public class TestLuceneSearcher extends CommonSearchTest
 		BulletinIndexer indexer = openBulletinIndexer();
 		try {
 			indexer.clearIndex();
-			indexer.indexFieldData(bulletinId, fdp);
+			indexer.indexFieldData(bulletinId, fdp, new BulletinHistory());
 		} finally {
 			indexer.close();
 		}
@@ -246,7 +248,7 @@ public class TestLuceneSearcher extends CommonSearchTest
 		try 
 		{
 			indexer.clearIndex();
-			indexer.indexFieldData(bulletinId, fdp);
+			indexer.indexFieldData(bulletinId, fdp, new BulletinHistory());
 		} 
 		finally 
 		{
@@ -315,7 +317,7 @@ public class TestLuceneSearcher extends CommonSearchTest
 		try 
 		{
 			indexer.clearIndex();
-			indexer.indexFieldData(bulletinId, fdp);
+			indexer.indexFieldData(bulletinId, fdp, new BulletinHistory());
 		} 
 		finally 
 		{
@@ -408,7 +410,7 @@ public class TestLuceneSearcher extends CommonSearchTest
 		try 
 		{
 			indexer.clearIndex();
-			indexer.indexFieldData(bulletinId1, fdp1);
+			indexer.indexFieldData(bulletinId1, fdp1, new BulletinHistory());
 		} 
 		finally 
 		{
@@ -480,7 +482,7 @@ public class TestLuceneSearcher extends CommonSearchTest
 		try 
 		{
 			indexer.clearIndex();
-			indexer.indexFieldData(bulletinId, fdp);
+			indexer.indexFieldData(bulletinId, fdp, new BulletinHistory());
 		} 
 		finally 
 		{
@@ -520,8 +522,8 @@ public class TestLuceneSearcher extends CommonSearchTest
 		try 
 		{
 			indexer.clearIndex();
-			indexer.indexFieldData(bulletinId1, fdp1);
-			indexer.indexFieldData(bulletinId2, fdp2);
+			indexer.indexFieldData(bulletinId1, fdp1, new BulletinHistory());
+			indexer.indexFieldData(bulletinId2, fdp2, new BulletinHistory());
 		} 
 		finally 
 		{
@@ -563,8 +565,8 @@ public class TestLuceneSearcher extends CommonSearchTest
 		try 
 		{
 			indexer.clearIndex();
-			indexer.indexFieldData(bulletinId1, fdp1);
-			indexer.indexFieldData(bulletinId2, fdp2);
+			indexer.indexFieldData(bulletinId1, fdp1, new BulletinHistory());
+			indexer.indexFieldData(bulletinId2, fdp2, new BulletinHistory());
 		} 
 		finally 
 		{
@@ -602,8 +604,8 @@ public class TestLuceneSearcher extends CommonSearchTest
 		try 
 		{
 			indexer.clearIndex();
-			indexer.indexFieldData(bulletinId1, fdp1);
-			indexer.indexFieldData(bulletinId2, fdp2);
+			indexer.indexFieldData(bulletinId1, fdp1, new BulletinHistory());
+			indexer.indexFieldData(bulletinId2, fdp2, new BulletinHistory());
 		} 
 		finally 
 		{
@@ -643,8 +645,8 @@ public class TestLuceneSearcher extends CommonSearchTest
 		try 
 		{
 			indexer.clearIndex();
-			indexer.indexFieldData(bulletinId1, fdp1);
-			indexer.indexFieldData(bulletinId2, fdp2);
+			indexer.indexFieldData(bulletinId1, fdp1, new BulletinHistory());
+			indexer.indexFieldData(bulletinId2, fdp2, new BulletinHistory());
 		} 
 		finally 
 		{
@@ -694,8 +696,8 @@ public class TestLuceneSearcher extends CommonSearchTest
 		try 
 		{
 			indexer.clearIndex();
-			indexer.indexFieldData(bulletinId1, fdp1);
-			indexer.indexFieldData(bulletinId2, fdp2);
+			indexer.indexFieldData(bulletinId1, fdp1, new BulletinHistory());
+			indexer.indexFieldData(bulletinId2, fdp2, new BulletinHistory());
 		} 
 		finally 
 		{
@@ -752,8 +754,8 @@ public class TestLuceneSearcher extends CommonSearchTest
 		try 
 		{
 			indexer.clearIndex();
-			indexer.indexFieldData(bulletinId1, fdp1);
-			indexer.indexFieldData(bulletinId2, fdp2);
+			indexer.indexFieldData(bulletinId1, fdp1, new BulletinHistory());
+			indexer.indexFieldData(bulletinId2, fdp2, new BulletinHistory());
 		} 
 		finally 
 		{
@@ -838,8 +840,8 @@ public class TestLuceneSearcher extends CommonSearchTest
 		try 
 		{
 			indexer.clearIndex();
-			indexer.indexFieldData(bulletinId1, fdp1);
-			indexer.indexFieldData(bulletinId2, fdp2);
+			indexer.indexFieldData(bulletinId1, fdp1, new BulletinHistory());
+			indexer.indexFieldData(bulletinId2, fdp2, new BulletinHistory());
 		} 
 		finally 
 		{
@@ -904,8 +906,8 @@ public class TestLuceneSearcher extends CommonSearchTest
 		try 
 		{
 			indexer.clearIndex();
-			indexer.indexFieldData(bulletinId1, fdp1);
-			indexer.indexFieldData(bulletinId2, fdp2);
+			indexer.indexFieldData(bulletinId1, fdp1, new BulletinHistory());
+			indexer.indexFieldData(bulletinId2, fdp2, new BulletinHistory());
 		} 
 		finally 
 		{
@@ -974,7 +976,7 @@ public class TestLuceneSearcher extends CommonSearchTest
 		try 
 		{
 			indexer.clearIndex();
-			indexer.indexFieldData(bulletinId1, fdp1);
+			indexer.indexFieldData(bulletinId1, fdp1, new BulletinHistory());
 		} 
 		finally 
 		{
@@ -1000,10 +1002,10 @@ public class TestLuceneSearcher extends CommonSearchTest
 				new SearchParameters.FormatterForExactPhraseSearch();	
 			
 			//combined these words and exactphrase
-			String query = d.getFormattedString("niños");						
+			String query = d.getFormattedString("ni" + UnicodeConstants.TILDE_N_LOWER + "os");						
 			fields.put(THESE_WORD_TAG, query);		
 			
-			query = ed.getFormattedString("niños");				
+			query = ed.getFormattedString("ni" + UnicodeConstants.TILDE_N_LOWER + "os");				
 			fields.put(EXACTPHRASE_TAG, query);
 			
 			results = searcher.search(fields);
@@ -1016,9 +1018,9 @@ public class TestLuceneSearcher extends CommonSearchTest
 			query = ed.getFormattedString("ninos");				
 			fields.put(EXACTPHRASE_TAG, query);
 			
-			//TODO this will change once ninos should find niños
+			//TODO this will change once "ninos" should find the real spanish spelling
 			results = searcher.search(fields);
-			assertEquals("search for ninos when there is a niños", 0, results.getCount());											
+			assertEquals("search for ninos when there is a ni" + UnicodeConstants.TILDE_N_LOWER + "os", 0, results.getCount());											
 			
 		}
 		finally 
@@ -1037,8 +1039,8 @@ public class TestLuceneSearcher extends CommonSearchTest
 		try 
 		{
 			indexer.clearIndex();
-			indexer.indexFieldData(bulletinId1, fdp1);
-			indexer.indexFieldData(bulletinId2, fdp2);
+			indexer.indexFieldData(bulletinId1, fdp1, new BulletinHistory());
+			indexer.indexFieldData(bulletinId2, fdp2, new BulletinHistory());
 		} 
 		finally 
 		{
@@ -1096,8 +1098,8 @@ public class TestLuceneSearcher extends CommonSearchTest
 		try 
 		{
 			indexer.clearIndex();
-			indexer.indexFieldData(bulletinId2, fdp2);
-			indexer.indexFieldData(bulletinId1, fdp1);
+			indexer.indexFieldData(bulletinId2, fdp2, new BulletinHistory());
+			indexer.indexFieldData(bulletinId1, fdp1, new BulletinHistory());
 		} 
 		finally 
 		{

@@ -62,6 +62,11 @@ public class BulletinInfo implements Serializable
 		attachments.add(attachment);
 	}
 	
+	public String getVersion()
+	{
+		return "1";
+	}
+	
 	public Map getFields()
 	{
 		return fields;

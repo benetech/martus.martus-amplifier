@@ -31,6 +31,7 @@ import org.martus.amplifier.main.LanguagesIndexedList;
 import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinIndexer;
 import org.martus.amplifier.search.BulletinSearcher;
+import org.martus.common.packet.BulletinHistory;
 import org.martus.common.packet.FieldDataPacket;
 import org.martus.common.packet.UniversalId;
 
@@ -49,7 +50,7 @@ public class TestLuceneBulletinIndexer  extends CommonSearchTest
 		BulletinIndexer indexer = openBulletinIndexer();
 		try 
 		{
-			indexer.indexFieldData(bulletinId, fdp);
+			indexer.indexFieldData(bulletinId, fdp, new BulletinHistory());
 		} 
 		finally 
 		{
@@ -111,7 +112,7 @@ public class TestLuceneBulletinIndexer  extends CommonSearchTest
 		try 
 		{
 			indexer.clearIndex();
-			indexer.indexFieldData(bulletinId, fdp);
+			indexer.indexFieldData(bulletinId, fdp, new BulletinHistory());
 		} 
 		finally 
 		{
