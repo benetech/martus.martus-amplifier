@@ -8,12 +8,9 @@ public interface BulletinSearcher extends SearchConstants
 {
 	void close() throws Exception;
 	
-	Results search(String field, String queryString) 
-		throws BulletinIndexException;		
+	Results search(String field, String queryString) throws Exception;		
 		
-	Results search(HashMap fields)
-		throws BulletinIndexException; 				
+	Results search(HashMap fields) throws Exception; 				
 		
-	BulletinInfo lookup(UniversalId bulletinId)
-		throws BulletinIndexException;	
+	BulletinInfo lookup(UniversalId bulletinId) throws Exception;	
 }

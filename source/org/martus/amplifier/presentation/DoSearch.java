@@ -37,7 +37,6 @@ import org.martus.amplifier.common.AmplifierLocalization;
 import org.martus.amplifier.common.SearchParameters;
 import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.lucene.LuceneBulletinSearcher;
-import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinInfo;
 import org.martus.amplifier.search.BulletinSearcher;
 import org.martus.amplifier.search.Results;
@@ -89,7 +88,7 @@ public class DoSearch extends AmplifierServlet implements SearchResultConstants
 		return getResults(fields);
 	}
 	
-	BulletinSearcher openBulletinSearcher() throws BulletinIndexException
+	BulletinSearcher openBulletinSearcher() throws Exception
 	{
 		AmplifierConfiguration config = AmplifierConfiguration.getInstance();
 		String indexPath = config.getBasePath();

@@ -1205,7 +1205,6 @@ public abstract class AbstractSearchTestCase
 	
 	protected abstract BulletinIndexer openBulletinIndexer()
 		throws BulletinIndexException;
-	protected abstract BulletinSearcher openBulletinSearcher()
-		throws BulletinIndexException;
+	protected abstract BulletinSearcher openBulletinSearcher() throws Exception;
 
 }

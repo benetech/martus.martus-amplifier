@@ -36,8 +36,7 @@ public class TestLuceneSearcher extends AbstractSearchTestCase
 		return new LuceneBulletinIndexer(getTestBasePath());
 	}
 
-	protected BulletinSearcher openBulletinSearcher()
-		throws BulletinIndexException 
+	protected BulletinSearcher openBulletinSearcher() throws Exception 
 	{
 		return new LuceneBulletinSearcher(getTestBasePath());
 	}

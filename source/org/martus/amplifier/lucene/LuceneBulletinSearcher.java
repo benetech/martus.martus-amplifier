@@ -27,7 +27,6 @@ Boston, MA 02111-1307, USA.
 package org.martus.amplifier.lucene;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -35,7 +34,6 @@ import java.util.HashMap;
 import org.apache.lucene.document.DateField;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
-import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.IndexSearcher;
@@ -53,47 +51,25 @@ import org.martus.util.MartusFlexidate;
 public class LuceneBulletinSearcher 
 	implements BulletinSearcher, LuceneSearchConstants
 {
-	public LuceneBulletinSearcher(String baseDirName) 
-		throws BulletinIndexException
+	public LuceneBulletinSearcher(String baseDirName) throws Exception
 	{
 		File indexDir = LuceneBulletinIndexer.getIndexDir(baseDirName);
-		try
-		{
-			LuceneBulletinIndexer.createIndexIfNecessary(indexDir);
-			searcher = new IndexSearcher(indexDir.getPath());
-		}
-		catch (IOException e)
-		{
-			throw new BulletinIndexException(
-				"Could not create LuceneBulletinSearcher",
-				e);
-		}
+		LuceneBulletinIndexer.createIndexIfNecessary(indexDir);
+		searcher = new IndexSearcher(indexDir.getPath());
 	}	
 	
-	private Results getLuceneResults(Query query)
-		throws BulletinIndexException 
+	private Results getLuceneResults(Query query) throws Exception 
 	{
-		try
-		{
-			return new LuceneResults(searcher.search(query));
-		}
-		catch (IOException e)
-		{
-			throw new BulletinIndexException(
-				"An error occurred while executing query " + query.toString(),
-				e);
-		}
+		return new LuceneResults(searcher.search(query));
 	}
 	
-	public Results search(String field, String queryString)
-		throws BulletinIndexException 
+	public Results search(String field, String queryString) throws Exception 
 	{
 		Query query = queryParser(queryString, field, "Improperly formed query: ");
 		return getLuceneResults(query);
 	}
 
-	public Results search(HashMap fields)
-		throws BulletinIndexException 
+	public Results search(HashMap fields) throws Exception 
 	{	
 		String queryString = (String) fields.get(SearchResultConstants.RESULT_BASIC_QUERY_KEY);
 		if (queryString != null)
@@ -106,39 +82,25 @@ public class LuceneBulletinSearcher
 	}
 
 	private Query queryParser(String query, String field, String msg)
-			throws BulletinIndexException 
+			throws Exception 
 	{
-		try
-		{
-			return QueryParser.parse(
-				query,
-				field,
-				LuceneBulletinIndexer.getAnalyzer());
-		}
-		catch (ParseException pe)
-		{
-			throw new BulletinIndexException(msg + query, pe);
-		}
+		return QueryParser.parse(
+			query,
+			field,
+			LuceneBulletinIndexer.getAnalyzer());
 	}
 
 	private Query multiFieldQueryParser(String query, String[] fields, String msg)
-			throws BulletinIndexException 
+			throws Exception 
 	{
-		try
-		{
-			return MultiFieldQueryParser.parse(
-				query,
-				fields,
-				LuceneBulletinIndexer.getAnalyzer());
-		}
-		catch (ParseException pe)
-		{
-			throw new BulletinIndexException(msg + query, pe);
-		}
+		return MultiFieldQueryParser.parse(
+			query,
+			fields,
+			LuceneBulletinIndexer.getAnalyzer());
 	}
 	
 	private Query queryEventDate(HashMap fields)
-			throws BulletinIndexException 
+			throws Exception 
 	{
 		Date startDate	= (Date) fields.get(SEARCH_EVENT_START_DATE_INDEX_FIELD);
 		Date endDate 	= (Date) fields.get(SEARCH_EVENT_END_DATE_INDEX_FIELD);
@@ -154,7 +116,7 @@ public class LuceneBulletinSearcher
 	}
 	
 	private Query queryEntryDate(HashMap fields)
-			throws BulletinIndexException 
+			throws Exception 
 	{		
 		Date startDate	= (Date) fields.get(SEARCH_ENTRY_DATE_INDEX_FIELD);
 
@@ -169,7 +131,7 @@ public class LuceneBulletinSearcher
 	}	
 	
 	private Query queryLanguage(HashMap fields)
-			throws BulletinIndexException
+			throws Exception
 	{
 		Query query = null;
 		String fieldString = (String) fields.get(SearchResultConstants.RESULT_LANGUAGE_KEY);
@@ -180,7 +142,7 @@ public class LuceneBulletinSearcher
 		return query;
 	} 	
 
-	private Query queryAnyWords(HashMap fields) throws BulletinIndexException
+	private Query queryAnyWords(HashMap fields) throws Exception
 	{
 		String fieldString = (String) fields.get(SearchResultConstants.RESULT_FIELDS_KEY);
 		String queryString = (String) fields.get(SearchResultConstants.ANYWORD_TAG);
@@ -188,7 +150,7 @@ public class LuceneBulletinSearcher
 		return queryEachField(queryString, fieldString);
 	}
 
-	private Query queryTheseWords(HashMap fields) throws BulletinIndexException
+	private Query queryTheseWords(HashMap fields) throws Exception
 	{
 		String fieldString = (String) fields.get(SearchResultConstants.RESULT_FIELDS_KEY);
 		String queryString = (String) fields.get(SearchResultConstants.THESE_WORD_TAG);
@@ -196,7 +158,7 @@ public class LuceneBulletinSearcher
 		return queryEachField(queryString, fieldString);
 	}
 
-	private Query queryExactPhrase(HashMap fields) throws BulletinIndexException
+	private Query queryExactPhrase(HashMap fields) throws Exception
 	{
 		String fieldString = (String) fields.get(SearchResultConstants.RESULT_FIELDS_KEY);
 		String queryString = (String) fields.get(SearchResultConstants.EXACTPHRASE_TAG);
@@ -204,7 +166,7 @@ public class LuceneBulletinSearcher
 		return queryEachField(queryString, fieldString);
 	}	
 
-	private Query queryWithoutWords(HashMap fields) throws BulletinIndexException
+	private Query queryWithoutWords(HashMap fields) throws Exception
 	{
 		String fieldString = (String) fields.get(SearchResultConstants.RESULT_FIELDS_KEY);
 		String queryString = (String) fields.get(SearchResultConstants.WITHOUTWORDS_TAG);
@@ -213,7 +175,7 @@ public class LuceneBulletinSearcher
 	}	
 
 	private Query queryEachField(String queryString, String fieldString)
-		throws BulletinIndexException
+		throws Exception
 	{
 		if (queryString == null || queryString.length() <= 1)
 			return null;
@@ -225,7 +187,7 @@ public class LuceneBulletinSearcher
 	}				
 	
 	private Query complexSearch(HashMap fields)
-			throws BulletinIndexException 
+			throws Exception 
 	{
 		BooleanQuery query = new BooleanQuery();
 		
@@ -260,25 +222,14 @@ public class LuceneBulletinSearcher
 		return query;	
 	}			
 
-	public BulletinInfo lookup(UniversalId bulletinId)
-		throws BulletinIndexException 
+	public BulletinInfo lookup(UniversalId bulletinId) throws Exception 
 	{
 		Term term = new Term(
 			BULLETIN_UNIVERSAL_ID_INDEX_FIELD, bulletinId.toString());
 		Query query = new TermQuery(term);
 		
-		Results results;
-		try
-		{
-			results = new LuceneResults(searcher.search(query));
-		}
-		catch (IOException e)
-		{
-			throw new BulletinIndexException(
-				"An error occurred while searching query "
-					+ query.toString(BULLETIN_UNIVERSAL_ID_INDEX_FIELD),
-				e);
-		}
+		Results results = new LuceneResults(searcher.search(query));
+
 		int numResults = results.getCount();
 		if (numResults == 0) {
 			return null;

@@ -361,8 +361,7 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 		return new LuceneBulletinIndexer(getTestBasePath());
 	}
 	
-	private BulletinSearcher getBulletinSearcher()
-		throws BulletinIndexException
+	private BulletinSearcher getBulletinSearcher() throws Exception
 	{
 		return new LuceneBulletinSearcher(getTestBasePath());
 	}
