@@ -31,7 +31,6 @@ import java.util.Vector;
 
 import org.apache.velocity.context.Context;
 import org.martus.amplifier.common.SearchResultConstants;
-import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.amplifier.main.StubServer;
 import org.martus.amplifier.presentation.DoSearch;
 import org.martus.amplifier.presentation.SimpleSearch;
