@@ -1,18 +1,22 @@
 package org.martus.amplifier.service.search;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.logging.Logger;
 
 import junit.framework.Assert;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.StopAnalyzer;
+import org.apache.lucene.document.DateField;
 import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.index.Term;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.search.RangeQuery;
 import org.martus.amplifier.common.logging.ILoggerConstants;
 import org.martus.amplifier.service.search.api.IBulletinSearcher;
 
@@ -34,6 +38,32 @@ implements IBulletinSearcher, IBulletinConstants, ILoggerConstants
 		return instance;
 	}
    
+	
+	public Hits searchDateRange(String field, Date startDate, Date endDate)
+	{
+		Hits hits = null;
+		RangeQuery query = null;
+		IndexSearcher searcher = null;
+		Term startTerm, endTerm = null;
+		
+		startTerm = new Term(field, 
+								DateField.dateToString(startDate));
+		endTerm = new Term(field,						
+								DateField.dateToString(endDate)); 
+		query = new RangeQuery(startTerm, endTerm, true);
+		
+		try
+		{
+			searcher = new IndexSearcher(IndexReader.open(DEFAULT_INDEX_LOCATION));
+			hits = searcher.search(query);
+		}
+		catch(IOException ioe)
+		{
+			logger.severe("Unable to search index:" + ioe.getMessage());
+		}		
+		return hits;
+	}
+
 	public Hits searchField(String field, String queryString)
 	{
 		Hits hits = null;
