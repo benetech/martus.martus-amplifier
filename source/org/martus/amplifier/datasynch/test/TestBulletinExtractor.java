@@ -188,6 +188,7 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 		}
 		
 		BulletinSearcher searcher = getBulletinSearcher();
+		assertNotNull("bulletin wasn't saved?", searcher.lookup(b.getUniversalId()));
 		try 
 		{
 			HashMap fields = new HashMap();
