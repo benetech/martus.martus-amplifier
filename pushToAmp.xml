@@ -23,7 +23,8 @@
   <property name="hrvdres-dir"   value="org/hrvd/util/res"/>
 
   <property name="presentation-dir" value="presentation"/>
-  
+  <property name="languages-dir" value="${presentation-dir}/languages"/>
+
   <property name="push-dir" value="pushToAmp"/>
   <property name="push-presentation" value="${push-dir}/presentation"/>
   <property name="push-lib" value="${push-dir}/lib"/>
@@ -101,6 +102,10 @@
        
     <!-- Copy keystore ssl certificate -->
 	<copy todir="${push-dir}" file="keystore"/>
+	
+    <!-- copy Languages -->
+	<copy todir="${push-dir}" file="${languages-dir}/englishLanguages.txt"/>
+	
 
   </target>
 
