@@ -13,67 +13,53 @@
 		<br/>		
 		<table>
 			<tr>
-				<td><font size="+1">Title:</font></td>
-				<td><font size="+1"><strong>$bulletin.fields.title</strong></font></td>
+				<td valign='top'><font size="+1">Title:</font></td>
+				<td valign='top'><font size="+1"><strong>$bulletin.fields.title</strong></font></td>
 			
 			</tr>
 			<tr>
-				#if($bulletin.fields.location != "")
-					<td>Location:</td>
-					<td>$bulletin.fields.location</td>
-				#end
+				<td valign='top'>Language:</td>
+				<td valign='top'>$bulletin.fields.language</td>
 				<td></td>
 			</tr>
 			<tr>
-				<td>Event Date:</td>
-				<td>$bulletin.fields.eventdate</td>
+				<td valign='top'>Author:</td>
+				<td valign='top'>$bulletin.fields.author</td>
 				<td></td>
 			</tr>
 			<tr>
-				#if($bulletin.fields.author != "")
-					<td>Author:</td>
-					<td>$bulletin.fields.author</td>
-				#end
+				<td valign='top'>Organization:</td>
+				<td valign='top'>$bulletin.fields.organization</td>
 				<td></td>
 			</tr>
 			<tr>
-				<td>Date Submitted:</td>
-				<td>$bulletin.fields.entrydate</td>
+				<td valign='top'>Location:</td>
+				<td valign='top'>$bulletin.fields.location</td>
 				<td></td>
 			</tr>
 			<tr>
-				#if($bulletin.fields.summary != "")
-					<td>Summary:</td>
-					<td>$bulletin.fields.summary</td>
-				#end
+				<td valign='top'>Keywords:</td>
+				<td valign='top'>$bulletin.fields.keywords</td>
 				<td></td>
 			</tr>
 			<tr>
-				#if($bulletin.fields.publicinfo != "")
-					<td>Details:</td>
-					<td>$bulletin.fields.publicinfo</td>
-				#end
+				<td valign='top'>Event Date:</td>
+				<td valign='top'>$bulletin.fields.eventdate</td>
 				<td></td>
 			</tr>
 			<tr>
-				#if($bulletin.fields.keywords != "")
-					<td>Keywords:</td>
-					<td>$bulletin.fields.keywords</td>
-				#end
+				<td valign='top'>Date Submitted:</td>
+				<td valign='top'>$bulletin.fields.entrydate</td>
 				<td></td>
 			</tr>
 			<tr>
-				#if($bulletin.fields.organization != "")
-					<td>Organization:</td>
-					<td>$bulletin.fields.organization</td>
-				#end
+				<td valign='top'>Summary:</td>
+				<td valign='top'>$bulletin.fields.summary</td>
 				<td></td>
 			</tr>
 			<tr>
-				#if($bulletin.fields.language != "")
-					<td>Language:</td>
-					<td>$bulletin.fields.language</td>
-				#end
+				<td valign='top'>Details:</td>
+				<td valign='top'>$bulletin.fields.publicinfo</td>
 				<td></td>
 			</tr>
 		</table>

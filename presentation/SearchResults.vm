@@ -15,9 +15,18 @@
 	            		$velocityCount. 
 	            	</td>
 	                <td>
-	                	<strong>Title<strong>: <a href="FoundBulletin?index=$velocityCount">$thisBulletin.fields.title</a><br/>
-		                <strong>Author</strong>: $thisBulletin.fields.author<br/>
+	                	<strong>Title</strong>: <a href="FoundBulletin?index=$velocityCount">$thisBulletin.fields.title</a><br/>
+						#if($thisBulletin.fields.author != "")
+		        	        <strong>Author</strong>: $thisBulletin.fields.author<br/>
+						#end
+						#if($thisBulletin.fields.organization != "")
+		            	    <strong>Organization</strong>: $thisBulletin.fields.organization<br/>
+						#end
+						#if($thisBulletin.fields.location != "")
+			                <strong>Location</strong>: $thisBulletin.fields.location<br/>
+						#end
 		                <strong>Event Date</strong>: $thisBulletin.fields.eventdate<br/>
+		                <br/>
 		            </td>
 	            </tr>
 			
