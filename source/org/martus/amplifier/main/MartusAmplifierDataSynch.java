@@ -33,7 +33,8 @@ public class MartusAmplifierDataSynch {
 		}
 		catch(Exception e)
 		{
-			logger.severe("MartusAmplifierDataSynch.execute()" + e.getMessage());
+			logger.severe("MartusAmplifierDataSynch.execute(): " + e.getMessage());
+			e.printStackTrace();
 		}
 					
 	}

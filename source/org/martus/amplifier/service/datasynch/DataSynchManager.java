@@ -2,11 +2,13 @@ package org.martus.amplifier.service.datasynch;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 import java.util.logging.Logger;
 
 import org.martus.amplifier.service.search.BulletinCatalog;
 import org.martus.amplifier.service.search.BulletinIndexer;
 import org.martus.common.UniversalId;
+import org.martus.common.UniversalId.NotUniversalIdException;
 
 public class DataSynchManager implements IDataSynchConstants
 {
@@ -41,7 +43,7 @@ public class DataSynchManager implements IDataSynchConstants
 	
 		String accountId = "";
 		List accountList = null;
-		List uidList = null;
+		Vector response;
 		
 		//Step1: Retrieve all the accountids from Martus Server
 		accountList = new ArrayList(amplifierGateway.getAllAccountIds());
@@ -51,47 +53,33 @@ public class DataSynchManager implements IDataSynchConstants
 			System.exit(0);
 		}
 		
+		BulletinCatalog catalog = BulletinCatalog.getInstance();
+		
 		//Step2: Retrieve the universal ids and bulletins for each account
 		for(int index=0; index <accountList.size();index++)
 		{
 			accountId = (String) accountList.get(index);
-			uidList  = new ArrayList(amplifierGateway.getAccountUniversalIds(accountId));
-			checkAndRetrieveBulletinsForUIDs(uidList, accountId);		
+			response = amplifierGateway.getAccountUniversalIds(accountId);
+			for(int i = 0; i < response.size(); i++)
+			{
+				try
+				{
+					UniversalId uid = UniversalId.createFromString((String) response.get(i));
+	
+					if( !catalog.bulletinHasBeenIndexed(uid) )
+					{
+						logger.info("DataSynchManager.checkAndRetrieveBulletinsForUIDs():before calling  amplifierGateway.retrieveAndManageBulletin on UID = "+ uid.toString());
+						amplifierGateway.retrieveAndManageBulletin(uid);
+					}
+				}
+				catch (NotUniversalIdException e)
+				{
+					logger.severe("DataSynchManager.getAllNewBulletins(): " + e);
+				}
+			}
 		}
 				
 	}
-	
-	
-	private void  checkAndRetrieveBulletinsForUIDs(List uidList, String accountId)
-	{
-		logger.info("DataSynchManager:checkAndRetrieveBulletinsForUIDs()");
-		int fromIndex = 0;
-		int toIndex = 0;
-		String localId = "";
-		String uidStr = "";
-		UniversalId uid = null;
-		BulletinCatalog catalog = BulletinCatalog.getInstance();
-		
-		for(int index=0; index<uidList.size(); index++)
-			{
-				Object obj = (Object) uidList.get(index);
-			    uidStr = obj.toString();
-			    
-			    fromIndex = uidStr.indexOf('[');
-			    toIndex = uidStr.indexOf(',');
-			    localId = uidStr.substring(fromIndex+1, toIndex);
-			    logger.info("DataSynchManager.checkAndRetrieveBulletinsForUIDs()--localID = "+ localId);
-				uid = UniversalId.createFromAccountAndLocalId(accountId, localId);	
-				if( !catalog.bulletinHasBeenIndexed(uid) )
-				{
-			  		logger.info("DataSynchManager.checkAndRetrieveBulletinsForUIDs():before calling  amplifierGateway.retrieveAndManageBulletin on UID = "+ uid.toString());
-			  		amplifierGateway.retrieveAndManageBulletin(uid);
-				}				
-			}			
-	}
-	
-	
-	
 	
    /**
 	 * This will take care of indexing bulletins and 

@@ -21,7 +21,8 @@ public class BulletinCatalog implements IBulletinCatalog {
 		return instance;
 	}
    
-	public boolean bulletinHasBeenIndexed(UniversalId universalId) {
+	public boolean bulletinHasBeenIndexed(UniversalId universalId)
+	{
         BulletinSearcher bulletinSearcher = BulletinSearcher.getInstance();
         Hits hits = bulletinSearcher.searchKeywordField(IBulletinConstants.UNIVERSAL_ID_FIELD, universalId.toString());
 

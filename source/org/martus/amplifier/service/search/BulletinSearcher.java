@@ -63,6 +63,7 @@ implements IBulletinSearcher, IBulletinConstants, ISearchConstants
 		catch(IOException ioe)
 		{
 			logger.severe("Unable to search index:" + ioe.getMessage());
+			ioe.printStackTrace();
 		}		
 		return hits;
 	}
@@ -131,6 +132,7 @@ implements IBulletinSearcher, IBulletinConstants, ISearchConstants
 		catch(IOException ioe)
 		{
 			logger.severe("Unable to search index:" + ioe.getMessage());
+			ioe.printStackTrace();
 		}
 		
 		return hits;
@@ -163,6 +165,7 @@ implements IBulletinSearcher, IBulletinConstants, ISearchConstants
 		catch(IOException ioe)
 		{
 			logger.severe("Unable to search index:" + ioe.getMessage());
+			ioe.printStackTrace();
 		}
 		
 		return hits;
@@ -181,6 +184,7 @@ implements IBulletinSearcher, IBulletinConstants, ISearchConstants
 	{
 		Hits hits = null;
 		IndexSearcher searcher = null;
+		IndexReader reader = null;
 		
 		Assert.assertTrue(queryString != null);
 		
@@ -192,12 +196,38 @@ implements IBulletinSearcher, IBulletinConstants, ISearchConstants
 				
 		try
 		{
-			searcher = new IndexSearcher(IndexReader.open(DEFAULT_INDEX_LOCATION));
+			reader = IndexReader.open(DEFAULT_INDEX_LOCATION);
+			searcher = new IndexSearcher(reader);
 			hits = searcher.search(query);
 		}
 		catch(IOException ioe)
 		{
 			logger.severe("Unable to search index:" + ioe.getMessage());
+			ioe.printStackTrace();
+		}
+		finally
+		{
+			if(searcher != null)
+			{
+				try
+				{
+					searcher.close();
+				}
+				catch (IOException e)
+				{
+				}
+			}
+			
+			if(reader != null)
+			{
+				try
+				{
+					reader.close();
+				}
+				catch (IOException e)
+				{
+				}
+			}
 		}
 		
 		return hits;

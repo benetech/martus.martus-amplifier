@@ -18,7 +18,7 @@ public class DummyUpdateFromServerTask extends TimerTask
 
 	public void run()
 	{
-		logger.info("Scheduled Task started" + System.currentTimeMillis());
+		logger.info("Scheduled Task started " + System.currentTimeMillis());
 		List backupServers = 
 			BackupServerManager.getInstance().getBackupServersList();
 		if(backupServers != null)
@@ -31,7 +31,7 @@ public class DummyUpdateFromServerTask extends TimerTask
 				logger.info("server:" + info.getName());
 			}
 		}
-		logger.info("Scheduled Task finished" + System.currentTimeMillis());
+		logger.info("Scheduled Task finished " + System.currentTimeMillis());
 	}
 
 	private static Logger logger = Logger.getLogger("UpdateTask");
