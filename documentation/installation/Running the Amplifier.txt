@@ -1,7 +1,7 @@
 Instructions for Running the Amplifier from Eclipse
 ----------------------------------------------------
 
-I. Set up the Martus Server. Copy martus-amplifier/tools/MartusServer to C:\ (or whatever your local file system root is on Windows).
+I. Set up the Martus Server. Copy martus-amplifier/tools/MartusServer to C:\ (or whatever your local file system root is on Windows). Do the same for martus-amplifier/tools/Martus_Amplifier_Folder.
 
 II. Start the servers.
 
