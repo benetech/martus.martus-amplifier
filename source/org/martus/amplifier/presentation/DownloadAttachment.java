@@ -96,7 +96,7 @@ public class DownloadAttachment extends HttpServlet
 		DataManager manager = MartusAmplifier.dataManager;
 		
 		response.addHeader( "Content-Type", "application/octet-stream" );
-		response.addHeader( "Content-Disposition","attatchment; filename="+info.getLabel());
+		response.addHeader( "Content-Disposition","attachment; filename="+info.getLabel());
 		response.addHeader( "Content-Length",Long.toString(manager.getAttachmentSizeInBytes(uId)));
 
 		InputStream in = manager.getAttachment(uId);
