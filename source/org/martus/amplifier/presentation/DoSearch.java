@@ -54,7 +54,7 @@ public class DoSearch extends AbstractSearchResultsServlet
 		String searchedForString = (String)session.getAttribute("searchedFor");
 		String searchType = request.getParameter("typeOfSearch");
 		
-		if (searchType.equals("quickSearchAll"))
+		if (searchType != null && searchType.equals("quickSearchAll"))
 		{	
 			searchedForString = "Search All Bulletins";
 			basicQueryString = "";			
@@ -90,7 +90,7 @@ public class DoSearch extends AbstractSearchResultsServlet
 		
 		if (searchType.equals("quickSearchAll"))
 		{			
-			RawSearchParameters.clearAdvancedSearch(session);		
+			RawSearchParameters.clearAdvancedSearch(session);				
 			return getSearchResults(session, new RawSearchParameters(""));
 		}										
 		
