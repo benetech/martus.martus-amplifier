@@ -55,8 +55,7 @@ public class SearchResults extends AmplifierServlet implements SearchResultConst
 			AmplifierServletResponse response, Context context) 
 					throws Exception
 	{
-		List results = null;
-		results = getSearchResults(request);
+		List results = getSearchResults(request);
 		if(results.size() == 0)
 			return "NoSearchResults.vm";
 
@@ -146,15 +145,23 @@ public class SearchResults extends AmplifierServlet implements SearchResultConst
 
 	public static void sortBulletins(List list, final String field)
 	{
-		Collections.sort(list, new Comparator()
+		Collections.sort(list, new BulletinSorter(field));
+	}	
+
+	static class BulletinSorter implements Comparator
+	{
+		private final String field;
+		private BulletinSorter(String field)
 		{
-		  public int compare(Object o1, Object o2)
-		  {
+			super();
+			this.field = field;
+		}
+		public int compare(Object o1, Object o2)
+		{
 			String string1 = ((BulletinInfo)o1).get(field);
 			String string2 = ((BulletinInfo)o2).get(field);	  			  		
 			return ((Comparable)string1.toLowerCase()).compareTo(string2.toLowerCase());
-		   }
-		});
-	
-	}	
+		}
+	}
+
 }
