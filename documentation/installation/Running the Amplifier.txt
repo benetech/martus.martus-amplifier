@@ -21,8 +21,15 @@ II. Start the servers.
 	Main class: org.martus.server.foramplifiers.MartusAmplifierServer
 
 5. Run it. At the console, you will be prompted for a passphrase. 
-Enter "ivo" and hit Enter. Wait until it prints 
-"Waiting for connection..."
+Enter the appropriate passphrase for that server and hit Enter. 
+Wait until it prints "Waiting for connection..."
+
+5.5 You must configure the Amplifier to use the public key of the 
+MartusAmplifierServer you are running. Copy the "Server Account" 
+string out of the MartusServerAmplifier output, and paste it into 
+the martus-amplifier/configuration/BackupServers.properties file
+as the serverPublicKey entry. This only needs to be done the first 
+time, or if the backup server public key changes.
 
 6. Now run the MartusAmplifier. To do this, follow instructions 
 2 - 5, using the following for the Launch Configuration fields:
