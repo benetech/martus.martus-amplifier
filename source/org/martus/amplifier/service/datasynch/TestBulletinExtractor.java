@@ -147,6 +147,7 @@ public class TestBulletinExtractor extends TestAbstractAmplifier
 		attachmentManager = 
 			new FileSystemAttachmentManager(getTestBasePath());
 		security = new MockMartusSecurity();
+		security.createKeyPair();
 		db = new MockServerDatabase();
 	}
 
