@@ -41,14 +41,7 @@ import org.martus.amplifier.service.search.lucene.LuceneBulletinSearcher;
 
 
 public class SearchResults extends AmplifierServlet implements SearchResultConstants
-{
-	
-	private void handleAdvancedSearchParams(AmplifierServletRequest request, SearchFields searcher) 
-			throws Exception
-	{		
-		new LoadAdvancedSearchResults(request, searcher);		
-	}
-	
+{	
 	public String selectTemplate(AmplifierServletRequest request,
 					HttpServletResponse response, Context context) 
 					throws Exception
@@ -88,7 +81,6 @@ public class SearchResults extends AmplifierServlet implements SearchResultConst
 		SearchFields searcher = new SearchFields();
 		
 		String queryString = request.getParameter(RESULT_BASIC_QUERY_KEY);
-		String fieldString = request.getParameter(RESULT_FIELD_KEY);	
 	 
 		if (queryString == null)
 		{
@@ -125,7 +117,7 @@ public class SearchResults extends AmplifierServlet implements SearchResultConst
 			if (advancedSearch) 
 			{					
 				String field = (String)fields.getValue(RESULT_FIELD_KEY);			
-				results = searcher.advancedSercher(field, fields);
+				results = searcher.advancedSearch(field, fields);
 			}
 			else	
 				results = searcher.search((String)fields.getValue(RESULT_FIELD_KEY),

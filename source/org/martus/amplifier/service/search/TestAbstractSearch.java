@@ -55,8 +55,7 @@ public abstract class TestAbstractSearch
 				searcher.lookup(bulletinId));
 		} finally {
 			searcher.close();
-		} 
-		
+		} 		
 	}
 	
 	public void testFindBulletin() 
@@ -114,9 +113,6 @@ public abstract class TestAbstractSearch
 					SEARCH_KEYWORDS_INDEX_FIELD, 
 					fdp.get(SEARCH_KEYWORDS_INDEX_FIELD)).getCount());
 
-			Date startDate = SearchConstants.SEARCH_DATE_FORMAT.parse("2003-05-01");
-			Date endDate = SearchConstants.SEARCH_DATE_FORMAT.parse("2003-05-20");
-			
 			Assert.assertEquals(
 				1,
 				searcher.search(
@@ -379,7 +375,7 @@ public abstract class TestAbstractSearch
 			fields.add(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, startDate);
 			fields.add(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, endDate);
 			
-			results = searcher.advancedSercher(null, fields);
+			results = searcher.advancedSearch(null, fields);
 			assertEquals("Should have found 1 match? ", 1, results.getCount());
 		}
 		finally 

@@ -10,7 +10,7 @@ public interface BulletinSearcher extends SearchConstants
 	Results search(String field, String queryString) 
 		throws BulletinIndexException;		
 		
-	Results advancedSercher(String field, SearchFields fields)
+	Results advancedSearch(String field, SearchFields fields)
 		throws BulletinIndexException; 				
 		
 	BulletinInfo lookup(UniversalId bulletinId)

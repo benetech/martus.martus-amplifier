@@ -108,19 +108,9 @@ public class LuceneBulletinSearcher
 		Date endDate 	= (Date) fields.getValue(SEARCH_EVENT_END_DATE_INDEX_FIELD);
 
 		return (startDate != null && endDate != null)? getEventDateQuery(field, startDate, endDate):null;				
-	}	
-	
-	private Query handleFindBulletinsQuery(String field, SearchFields fields)
-			throws BulletinIndexException 
-	{
-		BooleanQuery booleanQuery = new BooleanQuery();
-//		String bulletineField = (String) fields.getValue(RESULT_FIELDS_KEY)						
-//		Query query = queryParser(startQuery, SearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD,
-//						"Improperly formed find bulletins query: ");
-		return null;	
-	}
+	}		
 		
-	public Results advancedSercher(String field, SearchFields fields)
+	public Results advancedSearch(String field, SearchFields fields)
 		throws BulletinIndexException 
 	{	
 		BooleanQuery query = new BooleanQuery();
