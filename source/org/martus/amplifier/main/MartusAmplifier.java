@@ -427,7 +427,7 @@ public class MartusAmplifier
 		}
 		else
 		{
-			dataDirectory = "/var/MartusAmp/";
+			dataDirectory = "/var/MartusAmplifier/";
 		}
 		return dataDirectory;
 	}
