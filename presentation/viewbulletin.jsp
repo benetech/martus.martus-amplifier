@@ -15,9 +15,21 @@
         <table border="0" width="840">
             <tr>
                 <td>
+                    <c:if test="${param.index > 0}">
+                        <c:url value="viewbulletin.jsp" var="previous">
+                            <c:param name="index" value="${param.index - 1}"/>
+                        </c:url>
+                        <a href="<c:out value="${previous}" />">Previous Bulletin</a>
+                    </c:if>
                 </td>
                 <td><img src="images/spacer.gif" height="0" width="700"/></td>
                 <td>
+                    <c:if test="${param.index < search.lastIndex}">
+                        <c:url value="viewbulletin.jsp" var="next">
+                            <c:param name="index" value="${param.index + 1}"/>
+                        </c:url>
+                        <a href="<c:out value="${next}" />">Next Bulletin</a>
+                    </c:if>
                 </td>
         </table>
         <table border="0" cellspacing="0" cellpadding="0">

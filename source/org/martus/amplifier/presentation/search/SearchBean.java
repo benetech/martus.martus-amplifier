@@ -75,6 +75,13 @@ public class SearchBean implements Serializable
 		return Math.min(startIndex + maxCacheSize, results.size()) - 1;
 	}
 	
+	public int getLastIndex()
+		throws BulletinIndexException
+	{
+		SearchResultsBean results = getResults();
+		return results.size() - 1;
+	}
+	
 	public boolean isAtEnd() throws BulletinIndexException
 	{
 		SearchResultsBean results = getResults();
