@@ -80,7 +80,7 @@ implements IBulletinSearcher, IBulletinConstants, ILoggerConstants
 		}
 		catch(ParseException pe)
 		{
-			
+			logger.severe("Unable to parse query:" + pe.getMessage());
 		}
 		
 		try
