@@ -44,7 +44,6 @@ import org.martus.common.LoggerInterface;
 import org.martus.common.MartusUtilities.ServerErrorException;
 import org.martus.common.bulletin.BulletinZipUtilities;
 import org.martus.common.crypto.MartusCrypto;
-import org.martus.common.crypto.MartusSecurity;
 import org.martus.common.crypto.MartusCrypto.DecryptionException;
 import org.martus.common.crypto.MartusCrypto.NoKeyPairException;
 import org.martus.common.network.NetworkInterfaceConstants;
@@ -144,7 +143,7 @@ public class AmplifierNetworkGateway
 		}	
 		catch(Exception e)
 		{
-			String accountInfo = MartusSecurity.formatAccountIdForLog(accountId);
+			String accountInfo = MartusCrypto.formatAccountIdForLog(accountId);
 			log("getAccountBulletinLocalIds(): ERROR " + e.getMessage() + ": " + accountInfo);
 		}
 		return result;
@@ -180,7 +179,7 @@ public class AmplifierNetworkGateway
 		int totalLength =0;
 		try 
 		{
-			log("getBulletin: " + MartusSecurity.getFormattedPublicCode(uid.getAccountId()) + 
+			log("getBulletin: " + MartusCrypto.getFormattedPublicCode(uid.getAccountId()) + 
 								":" + uid.getLocalId());
 			tempFile = File.createTempFile("$$$TempFile", null);
 			tempFile.deleteOnExit();
