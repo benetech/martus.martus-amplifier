@@ -1,5 +1,4 @@
-<!--
-
+#*
 The Martus(tm) free, social justice documentation and
 monitoring software. Copyright (C) 2001-2003, Beneficent
 Technology, Inc. (Benetech).
@@ -22,7 +21,7 @@ License along with this program; if not, write to the Free
 Software Foundation, Inc., 59 Temple Place - Suite 330,
 Boston, MA 02111-1307, USA.
 
--->
+*#
 <html>
 	#set ($pageTitle="Search Tips")
     <head>
