@@ -75,18 +75,18 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 	
 	private void setFilterKeyWords()
 	{
-		parseAdvancedQuery(THESE_WORD_TAG);					
-		parseAdvancedQuery(EXACTPHRASE_TAG);	
-		parseAdvancedQuery(ANYWORD_TAG);
+		parseAdvancedQuery(THESE_WORD_TAG, true);					
+		parseAdvancedQuery(EXACTPHRASE_TAG, false);	
+		parseAdvancedQuery(ANYWORD_TAG, true);
 //		parseAdvancedQuery(WITHOUTWORDS_TAG);	
 	
 	}
 	
-	private void parseAdvancedQuery(String key)
+	private void parseAdvancedQuery(String key, boolean verifyChar)
 	{
 		String str = getValue(key);
 
-		String subQuery = CharacterUtil.removeRestrictCharacters(str);
+		String subQuery = (verifyChar)?CharacterUtil.removeRestrictCharacters(str):str;
 		if (subQuery.length() >0)
 		{			
 			subQuery = convertToQueryString(subQuery, key);

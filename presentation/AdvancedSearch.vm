@@ -23,19 +23,19 @@
 				<tr bgcolor='#dddddd' color='#000000'>
 					<td><strong>Find bulletins </strong></td>
 					<td>with <strong>all</strong> of the words</td>
-					<td><input name="allWordsQuery" size="44" value="$info.fields.allWordsQuery"></input></td>
+					<td><input name="allWordsQuery" size="44" value='$info.fields.allWordsQuery'></input></td>
 					<td bgcolor='#ffffff' color='#000000'><input type="submit" value="Search"/></td>
 				</tr>
 				<tr bgcolor='#dddddd' color='#000000'>
 					<td></td>
 					<td>with <strong>at least one</strong> of the words</td>
-					<td><input name="anyWordsQuery" size="44" value="$info.fields.anyWordsQuery"></input></td>
+					<td><input name="anyWordsQuery" size="44" value='$info.fields.anyWordsQuery'></input></td>
 					<td bgcolor='#ffffff' ></td>
 				</tr>
 				<tr bgcolor='#dddddd' color='#000000'>
 					<td></td>
 					<td>with the <strong>exact phrase</strong></td>
-					<td><input name="exactPhraseQuery" size="44" value="$info.fields.exactPhraseQuery"></input></td>										
+					<td><input name="exactPhraseQuery" size="44" value='$info.fields.exactPhraseQuery'></input></td>										
 					<td bgcolor='#ffffff' ></td>
 				</tr>
 ##			<tr bgcolor='#dddddd' color='#000000'>
