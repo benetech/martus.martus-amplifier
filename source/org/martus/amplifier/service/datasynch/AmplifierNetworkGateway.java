@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
 
-import org.martus.amplifier.common.configuration.AmplifierConfiguration;
 import org.martus.amplifier.common.datasynch.AmplifierBulletinRetrieverGatewayInterface;
 import org.martus.amplifier.common.datasynch.AmplifierClientSideNetworkGateway;
 import org.martus.amplifier.common.datasynch.AmplifierClientSideNetworkHandlerUsingXMLRPC;
@@ -39,8 +38,6 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
 	{
 		super();
 	
-		bulletinWorkingDirectory = AmplifierConfiguration.getInstance().getBulletinPath();
-		attachmentWorkingDirectory = AmplifierConfiguration.getInstance().getAttachmentPath();
 		serverInfoList = BackupServerManager.getInstance().getBackupServersList();
 		gateway = getCurrentNetworkInterfaceGateway();
 		try
@@ -211,10 +208,6 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
 	private MartusCrypto security;
 	private Logger logger = Logger.getLogger(DATASYNC_LOGGER);
 	private List serverInfoList = null;
-	private String bulletinWorkingDirectory = "";
-	private String attachmentWorkingDirectory= "";
 	private AmplifierNetworkInterface currentNetworkInterfaceHandler = null;
 	private AmplifierClientSideNetworkGateway currentNetworkInterfaceGateway = null;
-	
-	
 }
