@@ -144,7 +144,15 @@ public class AmplifierNetworkGateway
 		}	
 		catch(Exception e)
 		{
-			log("AmplifierNetworkGateway.getAccountBulletinLocalIds(): ERROR " + e.getMessage() + ": " + accountId);
+			String accountInfo = accountId;
+			try
+			{
+				accountInfo = MartusSecurity.getFormattedPublicCode(accountId);
+			}
+			catch (InvalidBase64Exception justUseAccountIdInstead)
+			{
+			}
+			log("AmplifierNetworkGateway.getAccountBulletinLocalIds(): ERROR " + e.getMessage() + ": " + accountInfo);
 		}
 		return result;
 	}
