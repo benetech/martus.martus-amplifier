@@ -31,9 +31,9 @@ public class FindBulletinsFields implements SearchConstants
 	}
 	
 	final static String THESE_WORD_KEY 		= "with all of these words";
-	final static String EXACTPHRASE_KEY 	= "exactPhrase";
-	final static String ANYWORD_KEY 		=  "anyWord";
-	final static String WITHOUTWORDS_KEY  	= "withoutWords";
+	final static String EXACTPHRASE_KEY 	= "with this exact phrase";
+	final static String ANYWORD_KEY 		= "with any of these words";
+	final static String WITHOUTWORDS_KEY  	= "without any of these words";
 	
 	final static String ANYWHER_IN_BULLETIN_KEY	= "anywhere in the bulletin";
 	final static String IN_TITLE_KEY			= "in the title";
