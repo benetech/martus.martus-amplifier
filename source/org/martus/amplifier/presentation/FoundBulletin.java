@@ -25,6 +25,7 @@ Boston, MA 02111-1307, USA.
 */
 package org.martus.amplifier.presentation;
 
+import java.io.IOException;
 import java.util.List;
 import org.apache.velocity.context.Context;
 import org.martus.amplifier.main.MartusAmplifier;
@@ -32,10 +33,14 @@ import org.martus.amplifier.search.BulletinInfo;
 import org.martus.amplifier.velocity.AmplifierServlet;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
 import org.martus.amplifier.velocity.AmplifierServletResponse;
-import org.martus.amplifier.velocity.AmplifierServletSession;
 import org.martus.common.bulletin.BulletinHtmlGenerator;
 import org.martus.common.crypto.MartusCrypto;
+import org.martus.common.crypto.MartusCrypto.CryptoException;
 import org.martus.common.packet.FieldDataPacket;
+import org.martus.common.packet.Packet.InvalidPacketException;
+import org.martus.common.packet.Packet.SignatureVerificationException;
+import org.martus.common.packet.Packet.WrongPacketTypeException;
+import org.martus.util.Base64.InvalidBase64Exception;
 
 public class FoundBulletin extends AmplifierServlet
 {
@@ -43,33 +48,51 @@ public class FoundBulletin extends AmplifierServlet
 			throws Exception
 	{
 		super.selectTemplate(request, response, context);
-		
-		AmplifierServletSession session = request.getSession();
-		List bulletins = (List)session.getAttribute("foundBulletins");
-		int index = Integer.parseInt(request.getParameter("index"));
+		updateFoundBulletinContext(request, context);
+		updateNextPreviousContext(request, context);
+		return "FoundBulletin.vm";
+	}
+
+	public static void updateFoundBulletinContext(AmplifierServletRequest request, Context context) throws IOException, CryptoException, InvalidPacketException, WrongPacketTypeException, SignatureVerificationException, InvalidBase64Exception
+	{
+		List bulletins = getFoundBulletins(request);
+		int index = getIndex(request);
 		BulletinInfo info = (BulletinInfo)bulletins.get(index - 1);
 		context.put("bulletin", info);
 		FieldDataPacket fdp = MartusAmplifier.dataManager.getFieldDataPacket(info.getFieldDataPacketUId());
 		BulletinHtmlGenerator generator = new BulletinHtmlGenerator(MartusAmplifier.localization);
 		String htmlRepresentation = generator.getSectionHtmlString(fdp);
 		context.put("htmlRepresntation", htmlRepresentation);
+		context.put("currentBulletin", new Integer(index));
+		context.put("searchedFor", request.getParameter("searchedFor"));
+		context.put("totalBulletins", new Integer(bulletins.size()));
 		context.put("accountPublicCode", MartusCrypto.computeFormattedPublicCode(info.getAccountId()));
 		context.put("bulletinLocalId", info.getLocalId());
-
 		if(info.hasContactInfo())
 			context.put("contactInfo", "true");
+	}
+
+	private void updateNextPreviousContext(AmplifierServletRequest request, Context context)
+	{
+		List bulletins = getFoundBulletins(request);
+		int index = getIndex(request);
 		int previousIndex = index - 1;
 		int nextIndex = index + 1;
 		if(previousIndex <= 0)
 			previousIndex = -1;
 		if(nextIndex > bulletins.size())
 			nextIndex = -1;
-		context.put("searchedFor", request.getParameter("searchedFor"));
 		context.put("previousBulletin", new Integer(previousIndex));
 		context.put("nextBulletin", new Integer(nextIndex));
-		context.put("currentBulletin", new Integer(index));
-		context.put("totalBulletins", new Integer(bulletins.size()));
-		return "FoundBulletin.vm";
 	}
 
+	private static int getIndex(AmplifierServletRequest request)
+	{
+		return Integer.parseInt(request.getParameter("index"));
+	}
+
+	private static List getFoundBulletins(AmplifierServletRequest request)
+	{
+		return (List)request.getSession().getAttribute("foundBulletins");
+	}
 }

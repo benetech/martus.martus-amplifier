@@ -25,17 +25,10 @@ Boston, MA 02111-1307, USA.
 */
 package org.martus.amplifier.presentation;
 
-import java.util.List;
-
 import org.apache.velocity.context.Context;
-import org.martus.amplifier.main.MartusAmplifier;
-import org.martus.amplifier.search.BulletinInfo;
 import org.martus.amplifier.velocity.AmplifierServlet;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
 import org.martus.amplifier.velocity.AmplifierServletResponse;
-import org.martus.amplifier.velocity.AmplifierServletSession;
-import org.martus.common.bulletin.BulletinHtmlGenerator;
-import org.martus.common.packet.FieldDataPacket;
 
 public class PrintFoundBulletin extends AmplifierServlet
 {
@@ -43,21 +36,7 @@ public class PrintFoundBulletin extends AmplifierServlet
 			throws Exception
 	{
 		super.selectTemplate(request, response, context);
-		
-		AmplifierServletSession session = request.getSession();
-		List bulletins = (List)session.getAttribute("foundBulletins");
-		int index = Integer.parseInt(request.getParameter("index"));
-		BulletinInfo info = (BulletinInfo)bulletins.get(index - 1);
-		context.put("bulletin", info);
-
-		FieldDataPacket fdp = MartusAmplifier.dataManager.getFieldDataPacket(info.getFieldDataPacketUId()); 
-		BulletinHtmlGenerator generator = new BulletinHtmlGenerator(MartusAmplifier.localization);
-		String htmlRepresentation = generator.getSectionHtmlString(fdp);
-		context.put("htmlRepresntation", htmlRepresentation);
-		
-		context.put("currentBulletin", new Integer(index));
-		context.put("searchedFor", request.getParameter("searchedFor"));
-		context.put("totalBulletins", new Integer(bulletins.size()));
+		FoundBulletin.updateFoundBulletinContext(request, context);
 		return "PrintFoundBulletin.vm";
 	}
 }
