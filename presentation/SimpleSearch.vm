@@ -9,7 +9,7 @@
     	#set ($pageInfo="")
 		#set ($noSearchForm = "1")
 		#parse ("ResultHeader.vm")
-		<br/><br/>
+		<br/>
 		<center>
 			<table>
 				<tr>
@@ -33,7 +33,7 @@
 				</tr>
 			</table>
         </center>
-		<br/><br/>
+		<br/>
         #set ($noSearchForm = "1")
         #parse ("ResultFooter.vm")
     </body>
