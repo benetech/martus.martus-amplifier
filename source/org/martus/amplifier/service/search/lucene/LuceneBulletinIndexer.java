@@ -18,6 +18,7 @@ import org.martus.amplifier.service.search.BulletinIndexException;
 import org.martus.amplifier.service.search.BulletinIndexer;
 import org.martus.amplifier.service.search.BulletinSearchException;
 import org.martus.common.AttachmentProxy;
+import org.martus.common.Bulletin;
 import org.martus.common.FieldDataPacket;
 import org.martus.common.UniversalId;
 
@@ -28,8 +29,7 @@ public class LuceneBulletinIndexer
 	public LuceneBulletinIndexer(String baseDirName) 
 		throws BulletinIndexException
 	{
-		indexDir = new File(baseDirName);
-		indexDir.mkdirs();
+		indexDir = getIndexDir(baseDirName);
 		try {
 			createIndexIfNecessary(indexDir);
 			writer = new IndexWriter(indexDir, getAnalyzer(), false);
@@ -71,7 +71,6 @@ public class LuceneBulletinIndexer
 	{
 		Document doc = new Document();
 		addBulletinId(doc, bulletinId);
-		addFieldLocalId(doc, fdp);
 		addFields(doc, fdp);
 		addAttachmentIds(doc, fdp.getAccountId(), fdp.getAttachments());		
 		
@@ -100,16 +99,22 @@ public class LuceneBulletinIndexer
 		return ANALYZER;
 	}
 	
+	/* package */
+	static File getIndexDir(String basePath)
+		throws BulletinIndexException
+	{
+		File f = new File(basePath, INDEX_DIR_NAME);
+		if (!f.exists() && !f.mkdirs()) {
+			throw new BulletinIndexException(
+				"Unable to create path: " + f);
+		}
+		return f;
+	}
+	
 	private static void addBulletinId(Document doc, UniversalId bulletinId)
 	{
 		doc.add(Field.Keyword(
 			BULLETIN_UNIVERSAL_ID_INDEX_FIELD, bulletinId.toString()));	
-	}
-	
-	private static void addFieldLocalId(Document doc, FieldDataPacket fdp)
-	{
-		doc.add(Field.UnIndexed(
-			FIELD_LOCAL_ID_INDEX_FIELD, fdp.getLocalId()));
 	}
 	
 	private static void addFields(Document doc, FieldDataPacket fdp) 
@@ -129,14 +134,9 @@ public class LuceneBulletinIndexer
 		throws BulletinIndexException
 	{
 		if (field.isDateField()) {
-			try {
-				doc.add(Field.Keyword(
-					field.getIndexId(), 
-					convertDateToSearchableString(value)));
-			} catch (ParseException e) {
-				throw new BulletinIndexException(
-					"Unable to parse date " + value, e);
-			}
+			doc.add(Field.Keyword(
+				field.getIndexId(), 
+				convertDateToSearchableString(value)));
 		} else {
 			doc.add(Field.Text(field.getIndexId(), value));
 		}
@@ -160,12 +160,30 @@ public class LuceneBulletinIndexer
 	}
 	
 	private static String convertDateToSearchableString(String dateString) 
-		throws ParseException
+		throws BulletinIndexException
 	{
-		return DateField.dateToString(DATE_FORMAT.parse(dateString));
+		try {
+			return DateField.dateToString(DATE_FORMAT.parse(dateString));
+		} catch (ParseException e) {
+			throw new BulletinIndexException(
+				"Unable to parse date " + dateString, e);
+		} catch (RuntimeException e) {
+			// NOTE pdalbora 30-Apr-2003 -- Some date objects cause the
+			// dateToString() method to throw a RuntimeException() with
+			// the message "time too early." This seems like a design flaw
+			// on Lucene's part, since I only encountered this by mistake.
+			// For now I'm just wrapping this exception, but this seems kind
+			// of drastic. A date that's considered "too early" should perhaps
+			// just be ignored w.r.t. the index.
+			throw new BulletinIndexException(
+				"Unable to convert date to indexable value: " + dateString, 
+				e);
+		}
 	}
 	
 	private File indexDir;
 	private IndexWriter writer;
 	private final static Analyzer ANALYZER = new StandardAnalyzer();
+	
+	private static final String INDEX_DIR_NAME = "index";
 }

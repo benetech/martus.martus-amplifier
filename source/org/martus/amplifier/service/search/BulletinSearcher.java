@@ -9,17 +9,19 @@ public interface BulletinSearcher extends SearchConstants
 {
 	void close() throws BulletinIndexException;
 	
-	Results searchField(String field, String queryString) 
+	Results search(String field, String queryString) 
 		throws BulletinIndexException;
+		
 	Results searchDateRange(String field, Date startDate, Date endDate)
 		throws BulletinIndexException;
-	FieldDataPacket getBulletinData(UniversalId bulletinId)
+		
+	BulletinInfo lookup(UniversalId bulletinId)
 		throws BulletinIndexException;
 	
 	interface Results
 	{
 		int getCount() throws BulletinIndexException;
-		FieldDataPacket getFieldDataPacket(int n) 
+		BulletinInfo getBulletinInfo(int n) 
 			throws BulletinIndexException;
 	}
 	

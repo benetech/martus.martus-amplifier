@@ -16,6 +16,7 @@ import org.martus.common.AttachmentPacket;
 import org.martus.common.AttachmentProxy;
 import org.martus.common.BulletinHeaderPacket;
 import org.martus.common.FieldDataPacket;
+import org.martus.common.MartusCrypto;
 import org.martus.common.MartusUtilities;
 import org.martus.common.UniversalId;
 import org.martus.common.ZipEntryInputStream;
@@ -38,10 +39,12 @@ public class BulletinExtractor
 {
 	public BulletinExtractor(
 		AttachmentManager attachmentManager, 
-		BulletinIndexer bulletinIndexer)
+		BulletinIndexer bulletinIndexer,
+		MartusCrypto verifier)
 	{
 		this.attachmentManager = attachmentManager;
 		this.bulletinIndexer = bulletinIndexer;
+		this.verifier = verifier;
 	}
 	
 	public void extractAndStoreBulletin(File bulletinFile) 
@@ -54,7 +57,7 @@ public class BulletinExtractor
 		ZipFile bulletinZipFile = new ZipFile(bulletinFile);
 		try {
 			BulletinHeaderPacket bhp = 
-				BulletinHeaderPacket.loadFromZipFile(bulletinZipFile, null);
+				BulletinHeaderPacket.loadFromZipFile(bulletinZipFile, verifier);
 			
 			FieldDataPacket fdp = indexFieldData(bhp, bulletinZipFile);
 			
@@ -86,7 +89,7 @@ public class BulletinExtractor
 		
 		fdp.loadFromXml(
 			new ZipEntryInputStream(bulletinZipFile, fieldDataEntry),
-			null);
+			verifier);
 			
 		bulletinIndexer.indexFieldData(bhp.getUniversalId(), fdp);
 		
@@ -110,7 +113,7 @@ public class BulletinExtractor
 			}
 			proxy = MartusUtilities.createFileProxyFromAttachmentPacket(
 				new ZipEntryInputStream(bulletinZipFile, attachmentEntry), 
-				proxy, null);
+				proxy, verifier);
 			InputStream attachmentData = new FileInputStream(proxy.getFile());
 			try {
 				attachmentManager.putAttachment(attachmentId, attachmentData);
@@ -122,4 +125,5 @@ public class BulletinExtractor
 	
 	private AttachmentManager attachmentManager;
 	private BulletinIndexer bulletinIndexer;
+	private MartusCrypto verifier;
 }

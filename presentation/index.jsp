@@ -10,9 +10,9 @@
     
     <body>
         <jsp:useBean 
-            id="searchBean" 
+            id="search" 
             class="org.martus.amplifier.presentation.search.SearchBean"
-            scope="session" />
+            scope="session"/>
 
         <center>
             <table border="0" cellspacing="0" cellpadding="0">
@@ -24,13 +24,13 @@
             <td> 
                 <form name="search" action="searchresults.jsp" onsubmit="return validateSubmission(this)" method="post">
                     <p>
-                        <input name="queryString" size="44"/>&nbsp;<input type="submit" value="Search"/>
+                        <input name="query" size="44"/>&nbsp;<input type="submit" value="Search"/>
                     </p>
                     <p>
                         <input name="maxresults" size="4" value="100"/>&nbsp;Results Per Page&nbsp;
                         &nbsp;Field:&nbsp;
                         <select name="field" value="title">
-                            <c:forEach items="${searchBean.searchFields}" var="field">
+                            <c:forEach items="${search.searchFields}" var="field">
                                 <option value="<c:out value="${field.indexId}"/>">
                                     <c:out value="${field.displayName}"/>
                                 </option>

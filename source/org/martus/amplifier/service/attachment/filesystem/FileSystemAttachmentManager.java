@@ -7,20 +7,27 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Iterator;
+import java.util.Properties;
 
 import org.martus.amplifier.service.attachment.AttachmentManager;
 import org.martus.amplifier.service.attachment.AttachmentNotFoundException;
 import org.martus.amplifier.service.attachment.AttachmentStorageException;
-import org.martus.common.AttachmentPacket;
 import org.martus.common.StreamCopier;
 import org.martus.common.UniversalId;
 
 public class FileSystemAttachmentManager implements AttachmentManager
 {
-	public FileSystemAttachmentManager(String baseDirName)
+	public FileSystemAttachmentManager(String baseDirName) 
+		throws AttachmentStorageException
 	{
-		baseDir = new File(baseDirName);
-		baseDir.mkdirs();
+		baseDir = new File(baseDirName, ATTACHMENTS_DIR_NAME);
+		if (!baseDir.exists() && !baseDir.mkdirs()) {
+			throw new AttachmentStorageException(
+				"Unable to create path: " + baseDir);
+		}
+		accountMapFile = new File(baseDir, ACCOUNT_MAP_FILE_NAME);
+		loadAccountMap();
 	}
 	
 	public InputStream getAttachment(UniversalId attachmentId) 
@@ -60,45 +67,134 @@ public class FileSystemAttachmentManager implements AttachmentManager
 	
 	public void clearAllAttachments() throws AttachmentStorageException
 	{
-		deleteAllAccounts();
-	}
-	
-	private void deleteAllAccounts() throws AttachmentStorageException
-	{
-		File[] accountDirs = baseDir.listFiles();
-		for (int i = 0; i < accountDirs.length; i++) {
-			File accountDir = accountDirs[i];
-			if (!accountDir.isDirectory()) {
-				throw new AttachmentStorageException(
-					"Unexpected file object found in base directory: " 
-					+ accountDir.getName());
-			}
-			deleteAccount(accountDir);
+		for (Iterator iter = accountMap.values().iterator(); 
+			iter.hasNext();) 
+		{
+			String dir = (String) iter.next();
+			deleteAccountDir(dir);
+		}
+		accountMap.clear();
+		accountMapFile.delete();
+		File[] children = baseDir.listFiles();
+		if ((children == null) || (children.length > 0)) {
+			throw new AttachmentStorageException(
+				"Failed to clear attachments directory " + baseDir);
 		}
 	}
 	
-	private void deleteAccount(File accountDir) throws AttachmentStorageException
+	public void close() throws AttachmentStorageException
 	{
+		saveAccountMap();
+	}
+	
+	/* package */
+	static final String ATTACHMENTS_DIR_NAME = "attachments";
+	
+	private void deleteAccountDir(String dirName) 
+		throws AttachmentStorageException
+	{
+		File accountDir = new File(baseDir, dirName);
 		File[] attachments = accountDir.listFiles();
+		if (attachments == null) {
+			throw new AttachmentStorageException(
+				"Unable to list files in directory " + accountDir);
+		}
 		for (int i = 0; i < attachments.length; i++) {
-			File attachment = attachments[i];
-			if (!attachment.isFile()) 
-			{
+			if (!attachments[i].isFile()) {
 				throw new AttachmentStorageException(
-					"Unexpected file object found in account directory. Account: " + 
-					accountDir.getName() + "; file: " + attachment.getName());
+					"Unexpected non-file object found: " + attachments[i]);
 			}
-			attachment.delete();
+			attachments[i].delete();
 		}
 		accountDir.delete();
 	}
 	
-	private File getAttachmentFile(UniversalId attachmentId)
+	private File getAttachmentFile(UniversalId attachmentId) 
+		throws AttachmentStorageException
 	{
-		File accountDir = new File(baseDir, attachmentId.getAccountId());
-		accountDir.mkdir();
+		File accountDir = getAccountDir(attachmentId.getAccountId());
 		return new File(accountDir, attachmentId.getLocalId());
 	}
 	
+	private File getAccountDir(String accountId)
+		throws AttachmentStorageException
+	{
+		String accountDirName = accountMap.getProperty(accountId);
+		File accountDir;
+		if (accountDirName == null) {
+			accountDirName = ACCOUNT_DIR_PREFIX + accountMap.size();
+			accountDir = new File(baseDir, accountDirName);
+			if (accountDir.exists()) {
+				throw new AttachmentStorageException(
+					"Corrupted attachment directory: Unexpected " +
+					"directory found: " + accountDir);
+			}
+			if (!accountDir.mkdir()) {
+				throw new AttachmentStorageException(
+					"Unable to create new path " + accountDir);
+			}
+			accountMap.setProperty(accountId, accountDirName);
+		} else {
+			accountDir = new File(baseDir, accountDirName);
+			if (!accountDir.exists()) {
+				throw new AttachmentStorageException(
+					"Corrupted attachment directory; " + accountDir +
+						" does not exist but is referenced in " +
+						" account map.");
+			}
+		}
+		return accountDir;
+	}
+	
+	private void loadAccountMap() throws AttachmentStorageException
+	{
+		accountMap = new Properties();
+		if (accountMapFile.exists()) {
+			InputStream in = null;
+			try {
+				in = new FileInputStream(accountMapFile);
+				accountMap.load(in);
+			} catch (IOException e) {
+				throw new AttachmentStorageException(
+					"Unable to load account map", e);
+			} finally {
+				if (in != null) {
+					try {
+						in.close();
+					} catch (IOException e) {
+						throw new AttachmentStorageException(
+							"Unable to close account map file", e);
+					}
+				}
+			}
+		}
+	}
+	
+	private void saveAccountMap() throws AttachmentStorageException
+	{
+		OutputStream out = null;
+		try {
+			out = new FileOutputStream(accountMapFile);
+			accountMap.store(out, "Account Map");
+		} catch (IOException e) {
+			throw new AttachmentStorageException(
+				"Unable to save account map", e);
+		} finally {
+			if (out != null) {
+				try {
+					out.close();
+				} catch (IOException e) {
+					throw new AttachmentStorageException(
+						"Unable to close account map file", e);
+				}
+			}
+		}
+	}
+	
 	private File baseDir;
+	private Properties accountMap;
+	private File accountMapFile;
+	
+	private static final String ACCOUNT_MAP_FILE_NAME = "acctmap.txt";
+	private static final String ACCOUNT_DIR_PREFIX = "acct";
 }

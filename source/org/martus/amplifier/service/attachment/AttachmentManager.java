@@ -19,4 +19,6 @@ public interface AttachmentManager
 		throws AttachmentStorageException;
 		
 	void clearAllAttachments() throws AttachmentStorageException;
+	
+	void close() throws AttachmentStorageException;
 }

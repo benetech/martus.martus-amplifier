@@ -1,12 +1,17 @@
 <%@ page contentType="text/html" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
-<%@ taglib prefix="amp" uri="amplifiertaglib" %>
 <html>
     <head>
             <title>Martus Amplifier Search Results</title>
             <link rel="stylesheet" href="stylesheets/style.css" type="text/css">
     </head>
     <body>
+        <jsp:useBean 
+            id="search" 
+            class="org.martus.amplifier.presentation.search.SearchBean"
+            scope="session"/>
+        <jsp:setProperty name="search" property="*"/>
+        
         <table width="800" border="0" cellspacing="0" cellpadding="0">
         <tr>
         <td width="457">
@@ -25,38 +30,39 @@
                 <img src="images/spacer.gif" width="0" height="30"/>
         </td>
         </tr>
-        <amp:search field="${param.field}" query="${param.queryString}" var="results">
-            <c:choose>
-                <c:when test="${results.count == 0}">
-                    <tr>
-                        <td align="center">
-                        No documents matched your search query.
-                        Click <a href="index.jsp">here</a> to try a different search query.
-                        </td>
-                    </tr>
-                </c:when>
-                <c:otherwise>
+        <c:choose>
+            <c:when test="${empty search.results}">
+                <tr>
+                    <td align="center">
+                    No documents matched your search query.
+                    Click <a href="index.jsp">here</a> to try a different search query.
+                    </td>
+                </tr>
+            </c:when>
+            <c:otherwise>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>Author</td>
+                    <td>Event Date</td>
+                    <td>Title</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td colspan="3"><img src="images/spacer.gif" width="0" height="5"/></td>
+                </tr>
+                <c:forEach begin="${search.startIndex}" end="${search.lastIndexInCurrentPage}" var="i">
                     <tr>
                         <td>&nbsp;</td>
-                        <td>Author</td>
-                        <td>Event Date</td>
-                        <td>Title</td>
+                        <td><c:out value="${search.results[i].author}"/></td>
+                        <td><c:out value="${search.results[i].eventDate}"/></td>
+                        <c:url value="viewbulletin.jsp" var="resultDetail">
+                            <c:param name="index" value="${i}"/>
+                        </c:url>
+                        <td><a href="<c:out value="${resultDetail}"/>"><c:out value="${search.results[i].title}"/></a></td>
                     </tr>
-                    <tr>
-                        <td>&nbsp;</td>
-                        <td colspan="3"><img src="images/spacer.gif" width="0" height="5"/></td>
-                    </tr>
-                    <c:forEach begin="0" end="${results.count}" var="i">
-                        <tr>
-                            <td>&nbsp;</td>
-                            <td><c:out value="${results[i].author}"/></td>
-                            <td><c:out value="${results[i].eventDate}"/></td>
-                            <td><c:out value="${results[i].title}"/></td>
-                        </tr>
-                    </c:forEach> 
-                </c:otherwise>
-            </c:choose>
-        </amp:search>
+                </c:forEach> 
+            </c:otherwise>
+        </c:choose>
         </table>
         <jsp:include page="footer.jsp"/>
     </body>

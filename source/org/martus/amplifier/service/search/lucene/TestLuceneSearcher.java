@@ -2,6 +2,9 @@ package org.martus.amplifier.service.search.lucene;
 
 import java.io.File;
 
+import junit.framework.Assert;
+
+import org.martus.amplifier.common.configuration.AmplifierConfiguration;
 import org.martus.amplifier.service.search.AbstractSearchTest;
 import org.martus.amplifier.service.search.BulletinIndexException;
 import org.martus.amplifier.service.search.BulletinIndexer;
@@ -34,19 +37,19 @@ public class TestLuceneSearcher extends AbstractSearchTest
 	protected BulletinIndexer openBulletinIndexer()
 		throws BulletinIndexException 
 	{
-		return new LuceneBulletinIndexer(getTestIndexPath());
+		return new LuceneBulletinIndexer(getTestBasePath());
 	}
 
 	protected BulletinSearcher openBulletinSearcher()
 		throws BulletinIndexException 
 	{
-		return new LuceneBulletinSearcher(getTestIndexPath());
+		return new LuceneBulletinSearcher(getTestBasePath());
 	}
 	
 	private void deleteIndexDir() throws BulletinIndexException
 	{
-		File indexDir = new File(getTestIndexPath());
-		indexDir.mkdirs();
+		File indexDir = 
+			LuceneBulletinIndexer.getIndexDir(getTestBasePath());
 		File[] indexFiles = indexDir.listFiles();
 		for (int i = 0; i < indexFiles.length; i++) {
 			File indexFile = indexFiles[i];

@@ -3,6 +3,7 @@ package org.martus.amplifier.service.attachment.filesystem;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 
 import junit.framework.Assert;
 
@@ -33,16 +34,43 @@ public class TestFileSystemAttachmentManager
 		}
 		
 		attachmentManager.clearAllAttachments();
-		File attachmentDir = new File(getTestAttachmentPath());
+		File attachmentDir = new File(
+			getTestBasePath(), 
+			FileSystemAttachmentManager.ATTACHMENTS_DIR_NAME);
 		Assert.assertEquals(
 			"attachments directory not empty", 
 			0, attachmentDir.listFiles().length);
 	}
 	
+	public void testAccountWithFileSeparators() 
+		throws IOException, AttachmentStorageException
+	{
+		UniversalId id = UniversalId.createFromAccountAndPrefix(
+			"AnAccount/With/Slashes", "Test");
+		String testString = "AccountWithFileSeparators";
+		InputStream sin = stringToInputStream(testString);
+		try {
+			attachmentManager.putAttachment(id, sin);
+		} finally {
+			sin.close();
+		}
+		
+		InputStream in = null;
+		try {
+			in = attachmentManager.getAttachment(id);
+			Assert.assertEquals(testString, inputStreamToString(in));
+		} finally {
+			if (in != null) {
+				in.close();
+			}
+		}
+	}
+	
 	protected void setUp() throws Exception
 	{
 		super.setUp();
-		attachmentManager = new FileSystemAttachmentManager(getTestAttachmentPath());
+		attachmentManager = 
+			new FileSystemAttachmentManager(getTestBasePath());
 	}
 	
 	protected AttachmentManager getAttachmentManager()

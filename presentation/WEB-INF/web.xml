@@ -9,10 +9,5 @@
     <description>
         Welcome to the Martus Amplifier
     </description>
-  
-    <taglib>
-        <taglib-uri>amplifiertaglib</taglib-uri>
-        <taglib-location>/WEB-INF/amp.tld</taglib-location>
-    </taglib>
     
 </web-app>

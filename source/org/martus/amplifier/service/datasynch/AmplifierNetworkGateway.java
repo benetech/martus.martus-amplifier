@@ -17,8 +17,10 @@ import org.martus.amplifier.common.datasynch.AmplifierClientSideNetworkGateway;
 import org.martus.amplifier.common.datasynch.AmplifierClientSideNetworkHandlerUsingXMLRPC;
 import org.martus.amplifier.common.datasynch.AmplifierNetworkInterface;
 import org.martus.amplifier.common.datasynch.AmplifierClientSideNetworkHandlerUsingXMLRPC.SSLSocketSetupException;
+import org.martus.amplifier.service.attachment.AttachmentManager;
 import org.martus.amplifier.service.attachment.AttachmentStorageException;
 import org.martus.amplifier.service.search.BulletinIndexException;
+import org.martus.amplifier.service.search.BulletinIndexer;
 import org.martus.common.MartusCrypto;
 import org.martus.common.MartusSecurity;
 import org.martus.common.MartusUtilities;
@@ -155,6 +157,12 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
 			logger.severe("Error" + new ServerErrorException("totalSize didn't match data length") );
 		}
 		return tempFile;
+	}
+	
+	public BulletinExtractor createBulletinExtractor(
+		AttachmentManager attachmentManager, BulletinIndexer indexer)
+	{
+		return new BulletinExtractor(attachmentManager, indexer, security);
 	}
 	
 	

@@ -1,15 +1,11 @@
 package org.martus.amplifier.service.attachment;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 
 import junit.framework.Assert;
 
 import org.martus.amplifier.test.AbstractAmplifierTest;
-import org.martus.common.StreamCopier;
 import org.martus.common.UniversalId;
 
 public abstract class AbstractAttachmentManagerTest 
@@ -207,19 +203,16 @@ public abstract class AbstractAttachmentManagerTest
 		super(name);
 	}
 	
-	protected InputStream stringToInputStream(String s) 
-		throws UnsupportedEncodingException
+	protected void tearDown() throws Exception 
 	{
-		return new ByteArrayInputStream(s.getBytes("UTF-8"));
-	}
-	
-	protected String inputStreamToString(InputStream in) 
-		throws IOException
-	{
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		new StreamCopier().copyStream(in, out);
-		return out.toString("UTF-8");
+		try {
+			getAttachmentManager().close();
+		} finally {
+			super.tearDown();
+		}
 	}
 	
 	protected abstract AttachmentManager getAttachmentManager();
+	
+
 }

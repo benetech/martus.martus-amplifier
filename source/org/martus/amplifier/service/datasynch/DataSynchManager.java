@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
 
+import org.martus.amplifier.service.attachment.AttachmentManager;
 import org.martus.amplifier.service.search.BulletinCatalog;
 import org.martus.amplifier.service.search.BulletinIndexer;
 import org.martus.common.UniversalId;
@@ -38,7 +39,8 @@ public class DataSynchManager implements IDataSynchConstants
 	 * This calls the method checkAndRetrieveBulletinsForUIDs() for new bulletins and attachments 
 	 * Saving the attachments and bulletin files is done in AmplifierNetworkGateway.retrieveAndManageBulletin()
 	 */
-	public void getAllNewBulletins(BulletinExtractor bulletinExtractor)
+	public void getAllNewBulletins(
+		AttachmentManager attachmentManager, BulletinIndexer indexer)
 	{
 		//logger.info("in DataSynchManager.getAllNewBulletins(): ");	
 	
@@ -54,12 +56,9 @@ public class DataSynchManager implements IDataSynchConstants
 		
 		BulletinCatalog catalog = BulletinCatalog.getInstance();
 		
-		// TODO pdalbora 17-Apr-2003 -- This code attempts to get all new
-		// bulletins from the server and put them into a temporary Bulletin
-		// Folder, whence they will be subsequently indexed. What happens
-		// if two different accounts have bulletins with the same local id?
-		// Currently it looks like the second bulletin will overwrite the
-		// first.
+		BulletinExtractor bulletinExtractor = 
+			amplifierGateway.createBulletinExtractor(
+				attachmentManager, indexer);
 		
 		//Step2: Retrieve the universal ids and bulletins for each account
 		for(int index=0; index <accountList.size();index++)
@@ -86,6 +85,7 @@ public class DataSynchManager implements IDataSynchConstants
 				catch (Exception e)
 				{
 					logger.severe("Unable to process " + uid + ": " + e.getMessage());
+					e.printStackTrace();
 				}
 			}
 		}

@@ -1,9 +1,15 @@
 package org.martus.amplifier.test;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 
 import org.martus.amplifier.common.configuration.AmplifierConfiguration;
 import org.martus.amplifier.service.search.SearchConstants;
+import org.martus.common.StreamCopier;
 
 import junit.framework.TestCase;
 
@@ -33,14 +39,23 @@ public abstract class AbstractAmplifierTest extends TestCase
 		return basePath;
 	}
 	
-	protected String getTestAttachmentPath()
+	protected String getTestBulletinPath()
 	{
-		return basePath + File.separator + "attachments";			
+		return basePath + File.separator + "bulletins";
 	}
 	
-	protected String getTestIndexPath()
+	protected static InputStream stringToInputStream(String s) 
+		throws UnsupportedEncodingException
 	{
-		return basePath + File.separator + SearchConstants.INDEX_DIR_NAME;
+		return new ByteArrayInputStream(s.getBytes("UTF-8"));
+	}
+	
+	protected static String inputStreamToString(InputStream in) 
+		throws IOException
+	{
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		new StreamCopier().copyStream(in, out);
+		return out.toString("UTF-8");
 	}
 	
 	private String basePath;

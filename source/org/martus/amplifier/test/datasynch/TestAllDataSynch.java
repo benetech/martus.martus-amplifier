@@ -1,5 +1,7 @@
 package org.martus.amplifier.test.datasynch;
 
+import org.martus.amplifier.service.datasynch.TestBulletinExtractor;
+
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
@@ -29,6 +31,7 @@ public class TestAllDataSynch extends TestSuite
 		suite.addTest(new TestSuite(AmplifierNetworkGatewayTest.class));
 		suite.addTest(new TestSuite(BackupServerManagerTest.class));
 		suite.addTest(new TestSuite(DataSynchManagerTest.class));
+		suite.addTest(new TestSuite(TestBulletinExtractor.class));
 
 		return suite;
 	}

@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.martus.amplifier.common.configuration.AmplifierConfiguration;
+import org.martus.amplifier.service.attachment.AttachmentManager;
+import org.martus.amplifier.service.attachment.AttachmentStorageException;
 import org.martus.amplifier.service.attachment.filesystem.FileSystemAttachmentManager;
 import org.martus.amplifier.service.datasynch.BulletinExtractor;
 import org.martus.amplifier.service.datasynch.DataSynchManager;
@@ -32,20 +34,19 @@ public class MartusAmplifierDataSynch {
 	public void execute() 
 	{
 		
-		LuceneBulletinIndexer indexer = null;
-		FileSystemAttachmentManager attachmentManager = null;
+		BulletinIndexer indexer = null;
+		AttachmentManager attachmentManager = null;
 		try
 		{
 			DataSynchManager dataManager = DataSynchManager.getInstance();
 			AmplifierConfiguration config = 
 				AmplifierConfiguration.getInstance();
 			indexer = new LuceneBulletinIndexer(
-				config.buildAmplifierBasePath(BulletinIndexer.INDEX_DIR_NAME));
+				config.getBasePath());
 			attachmentManager = new FileSystemAttachmentManager(
-				config.buildAmplifierBasePath("attachments"));
+				config.getBasePath());
 
-			dataManager.getAllNewBulletins(
-				new BulletinExtractor(attachmentManager, indexer));
+			dataManager.getAllNewBulletins(attachmentManager, indexer);
 		}
 		catch(Exception e)
 		{
@@ -60,6 +61,16 @@ public class MartusAmplifierDataSynch {
 				} catch (BulletinIndexException e) {
 					logger.severe(
 						"Unable to close the indexer: " + e.getMessage());
+				}
+			}
+			
+			if (attachmentManager != null) {
+				try {
+					attachmentManager.close();
+				} catch (AttachmentStorageException e) {
+					logger.severe(
+						"Unable to close the attachment manager: " +
+						e.getMessage());
 				}
 			}
 		}

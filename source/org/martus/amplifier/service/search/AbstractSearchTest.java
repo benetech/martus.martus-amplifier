@@ -1,8 +1,12 @@
 package org.martus.amplifier.service.search;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 import junit.framework.Assert;
 
@@ -31,7 +35,7 @@ public abstract class AbstractSearchTest
 		try {
 			Assert.assertNotNull(
 				"Didn't find indexed bulletin", 
-				searcher.getBulletinData(bulletinId));
+				searcher.lookup(bulletinId));
 		} finally {
 			searcher.close();
 		}
@@ -47,7 +51,7 @@ public abstract class AbstractSearchTest
 		try {
 			Assert.assertNull(
 				"Found an indexed bulletin after clearing!", 
-				searcher.getBulletinData(bulletinId));
+				searcher.lookup(bulletinId));
 		} finally {
 			searcher.close();
 		} 
@@ -71,7 +75,7 @@ public abstract class AbstractSearchTest
 		try {
 			Assert.assertNotNull(
 				"Didn't find indexed bulletin", 
-				searcher.getBulletinData(bulletinId));
+				searcher.lookup(bulletinId));
 		} finally {
 			searcher.close();
 		}
@@ -92,35 +96,37 @@ public abstract class AbstractSearchTest
 		
 		BulletinSearcher searcher = openBulletinSearcher();
 		try {
-			FieldDataPacket found = searcher.getBulletinData(bulletinId);
+			BulletinInfo found = searcher.lookup(bulletinId);
 			Assert.assertNotNull(
 				"Didn't find indexed bulletin", 
 				found);
 						
 			Assert.assertEquals(
 				1, 
-				searcher.searchField(
+				searcher.search(
 					AUTHOR_INDEX_FIELD, 
 					fdp.get(BulletinField.TAGAUTHOR)).getCount());
 			Assert.assertEquals(
 				1,
-				searcher.searchField(
+				searcher.search(
 					KEYWORDS_INDEX_FIELD, 
 					fdp.get(BulletinField.TAGKEYWORDS)).getCount());
 			Date startDate = searcher.DATE_FORMAT.parse("2003-05-01");
 			Date endDate = searcher.DATE_FORMAT.parse("2003-05-20");
 			Assert.assertEquals(
 				1,
-				searcher.searchDateRange(ENTRY_DATE_INDEX_FIELD, startDate, endDate).getCount());
+				searcher.searchDateRange(
+					ENTRY_DATE_INDEX_FIELD, startDate, endDate).getCount());
 		
 			Assert.assertEquals(
 				0,
-				searcher.searchField(
+				searcher.search(
 					PUBLIC_INFO_INDEX_FIELD, 
 					fdp.get(BulletinField.TAGAUTHOR)).getCount());
 			Assert.assertEquals(
 				0,
-				searcher.searchDateRange(EVENT_DATE_INDEX_FIELD, startDate, endDate).getCount());
+				searcher.searchDateRange(
+					EVENT_DATE_INDEX_FIELD, startDate, endDate).getCount());
 		} finally {
 			searcher.close();
 		}
@@ -142,33 +148,32 @@ public abstract class AbstractSearchTest
 		
 		BulletinSearcher searcher = openBulletinSearcher();
 		try {
-			FieldDataPacket found = searcher.getBulletinData(bulletinId);
+			BulletinInfo found = searcher.lookup(bulletinId);
 			Assert.assertNotNull(
 				"Didn't find indexed bulletin", 
 				found);
 			
 			AttachmentProxy[] origProxies = fdp.getAttachments();
-			AttachmentProxy[] foundProxies = found.getAttachments();
-			Assert.assertEquals(origProxies.length, foundProxies.length);
+			List foundAttachments = found.getAttachments();
+			Assert.assertEquals(
+				origProxies.length, foundAttachments.size());
 			for (int i = 0; i < origProxies.length; i++) {
 				Assert.assertEquals(
-					origProxies[i].getUniversalId(), 
-					foundProxies[i].getUniversalId());	
+					origProxies[i].getUniversalId().getLocalId(), 
+					((AttachmentInfo) foundAttachments.get(i)).getLocalId());	
 				Assert.assertEquals(
 					origProxies[i].getLabel(), 
-					foundProxies[i].getLabel());
+					((AttachmentInfo) foundAttachments.get(i)).getLabel());
 			}
 			
-			Assert.assertEquals(fdp.getUniversalId(), found.getUniversalId());
-			String[] origFieldTags = fdp.getFieldTags();
-			String[] foundFieldTags = found.getFieldTags();
 			Assert.assertEquals(
-				Arrays.asList(origFieldTags), 
-				Arrays.asList(foundFieldTags));
-			for (int i = 0; i < origFieldTags.length; i++) {
+				bulletinId, found.getBulletinId());
+			Collection fields = BulletinField.getSearchableFields();
+			for (Iterator iter = fields.iterator(); iter.hasNext();) {
+				BulletinField field = (BulletinField) iter.next();
 				Assert.assertEquals(
-					fdp.get(origFieldTags[i]), 
-					found.get(origFieldTags[i]));
+					fdp.get(field.getXmlId()), 
+					found.get(field.getIndexId()));
 			}
 		} finally {
 			searcher.close();
@@ -222,17 +227,98 @@ public abstract class AbstractSearchTest
 		BulletinSearcher searcher = openBulletinSearcher();
 		BulletinSearcher.Results results = null;
 		try {
-			results = searcher.searchField(
+			results = searcher.search(
 				AUTHOR_INDEX_FIELD, fdp.get(BulletinField.TAGAUTHOR));
 		} finally {
 			searcher.close();
 		}
 		
 		try {
-			fdp = results.getFieldDataPacket(0);
+			BulletinInfo info = results.getBulletinInfo(0);
 			Assert.fail(
 				"Accessing results after closing searcher should have failed.");
 		} catch (BulletinIndexException expected) {
+		}
+	}
+	
+	public void testDateBoundary() 
+		throws BulletinIndexException, ParseException
+	{
+		UniversalId bulletinId = UniversalId.createDummyUniversalId();
+		FieldDataPacket fdp = generateSampleData(bulletinId);		
+		BulletinIndexer indexer = openBulletinIndexer();
+		try {
+			indexer.clearIndex();
+			indexer.indexFieldData(bulletinId, fdp);
+		} finally {
+			indexer.close();
+		}
+		
+		BulletinSearcher searcher = openBulletinSearcher();
+		BulletinSearcher.Results results = null;
+		try {
+			Date startDate = searcher.DATE_FORMAT.parse("2003-04-10");
+			Date endDate = searcher.DATE_FORMAT.parse("2003-04-11");
+			results = searcher.searchDateRange(
+				EVENT_DATE_INDEX_FIELD, startDate, endDate);
+			Assert.assertEquals(1, results.getCount());
+			
+			startDate = searcher.DATE_FORMAT.parse("2003-05-10");
+			endDate = searcher.DATE_FORMAT.parse("2003-05-11");
+			results = searcher.searchDateRange(
+				ENTRY_DATE_INDEX_FIELD, startDate, endDate);
+			Assert.assertEquals(1, results.getCount());
+		} finally {
+			searcher.close();
+		}
+	}
+	
+	public void testOpenEndedDateSearch()
+		throws BulletinIndexException, ParseException
+	{
+		UniversalId bulletinId = UniversalId.createDummyUniversalId();
+		FieldDataPacket fdp = generateSampleData(bulletinId);		
+		BulletinIndexer indexer = openBulletinIndexer();
+		try {
+			indexer.clearIndex();
+			indexer.indexFieldData(bulletinId, fdp);
+		} finally {
+			indexer.close();
+		}
+		
+		BulletinSearcher searcher = openBulletinSearcher();
+		BulletinSearcher.Results results = null;
+		try {
+			Date startDate = searcher.DATE_FORMAT.parse("2003-04-01");
+			results = searcher.searchDateRange(
+				EVENT_DATE_INDEX_FIELD, startDate, null);
+			Assert.assertEquals(1, results.getCount());
+			
+			startDate = searcher.DATE_FORMAT.parse("2003-04-11");
+			results = searcher.searchDateRange(
+				EVENT_DATE_INDEX_FIELD, startDate, null);
+			Assert.assertEquals(0, results.getCount());
+			
+			Date endDate = searcher.DATE_FORMAT.parse("2003-05-20");
+			results = searcher.searchDateRange(
+				ENTRY_DATE_INDEX_FIELD, null, endDate);
+			Assert.assertEquals(1, results.getCount());
+			
+			endDate = searcher.DATE_FORMAT.parse("2003-04-30");
+			results = searcher.searchDateRange(
+				ENTRY_DATE_INDEX_FIELD, null, endDate);
+			Assert.assertEquals(0, results.getCount());
+			
+			try {
+				results = searcher.searchDateRange(
+					ENTRY_DATE_INDEX_FIELD, null, null);
+				Assert.fail(
+					"Should not have been able to specify null for " +
+					"both ends of range query");
+			} catch (IllegalArgumentException expected) {
+			}
+		} finally {
+			searcher.close();
 		}
 	}
 	
