@@ -7,12 +7,9 @@
     <classpathentry kind="var" path="Xerces"/>
     <classpathentry kind="var" path="jsse"/>
     <classpathentry kind="var" path="xmlrpc"/>
-    <classpathentry kind="var" path="jstl_standard"/>
     <classpathentry kind="var" path="junit"/>
     <classpathentry kind="var" path="bccrypto"/>
-    <classpathentry kind="lib" path="buildfiles/jars/jasper-runtime.jar"/>
     <classpathentry kind="src" path="/martus"/>
-    <classpathentry kind="var" path="JspEngine"/>
     <classpathentry kind="var" path="ServletEngine"/>
     <classpathentry kind="var" path="Jetty"/>
     <classpathentry kind="var" path="Velocity"/>
