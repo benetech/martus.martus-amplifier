@@ -18,7 +18,7 @@ import org.martus.common.packet.FieldDataPacket;
 import org.martus.common.packet.UniversalId;
 
 public abstract class TestAbstractSearch 
-	extends TestAbstractAmplifier implements SearchConstants
+	extends TestAbstractAmplifier implements SearchConstants, SearchResultConstants
 {
 	
 	public void testClearIndex() 
@@ -98,27 +98,19 @@ public abstract class TestAbstractSearch
 		BulletinSearcher searcher = openBulletinSearcher();
 		try {
 			BulletinInfo found = searcher.lookup(bulletinId);
-			Assert.assertNotNull(
-				"Didn't find indexed bulletin", 
-				found);
-						
-			Assert.assertEquals(
-				1, 
-				searcher.search(
-					SEARCH_AUTHOR_INDEX_FIELD, 
-					fdp.get(SEARCH_AUTHOR_INDEX_FIELD)).getCount());
-	
-			Assert.assertEquals(
-				1,
-				searcher.search(
-					SEARCH_KEYWORDS_INDEX_FIELD, 
-					fdp.get(SEARCH_KEYWORDS_INDEX_FIELD)).getCount());
-
-			Assert.assertEquals(
-				1,
-				searcher.search(
-					SEARCH_DETAILS_INDEX_FIELD , 
-					fdp.get(SEARCH_DETAILS_INDEX_FIELD)).getCount());
+			Assert.assertNotNull("Didn't find indexed bulletin", found);
+				
+			SearchFields fields = new SearchFields();			
+			fields.add(RESULT_BASIC_QUERY_KEY, fdp.get(SEARCH_AUTHOR_INDEX_FIELD) );
+			Assert.assertEquals(1, searcher.search(SEARCH_AUTHOR_INDEX_FIELD, fields).getCount());
+			
+			fields = new SearchFields();	
+			fields.add(RESULT_BASIC_QUERY_KEY, fdp.get(SEARCH_KEYWORDS_INDEX_FIELD));
+			Assert.assertEquals(1,searcher.search(SEARCH_KEYWORDS_INDEX_FIELD, fields).getCount());
+			
+			fields = new SearchFields();
+			fields.add(RESULT_BASIC_QUERY_KEY, fdp.get(SEARCH_DETAILS_INDEX_FIELD));											
+			Assert.assertEquals(1, searcher.search(SEARCH_DETAILS_INDEX_FIELD , fields).getCount());
 		} finally {
 			searcher.close();
 		}
@@ -219,8 +211,9 @@ public abstract class TestAbstractSearch
 		BulletinSearcher searcher = openBulletinSearcher();
 		BulletinSearcher.Results results = null;
 		try {
-			results = searcher.search(
-				SEARCH_AUTHOR_INDEX_FIELD, fdp.get(BulletinField.TAGAUTHOR));
+			SearchFields fields = new SearchFields();			
+			fields.add(RESULT_BASIC_QUERY_KEY, fdp.get(SEARCH_AUTHOR_INDEX_FIELD) );
+			results = searcher.search(SEARCH_AUTHOR_INDEX_FIELD, fields);
 		} finally {
 			searcher.close();
 		}
@@ -252,22 +245,55 @@ public abstract class TestAbstractSearch
 		BulletinSearcher.Results results = null;
 		try 
 		{
-			results = searcher.search(null, fdp.get(BulletinField.SEARCH_AUTHOR_INDEX_FIELD));
+			SearchFields fields = new SearchFields();
+			fields.add(SEARCH_AUTHOR_INDEX_FIELD, fdp.get(BulletinField.SEARCH_AUTHOR_INDEX_FIELD));				
+			fields.add(SEARCH_DETAILS_INDEX_FIELD, fdp.get(BulletinField.SEARCH_DETAILS_INDEX_FIELD));
+			fields.add(SEARCH_KEYWORDS_INDEX_FIELD, fdp.get(BulletinField.SEARCH_KEYWORDS_INDEX_FIELD));
+			fields.add(SEARCH_LOCATION_INDEX_FIELD, fdp.get(BulletinField.SEARCH_LOCATION_INDEX_FIELD));
+			fields.add(SEARCH_SUMMARY_INDEX_FIELD, fdp.get(BulletinField.SEARCH_SUMMARY_INDEX_FIELD));
+			fields.add(SEARCH_TITLE_INDEX_FIELD, fdp.get(BulletinField.SEARCH_TITLE_INDEX_FIELD));
+			
+			fields.add(RESULT_BASIC_QUERY_KEY, fdp.get(BulletinField.SEARCH_AUTHOR_INDEX_FIELD));								
+			results = searcher.search(null, fields);							
 			assertEquals("Should have found a result for author", 1, results.getCount());
-			results = searcher.search(null, fdp.get(BulletinField.SEARCH_DETAILS_INDEX_FIELD));
+			
+			fields.remove(RESULT_BASIC_QUERY_KEY);
+			fields.add(RESULT_BASIC_QUERY_KEY, fdp.get(SEARCH_DETAILS_INDEX_FIELD));								
+			results = searcher.search(null, fields);							
 			assertEquals("Should have found a result for details", 1, results.getCount());
-			results = searcher.search(null, fdp.get(BulletinField.SEARCH_KEYWORDS_INDEX_FIELD));
+						
+			fields.remove(RESULT_BASIC_QUERY_KEY);
+			fields.add(RESULT_BASIC_QUERY_KEY, fdp.get(SEARCH_KEYWORDS_INDEX_FIELD));								
+			results = searcher.search(null, fields);	
 			assertEquals("Should have found a result for keyword", 1, results.getCount());
-			results = searcher.search(null, fdp.get(BulletinField.SEARCH_LOCATION_INDEX_FIELD));
+			
+			fields.remove(RESULT_BASIC_QUERY_KEY);
+			fields.add(RESULT_BASIC_QUERY_KEY, fdp.get(SEARCH_LOCATION_INDEX_FIELD));								
+			results = searcher.search(null, fields);				
 			assertEquals("Should have found a result for location", 1, results.getCount());
-			results = searcher.search(null, fdp.get(BulletinField.SEARCH_SUMMARY_INDEX_FIELD));
+			
+			
+			fields.remove(RESULT_BASIC_QUERY_KEY);
+			fields.add(RESULT_BASIC_QUERY_KEY, fdp.get(SEARCH_SUMMARY_INDEX_FIELD));								
+			results = searcher.search(null, fields);				
 			assertEquals("Should have found a result for summary", 1, results.getCount());
-			results = searcher.search(null, fdp.get(BulletinField.SEARCH_TITLE_INDEX_FIELD));
+			
+			fields.remove(RESULT_BASIC_QUERY_KEY);
+			fields.add(RESULT_BASIC_QUERY_KEY, fdp.get(SEARCH_TITLE_INDEX_FIELD));								
+			results = searcher.search(null, fields);		
 			assertEquals("Should have found a result for title", 1, results.getCount());
-			results = searcher.search(null, "Lunch");
+			
+			
+			fields.remove(RESULT_BASIC_QUERY_KEY);
+			fields.add(RESULT_BASIC_QUERY_KEY, "Lunch");								
+			results = searcher.search(null, fields);			
 			assertEquals("Should have found a result for the word Lunch", 1, results.getCount());
-			results = searcher.search(null, "Luch");
+			
+			fields.remove(RESULT_BASIC_QUERY_KEY);
+			fields.add(RESULT_BASIC_QUERY_KEY, "Luch");								
+			results = searcher.search(null, fields);	
 			assertEquals("Should not have found a result for a word 'Luch' not in the bulletin", 0, results.getCount());
+			
 		} 
 		finally 
 		{
@@ -293,8 +319,18 @@ public abstract class TestAbstractSearch
 		BulletinSearcher searcher = openBulletinSearcher();
 		BulletinSearcher.Results results = null;
 		try 
-		{
-			results = searcher.search(SEARCH_TITLE_INDEX_FIELD, "for");
+		{			
+			SearchFields fields = new SearchFields();
+			fields.add(SEARCH_AUTHOR_INDEX_FIELD, fdp.get(BulletinField.SEARCH_AUTHOR_INDEX_FIELD));				
+			fields.add(SEARCH_DETAILS_INDEX_FIELD, fdp.get(BulletinField.SEARCH_DETAILS_INDEX_FIELD));
+			fields.add(SEARCH_KEYWORDS_INDEX_FIELD, fdp.get(BulletinField.SEARCH_KEYWORDS_INDEX_FIELD));
+			fields.add(SEARCH_LOCATION_INDEX_FIELD, fdp.get(BulletinField.SEARCH_LOCATION_INDEX_FIELD));
+			fields.add(SEARCH_SUMMARY_INDEX_FIELD, fdp.get(BulletinField.SEARCH_SUMMARY_INDEX_FIELD));
+			fields.add(SEARCH_TITLE_INDEX_FIELD, fdp.get(BulletinField.SEARCH_TITLE_INDEX_FIELD));
+		
+			fields.add(RESULT_BASIC_QUERY_KEY, "for");								
+					
+			results = searcher.search(SEARCH_TITLE_INDEX_FIELD, fields);
 			assertEquals("Should have found 1 result for stopword 'for'", 1, results.getCount());
 		} 
 		finally 
@@ -325,12 +361,31 @@ public abstract class TestAbstractSearch
 		BulletinSearcher.Results results = null;
 		try 
 		{
-			results = searcher.search(null, "lun??");
+			SearchFields fields = new SearchFields();
+			fields.add(SEARCH_AUTHOR_INDEX_FIELD, fdp1.get(BulletinField.SEARCH_AUTHOR_INDEX_FIELD));				
+			fields.add(SEARCH_DETAILS_INDEX_FIELD, fdp1.get(BulletinField.SEARCH_DETAILS_INDEX_FIELD));
+			fields.add(SEARCH_KEYWORDS_INDEX_FIELD, fdp1.get(BulletinField.SEARCH_KEYWORDS_INDEX_FIELD));
+			fields.add(SEARCH_LOCATION_INDEX_FIELD, fdp1.get(BulletinField.SEARCH_LOCATION_INDEX_FIELD));
+			fields.add(SEARCH_SUMMARY_INDEX_FIELD, fdp1.get(BulletinField.SEARCH_SUMMARY_INDEX_FIELD));
+			fields.add(SEARCH_TITLE_INDEX_FIELD, fdp1.get(BulletinField.SEARCH_TITLE_INDEX_FIELD));
+		
+			fields.add(RESULT_BASIC_QUERY_KEY, "lun??");						
+			results = searcher.search(null, fields);
 			assertEquals("Should have found 2 result lun??", 2, results.getCount());
-			results = searcher.search(null, "sal*");
+			
+			
+			fields.remove(RESULT_BASIC_QUERY_KEY);
+			fields.add(RESULT_BASIC_QUERY_KEY, "sal*");	
+			results = searcher.search(null, fields);
 			assertEquals("Should have found 2 result sal* salad and salad2", 2, results.getCount());
-			results = searcher.search(null, "sa?ad");
+			
+			
+			fields.remove(RESULT_BASIC_QUERY_KEY);
+			fields.add(RESULT_BASIC_QUERY_KEY, "sa?ad");	
+			results = searcher.search(null, fields);		
 			assertEquals("Should have found 1 result sa?ad just salad", 1 , results.getCount());
+			
+			
 /*			results = searcher.search(null, "");
 			assertEquals("Should have found 2 result for nothing entered", 2, results.getCount());
 			results = searcher.search(null, null);
@@ -365,8 +420,20 @@ public abstract class TestAbstractSearch
 		BulletinSearcher.Results results = null;
 		try 
 		{
-			results = searcher.search(SEARCH_SUMMARY_INDEX_FIELD, "Chuck");
+			SearchFields fields = new SearchFields();
+			fields.add(SEARCH_AUTHOR_INDEX_FIELD, fdp.get(BulletinField.SEARCH_AUTHOR_INDEX_FIELD));				
+			fields.add(SEARCH_DETAILS_INDEX_FIELD, fdp.get(BulletinField.SEARCH_DETAILS_INDEX_FIELD));
+			fields.add(SEARCH_KEYWORDS_INDEX_FIELD, fdp.get(BulletinField.SEARCH_KEYWORDS_INDEX_FIELD));
+			fields.add(SEARCH_LOCATION_INDEX_FIELD, fdp.get(BulletinField.SEARCH_LOCATION_INDEX_FIELD));
+			fields.add(SEARCH_SUMMARY_INDEX_FIELD, fdp.get(BulletinField.SEARCH_SUMMARY_INDEX_FIELD));
+			fields.add(SEARCH_TITLE_INDEX_FIELD, fdp.get(BulletinField.SEARCH_TITLE_INDEX_FIELD));
+		
+			fields.add(RESULT_BASIC_QUERY_KEY, "Chuck");		
+			
+			results = searcher.search(SEARCH_SUMMARY_INDEX_FIELD, fields);
 			assertEquals("Should have found 1 result Chuck", 1, results.getCount());
+			
+			
 			BulletinInfo info =results.getBulletinInfo(0);
 			assertNotNull("Bulletin Info null?", info);
 			assertNotNull("Sumary should not be null",info.get(SEARCH_SUMMARY_INDEX_FIELD));
@@ -410,7 +477,7 @@ public abstract class TestAbstractSearch
 			fields.add(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, startDate);
 			fields.add(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, endDate);
 			
-			results = searcher.advancedSearch(null, fields);
+			results = searcher.search(null, fields);
 			assertEquals("Should have found 1 match? ", 1, results.getCount());			
 		}
 		finally 
@@ -451,7 +518,7 @@ public abstract class TestAbstractSearch
 			fields.add(SearchResultConstants.RESULT_FIELDS_KEY, BulletinField.SEARCH_TITLE_INDEX_FIELD);
 			fields.add(SearchResultConstants.RESULT_ADVANCED_QUERY_KEY, "lunch");
 			
-			results = searcher.advancedSearch(null, fields);
+			results = searcher.search(null, fields);
 			assertEquals("Combine search for eventdate and field? ", 1, results.getCount());
 		}
 		finally 
@@ -463,7 +530,7 @@ public abstract class TestAbstractSearch
 	protected FieldDataPacket generateSampleData(UniversalId bulletinId)
 	{
 		String author = "Paul";
-		String keyword = "2003-04-10";
+		String keyword = "ate";
 		String keywords = keyword + " egg salad root beer";
 		String title = "What's for Lunch";
 		String eventdate = "2003-04-10";

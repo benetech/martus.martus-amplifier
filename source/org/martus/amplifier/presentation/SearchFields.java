@@ -16,6 +16,11 @@ public class SearchFields
 		results.put(field, value);
 	}
 	
+	public void remove(Object key)
+	{
+		results.remove(key);
+	}
+	
 	public Object getValue(String fieldName)
 	{
 		return results.get(fieldName);

@@ -78,23 +78,19 @@ public class SearchResults extends AmplifierServlet implements SearchResultConst
 	public List getSearchResults(AmplifierServletRequest request)
 		throws Exception, BulletinIndexException
 	{
-		SearchFields searcher = new SearchFields();
-		
+		SearchFields searcher = new SearchFields();				
 		String queryString = request.getParameter(RESULT_BASIC_QUERY_KEY);
 	 
-		if (queryString == null)
+		if (queryString != null)
 		{
-			queryString = request.getParameter(RESULT_ADVANCED_QUERY_KEY);				
-			new SearchParameters(request, searcher);							
-			searcher.add(RESULT_ADVANCED_QUERY_KEY, queryString);
-			advancedSearch = true;
-		}
-		else
-		{										
 			searcher.add(RESULT_BASIC_QUERY_KEY, queryString);
-			advancedSearch = false;
-		}								
-				
+			return getResults(searcher);
+		}
+
+		queryString = request.getParameter(RESULT_ADVANCED_QUERY_KEY);				
+		new SearchParameters(request, searcher);							
+		searcher.add(RESULT_ADVANCED_QUERY_KEY, queryString);
+										
 		return getResults(searcher);
 	}
 	
@@ -113,15 +109,9 @@ public class SearchResults extends AmplifierServlet implements SearchResultConst
 		
 		try {
 			BulletinSearcher.Results results;			
-	
-			if (advancedSearch) 
-			{					
-				String field = (String)fields.getValue(RESULT_BASIC_FIELD_KEY);			
-				results = searcher.advancedSearch(field, fields);
-			}
-			else	
-				results = searcher.search((String)fields.getValue(RESULT_BASIC_FIELD_KEY),
-						 (String)fields.getValue(RESULT_BASIC_QUERY_KEY));
+		
+			String field = (String)fields.getValue(RESULT_BASIC_FIELD_KEY);			
+			results = searcher.search(field, fields);
 						
 			int numResults = results.getCount();
 			for (int i = 0; i < numResults; i++)				

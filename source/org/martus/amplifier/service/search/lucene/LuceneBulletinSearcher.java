@@ -121,7 +121,7 @@ public class LuceneBulletinSearcher
 		
 		if (queryString != null && queryString.length()>0)
 		{
-			if (fieldString.equals("all"))
+			if (fieldString.equals(SearchResultConstants.IN_ALL_FIELDS))
 				fieldQuery = multiFieldQueryParser(queryString, SEARCH_ALL_TEXT_FIELDS, "Improperly formed advanced find bulletin multiquery: ");
 			
 			fieldQuery = queryParser(queryString, fieldString, "Improperly formed advance find bulletin query: ");
@@ -130,9 +130,26 @@ public class LuceneBulletinSearcher
 		return fieldQuery;
 	}		
 		
-	public Results advancedSearch(String field, SearchFields fields)
+	public Results search(String field, SearchFields fields)
 		throws BulletinIndexException 
 	{	
+		String queryString = (String) fields.getValue(SearchResultConstants.RESULT_BASIC_QUERY_KEY);
+		
+		if (queryString != null)
+		{	
+			Query query = null;
+			if (field != null)
+			{			
+			  query = queryParser(queryString, field, "Improperly formed query: ");
+			  return getLuceneResults(query, field);
+			}
+			
+			query = multiFieldQueryParser(queryString, SEARCH_ALL_TEXT_FIELDS, "Improperly formed multiquery: ");
+			return getLuceneResults(query, null);
+		}	
+			
+		queryString = (String) fields.getValue(SearchResultConstants.RESULT_ADVANCED_QUERY_KEY);				
+				
 		BooleanQuery query = new BooleanQuery();
 		Query eventDateQuery = handleEventDateQuery(field, fields);					
 		query.add(eventDateQuery, true, false);
