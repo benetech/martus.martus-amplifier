@@ -10,10 +10,12 @@ import java.util.Vector;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipEntry;
 
+import org.martus.amplifier.common.datasynch.AmplifierCommonGateway;
+
 //from Martus common code
 import org.martus.common.UniversalId;
 
-public class AmplifierNetworkGateway
+public class AmplifierNetworkGateway extends AmplifierCommonGateway
 {
 
 
