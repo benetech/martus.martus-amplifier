@@ -43,7 +43,7 @@
 	            <tr>
 	                <td>&nbsp;</td>
 	                <td>$thisBulletin.fields.author</td>
-	                <td>$thisBulletin.fields.eventDate</td>
+	                <td>$thisBulletin.fields.eventdate</td>
 	                <td><a href="some url">$thisBulletin.fields.title</a></td>
 	            </tr>
 			

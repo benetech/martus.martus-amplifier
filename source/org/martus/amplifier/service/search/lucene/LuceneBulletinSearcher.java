@@ -75,7 +75,7 @@ public class LuceneBulletinSearcher
 		return getLuceneResults(query, field);
 	}
 	
-	private Results searchEntryDate(String field, String startQuery, String endQuery)
+	private Results searchEventDate(String field, String startQuery, String endQuery)
 		throws BulletinIndexException 
 	{		
 			
@@ -120,11 +120,8 @@ public class LuceneBulletinSearcher
 																				
 			String startDateString = ((startDate == null) ? "*" : DateField.dateToString(startDate));
 			String endDateString   = ((endDate == null) ?  "?": DateField.dateToString(endDate));
-					
-			if (field.equals(SearchConstants.SEARCH_ENTRY_DATE_INDEX_FIELD))		
-				return search(field, setRangeQuery(startDateString, endDateString));				
-			
-			return searchEntryDate(field, setRangeQuery("*", endDateString),
+											
+			return searchEventDate(field, setRangeQuery("*", endDateString),
 						setRangeQuery(startDateString, "?"));
 														
 	}
@@ -220,8 +217,8 @@ public class LuceneBulletinSearcher
 					if (field.isDateField()) 														
 					 	value = SEARCH_DATE_FORMAT.format(DateField.stringToDate(value));
 					 	
-					if (field.isDateRangeField())																																						
-  						value = LuceneBulletinSearcher.convertDateRange(value);
+					if (field.isDateRangeField())																										
+  						value = LuceneBulletinSearcher.convertDateRange(value);					
 																										
 					info.set(field.getIndexId(), value);
 				}

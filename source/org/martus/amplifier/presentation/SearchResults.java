@@ -108,7 +108,7 @@ public class SearchResults extends AmplifierServlet
 				searcher.setQuery(queryString);
 				String fieldString = request.getParameter("field");
 				searcher.setField(fieldString);
-		
+	
 				handleAdvancedSearchParams(request, searcher);	
 		
 				SearchBean.SearchResultsBean results = searcher.getResults();
