@@ -59,7 +59,8 @@ public class BulletinField implements BulletinConstants, SearchConstants
 		Collection textFields = new ArrayList();
 		for (Iterator iter = FIELDS.values().iterator(); iter.hasNext();) {
 			BulletinField field = (BulletinField) iter.next();
-			if (!field.isDateField()) {
+			if (!(field.isDateField() || field.isDateRangeField())) 
+			{
 				textFields.add(field);
 			}
 		}
@@ -76,7 +77,8 @@ public class BulletinField implements BulletinConstants, SearchConstants
 		Collection dateFields = new ArrayList();
 		for (Iterator iter = FIELDS.values().iterator(); iter.hasNext();) {
 			BulletinField field = (BulletinField) iter.next();
-			if (field.isDateField()) {
+			if (field.isDateField() || field.isDateRangeField()) 
+			{
 				dateFields.add(field);
 			}
 		}

@@ -270,7 +270,7 @@ public abstract class TestAbstractSearch
 			startDate = SearchConstants.DATE_FORMAT.parse("2003-04-10");
 			endDate = SearchConstants.DATE_FORMAT.parse("2003-04-11");
 			results = searcher.searchDateRange(EVENT_DATE_INDEX_FIELD, startDate, endDate);
-			assertEquals("Flexidate Event Date not found?",1, results.getCount());
+			assertEquals("Flexidate single Event Date not found?",1, results.getCount());
 			
 		} 
 		finally 
@@ -279,6 +279,40 @@ public abstract class TestAbstractSearch
 		}
 	}
 	
+	public void testFlexiDateBoundary() 
+		throws BulletinIndexException, ParseException
+	{
+		UniversalId bulletinId = UniversalId.createDummyUniversalId();
+		FieldDataPacket fdp = generateSampleFlexiData(bulletinId);		
+		BulletinIndexer indexer = openBulletinIndexer();
+		try 
+		{
+			indexer.clearIndex();
+			indexer.indexFieldData(bulletinId, fdp);
+		} 
+		finally 
+		{
+			indexer.close();
+		}
+		
+		BulletinSearcher searcher = openBulletinSearcher();
+		BulletinSearcher.Results results = null;
+		try 
+		{
+			Date startDate = SearchConstants.DATE_FORMAT.parse("2003-08-21");
+			Date endDate = SearchConstants.DATE_FORMAT.parse("2003-08-23");
+			
+			results = searcher.searchDateRange(EVENT_DATE_INDEX_FIELD, startDate, endDate);
+			assertEquals("A Flexidate Range not found?",1, results.getCount());
+			
+		} 
+		finally 
+		{
+			searcher.close();
+		}
+	}
+
+
 	public void testOpenEndedDateSearch()
 		throws BulletinIndexException, ParseException
 	{
@@ -309,11 +343,11 @@ public abstract class TestAbstractSearch
 
 			Date startDate = SearchConstants.DATE_FORMAT.parse("2003-04-01");
 			results = searcher.searchDateRange(EVENT_DATE_INDEX_FIELD, startDate, null);
-			assertEquals("FlexiDate Eventdate with just a valid start date occuring before not found?", 1, results.getCount());
+			assertEquals("FlexiDate single Eventdate with just a valid start date occuring before not found?", 1, results.getCount());
 			
 			startDate = SearchConstants.DATE_FORMAT.parse("2003-04-11");
 			results = searcher.searchDateRange(EVENT_DATE_INDEX_FIELD, startDate, null);
-			assertEquals("FlexiDate Eventdate with just an invalid start date occuring after ours found?", 0, results.getCount());
+			assertEquals("FlexiDate single Eventdate with just an invalid start date occuring after ours found?", 0, results.getCount());
 			
 			try 
 			{
@@ -366,6 +400,42 @@ public abstract class TestAbstractSearch
 		return fdp;
 	}
 	
+	protected FieldDataPacket generateSampleFlexiData(UniversalId bulletinId)
+	{
+		String author = "Chuck";
+		String keyword = "egg2";
+		String keywords = keyword + " salad root beer2";
+		String title = "What's for Lunch??";
+		String entryDate= "2003-08-30";
+		String eventDate = "2003-08-20,20030820+3";
+		String publicInfo = "menu3";
+		String summary = 
+			"Today Chuck ate an egg2 salad sandwich and a root beer2 " +
+			"for lunch.";
+		String location = "San Francisco, CA";
+		
+		String attachment1LocalId = "att1Id";
+		String attachment1Label = "Eggs.gif";
+		String attachment2LocalId = "att2Id";
+		String attachment2Label = "Recipe.txt";
+		
+		FieldDataPacket fdp = generateFieldDataPacket(
+			bulletinId, new String[] { 
+				BulletinField.TAGAUTHOR, author, 
+				BulletinField.TAGKEYWORDS, keywords, 
+				BulletinField.TAGTITLE, title,
+				BulletinField.TAGENTRYDATE, entryDate, 
+				BulletinField.TAGEVENTDATE, eventDate,
+				BulletinField.TAGPUBLICINFO, publicInfo, 
+				BulletinField.TAGSUMMARY, summary,
+				BulletinField.TAGLOCATION, location
+			}, new String[] {
+				attachment1LocalId, attachment1Label, 
+				attachment2LocalId, attachment2Label
+			});
+		return fdp;
+	}
+
 	protected FieldDataPacket generateFieldDataPacket(UniversalId bulletinId)
 	{
 		return generateFieldDataPacket(bulletinId, new String[0]);

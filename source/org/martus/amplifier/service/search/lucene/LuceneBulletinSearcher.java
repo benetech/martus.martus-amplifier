@@ -149,12 +149,11 @@ public class LuceneBulletinSearcher
 				String value = doc.get(field.getIndexId());
 				if (value != null) 
 				{
-					if (field.isDateField()) 														
+					if (field.isDateField() || field.isDateRangeField()) 														
 					 	value = DATE_FORMAT.format(DateField.stringToDate(value));
-					 	
-					if (field.isDateRangeField())																																						
-						value = convertDateRange(value);
-																									
+//					if (field.isDateRangeField())																																						
+  //						value = convertDateRange(value);
+																										
 					info.set(field.getIndexId(), value);
 				}
 			}
@@ -174,7 +173,7 @@ public class LuceneBulletinSearcher
 				display = beginDate + "/"+ endDate;		
 			else
 				display = beginDate;	
-				
+
 			return display;
 		}
 		

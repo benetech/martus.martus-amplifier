@@ -131,11 +131,13 @@ public class LuceneBulletinIndexer
 	private static void addField(Document doc, BulletinField field, String value)
 		throws BulletinIndexException
 	{
-		if (field.isDateField()) {
-			doc.add(Field.Keyword(
-				field.getIndexId(), 
+		if (field.isDateField()||field.isDateRangeField()) 
+		{
+			doc.add(Field.Keyword(field.getIndexId(), 
 				convertDateToSearchableString(value)));
-		} else {
+		}
+		else 
+		{
 			doc.add(Field.Text(field.getIndexId(), value));
 		}
 	}
@@ -160,12 +162,18 @@ public class LuceneBulletinIndexer
 	private static String convertDateToSearchableString(String dateString) 
 		throws BulletinIndexException
 	{
-		try {
-			return DateField.dateToString(DATE_FORMAT.parse(dateString));
-		} catch (ParseException e) {
+		try 
+		{
+			String date = DateField.dateToString(DATE_FORMAT.parse(dateString));
+			return date;
+		} 
+		catch (ParseException e) 
+		{
 			throw new BulletinIndexException(
 				"Unable to parse date " + dateString, e);
-		} catch (RuntimeException e) {
+		} 
+		catch (RuntimeException e) 
+		{
 			// NOTE pdalbora 30-Apr-2003 -- Some date objects cause the
 			// dateToString() method to throw a RuntimeException() with
 			// the message "time too early." This seems like a design flaw
