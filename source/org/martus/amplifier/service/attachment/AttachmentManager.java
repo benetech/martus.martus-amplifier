@@ -5,16 +5,18 @@ import java.io.FileNotFoundException;
 import java.util.logging.Logger;
 
 import org.martus.amplifier.common.bulletin.UniversalBulletinId;
+import org.martus.amplifier.service.attachment.api.IAttachmentManager;
 
 import com.sleepycat.db.Db;
 import com.sleepycat.db.DbException;
 import com.sleepycat.db.Dbc;
 
-public class AttachmentManager implements IAttachmentConstants
+public class AttachmentManager implements IAttachmentConstants, IAttachmentManager
 {
 	protected AttachmentManager()
 	{
 		super();
+		createDatabase();
 	}
 	
 	public static AttachmentManager getInstance()
