@@ -30,6 +30,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.martus.amplifier.search.SearchConstants;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
 import org.martus.amplifier.velocity.AmplifierServletSession;
 import org.martus.common.utilities.MartusFlexidate;
@@ -105,7 +106,8 @@ public class RawSearchParameters
 		defaultMap.put(SearchResultConstants.RESULT_FIELDS_KEY, SearchResultConstants.IN_ALL_FIELDS);
 		defaultMap.put(SearchResultConstants.RESULT_ENTRY_DATE_KEY, SearchResultConstants.ENTRY_ANYTIME_TAG);
 		defaultMap.put(SearchResultConstants.RESULT_LANGUAGE_KEY, SearchResultConstants.LANGUAGE_ANYLANGUAGE_LABEL);
-		defaultMap.put(SearchResultConstants.RESULT_SORTBY_KEY, SearchResultConstants.SORT_BY_TITLE_TAG);
+		defaultMap.put(SearchResultConstants.RESULT_SORTBY_KEY, SearchConstants.SEARCH_ENTRY_DATE_INDEX_FIELD);
+
 
 		defaultMap.put(SearchResultConstants.RESULT_START_DAY_KEY, "1");
 		defaultMap.put(SearchResultConstants.RESULT_START_MONTH_KEY, "1");

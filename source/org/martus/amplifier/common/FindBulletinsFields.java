@@ -51,7 +51,8 @@ public class FindBulletinsFields implements SearchConstants, SearchResultConstan
 	public static Vector getSortByFieldDisplayNames()
 	{
 		Vector fields = new Vector();
-				
+											
+		fields.add(new ChoiceEntry(SEARCH_ENTRY_DATE_INDEX_FIELD, SORT_BY_ENTRYDATE_TAG));
 		fields.add(new ChoiceEntry(SEARCH_TITLE_INDEX_FIELD, SORT_BY_TITLE_TAG));
 		fields.add(new ChoiceEntry(SEARCH_AUTHOR_INDEX_FIELD, SORT_BY_AUTHOR_TAG));
 		fields.add(new ChoiceEntry(SEARCH_EVENT_DATE_INDEX_FIELD, SORT_BY_EVENTDATE_TAG ));

@@ -59,8 +59,7 @@ public abstract class AbstractSearchResultsServlet extends AmplifierServlet
 		session.setAttribute("foundBulletins", bulletins);
 				
 		sortBulletins(bulletins, sortField);
-		String searchType = request.getParameter("typeOfSearch");		
-		if (searchType != null && searchType.equals("quickSearchAll"))
+		if (sortField.equals(SearchConstants.SEARCH_ENTRY_DATE_INDEX_FIELD))
 			Collections.reverse(bulletins);			
 
 		setSearchedForInContext(request.getSession(), context);
@@ -123,15 +122,13 @@ public abstract class AbstractSearchResultsServlet extends AmplifierServlet
 
 	protected static String getFieldToSortBy(AmplifierServletRequest request)
 	{
-		AmplifierServletSession session = request.getSession();
-		String searchType = (String) session.getAttribute("typeOfSearch");
+		AmplifierServletSession session = request.getSession();	
 		
 		String sortField = request.getParameter(SearchResultConstants.RESULT_SORTBY_KEY);
 		if (sortField == null)
 			sortField = (String)session.getAttribute(SearchResultConstants.RESULT_SORTBY_KEY);
 		if(sortField == null)
-			sortField = (searchType.equals("quickSearchAll"))?
-				SearchConstants.SEARCH_ENTRY_DATE_INDEX_FIELD:SearchResultConstants.SORT_BY_TITLE_TAG;
+			sortField = SearchConstants.SEARCH_ENTRY_DATE_INDEX_FIELD;
 		return sortField;
 	}
 
