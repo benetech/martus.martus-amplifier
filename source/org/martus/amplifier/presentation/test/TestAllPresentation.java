@@ -57,6 +57,7 @@ public class TestAllPresentation extends TestSuite
 		suite.addTest(new TestSuite(TestFeedbackSubmitted.class));
 		suite.addTest(new TestSuite(TestFoundBulletin.class));
 		suite.addTest(new TestSuite(TestPrintFoundBulletin.class));
+		suite.addTest(new TestSuite(TestSearchTips.class));
 		suite.addTest(new TestSuite(TestSearchResults.class));
 		suite.addTest(new TestSuite(TestSimpleSearch.class));
 		suite.addTest(new TestSuite(TestUserFeedbackForm.class));

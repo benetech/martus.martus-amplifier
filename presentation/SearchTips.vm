@@ -1,0 +1,18 @@
+<html>
+	#set ($pageTitle="Search Tips")
+    <head>
+   		#parse("Meta.vm")    	
+    </head>
+    
+    <body>
+    	#set ($pageInfo="Search Tips")
+		#set ($showSearchForm = false)
+		#parse ("ResultHeader.vm")
+		<br/>
+
+		For technical support, write to <a href='mailto:help@martus.org'>help@martus.org</a><br/>
+
+		<br/>
+		#parse ("ResultFooter.vm")
+    </body>
+</html>

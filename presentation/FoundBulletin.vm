@@ -1,4 +1,5 @@
 <html>
+
 	#set ($pageTitle="Searched for: $searchedFor")
     <head>
    		#parse("Meta.vm")
