@@ -46,7 +46,7 @@ public class FeedbackSubmitted extends AmplifierServlet
 
 	public FeedbackSubmitted()
 	{
-		this(new File(MartusAmplifier.getBasePath(), "feedback").getPath());
+		this(new File(MartusAmplifier.getBasePath(), "ampFeedback").getPath());
 	}
 
 	public FeedbackSubmitted(String basePathToUse)
@@ -135,8 +135,8 @@ public class FeedbackSubmitted extends AmplifierServlet
 	}
 
 	
-	static public String FEEDBACK_DISSATISFIED_PREFIX = "Dissatisfied";	
-	static public String FEEDBACK_TECH_PROBLEM_PREFIX = "Technical";	
+	static public String FEEDBACK_DISSATISFIED_PREFIX = "dissatisfied";	
+	static public String FEEDBACK_TECH_PROBLEM_PREFIX = "technical";	
 	final String FEEDBACK_SUFFIX = ".txt";
 	private String feedbackDirectory;	
 }

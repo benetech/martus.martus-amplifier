@@ -104,7 +104,7 @@ public class MartusAmplifier
 	void start(String password) throws Exception
 	{
 		deleteLuceneLockFile();
-		String packetsDirectory = new File(getBasePath(), "packets").getPath();
+		String packetsDirectory = new File(getBasePath(), "ampPackets").getPath();
 
 		dataManager = new FileSystemDataManager(packetsDirectory);
 		
@@ -317,20 +317,15 @@ public class MartusAmplifier
 		return new File(getStartupConfigDirectory(), KEYPAIRFILENAME);
 	}
 
-	void deleteLuceneLockFile()
+	void deleteLuceneLockFile() throws BulletinIndexException
 	{
-		File indexDirectory = getLuceneIndexDirectory();
+		File indexDirectory = LuceneBulletinIndexer.getIndexDir(getBasePath());
 		File lockFile = new File(indexDirectory, "write.lock");
 		if(lockFile.exists())
 		{
 			log("Deleting lucene lock file: " + lockFile.getPath());
 			lockFile.delete();
 		}
-	}
-
-	private File getLuceneIndexDirectory()
-	{
-		return new File(getBasePath(), "index");
 	}
 
 	void addPasswordAuthentication(Server server)
