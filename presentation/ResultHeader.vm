@@ -1,36 +1,42 @@
-<table border='0'>
+<table border='0' width='100%'>
 	<tr>
 		<td>
-			<img src="../images/MartusLogo.gif" alt="Martus Amplifier"/>
+			<a href="SimpleSearch">
+				<img src="../images/MartusLogo.gif" alt="Martus Amplifier"/ border='0'>
+			</a>
 		</td>
-		<td>
-        	<font size='-1'>
-        		<a href='AdvancedSearch'>Advanced Search</a>
-        		&nbsp;-&nbsp;
-        		<a href='http://martus.org'>Search Tips</a>
-        	</font>
-            <form name="search" action="SearchResults" method="post">
-                <p>
-                    <input name="query" size="44"/>&nbsp;
-                    <input type="submit" value="Search"/>
-                </p>
-            </form>
+		<td align='center'>
+			#if (!$noSearchForm)
+				#include ("MiniSearchForm.vm")
+			#end
+		</td>
+		<td align='right'>
+			<img src="../images/cobrand.gif" alt="Cobrand"/ border='0'>
 		</td>
 	</tr>
 </table>
-<table cellSpacing=0 cellPadding=1 width="100%" bgColor=#3366cc border=0>
+<font size='-1'>
+	<a href='http://martus.org'>Learn More</a>
+	&nbsp;&nbsp;
+	<a href='http://martus.org'>Search Tips</a>
+	&nbsp;&nbsp;
+	<a href='http://martus.org'>Report Technical Problems</a>
+</font>
+<br/><br/>
+<table cellSpacing=0 cellPadding=1 width="100%" bgColor="$barColor" border=0>
 	<tbody>
         <tr>
-			<td noWrap bgColor=#3366cc>
-				<font color=#ffffff size=-1>
-					Searched Martus for "test". 
+			<td noWrap>
+				<font color=#ffffff size='+1'>
+					$pageTitle
 				</font>
 			</td>
-			<td noWrap align=right bgColor=#3366cc>
-				<font color=#ffffff size=-1>
-					Results <b>1</b> - <b>10</b> of xxx total results.
+			<td noWrap align=right>
+				<font color=#ffffff size='+1'>
+					$pageInfo
 				</font>
 			</td>
 		</tr>
 	</tbody>
 </table>
+

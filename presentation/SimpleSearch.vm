@@ -6,52 +6,36 @@
     
     <body>
 		<center>
-		    <img src="../images/MartusLogo.gif" 
-		    	alt="Martus Amplifier"/>
-        <table border="0" cellspacing="0" cellpadding="0">
-	        <tr>
-	        	<td>
-	        		<table cellspacing = '10'>
-	        			<tr>
-			            	<td><font size='-1'><a href='http://benetech.org'>About Benetech</a></font></td>
-			            	<td><font size='-1'><a href='http://benetech.org'>Partners</a></font></td>
-			            	<td><font size='-1'><a href='http://benetech.org'>Volunteer</a></font></td>
-			            	<td><font size='-1'><a href='http://benetech.org'>News &amp; Press</a></font></td>
-			            </tr>
-			        </table>
-				</td>
-	        </tr>
-	        <tr>
-		        <td> 
-		        	<hr/>
-		            <form name="search" action="SearchResults" method="post">
-		                <p>
-		                    <input name="query" size="44"/>&nbsp;
-		                    <input type="submit" value="Search"/>
-		                </p>
-	            </td>
-	            </tr>
-	            <tr>
-		            <td align="center">
-		                <a href="AdvancedSearch">Advanced Search</a>
-		            </td>
-	            </tr>
-            </table>
-            <br/><br/><br/>
-    		<table>
-    			<tr>
-					<td>
-		            	<font size='-1'>
-		            		<a href='http://martus.org'>About Martus</a>
-		            		&nbsp;-&nbsp;
-		            		<a href='http://martus.org'>Help</a>
-		            		&nbsp;-&nbsp;
-		            		<a href='http://martus.org'>Report Technical Problems</a>
-		            	</font>
-		            </td>
-	            </tr>
+			<a href="SimpleSearch">
+				<img src="../images/MartusLogo.gif" alt="Martus Amplifier"/ border='0'>
+			</a>
+			<br/>
+			<font size='-1'>
+				<a href='http://martus.org'>Learn More</a>
+				&nbsp;-&nbsp;
+				<a href='http://martus.org'>Search Tips</a>
+				&nbsp;-&nbsp;
+				<a href='http://martus.org'>Report Technical Problems</a>
+			</font>
+			<br/>
+			#include ("MiniSearchForm.vm")
+	        <br/><br/><br/>
+			<table>
+			        <tr>
+		        	<td>
+		        		<table cellspacing = '10'>
+		        			<tr>
+				            	<td><font size='-1'><a href='http://benetech.org'>About Benetech</a></font></td>
+				        		&nbsp;&nbsp;
+				            	<td><font size='-1'><a href='http://benetech.org'>Partners</a></font></td>
+				        		&nbsp;&nbsp;
+				            	<td><font size='-1'><a href='http://benetech.org'>News &amp; Press</a></font></td>
+				            </tr>
+				        </table>
+					</td>
+		        </tr>
 	        </table>
-    		#include("Copyright.vm")
+		#include("Copyright.vm")
         </center>
     </body>
 </html>

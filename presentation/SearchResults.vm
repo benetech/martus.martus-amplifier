@@ -1,12 +1,15 @@
+#set ($barColor = "#5588ee")
 <html>
     <head>
     		#include("Meta.vm")
             <title>Martus Amplifier Search Results</title>
     </head>
     <body>
-		#include ("ResultHeader.vm")
+    	#set ($pageTitle="Searched Martus for: test")
+    	#set ($pageInfo="Found xxx bulletins")
+		#parse ("ResultHeader.vm")
 		
-		<br/><br/><br/>
+		<br/><br/>
         
         <table width="800" border="0" cellpadding="0" cellspacing="0">
 			#foreach ($thisBulletin in $foundBulletins)
@@ -33,7 +36,7 @@
 			#end
         </table>
         
-		<br/><br/><br/>
+		<br/><br/>
 		#parse ("ResultFooter.vm")
     </body>
 </html>

@@ -1,3 +1,5 @@
+#set ($barColor = "#5588ee")
+<!--'#3366cc'-->
 <html>
     <head>
    		#include("Meta.vm")
@@ -5,8 +7,9 @@
     </head>
     
     <body>
-		#include ("ResultHeader.vm")
-		
+    	#set ($pageTitle="Searched Martus for: test")
+    	#set ($pageInfo="Bulletin $currentBulletin of xxx")
+		#parse ("ResultHeader.vm")
 		<p><font size='-1'><a href='some url'>Printer Friendly Version</a></font></p>
 		<br/>
 		#parse("PreviousNextBulletin.vm")

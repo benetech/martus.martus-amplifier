@@ -1,0 +1,9 @@
+<form name="search" action="SearchResults" method="post">
+    <p>
+        <input name="query" size="44"/>&nbsp;
+        <input type="submit" value="Search"/>
+    </p>
+</form>
+<font>
+	<a href='AdvancedSearch'>Advanced Search</a>
+</font>

@@ -1,3 +1,5 @@
+#set ($barColor = "#5588ee")
+#set ($noSearchForm = "1")
 <html>
     <head>
     	#include ("Meta.vm")
@@ -8,19 +10,9 @@
     #set ($days = [1..31])
 
     <body>
-		    <img src="../images/MartusLogo.gif" 
-		    	alt="Martus Amplifier"/>
-		<table cellSpacing=0 cellPadding=1 width="100%" bgColor=#3366cc border=0>
-			<tbody>
-		        <tr>
-        			<td noWrap bgColor=#3366cc>
-        				<font color=#ffffff size='+1'>
-        					Advanced Search
-        				</font>
-        			</td>
-				</tr>
-			</tbody>
-		</table>
+    	#set ($pageTitle="Advanced Search")
+    	#set ($pageInfo="")
+		#parse ("ResultHeader.vm")
 		<br/><br/><br/>
 		
 		<form name="search" action="SearchResults" method="post">
@@ -71,77 +63,82 @@
 				</tr>
 				<tr>
 					<td><strong>Event Date</strong></td>
-					<td>Show bulletins where the event occurred</td>
-					<td align='right'>
-					between 
-		                    <select name="startMonth">                    	
-							    #foreach ($monthChoice in $monthFields)
-		                            <option value="$monthChoice.tag">
-		                                $monthChoice.label
-		                            </option>		                            
-							    #end
-		                    </select>
-		
-		                    <select name="startDay">                    	
-							    #foreach ($day in $days)
-		                            <option value="$day">
-		                                $day
-		                            </option>
-		                            
-							    #end
-		                    </select>    
-		                      
-		                    <select name="startYear">                    	
-							    #foreach ($year in $years)
-		                            <option value="$year">
-		                                $year
-		                            </option>
-							    #end
-		                    </select>                                               
-	                        			                                                                            </p>				
-	                &nbsp;and&nbsp;
-	                   <select name="endMonth">       
-	                   	                   		
-						    #foreach ($monthChoice in $monthFields)						    	
-                            	<option 
-				                #if ($monthChoice.tag == $today.month)             	
-				                	selected
-				                #end	
-	                   			value="$monthChoice.tag">
-	                               	$monthChoice.label	                                
-	                            </option>	                            	                                   
-							#end							
-	                    </select>
-	
-	                    <select name="endDay">                    	
-						    #foreach ($day in $days)
-						    	<option
-						    	#if ($day == $today.day)
-						    		selected
-						    	#end						    	
-	                            value="$day">	                            		                            		
-	                                $day	                                
-	                            </option>	                            	                           
-						    #end
-	                    </select>    
-	                      
-	                    <select name="endYear">                    	
-						    #foreach ($year in $years)
-						    	<option
-						     	#if ($year == $today.year)
-	                             	selected                            
-	                            #end	                            	  
-		                        value="$year">	                            		                            		
-		                           $year	                                
-		                        </option>	                           
-						    #end
-						    
-	                    </select>                              
+					<td>Show bulletins where the event occurred between</td>
+					<td>
+						<table border='0'>
+							<tr>
+								<td>
+									<select name="startMonth">                    	
+										#foreach ($monthChoice in $monthFields)
+											<option value="$monthChoice.tag">
+												$monthChoice.label
+											</option>		                            
+										#end
+									</select>
+										
+									<select name="startDay">                    	
+										#foreach ($day in $days)
+											<option value="$day">
+												$day
+											</option>
+										#end
+									</select>    
+										  
+									<select name="startYear">                    	
+										#foreach ($year in $years)
+											<option value="$year">
+												$year
+											</option>
+										#end
+									</select>                                               
+					                &nbsp;and&nbsp;
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<select name="endMonth">       
+										#foreach ($monthChoice in $monthFields)						    	
+											<option 
+											    #if ($monthChoice.tag == $today.month)             	
+											    	selected
+											    #end	
+												value="$monthChoice.tag">
+											           	$monthChoice.label	                                
+									        </option>	                            	                                   
+										#end							
+									</select>
+									<select name="endDay">                    	
+									    #foreach ($day in $days)
+									    	<option
+									    	#if ($day == $today.day)
+									    		selected
+									    	#end						    	
+									        value="$day">	                            		                            		
+									            $day	                                
+									        </option>	                            	                           
+									    #end
+									</select>    
+									  
+									<select name="endYear">                    	
+									    #foreach ($year in $years)
+									    	<option
+									     	#if ($year == $today.year)
+									         	selected                            
+									        #end	                            	  
+									        value="$year">	                            		                            		
+									           $year	                                
+									        </option>	                           
+									    #end
+									    
+									</select>                              
+								</td>
+							</tr>
+						</table>
 					</td>
 				</tr>
 				<tr>
 					<td><strong>Bulletin Date</strong></td>
-					<td>Show bulletins submitted in the</td>
+					<td>Show bulletins submitted in the past</td>
 					<td>					
 						<select name='entryDate'>
 							#foreach ($dateChoice in $entryDateFields)	
@@ -152,8 +149,9 @@
 						</select>
 					</td>
 				</tr>
-				<tr bgcolor='#dddddd' color='#000000'>
-					<td><strong>Sort bulletins</strong></td>
+				<tr>
+					<td><strong>Display Bulletins</strong></td>
+					<td>Sort results by</td>
 					<td>
 						<select name='sortBy'>
 							#foreach ($fieldChoice in $sortByFields)	
@@ -164,7 +162,6 @@
 						</select>
 					</td>
 					<td></td>
-					<td bgcolor='#ffffff' color='#000000'></td>
 				</tr>
 			</table>
 			</td>
@@ -173,35 +170,7 @@
 		</form>
 		
 		<br/><br/><br/>
-		        	<font size='-1'>
-		                <a href="SimpleSearch">Simple Search</a>
-		        		&nbsp;-&nbsp;
-		        		<a href='http://martus.org'>Advanced Search Tips</a>
-		        		&nbsp;-&nbsp;
-		        		<a href='http://martus.org'>Report a Bug</a>
-		        		&nbsp;-&nbsp;
-		        		<a href='http://martus.org'>About Martus</a>
-		        	</font>
-		
-		<br/><br/><br/>
-
-		<table cellSpacing='0' cellPadding='1' width="100%" bgColor='#3366cc' border='0'>
-			<tbody>
-		        <tr>
-					<td noWrap bgColor='#3366cc' align='center'>
-		        		<a href='http://martus.org'><font color='#ffffff' size='-1'>About Benetech</font></a>
-		        		<a href='http://martus.org'><font color='#ffffff' size='-1'>Partner with Us</font></a>
-		        		<a href='http://martus.org'><font color='#ffffff' size='-1'>Volunteers</font></a>
-		        		<a href='http://martus.org'><font color='#ffffff' size='-1'>News & Press</font></a>
-		        		<a href='http://martus.org'><font color='#ffffff' size='-1'>Help</font></a>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-		<br/>
-		<center>
-    		#include("Copyright.vm")
-		</center>
+		#parse ("ResultFooter.vm")
     </body>
 </html>
 
