@@ -198,7 +198,7 @@
 			</table>
 		</form>
 
-		Return to <a href='SimpleSearch'>Quick Search</a>
+		Return to <a href='SimpleSearch'>Martus Search</a>
 		
 		<br/><br/>
 		#set ($showSearchForm = false)

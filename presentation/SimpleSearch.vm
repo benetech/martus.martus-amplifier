@@ -1,11 +1,10 @@
 <html>
-	#set ($pageTitle="Quick Search")
+	#set ($pageTitle="Martus Search")
     <head>
    		#parse("Meta.vm")     
     </head>
     
     <body>
-    	#set ($pageTitle="Quick Search")
     	#set ($pageInfo="")
 		#set ($noSearchForm = "1")
 		#parse ("ResultHeader.vm")
@@ -15,13 +14,14 @@
 				<tr>
 					<td align='center' width='500'>
 						<font size='+1'>
-							<strong>Welcome to the Martus Search Engine</strong>
+							<strong>Martus Search Engine</strong>
 						</font>
 						<br/><br/>
-						This Quick Search page allows you to enter a list of 
-						words, and see all the bulletins that contain all 
-						of those words. For other search options, try the 
-						Advanced Search.
+							Martus is a monitoring system that allows people 
+							to document human rights violations in the form of bulletins.  
+							These bulletins are then sent to servers around the world for safe storage. 
+							Martus Search Engine allows you to search publicly available bulletins 
+							for specific incidents of abuse.
 					</td>
 				</tr>
 				<tr>
