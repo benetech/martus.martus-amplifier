@@ -527,14 +527,18 @@ public class TestLuceneSearcher extends CommonSearchTest
 		
 		try 
 		{		
-			String query = "-(lunch)"+ " AND \"What's for\"";
-			assertEquals("-(lunch) AND \"What's for\"", query);	
-			results = searcher.search(SEARCH_TITLE_INDEX_FIELD, query);
+			HashMap fields = new HashMap();				
+			String query = "-(lunch)"+ " AND \"What's for\"";			
+			fields.put(RESULT_BASIC_QUERY_KEY,  query);		
+			assertEquals("-(lunch) AND \"What's for\"", query);				
+			results = searcher.search(fields);					
 			assertEquals("Combine without these words and exactphrase? ", 0, results.getCount());	
 			
 			query = "+(lunch)"+ " AND \"What's for\"";
-			assertEquals("+(lunch) AND \"What's for\"", query);	
-			results = searcher.search(SEARCH_TITLE_INDEX_FIELD, query);
+			assertEquals("+(lunch) AND \"What's for\"", query);
+			fields.remove(RESULT_BASIC_QUERY_KEY);	
+			fields.put(RESULT_BASIC_QUERY_KEY,  query);	
+			results = searcher.search(fields);	
 			assertEquals("Combine witt these words and exactphrase? ", 1, results.getCount());	
 		}
 		finally 

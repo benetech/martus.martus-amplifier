@@ -7,15 +7,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
 import junit.framework.Assert;
 
-import org.martus.amplifier.attachment.DataManager;
 import org.martus.amplifier.attachment.AttachmentStorageException;
+import org.martus.amplifier.attachment.DataManager;
 import org.martus.amplifier.attachment.FileSystemDataManager;
 import org.martus.amplifier.common.DateUtilities;
+import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.datasynch.BulletinExtractor;
 import org.martus.amplifier.lucene.LuceneBulletinIndexer;
 import org.martus.amplifier.lucene.LuceneBulletinSearcher;
@@ -110,9 +112,9 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 		
 		BulletinSearcher searcher = getBulletinSearcher();
 		try {
-			Results results = 
-				searcher.search(
-					SEARCH_AUTHOR_INDEX_FIELD, b.get(BulletinField.TAGAUTHOR));
+			HashMap fields = new HashMap();
+			fields.put(SearchResultConstants.RESULT_BASIC_QUERY_KEY, b.get(BulletinField.TAGAUTHOR));			
+			Results results = searcher.search(fields);
 			Assert.assertEquals(1, results.getCount());
 			BulletinInfo info = 
 				searcher.lookup(b.getUniversalId());
@@ -162,9 +164,9 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 		BulletinSearcher searcher = getBulletinSearcher();
 		try 
 		{
-			Results results = 
-				searcher.search(
-					SEARCH_AUTHOR_INDEX_FIELD, b.get(BulletinField.TAGAUTHOR));
+			HashMap fields = new HashMap();
+			fields.put(SearchResultConstants.RESULT_BASIC_QUERY_KEY, b.get(BulletinField.TAGAUTHOR));			
+			Results results = searcher.search(fields);
 			Assert.assertEquals(1, results.getCount());
 			BulletinInfo info = 
 				searcher.lookup(b.getUniversalId());
@@ -214,9 +216,9 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 		
 		BulletinSearcher searcher = getBulletinSearcher();
 		try {
-			Results results = 
-				searcher.search(
-					SEARCH_AUTHOR_INDEX_FIELD, b.get(BulletinField.TAGAUTHOR));
+			HashMap fields = new HashMap();
+			fields.put(SearchResultConstants.RESULT_BASIC_QUERY_KEY, b.get(BulletinField.TAGAUTHOR));			
+			Results results = searcher.search(fields);
 			Assert.assertEquals(1, results.getCount());
 			BulletinInfo info = 
 				searcher.lookup(b.getUniversalId());

@@ -80,14 +80,6 @@ public class LuceneBulletinSearcher implements BulletinSearcher
 		searcher.close();
 	}
 
-	// This method is ONLY used by tests. 
-	// We should find a way to get rid of it! 
-	public Results search(String field, String queryString) throws Exception 
-	{
-		QueryBuilder query = new QueryBuilder(queryString, field);
-		return new LuceneResults(searcher, query.getQuery());
-	}
-
 	private boolean isComplexSearch(Map fields)
 	{
 		String queryString = (String) fields.get(SearchResultConstants.RESULT_BASIC_QUERY_KEY);

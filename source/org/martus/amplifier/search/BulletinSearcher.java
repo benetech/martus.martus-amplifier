@@ -6,9 +6,7 @@ import org.martus.common.packet.UniversalId;
 
 public interface BulletinSearcher extends SearchConstants
 {
-	void close() throws Exception;
-	
-	Results search(String field, String queryString) throws Exception;		
+	void close() throws Exception;	
 		
 	Results search(Map fields) throws Exception; 				
 		
