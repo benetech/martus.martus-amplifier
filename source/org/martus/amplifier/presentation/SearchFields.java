@@ -2,10 +2,7 @@
 package org.martus.amplifier.presentation;
 
 import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.Vector;
 
 public class SearchFields
 {
