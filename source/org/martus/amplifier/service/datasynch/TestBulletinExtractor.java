@@ -79,7 +79,7 @@ public class TestBulletinExtractor extends TestAbstractAmplifier
 		try {
 			BulletinSearcher.Results results = 
 				searcher.search(
-					AUTHOR_INDEX_FIELD, b.get(BulletinField.TAGAUTHOR));
+					SEARCH_AUTHOR_INDEX_FIELD, b.get(BulletinField.TAGAUTHOR));
 			Assert.assertEquals(1, results.getCount());
 			BulletinInfo info = 
 				searcher.lookup(b.getUniversalId());
@@ -129,7 +129,7 @@ public class TestBulletinExtractor extends TestAbstractAmplifier
 		try {
 			BulletinSearcher.Results results = 
 				searcher.search(
-					AUTHOR_INDEX_FIELD, b.get(BulletinField.TAGAUTHOR));
+					SEARCH_AUTHOR_INDEX_FIELD, b.get(BulletinField.TAGAUTHOR));
 			Assert.assertEquals(1, results.getCount());
 			BulletinInfo info = 
 				searcher.lookup(b.getUniversalId());

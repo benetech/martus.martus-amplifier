@@ -170,7 +170,7 @@ public class LuceneBulletinIndexer
 	{
 		try 
 		{
-			String date = DateField.dateToString(DATE_FORMAT.parse(dateString));
+			String date = DateField.dateToString(SEARCH_DATE_FORMAT.parse(dateString));
 			return date;
 		} 
 		catch (ParseException e) 
@@ -200,8 +200,8 @@ public class LuceneBulletinIndexer
 		String beginDate = MartusFlexidate.toStoredDateFormat(mfd.getBeginDate());
 		String endDate = MartusFlexidate.toStoredDateFormat(mfd.getEndDate());							
 	
-		doc.add(Field.Keyword(SearchConstants.EVENT_START_DATE_INDEX_FIELD, convertDateToSearchableString(beginDate))); 			
-		doc.add(Field.Keyword(SearchConstants.EVENT_END_DATE_INDEX_FIELD, convertDateToSearchableString(endDate)));
+		doc.add(Field.Keyword(SearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD, convertDateToSearchableString(beginDate))); 			
+		doc.add(Field.Keyword(SearchConstants.SEARCH_EVENT_END_DATE_INDEX_FIELD, convertDateToSearchableString(endDate)));
 					
 		doc.add(Field.Text(field.getIndexId(), value));				
 	}

@@ -7,6 +7,7 @@ import java.util.Date;
 import org.apache.lucene.document.DateField;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.Term;
+import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.BooleanQuery;
@@ -66,7 +67,11 @@ public class LuceneBulletinSearcher
 	public Results search(String field, String queryString)
 		throws BulletinIndexException 
 	{
-		Query query = queryParser(queryString, field, "Improperly formed query: ");
+		Query query;
+		if (field == null)
+			query = multiFieldQueryParser(queryString, SEARCH_ALL_TEXT_FIELDS, "Improperly formed multiquery: ");
+		else
+			query = queryParser(queryString, field, "Improperly formed query: ");
 		return getLuceneResults(query, field);
 	}
 	
@@ -76,11 +81,11 @@ public class LuceneBulletinSearcher
 			
 		BooleanQuery booleanQuery = new BooleanQuery();				
 
-		Query query = queryParser(startQuery, SearchConstants.EVENT_START_DATE_INDEX_FIELD,
+		Query query = queryParser(startQuery, SearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD,
 						"Improperly formed start query: ");	
 		booleanQuery.add(query, true, false);		
 		
-		query = queryParser(endQuery, SearchConstants.EVENT_END_DATE_INDEX_FIELD, 
+		query = queryParser(endQuery, SearchConstants.SEARCH_EVENT_END_DATE_INDEX_FIELD, 
 						"Improperly formed end query: ");		
 		booleanQuery.add(query, true, false);	
 				
@@ -97,6 +102,17 @@ public class LuceneBulletinSearcher
 			throw new BulletinIndexException( msg + query, pe);
 		}
 	}
+
+	private Query multiFieldQueryParser(String query, String[] fields, String msg)
+			throws BulletinIndexException 
+	{
+		try {
+			return MultiFieldQueryParser.parse(query, fields, 		
+				LuceneBulletinIndexer.getAnalyzer());
+		} catch(ParseException pe) {
+			throw new BulletinIndexException( msg + query, pe);
+		}
+	}
 	
 	public Results searchDateRange(String field, Date startDate, Date endDate)
 		throws BulletinIndexException
@@ -105,7 +121,7 @@ public class LuceneBulletinSearcher
 			String startDateString = ((startDate == null) ? "*" : DateField.dateToString(startDate));
 			String endDateString   = ((endDate == null) ?  "?": DateField.dateToString(endDate));
 					
-			if (field.equals(SearchConstants.ENTRY_DATE_INDEX_FIELD))		
+			if (field.equals(SearchConstants.SEARCH_ENTRY_DATE_INDEX_FIELD))		
 				return search(field, setRangeQuery(startDateString, endDateString));				
 			
 			return searchEntryDate(field, setRangeQuery("*", endDateString),
@@ -202,7 +218,7 @@ public class LuceneBulletinSearcher
 				if (value != null) 
 				{
 					if (field.isDateField()) 														
-					 	value = DATE_FORMAT.format(DateField.stringToDate(value));
+					 	value = SEARCH_DATE_FORMAT.format(DateField.stringToDate(value));
 					 	
 					if (field.isDateRangeField())																																						
   						value = LuceneBulletinSearcher.convertDateRange(value);

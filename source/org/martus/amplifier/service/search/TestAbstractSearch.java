@@ -104,29 +104,29 @@ public abstract class TestAbstractSearch
 			Assert.assertEquals(
 				1, 
 				searcher.search(
-					AUTHOR_INDEX_FIELD, 
+					SEARCH_AUTHOR_INDEX_FIELD, 
 					fdp.get(BulletinField.TAGAUTHOR)).getCount());
 			Assert.assertEquals(
 				1,
 				searcher.search(
-					KEYWORDS_INDEX_FIELD, 
+					SEARCH_KEYWORDS_INDEX_FIELD, 
 					fdp.get(BulletinField.TAGKEYWORDS)).getCount());
-			Date startDate = SearchConstants.DATE_FORMAT.parse("2003-05-01");
-			Date endDate = SearchConstants.DATE_FORMAT.parse("2003-05-20");
+			Date startDate = SearchConstants.SEARCH_DATE_FORMAT.parse("2003-05-01");
+			Date endDate = SearchConstants.SEARCH_DATE_FORMAT.parse("2003-05-20");
 			Assert.assertEquals(
 				1,
 				searcher.searchDateRange(
-					ENTRY_DATE_INDEX_FIELD, startDate, endDate).getCount());
+					SEARCH_ENTRY_DATE_INDEX_FIELD, startDate, endDate).getCount());
 		
 			Assert.assertEquals(
 				0,
 				searcher.search(
-					DETAILS_INDEX_FIELD, 
+					SEARCH_DETAILS_INDEX_FIELD, 
 					fdp.get(BulletinField.TAGAUTHOR)).getCount());
 			Assert.assertEquals(
 				0,
 				searcher.searchDateRange(
-					EVENT_DATE_INDEX_FIELD, startDate, endDate).getCount());
+					SEARCH_EVENT_DATE_INDEX_FIELD, startDate, endDate).getCount());
 		} finally {
 			searcher.close();
 		}
@@ -228,7 +228,7 @@ public abstract class TestAbstractSearch
 		BulletinSearcher.Results results = null;
 		try {
 			results = searcher.search(
-				AUTHOR_INDEX_FIELD, fdp.get(BulletinField.TAGAUTHOR));
+				SEARCH_AUTHOR_INDEX_FIELD, fdp.get(BulletinField.TAGAUTHOR));
 		} finally {
 			searcher.close();
 		}
@@ -241,6 +241,49 @@ public abstract class TestAbstractSearch
 		}
 	}
 	
+	public void testSearchAllFields() throws BulletinIndexException
+	{
+		UniversalId bulletinId = UniversalId.createDummyUniversalId();
+		FieldDataPacket fdp = generateSampleData(bulletinId);		
+		BulletinIndexer indexer = openBulletinIndexer();
+		try 
+		{
+			indexer.clearIndex();
+			indexer.indexFieldData(bulletinId, fdp);
+		} 
+		finally 
+		{
+			indexer.close();
+		}
+		
+		BulletinSearcher searcher = openBulletinSearcher();
+		BulletinSearcher.Results results = null;
+		try 
+		{
+			results = searcher.search(null, fdp.get(BulletinField.SEARCH_AUTHOR_INDEX_FIELD));
+			assertEquals("Should have found a result for author", 1, results.getCount());
+			results = searcher.search(null, fdp.get(BulletinField.SEARCH_DETAILS_INDEX_FIELD));
+			assertEquals("Should have found a result for details", 1, results.getCount());
+			results = searcher.search(null, fdp.get(BulletinField.SEARCH_KEYWORDS_INDEX_FIELD));
+			assertEquals("Should have found a result for keyword", 1, results.getCount());
+			results = searcher.search(null, fdp.get(BulletinField.SEARCH_LOCATION_INDEX_FIELD));
+			assertEquals("Should have found a result for location", 1, results.getCount());
+			results = searcher.search(null, fdp.get(BulletinField.SEARCH_SUMMARY_INDEX_FIELD));
+			assertEquals("Should have found a result for summary", 1, results.getCount());
+			results = searcher.search(null, fdp.get(BulletinField.SEARCH_TITLE_INDEX_FIELD));
+			assertEquals("Should have found a result for title", 1, results.getCount());
+			results = searcher.search(null, "Lunch");
+			assertEquals("Should have found a result for the word Lunch", 1, results.getCount());
+			results = searcher.search(null, "Luch");
+			assertEquals("Should not have found a result for a word 'Luch' not in the bulletin", 0, results.getCount());
+		} 
+		finally 
+		{
+			searcher.close();
+		}
+	}
+
+
 	public void testDateBoundary() 
 		throws BulletinIndexException, ParseException
 	{
@@ -261,15 +304,15 @@ public abstract class TestAbstractSearch
 		BulletinSearcher.Results results = null;
 		try 
 		{
-			Date startDate = SearchConstants.DATE_FORMAT.parse("2003-05-11");
-			Date endDate = SearchConstants.DATE_FORMAT.parse("2003-05-11");
+			Date startDate = SearchConstants.SEARCH_DATE_FORMAT.parse("2003-05-11");
+			Date endDate = SearchConstants.SEARCH_DATE_FORMAT.parse("2003-05-11");
 			
-			results = searcher.searchDateRange(ENTRY_DATE_INDEX_FIELD, startDate, endDate);
+			results = searcher.searchDateRange(SEARCH_ENTRY_DATE_INDEX_FIELD, startDate, endDate);
 			assertEquals("Entry Date not found?",1, results.getCount());
 
-			startDate = SearchConstants.DATE_FORMAT.parse("2003-04-10");
-			endDate = SearchConstants.DATE_FORMAT.parse("2003-04-11");
-			results = searcher.searchDateRange(EVENT_DATE_INDEX_FIELD, startDate, endDate);
+			startDate = SearchConstants.SEARCH_DATE_FORMAT.parse("2003-04-10");
+			endDate = SearchConstants.SEARCH_DATE_FORMAT.parse("2003-04-11");
+			results = searcher.searchDateRange(SEARCH_EVENT_DATE_INDEX_FIELD, startDate, endDate);
 			assertEquals("Flexidate single Event Date not found?",1, results.getCount());
 			
 		} 
@@ -300,29 +343,29 @@ public abstract class TestAbstractSearch
 		try 
 		{
 			// entryDate = 2003-05-11			
-			Date endDate = SearchConstants.DATE_FORMAT.parse("2003-03-20");
-			results = searcher.searchDateRange(ENTRY_DATE_INDEX_FIELD, null, endDate);
+			Date endDate = SearchConstants.SEARCH_DATE_FORMAT.parse("2003-03-20");
+			results = searcher.searchDateRange(SEARCH_ENTRY_DATE_INDEX_FIELD, null, endDate);
 			assertEquals("Entrydate with an invalid before an entry date (open started)?", 0, results.getCount());
 			
-			endDate = SearchConstants.DATE_FORMAT.parse("2003-05-11");
-			results = searcher.searchDateRange(ENTRY_DATE_INDEX_FIELD, null, endDate);
+			endDate = SearchConstants.SEARCH_DATE_FORMAT.parse("2003-05-11");
+			results = searcher.searchDateRange(SEARCH_ENTRY_DATE_INDEX_FIELD, null, endDate);
 			assertEquals("Entrydate with an exact on start date (open started)", 1, results.getCount());
 			
-			endDate = SearchConstants.DATE_FORMAT.parse("2003-06-30");
-			results = searcher.searchDateRange(ENTRY_DATE_INDEX_FIELD, null, endDate);
+			endDate = SearchConstants.SEARCH_DATE_FORMAT.parse("2003-06-30");
+			results = searcher.searchDateRange(SEARCH_ENTRY_DATE_INDEX_FIELD, null, endDate);
 			assertEquals("Entrydate with a valid after an entry date (open started)?", 1, results.getCount());			
 				
 			//eventDate = 2003-04-10 			
-			endDate = SearchConstants.DATE_FORMAT.parse("2002-04-01");
-			results = searcher.searchDateRange(EVENT_DATE_INDEX_FIELD, null, endDate);
+			endDate = SearchConstants.SEARCH_DATE_FORMAT.parse("2002-04-01");
+			results = searcher.searchDateRange(SEARCH_EVENT_DATE_INDEX_FIELD, null, endDate);
 			assertEquals("Eventdate with an invalid before start date (open started)?", 0, results.getCount());
 			
-			endDate = SearchConstants.DATE_FORMAT.parse("2003-04-10");
-			results = searcher.searchDateRange(EVENT_DATE_INDEX_FIELD, null, endDate);
+			endDate = SearchConstants.SEARCH_DATE_FORMAT.parse("2003-04-10");
+			results = searcher.searchDateRange(SEARCH_EVENT_DATE_INDEX_FIELD, null, endDate);
 			assertEquals("Eventdate with an exact on start date (open started)", 1, results.getCount());
 			
-			endDate = SearchConstants.DATE_FORMAT.parse("2003-07-10");
-			results = searcher.searchDateRange(EVENT_DATE_INDEX_FIELD, null, endDate);
+			endDate = SearchConstants.SEARCH_DATE_FORMAT.parse("2003-07-10");
+			results = searcher.searchDateRange(SEARCH_EVENT_DATE_INDEX_FIELD, null, endDate);
 			assertEquals("Eventdate with a valid after start date (open started)?", 1, results.getCount());			
 
 		} 
@@ -353,29 +396,29 @@ public abstract class TestAbstractSearch
 		try 
 		{
 			// entryDate = 2003-05-11			
-			Date startDate = SearchConstants.DATE_FORMAT.parse("2003-03-20");
-			results = searcher.searchDateRange(ENTRY_DATE_INDEX_FIELD, startDate, null);
+			Date startDate = SearchConstants.SEARCH_DATE_FORMAT.parse("2003-03-20");
+			results = searcher.searchDateRange(SEARCH_ENTRY_DATE_INDEX_FIELD, startDate, null);
 			assertEquals("Entrydate with a valid before an entry date (open ended)?", 1, results.getCount());
 			
-			startDate = SearchConstants.DATE_FORMAT.parse("2003-05-11");
-			results = searcher.searchDateRange(ENTRY_DATE_INDEX_FIELD, startDate, null);
+			startDate = SearchConstants.SEARCH_DATE_FORMAT.parse("2003-05-11");
+			results = searcher.searchDateRange(SEARCH_ENTRY_DATE_INDEX_FIELD, startDate, null);
 			assertEquals("Entrydate with an exact on start date (open ended)", 1, results.getCount());
 			
-			startDate = SearchConstants.DATE_FORMAT.parse("2003-06-30");
-			results = searcher.searchDateRange(ENTRY_DATE_INDEX_FIELD, startDate, null);
+			startDate = SearchConstants.SEARCH_DATE_FORMAT.parse("2003-06-30");
+			results = searcher.searchDateRange(SEARCH_ENTRY_DATE_INDEX_FIELD, startDate, null);
 			assertEquals("Entrydate with an invalid after an entry date (open ended)?", 0, results.getCount());			
 			
 			// eventDate = 2003-04-10 			
-			startDate = SearchConstants.DATE_FORMAT.parse("2002-04-01");
-			results = searcher.searchDateRange(EVENT_DATE_INDEX_FIELD, startDate, null);
+			startDate = SearchConstants.SEARCH_DATE_FORMAT.parse("2002-04-01");
+			results = searcher.searchDateRange(SEARCH_EVENT_DATE_INDEX_FIELD, startDate, null);
 			assertEquals("Eventdate with a valid before start date(open ended)?", 1, results.getCount());
 			
-			startDate = SearchConstants.DATE_FORMAT.parse("2003-04-10");
-			results = searcher.searchDateRange(EVENT_DATE_INDEX_FIELD, startDate, null);
+			startDate = SearchConstants.SEARCH_DATE_FORMAT.parse("2003-04-10");
+			results = searcher.searchDateRange(SEARCH_EVENT_DATE_INDEX_FIELD, startDate, null);
 			assertEquals("Eventdate with an exact on start date", 1, results.getCount());
 			
-			startDate = SearchConstants.DATE_FORMAT.parse("2003-07-10");
-			results = searcher.searchDateRange(EVENT_DATE_INDEX_FIELD, startDate, null);
+			startDate = SearchConstants.SEARCH_DATE_FORMAT.parse("2003-07-10");
+			results = searcher.searchDateRange(SEARCH_EVENT_DATE_INDEX_FIELD, startDate, null);
 			assertEquals("Eventdate with an invalid after start date(open ended)?", 0, results.getCount());
 			
 		} 
@@ -406,34 +449,34 @@ public abstract class TestAbstractSearch
 		try 
 		{
 			// The flexidate is 2003-08-20, 20030820+3				
-			Date startDate = SearchConstants.DATE_FORMAT.parse("2003-08-10");
-			Date endDate = SearchConstants.DATE_FORMAT.parse("2003-08-22");			
-			results = searcher.searchDateRange(EVENT_DATE_INDEX_FIELD, startDate, endDate);
+			Date startDate = SearchConstants.SEARCH_DATE_FORMAT.parse("2003-08-10");
+			Date endDate = SearchConstants.SEARCH_DATE_FORMAT.parse("2003-08-22");			
+			results = searcher.searchDateRange(SEARCH_EVENT_DATE_INDEX_FIELD, startDate, endDate);
 			assertEquals("FlexiDate ([endEventDate] ) range Event Date found?",1, results.getCount());
 			
-			startDate = SearchConstants.DATE_FORMAT.parse("2003-08-21");
-			endDate = SearchConstants.DATE_FORMAT.parse("2003-08-25");			
-			results = searcher.searchDateRange(EVENT_DATE_INDEX_FIELD, startDate, endDate);
+			startDate = SearchConstants.SEARCH_DATE_FORMAT.parse("2003-08-21");
+			endDate = SearchConstants.SEARCH_DATE_FORMAT.parse("2003-08-25");			
+			results = searcher.searchDateRange(SEARCH_EVENT_DATE_INDEX_FIELD, startDate, endDate);
 			assertEquals("FlexiDate ([startEventDate]) range Event Date found?",1, results.getCount());
 
-			startDate = SearchConstants.DATE_FORMAT.parse("2003-01-21");
-			endDate = SearchConstants.DATE_FORMAT.parse("2003-12-25");	
-			results = searcher.searchDateRange(EVENT_DATE_INDEX_FIELD, startDate, endDate);
+			startDate = SearchConstants.SEARCH_DATE_FORMAT.parse("2003-01-21");
+			endDate = SearchConstants.SEARCH_DATE_FORMAT.parse("2003-12-25");	
+			results = searcher.searchDateRange(SEARCH_EVENT_DATE_INDEX_FIELD, startDate, endDate);
 			assertEquals("FlexiDate ([startEventDate|endEvetnDate]) range Event Date found?",1, results.getCount());
 			
-			startDate = SearchConstants.DATE_FORMAT.parse("2002-01-21");
-			endDate = SearchConstants.DATE_FORMAT.parse("2002-01-25");			
-			results = searcher.searchDateRange(EVENT_DATE_INDEX_FIELD, startDate, endDate);
+			startDate = SearchConstants.SEARCH_DATE_FORMAT.parse("2002-01-21");
+			endDate = SearchConstants.SEARCH_DATE_FORMAT.parse("2002-01-25");			
+			results = searcher.searchDateRange(SEARCH_EVENT_DATE_INDEX_FIELD, startDate, endDate);
 			assertEquals("FlexiDate with an invalid ([]startDate) range Event Date found?",0, results.getCount());
 
-			startDate = SearchConstants.DATE_FORMAT.parse("2003-08-28");
-			endDate = SearchConstants.DATE_FORMAT.parse("2003-08-31");			
-			results = searcher.searchDateRange(EVENT_DATE_INDEX_FIELD, startDate, endDate);
+			startDate = SearchConstants.SEARCH_DATE_FORMAT.parse("2003-08-28");
+			endDate = SearchConstants.SEARCH_DATE_FORMAT.parse("2003-08-31");			
+			results = searcher.searchDateRange(SEARCH_EVENT_DATE_INDEX_FIELD, startDate, endDate);
 			assertEquals("FlexiDate with an invalid (endDate[]) range Event Date found?",0, results.getCount());
 		
-			startDate = SearchConstants.DATE_FORMAT.parse("2003-08-21");
-			endDate = SearchConstants.DATE_FORMAT.parse("2003-08-22");		
-			results = searcher.searchDateRange(EVENT_DATE_INDEX_FIELD, startDate, endDate);
+			startDate = SearchConstants.SEARCH_DATE_FORMAT.parse("2003-08-21");
+			endDate = SearchConstants.SEARCH_DATE_FORMAT.parse("2003-08-22");		
+			results = searcher.searchDateRange(SEARCH_EVENT_DATE_INDEX_FIELD, startDate, endDate);
 			assertEquals("FlexiDate (startEventDate[]endEvetnDate) range Event Date found?",1, results.getCount());						
 		} 
 		finally 

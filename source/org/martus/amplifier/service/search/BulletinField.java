@@ -123,14 +123,14 @@ public class BulletinField implements BulletinConstants, SearchConstants
 	static {
 		// NOTE paul 8-Apr-2003 -- The display names should at some
 		// point be i18n'ed strings.
-		addField(TAGAUTHOR, AUTHOR_INDEX_FIELD, "Author");
-		addField(TAGKEYWORDS, KEYWORDS_INDEX_FIELD, "Keywords");
-		addField(TAGTITLE, TITLE_INDEX_FIELD, "Title");
-		addField(TAGEVENTDATE, EVENT_DATE_INDEX_FIELD, "Event Date");
-		addField(TAGPUBLICINFO, DETAILS_INDEX_FIELD, "Details");
-		addField(TAGSUMMARY, SUMMARY_INDEX_FIELD, "Summary");
-		addField(TAGLOCATION, LOCATION_INDEX_FIELD, "Location");
-		addField(TAGENTRYDATE, ENTRY_DATE_INDEX_FIELD, "Entry Date");	
+		addField(TAGAUTHOR, SEARCH_AUTHOR_INDEX_FIELD, "Author");
+		addField(TAGKEYWORDS, SEARCH_KEYWORDS_INDEX_FIELD, "Keywords");
+		addField(TAGTITLE, SEARCH_TITLE_INDEX_FIELD, "Title");
+		addField(TAGEVENTDATE, SEARCH_EVENT_DATE_INDEX_FIELD, "Event Date");
+		addField(TAGPUBLICINFO, SEARCH_DETAILS_INDEX_FIELD, "Details");
+		addField(TAGSUMMARY, SEARCH_SUMMARY_INDEX_FIELD, "Summary");
+		addField(TAGLOCATION, SEARCH_LOCATION_INDEX_FIELD, "Location");
+		addField(TAGENTRYDATE, SEARCH_ENTRY_DATE_INDEX_FIELD, "Entry Date");	
 	}
 	
 	private static void addField(String xmlId, String indexId, String displayName)
