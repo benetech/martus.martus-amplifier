@@ -315,6 +315,49 @@ public abstract class TestAbstractSearch
 		}
 	}
 
+	public void testSearchForWildCards() throws BulletinIndexException
+	{
+		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
+		FieldDataPacket fdp1 = generateSampleData(bulletinId1);		
+		UniversalId bulletinId2 = UniversalId.createDummyUniversalId();
+		FieldDataPacket fdp2 = generateSampleFlexiData(bulletinId2);		
+		BulletinIndexer indexer = openBulletinIndexer();
+		try 
+		{
+			indexer.clearIndex();
+			indexer.indexFieldData(bulletinId1, fdp1);
+			indexer.indexFieldData(bulletinId2, fdp2);
+		} 
+		finally 
+		{
+			indexer.close();
+		}
+		
+		BulletinSearcher searcher = openBulletinSearcher();
+		BulletinSearcher.Results results = null;
+		try 
+		{
+			results = searcher.search(null, "lun??");
+			assertEquals("Should have found 2 result lun??", 2, results.getCount());
+			results = searcher.search(null, "sal*");
+			assertEquals("Should have found 2 result sal* salad and salad2", 2, results.getCount());
+			results = searcher.search(null, "sa?ad");
+			assertEquals("Should have found 1 result sa?ad just salad", 1 , results.getCount());
+/*			results = searcher.search(null, "");
+			assertEquals("Should have found 2 result for nothing entered", 2, results.getCount());
+			results = searcher.search(null, null);
+			assertEquals("Should have found 2 result for null entered", 2, results.getCount());
+			results = searcher.search(null, "*");
+			assertEquals("Should have found 2 result for * entered", 2, results.getCount());
+			results = searcher.search(null, "?");
+			assertEquals("Should have found 2 result for ? entered", 2, results.getCount());
+*/		} 
+		finally 
+		{
+			searcher.close();
+		}
+	}
+
 	public void testDateBoundary() 
 		throws BulletinIndexException, ParseException
 	{
@@ -535,23 +578,10 @@ public abstract class TestAbstractSearch
 		String attachment2LocalId = "att2Id";
 		String attachment2Label = "Recipe.txt";
 		
-		FieldDataPacket fdp = generateFieldDataPacket(
-			bulletinId, new String[] { 
-				SEARCH_AUTHOR_INDEX_FIELD, author, 
-				SEARCH_KEYWORDS_INDEX_FIELD, keywords, 
-				SEARCH_TITLE_INDEX_FIELD, title,
-				SEARCH_ENTRY_DATE_INDEX_FIELD, entrydate, 
-				SEARCH_EVENT_DATE_INDEX_FIELD, eventdate,
-				SEARCH_DETAILS_INDEX_FIELD, publicInfo, 
-				SEARCH_SUMMARY_INDEX_FIELD, summary,
-				SEARCH_LOCATION_INDEX_FIELD, location
-			}, new String[] {
-				attachment1LocalId, attachment1Label, 
-				attachment2LocalId, attachment2Label
-			});
+		FieldDataPacket fdp = createFieldDataPacket(bulletinId, author, keywords, title, eventdate, entrydate, publicInfo, summary, location, attachment1LocalId, attachment1Label, attachment2LocalId, attachment2Label);
 		return fdp;
 	}
-	
+
 	protected FieldDataPacket generateSampleFlexiData(UniversalId bulletinId)
 	{
 		String author = "Chuck";	
@@ -561,7 +591,7 @@ public abstract class TestAbstractSearch
 		String eventdate = "2003-08-20,20030820+3";
 		String publicInfo = "menu3";
 		String summary = 
-			"Today Chuck ate an egg2 salad sandwich and a root beer2 " +
+			"Today Chuck ate an egg2 salad2 sandwich and a root beer2 " +
 			"for lunch.";
 		String location = "San Francisco, CA";
 		
@@ -570,6 +600,12 @@ public abstract class TestAbstractSearch
 		String attachment2LocalId = "att2Id";
 		String attachment2Label = "Recipe.txt";
 		
+		FieldDataPacket fdp = createFieldDataPacket(bulletinId, author, keywords, title, eventdate, entrydate, publicInfo, summary, location, attachment1LocalId, attachment1Label, attachment2LocalId, attachment2Label);
+		return fdp;
+	}
+	
+	private FieldDataPacket createFieldDataPacket(UniversalId bulletinId, String author, String keywords, String title, String eventdate, String entrydate, String publicInfo, String summary, String location, String attachment1LocalId, String attachment1Label, String attachment2LocalId, String attachment2Label)
+	{
 		FieldDataPacket fdp = generateFieldDataPacket(
 			bulletinId, new String[] { 
 				SEARCH_AUTHOR_INDEX_FIELD, author, 
