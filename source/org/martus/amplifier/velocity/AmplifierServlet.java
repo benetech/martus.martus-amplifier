@@ -101,6 +101,7 @@ abstract public class AmplifierServlet extends VelocityServlet
 	{
 		try
 		{
+			request.setCharacterEncoding("UTF-8");
 			AmplifierServletRequest ampRequest = new WrappedServletRequest(request);
 			AmplifierServletResponse ampResponse = new WrappedServletResponse(response);
 			String templateName = selectTemplate(ampRequest, ampResponse, context);
