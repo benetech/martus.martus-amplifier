@@ -10,7 +10,7 @@ Martus Eclipse Setup (Oct. 31, 2002)
 	Above the Repositories panel (Top Right) click on the toolbar icon:
 	"Create a new CVS Repository Location".
 	Now fill in the information 
-		1. Host name: cvs.benetech.org
+		1. Host name: 10.10.220.21
 		2. Repository Path: /var/local/cvs
 		3. User Name : charles (for example)
 		4. Password : mypassword from Scott W.
