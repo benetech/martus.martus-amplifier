@@ -3,8 +3,6 @@ package org.martus.amplifier.presentation.test;
 import java.util.List;
 import java.util.Vector;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.velocity.context.Context;
 import org.martus.amplifier.presentation.FoundBulletin;
 import org.martus.amplifier.presentation.SearchResults;
@@ -24,7 +22,7 @@ public class TestFoundBulletin extends TestCaseEnhanced
 	public void testBasics() throws Exception
 	{
 		MockAmplifierRequest request = new MockAmplifierRequest();
-		HttpServletResponse response = null;
+		MockAmplifierResponse response = null;
 		Context context = createSampleSearchResults(request, response);
 
 		FoundBulletin servlet = new FoundBulletin();
@@ -35,7 +33,7 @@ public class TestFoundBulletin extends TestCaseEnhanced
 	public void testPreviousAndNext() throws Exception
 	{
 		MockAmplifierRequest request = new MockAmplifierRequest();
-		HttpServletResponse response = null;
+		MockAmplifierResponse response = null;
 		Context context = createSampleSearchResults(request, response);
 	
 	
@@ -66,7 +64,7 @@ public class TestFoundBulletin extends TestCaseEnhanced
 		assertEquals("Bulletin 3's title didn't match", bulletin3Title, bulletinInfo3.get("title"));
 	}
 
-	private Context createSampleSearchResults(MockAmplifierRequest request, HttpServletResponse response) throws Exception
+	private Context createSampleSearchResults(MockAmplifierRequest request, MockAmplifierResponse response) throws Exception
 	{
 		Context context = new MockContext();
 		SearchResultsForTesting sr = new SearchResultsForTesting();

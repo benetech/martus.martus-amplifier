@@ -53,6 +53,7 @@ public class FileSystemAttachmentManager implements AttachmentManager
 			if (out != null) {
 				try {
 					out.close();
+					save();					
 				} catch (IOException ioe) {
 					throw new AttachmentStorageException(
 						"Unable to store attachment " + attachmentId, 
@@ -79,7 +80,7 @@ public class FileSystemAttachmentManager implements AttachmentManager
 		}
 	}
 	
-	public void close() throws AttachmentStorageException
+	private void save() throws AttachmentStorageException
 	{
 		saveAccountMap();
 	}
@@ -192,6 +193,6 @@ public class FileSystemAttachmentManager implements AttachmentManager
 	private Properties accountMap;
 	private File accountMapFile;
 	
-	private static final String ACCOUNT_MAP_FILE_NAME = "acctmap.txt";
+	public static final String ACCOUNT_MAP_FILE_NAME = "acctmap.txt";
 	private static final String ACCOUNT_DIR_PREFIX = "acct";
 }

@@ -21,6 +21,13 @@ public class TestFileSystemAttachmentManager
 		super(name);
 	}
 	
+	protected void setUp() throws Exception
+	{
+		super.setUp();
+		attachmentManager = 
+			new FileSystemAttachmentManager(getTestBasePath());
+	}
+
 	public void testFileSystemClearAllAttachments() 
 		throws AttachmentStorageException, IOException
 	{
@@ -64,13 +71,6 @@ public class TestFileSystemAttachmentManager
 				in.close();
 			}
 		}
-	}
-	
-	protected void setUp() throws Exception
-	{
-		super.setUp();
-		attachmentManager = 
-			new FileSystemAttachmentManager(getTestBasePath());
 	}
 	
 	protected AttachmentManager getAttachmentManager()

@@ -3,8 +3,6 @@ package org.martus.amplifier.presentation.test;
 import java.util.List;
 import java.util.Vector;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.velocity.context.Context;
 import org.martus.amplifier.presentation.SearchResults;
 import org.martus.amplifier.search.BulletinIndexException;
@@ -23,7 +21,7 @@ public class TestSearchResults extends TestCaseEnhanced
 	public void testNoResults() throws Exception
 	{
 		MockAmplifierRequest request = new MockAmplifierRequest();
-		HttpServletResponse response = null;
+		MockAmplifierResponse response = null;
 		Context context = new MockContext();
 		
 		SearchResults sr = new SearchResults();
@@ -35,7 +33,7 @@ public class TestSearchResults extends TestCaseEnhanced
 	public void testYesResults() throws Exception
 	{
 		MockAmplifierRequest request = new MockAmplifierRequest();
-		HttpServletResponse response = null;
+		MockAmplifierResponse response = null;
 		Context context = new MockContext();
 
 		SearchResultsForTesting sr = new SearchResultsForTesting();

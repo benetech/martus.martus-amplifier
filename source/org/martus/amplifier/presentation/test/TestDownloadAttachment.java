@@ -25,20 +25,23 @@ Boston, MA 02111-1307, USA.
 */
 package org.martus.amplifier.presentation.test;
 
+import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Vector;
 
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.velocity.context.Context;
+import org.martus.amplifier.attachment.AttachmentStorageException;
+import org.martus.amplifier.attachment.FileSystemAttachmentManager;
+import org.martus.amplifier.common.AmplifierConfiguration;
+import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.amplifier.presentation.DownloadAttachment;
-import org.martus.amplifier.presentation.SearchResults;
 import org.martus.amplifier.search.AttachmentInfo;
 import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinInfo;
-import org.martus.amplifier.velocity.AmplifierServletRequest;
 import org.martus.common.packet.UniversalId;
 import org.martus.common.test.TestCaseEnhanced;
+import org.martus.util.DirectoryTreeRemover;
+import org.martus.util.StringInputStream;
 
 
 public class TestDownloadAttachment extends TestCaseEnhanced
@@ -47,90 +50,97 @@ public class TestDownloadAttachment extends TestCaseEnhanced
 	{
 		super(name);
 	}
-	
-	public void testBasics() throws Exception
-	{
-		MockAmplifierRequest request = new MockAmplifierRequest();
-		HttpServletResponse response = null;
-		Context context = createSampleSearchResults(request, response);
 
-		DownloadAttachment servlet = new DownloadAttachment();
-		String templateName = servlet.selectTemplate(request, response, context);
-		assertEquals("DownloadAttachment.vm", templateName);
+	public void setUp() throws Exception
+	{
+		String basePath = AmplifierConfiguration.getInstance().getBasePath() + "/testing";
+		MartusAmplifier.attachmentManager = new FileSystemAttachmentManager(basePath);
+	}
+	
+	public void tearDown() throws Exception
+	{
+		MartusAmplifier.attachmentManager.clearAllAttachments();
+		String basePath = AmplifierConfiguration.getInstance().getBasePath() + "/testing";
+		DirectoryTreeRemover.deleteEntireDirectoryTree(new File(basePath));
 	}
 	
 	public void testGetAttachment() throws Exception
 	{
 		MockAmplifierRequest request = new MockAmplifierRequest();
-		HttpServletResponse response = null;
-		Context context = createSampleSearchResults(request, response);
+		MockAmplifierResponse response = new MockAmplifierResponse();
+		createSampleSearchResults(request, response);
 		request.parameters.put("bulletinIndex","1");
 		request.parameters.put("attachmentIndex","1");
-		DownloadAttachment servlet = new DownloadAttachment();
-		servlet.selectTemplate(request, response, context);
-		AttachmentInfo attachmentInfo = (AttachmentInfo)context.get("attachment");
-		assertEquals("Attachment # 1's local ID didn't match", uid1.getLocalId(), attachmentInfo.getLocalId());
-		assertEquals("Attachment # 1's label didn't match", label1, attachmentInfo.getLabel());
-		assertEquals("Attachment # 1's account ID didn't match", uid1.getAccountId(), attachmentInfo.getAccountId());
-
+		DownloadAttachment servlet = new DownloadAttachment(basePath);
+		servlet.internalDoGet(request, response);
+		
+		String attachment1 = response.getDataString();
+		assertEquals("Attachment 1's data not the same?", data1, attachment1);
+		 
 		request.parameters.put("bulletinIndex","1");
 		request.parameters.put("attachmentIndex","2");
-		servlet.selectTemplate(request, response, context);
-		attachmentInfo = (AttachmentInfo)context.get("attachment");
-		assertEquals("Attachment # 2's local ID didn't match", uid1.getLocalId(), attachmentInfo.getLocalId());
-		assertEquals("Attachment # 2's label didn't match", label2, attachmentInfo.getLabel());
-		assertEquals("Attachment # 2's account ID didn't match", uid1.getAccountId(), attachmentInfo.getAccountId());
+		MockAmplifierResponse response2 = new MockAmplifierResponse();
+		servlet.internalDoGet(request, response2);
+		String attachment2 = response2.getDataString();
+		assertEquals("Attachment 2's data not the same?", data2, attachment2);
 
 		request.parameters.put("bulletinIndex","2");
 		request.parameters.put("attachmentIndex","1");
-		servlet.selectTemplate(request, response, context);
-		attachmentInfo = (AttachmentInfo)context.get("attachment");
-		assertEquals("Attachment # 3's local ID didn't match", uid2.getLocalId(), attachmentInfo.getLocalId());
-		assertEquals("Attachment # 3's label didn't match", label3, attachmentInfo.getLabel());
-		assertEquals("Attachment # 3's account ID didn't match", uid2.getAccountId(), attachmentInfo.getAccountId());
+		MockAmplifierResponse response3 = new MockAmplifierResponse();
+		servlet.internalDoGet(request, response3);
+		String attachment3 = response3.getDataString();
+		assertEquals("Attachment 3's data not the same?", data3, attachment3);
 	}
 
-	private Context createSampleSearchResults(MockAmplifierRequest request, HttpServletResponse response) throws Exception
+	private void createSampleSearchResults(MockAmplifierRequest request, MockAmplifierResponse response) throws Exception
 	{
-		Context context = new MockContext();
-		SearchResultsForTesting sr = new SearchResultsForTesting();
+		List infos = getFoundBulletins();
+		request.getSession().setAttribute("foundBulletins", infos);
 		request.putParameter("query", "test");
 		request.parameters.put("bulletinIndex","1");
 		request.parameters.put("attachmentIndex","1");
-		sr.selectTemplate(request, response, context);
-		return context;
 	}
 
 	final UniversalId uid1 = UniversalId.createDummyUniversalId();
 	final String label1 = "attachment 1";
+	final String data1 = "this is attachment 1";
 	final AttachmentInfo attachment1 = new AttachmentInfo(uid1.getAccountId(), uid1.getLocalId(), label1);
-	final String label2 = "attachment 2";
-	final AttachmentInfo attachment2 =  new AttachmentInfo(uid1.getAccountId(), uid1.getLocalId(), label2);
 
 	final UniversalId uid2 = UniversalId.createDummyUniversalId();
-	final String label3 = "attachment 3";
-	final AttachmentInfo attachment3 =  new AttachmentInfo(uid2.getAccountId(), uid2.getLocalId(), label3);
+	final String label2 = "attachment 2";
+	final String data2 = "this is attachment 2";
+	final AttachmentInfo attachment2 =  new AttachmentInfo(uid1.getAccountId(), uid2.getLocalId(), label2);
 
-	class SearchResultsForTesting extends SearchResults
+	final UniversalId uid3 = UniversalId.createDummyUniversalId();
+	final String label3 = "attachment 3";
+	final String data3 = "this is attachment 3";
+	final AttachmentInfo attachment3 =  new AttachmentInfo(uid2.getAccountId(), uid3.getLocalId(), label3);
+
+	public List getFoundBulletins()
+		throws Exception, BulletinIndexException
 	{
-		public List getSearchResults(AmplifierServletRequest request)
-			throws Exception, BulletinIndexException
-		{
-			if(request.getParameter("query")==null)
-				throw new Exception("malformed query");
-			Vector infos = new Vector();
-			BulletinInfo bulletinInfo1 = new BulletinInfo(uid1);
-			bulletinInfo1.addAttachment(attachment1);
-			bulletinInfo1.addAttachment(attachment2);
-			infos.add(bulletinInfo1);
-			
-			BulletinInfo bulletinInfo2 = new BulletinInfo(uid2);
-			bulletinInfo2.addAttachment(attachment3);
-			infos.add(bulletinInfo2);
-			
-			return infos;
-		}
+		Vector infos = new Vector();
+		BulletinInfo bulletinInfo1 = new BulletinInfo(uid1);
+		bulletinInfo1.addAttachment(attachment1);
+		bulletinInfo1.addAttachment(attachment2);
+		infos.add(bulletinInfo1);
+		writeAttachment(bulletinInfo1, 0, data1);
+		writeAttachment(bulletinInfo1, 1, data2);
+		
+		BulletinInfo bulletinInfo2 = new BulletinInfo(uid2);
+		bulletinInfo2.addAttachment(attachment3);
+		infos.add(bulletinInfo2);
+		writeAttachment(bulletinInfo2, 0, data3);
+		
+		return infos;
+	}
+
+	private void writeAttachment(BulletinInfo bulletinInfo1,int index, String data) throws AttachmentStorageException, UnsupportedEncodingException
+	{
+		AttachmentInfo attachInfo = (AttachmentInfo)bulletinInfo1.getAttachments().get(index);
+		UniversalId uid1 = UniversalId.createFromAccountAndLocalId(attachInfo.getAccountId(), attachInfo.getLocalId());
+		MartusAmplifier.attachmentManager.putAttachment(uid1, new StringInputStream(data));
 	}
 	
-	
+	final String basePath = AmplifierConfiguration.getInstance().getBasePath() + "/testing";
 }

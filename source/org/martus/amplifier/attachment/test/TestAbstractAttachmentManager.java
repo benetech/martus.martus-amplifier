@@ -1,5 +1,6 @@
 package org.martus.amplifier.attachment.test;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -8,13 +9,26 @@ import junit.framework.Assert;
 import org.martus.amplifier.attachment.AttachmentManager;
 import org.martus.amplifier.attachment.AttachmentNotFoundException;
 import org.martus.amplifier.attachment.AttachmentStorageException;
+import org.martus.amplifier.common.AmplifierConfiguration;
 import org.martus.amplifier.test.AbstractAmplifierTestCase;
 import org.martus.common.packet.UniversalId;
+import org.martus.util.DirectoryTreeRemover;
 import org.martus.util.StringInputStream;
 
 public abstract class TestAbstractAttachmentManager 
 	extends AbstractAmplifierTestCase
 {
+	protected TestAbstractAttachmentManager(String name)
+	{
+		super(name);
+	}
+
+	protected void tearDown() throws Exception 
+	{
+		String basePath = AmplifierConfiguration.getInstance().getBasePath() + "/test";
+		DirectoryTreeRemover.deleteEntireDirectoryTree(new File(basePath));
+	}
+
 	public void testClearAllAttachments() 
 		throws AttachmentStorageException, IOException
 	{
@@ -202,21 +216,5 @@ public abstract class TestAbstractAttachmentManager
 		}
 	}
 	
-	protected TestAbstractAttachmentManager(String name)
-	{
-		super(name);
-	}
-	
-	protected void tearDown() throws Exception 
-	{
-		try {
-			getAttachmentManager().close();
-		} finally {
-			super.tearDown();
-		}
-	}
-	
 	protected abstract AttachmentManager getAttachmentManager();
-	
-
 }

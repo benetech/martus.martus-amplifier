@@ -25,16 +25,15 @@ Boston, MA 02111-1307, USA.
 */
 package org.martus.amplifier.presentation;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.velocity.context.Context;
 import org.martus.amplifier.velocity.AmplifierServlet;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
+import org.martus.amplifier.velocity.AmplifierServletResponse;
 
 public class SimpleSearch extends AmplifierServlet
 {
     public String selectTemplate(AmplifierServletRequest request,
-				HttpServletResponse response, 
+				AmplifierServletResponse response, 
 				Context context)
 	{
 		context.put("name", request.getParameter("query"));

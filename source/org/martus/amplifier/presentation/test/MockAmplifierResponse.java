@@ -23,10 +23,29 @@ Software Foundation, Inc., 59 Temple Place - Suite 330,
 Boston, MA 02111-1307, USA.
 
 */
-package org.martus.amplifier.velocity;
+package org.martus.amplifier.presentation.test;
 
-public interface AmplifierServletRequest
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
+import org.martus.amplifier.velocity.AmplifierServletResponse;
+
+
+public class MockAmplifierResponse implements AmplifierServletResponse
 {
-	public String getParameter(String key);
-	public AmplifierServletSession getSession();
+	
+	public OutputStream getOutputStream() throws IOException
+	{
+		if(output == null)
+			output = new ByteArrayOutputStream();
+		return output;
+	}
+	
+	public String getDataString() throws IOException
+	{
+		return output.toString("UTF-8");
+	}
+	
+	ByteArrayOutputStream output;
 }

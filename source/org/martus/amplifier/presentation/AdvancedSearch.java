@@ -27,16 +27,15 @@ package org.martus.amplifier.presentation;
 
 import java.util.Vector;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.velocity.context.Context;
 import org.martus.amplifier.common.FindBulletinsFields;
 import org.martus.amplifier.velocity.AmplifierServlet;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
+import org.martus.amplifier.velocity.AmplifierServletResponse;
 
 public class AdvancedSearch extends AmplifierServlet
 {
-	public String selectTemplate(AmplifierServletRequest request, HttpServletResponse response, Context context)
+	public String selectTemplate(AmplifierServletRequest request, AmplifierServletResponse response, Context context)
 	{		
 		context.put("monthFields", FindBulletinsFields.getMonthFieldDisplayNames());
 		context.put("today", FindBulletinsFields.getToday());

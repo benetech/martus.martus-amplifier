@@ -25,8 +25,23 @@ Boston, MA 02111-1307, USA.
 */
 package org.martus.amplifier.velocity;
 
-public interface AmplifierServletRequest
+import java.io.IOException;
+import java.io.OutputStream;
+
+import javax.servlet.http.HttpServletResponse;
+
+
+public class WrappedServletResponse implements AmplifierServletResponse
 {
-	public String getParameter(String key);
-	public AmplifierServletSession getSession();
+	public WrappedServletResponse(HttpServletResponse servletResponse)
+	{
+		response = servletResponse;
+	}
+	
+	public OutputStream getOutputStream() throws IOException
+	{
+		return response.getOutputStream();
+	}
+
+	HttpServletResponse response;	
 }

@@ -15,6 +15,7 @@ import junit.framework.Assert;
 import org.martus.amplifier.attachment.AttachmentManager;
 import org.martus.amplifier.attachment.AttachmentStorageException;
 import org.martus.amplifier.attachment.FileSystemAttachmentManager;
+import org.martus.amplifier.common.AmplifierConfiguration;
 import org.martus.amplifier.datasynch.BulletinExtractor;
 import org.martus.amplifier.lucene.LuceneBulletinIndexer;
 import org.martus.amplifier.lucene.LuceneBulletinSearcher;
@@ -37,6 +38,7 @@ import org.martus.common.crypto.MartusCrypto.EncryptionException;
 import org.martus.common.database.Database;
 import org.martus.common.database.MockServerDatabase;
 import org.martus.common.packet.UniversalId;
+import org.martus.util.DirectoryTreeRemover;
 import org.martus.util.StreamCopier;
 import org.martus.util.StringInputStream;
 
@@ -155,9 +157,14 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 
 	protected void tearDown() throws Exception 
 	{
-		try {
-			attachmentManager.close();
-		} finally {
+		try 
+		{
+			attachmentManager.clearAllAttachments();
+			String basePath = AmplifierConfiguration.getInstance().getBasePath() + "/test";
+			DirectoryTreeRemover.deleteEntireDirectoryTree(new File(basePath));
+		} 
+		finally 
+		{
 			super.tearDown();
 		}
 	}

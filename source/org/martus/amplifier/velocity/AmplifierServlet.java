@@ -86,7 +86,7 @@ abstract public class AmplifierServlet extends VelocityServlet
 	}
 
 	abstract public String selectTemplate(AmplifierServletRequest request,
-			HttpServletResponse response, Context context) throws Exception;
+			AmplifierServletResponse response, Context context) throws Exception;
 			
 			
 	public Template handleRequest(HttpServletRequest request,
@@ -96,7 +96,8 @@ abstract public class AmplifierServlet extends VelocityServlet
 		try
 		{
 			AmplifierServletRequest ampRequest = new WrappedServletRequest(request);
-			String templateName = selectTemplate(ampRequest, response, context);
+			AmplifierServletResponse ampResponse = new WrappedServletResponse(response);
+			String templateName = selectTemplate(ampRequest, ampResponse, context);
 			return getTemplate(templateName);
 		}
 		catch( ParseErrorException e )

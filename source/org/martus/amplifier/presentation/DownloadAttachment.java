@@ -25,32 +25,87 @@ Boston, MA 02111-1307, USA.
 */
 package org.martus.amplifier.presentation;
 
-import java.util.Vector;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.List;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.velocity.context.Context;
+import org.martus.amplifier.attachment.AttachmentManager;
+import org.martus.amplifier.attachment.AttachmentStorageException;
+import org.martus.amplifier.attachment.FileSystemAttachmentManager;
+import org.martus.amplifier.common.AmplifierConfiguration;
+import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.amplifier.search.AttachmentInfo;
 import org.martus.amplifier.search.BulletinInfo;
-import org.martus.amplifier.velocity.AmplifierServlet;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
+import org.martus.amplifier.velocity.AmplifierServletResponse;
 import org.martus.amplifier.velocity.AmplifierServletSession;
+import org.martus.amplifier.velocity.WrappedServletRequest;
+import org.martus.amplifier.velocity.WrappedServletResponse;
+import org.martus.common.packet.UniversalId;
+import org.martus.util.StreamCopier;
 
-public class DownloadAttachment extends AmplifierServlet
+public class DownloadAttachment extends HttpServlet
 {
-	public String selectTemplate(AmplifierServletRequest request, HttpServletResponse response, Context context)
-		throws Exception
+	public DownloadAttachment()
+	{
+		this(AmplifierConfiguration.getInstance().getBasePath());
+	}
+
+	public DownloadAttachment(String testBasePathToUse)
+	{
+		super();
+		basePath = testBasePathToUse;
+	}
+	
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+		throws ServletException, IOException
+	{
+		WrappedServletRequest ampRequest = new WrappedServletRequest(request);
+		WrappedServletResponse ampResponse = new WrappedServletResponse(response);
+		internalDoGet(ampRequest, ampResponse);	
+	}
+
+	public void internalDoGet(AmplifierServletRequest request, AmplifierServletResponse response) throws IOException
 	{
 		AmplifierServletSession session = request.getSession();
-		Vector bulletins = (Vector)session.getAttribute("foundBulletins");
+		List bulletins = (List)session.getAttribute("foundBulletins");
 		int bulletinIndex = Integer.parseInt(request.getParameter("bulletinIndex"));
 			
 		BulletinInfo bulletin = (BulletinInfo)bulletins.get(bulletinIndex - 1);
 		int attachmentIndex = Integer.parseInt(request.getParameter("attachmentIndex"));
 		AttachmentInfo info = (AttachmentInfo)bulletin.getAttachments().get(attachmentIndex-1);
-		
-		context.put("attachment", info);
-		return "DownloadAttachment.vm";
+		if(basePath == null)
+			basePath =	AmplifierConfiguration.getInstance().getBasePath();
+		try
+		{
+			UniversalId uId = UniversalId.createFromAccountAndLocalId(info.getAccountId(), info.getLocalId());
+			AttachmentManager manager = MartusAmplifier.attachmentManager;
+			
+			//MartusAmplifier.attachmentManager is set in tests but live code since
+			//Two different classloaders construct the MartusAmplifier && DownloadAttachment
+			//requesting the static member results in null 
+			if(manager == null) 
+				manager = new FileSystemAttachmentManager(basePath);
+				
+			InputStream in = manager.getAttachment(uId);
+			OutputStream out = response.getOutputStream();
+			new StreamCopier().copyStream(in, out);
+			in.close();
+			out.flush();
+			out.close();
+		}
+		catch (AttachmentStorageException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
-
+	
+	private String basePath = null;
 }

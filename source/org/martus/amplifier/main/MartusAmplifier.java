@@ -14,7 +14,6 @@ import java.util.Vector;
 import java.util.logging.Logger;
 
 import org.martus.amplifier.attachment.AttachmentManager;
-import org.martus.amplifier.attachment.AttachmentStorageException;
 import org.martus.amplifier.attachment.FileSystemAttachmentManager;
 import org.martus.amplifier.common.AmplifierConfiguration;
 import org.martus.amplifier.common.AmplifierConstants;
@@ -67,10 +66,11 @@ public class MartusAmplifier
 	void start() throws Exception
 	{
 		deleteLuceneLockFile();
+		String basePath = AmplifierConfiguration.getInstance().getBasePath();
+
+		attachmentManager = new FileSystemAttachmentManager(basePath);
 		
-		log("Creating key pair...");
-		
-		File configDirectory = new File(AmplifierConfiguration.getInstance().getBasePath());
+		File configDirectory = new File(basePath);
 		File backupServersDirectory = new File(configDirectory, "serversWhoWeCall");
 		backupServersList = loadServersWeWillCall(backupServersDirectory, security);
 		
@@ -87,6 +87,7 @@ public class MartusAmplifier
 		{
 		}
 	}
+	
 
 	private void processCommandLine(String[] args)
 	{
@@ -255,15 +256,12 @@ public class MartusAmplifier
 			return;
 				
 		BulletinIndexer indexer = null;
-		AttachmentManager attachmentManager = null;
 		try
 		{
 			DataSynchManager dataManager = new DataSynchManager(backupServersList, getSecurity());
 			AmplifierConfiguration config = 
 				AmplifierConfiguration.getInstance();
 			indexer = new LuceneBulletinIndexer(
-				config.getBasePath());
-			attachmentManager = new FileSystemAttachmentManager(
 				config.getBasePath());
 	
 			dataManager.getAllNewBulletins(attachmentManager, indexer);
@@ -281,16 +279,6 @@ public class MartusAmplifier
 				} catch (BulletinIndexException e) {
 					fancyLogger.severe(
 						"Unable to close the indexer: " + e.getMessage());
-				}
-			}
-			
-			if (attachmentManager != null) {
-				try {
-					attachmentManager.close();
-				} catch (AttachmentStorageException e) {
-					fancyLogger.severe(
-						"Unable to close the attachment manager: " +
-						e.getMessage());
 				}
 			}
 		}
@@ -382,7 +370,7 @@ public class MartusAmplifier
 			System.exit(6);
 		}
 	}
-	
+
 	boolean secureMode;
 	static String insecurePassword;
 
@@ -398,6 +386,7 @@ public class MartusAmplifier
 	
 	LoggerInterface logger;
 
+	public static AttachmentManager attachmentManager;
 	private static final String KEYPAIRFILENAME = "keypair.dat";
 	private static final String ADMINTRIGGERDIRECTORY = "adminTriggers";
 	private static final String ADMINSTARTUPCONFIGDIRECTORY = "deleteOnStartup";

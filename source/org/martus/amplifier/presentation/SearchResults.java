@@ -31,8 +31,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.velocity.context.Context;
 import org.martus.amplifier.common.AmplifierConfiguration;
 import org.martus.amplifier.common.SearchParameters;
@@ -43,12 +41,13 @@ import org.martus.amplifier.search.BulletinInfo;
 import org.martus.amplifier.search.BulletinSearcher;
 import org.martus.amplifier.velocity.AmplifierServlet;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
+import org.martus.amplifier.velocity.AmplifierServletResponse;
 
 
 public class SearchResults extends AmplifierServlet implements SearchResultConstants
 {	
 	public String selectTemplate(AmplifierServletRequest request,
-					HttpServletResponse response, Context context) 
+			AmplifierServletResponse response, Context context) 
 					throws Exception
 	{
 		String templateName = "NoSearchResults.vm";

@@ -1,7 +1,5 @@
 package org.martus.amplifier.presentation.test;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.velocity.context.Context;
 import org.martus.amplifier.presentation.SimpleSearch;
 import org.martus.common.test.TestCaseEnhanced;
@@ -16,7 +14,7 @@ public class TestSimpleSearch extends TestCaseEnhanced
 	public void testBasics()
 	{
 		MockAmplifierRequest request = new MockAmplifierRequest();
-		HttpServletResponse response = null;
+		MockAmplifierResponse response = null;
 		Context context = new MockContext();
 		
 		String sampleQuery = "this is what the user is searching for";
