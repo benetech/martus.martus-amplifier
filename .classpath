@@ -9,9 +9,10 @@
     <classpathentry kind="src" path="/martus-readonly"/>
     <classpathentry kind="var" path="jsse"/>
     <classpathentry kind="var" path="xmlrpc"/>
-    <classpathentry kind="var" path="TOMCAT_HOME/common/lib/servlet.jar"/>
     <classpathentry kind="var" path="jstl_standard"/>
     <classpathentry kind="var" path="junit"/>
     <classpathentry kind="var" path="bccrypto"/>
+    <classpathentry kind="lib" path="buildfiles/jars/jasper-runtime.jar"/>
+    <classpathentry kind="var" path="TOMCAT_HOME"/>
     <classpathentry kind="output" path="presentation/WEB-INF/classes"/>
 </classpath>

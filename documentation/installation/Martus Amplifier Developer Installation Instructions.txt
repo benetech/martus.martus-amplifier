@@ -9,8 +9,10 @@ Martus Amplifier Developer Installation Instructions
 
 5. Set up Tomcat using the "Set up Tomcat" instructions.
 
-6. Follow the "Building Amplifier" instructions.
+6. Set up other Eclipse variables using "Set Eclipse Variables" instructions.
 
-7. To get started, follow the "Running the Amplifier" instructions.
+7. Follow the "Building Amplifier" instructions.
 
-8. For unit testing, follow the "Testing the Amplifier" instructions.
+8. To get started, follow the "Running the Amplifier" instructions.
+
+9. For unit testing, follow the "Testing the Amplifier" instructions.
