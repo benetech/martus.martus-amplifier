@@ -53,7 +53,7 @@ import org.mortbay.util.MultiException;
 
 public class MartusAmplifier
 {
-	public MartusAmplifier(StubServer serverToUse) throws CryptoInitializationException
+	public MartusAmplifier(MartusServer serverToUse) throws CryptoInitializationException
 	{
 		coreServer = serverToUse;
 
@@ -381,7 +381,7 @@ public class MartusAmplifier
 	boolean isSyncing;
 	List backupServersList;
 	List notAmplifiedAccountsList;
-	StubServer coreServer;
+	MartusServer coreServer;
 
 	static final long IMMEDIATELY = 0;
 	static final long DEFAULT_HOURS_TO_SYNC = 24;

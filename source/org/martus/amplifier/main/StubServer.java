@@ -83,14 +83,12 @@ public class StubServer extends MartusServer
 	MartusCrypto.CryptoInitializationException, IOException, InvalidPublicKeyFileException, PublicInformationInvalidException
 	{
 		super(dir, loggerToUse);
-		amp = new MartusAmplifier(this);
 	}
 
 	public StubServer(File dir, LoggerInterface loggerToUse, MartusCrypto securityToUse) throws 
 	MartusCrypto.CryptoInitializationException, IOException, InvalidPublicKeyFileException, PublicInformationInvalidException
 	{
 		super(dir, loggerToUse, securityToUse);
-		amp = new MartusAmplifier(this);
 	}
 
 	void processCommandLine(String[] args)
@@ -170,7 +168,5 @@ public class StubServer extends MartusServer
 	private static final long MINUTES_TO_MILLI = 60 * 1000;
 
 	private long dataSynchIntervalMillis;
-	public MartusAmplifier amp;
 	char[] insecurePassword;
-	String ampIpAddress;
 }

@@ -4,7 +4,6 @@
 	<comment></comment>
 	<projects>
 		<project>martus-common</project>
-		<project>martus-server</project>
 		<project>martus-utils</project>
 	</projects>
 	<buildSpec>

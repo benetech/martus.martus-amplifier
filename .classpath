@@ -13,6 +13,6 @@
     <classpathentry kind="var" path="junit"/>
     <classpathentry kind="src" path="/martus-utils"/>
     <classpathentry kind="src" path="/martus-common"/>
-    <classpathentry kind="src" path="/martus-server"/>
+    <classpathentry kind="lib" path="/martus-server/bin"/>
     <classpathentry kind="output" path="classes"/>
 </classpath>
