@@ -11,7 +11,7 @@ import org.martus.amplifier.attachment.AttachmentStorageException;
 import org.martus.amplifier.attachment.DataManager;
 import org.martus.amplifier.test.AbstractAmplifierTestCase;
 import org.martus.common.packet.UniversalId;
-import org.martus.util.DirectoryTreeRemover;
+import org.martus.util.DirectoryUtils;
 import org.martus.util.StringInputStream;
 
 public abstract class TestAbstractDataManager 
@@ -24,7 +24,7 @@ public abstract class TestAbstractDataManager
 
 	protected void tearDown() throws Exception 
 	{
-		DirectoryTreeRemover.deleteEntireDirectoryTree(new File(basePath));
+		DirectoryUtils.deleteEntireDirectoryTree(new File(basePath));
 	}
 
 	public void testClearAllAttachments() 

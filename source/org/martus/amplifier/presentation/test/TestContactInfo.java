@@ -41,7 +41,7 @@ import org.martus.amplifier.velocity.AmplifierServletRequest;
 import org.martus.common.crypto.MockMartusSecurity;
 import org.martus.common.packet.UniversalId;
 import org.martus.common.test.TestCaseEnhanced;
-import org.martus.util.DirectoryTreeRemover;
+import org.martus.util.DirectoryUtils;
 
 
 public class TestContactInfo extends TestCaseEnhanced
@@ -92,7 +92,7 @@ public class TestContactInfo extends TestCaseEnhanced
 		assertEquals("ContactInfo.vm", templateName);
 
 		contactInfo2.delete();
-		DirectoryTreeRemover.deleteEntireDirectoryTree(basePath);
+		DirectoryUtils.deleteEntireDirectoryTree(basePath);
 	}
 
 	private Context createSampleSearchResults(MockAmplifierRequest request, MockAmplifierResponse response) throws Exception

@@ -34,7 +34,7 @@ import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.amplifier.presentation.AdvancedSearch;
 import org.martus.common.test.TestCaseEnhanced;
-import org.martus.util.DirectoryTreeRemover;
+import org.martus.util.DirectoryUtils;
 
 public class TestAdvancedSearch extends TestCaseEnhanced
 {
@@ -50,7 +50,7 @@ public class TestAdvancedSearch extends TestCaseEnhanced
 	
 	public void tearDown()
 	{
-		DirectoryTreeRemover.deleteEntireDirectoryTree(MartusAmplifier.dataDirectory);
+		DirectoryUtils.deleteEntireDirectoryTree(MartusAmplifier.dataDirectory);
 	}
 
 	public void testBasics() throws Exception

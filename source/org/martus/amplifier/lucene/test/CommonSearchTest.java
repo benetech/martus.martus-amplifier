@@ -50,7 +50,7 @@ import org.martus.common.crypto.MockMartusSecurity;
 import org.martus.common.packet.FieldDataPacket;
 import org.martus.common.packet.UniversalId;
 import org.martus.common.utilities.MartusFlexidate;
-import org.martus.util.DirectoryTreeRemover;
+import org.martus.util.DirectoryUtils;
 
 public abstract class CommonSearchTest 
 	extends AbstractAmplifierTestCase implements SearchConstants, SearchResultConstants
@@ -73,7 +73,7 @@ public abstract class CommonSearchTest
 	{
 		super.tearDown();
 		MartusAmplifier.dataManager.clearAllAttachments();
-		DirectoryTreeRemover.deleteEntireDirectoryTree(new File(basePath));
+		DirectoryUtils.deleteEntireDirectoryTree(new File(basePath));
 	}
 	
 	protected FieldDataPacket generateSampleData(UniversalId bulletinId)

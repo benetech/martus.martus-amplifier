@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.martus.common.test.TestCaseEnhanced;
-import org.martus.util.DirectoryTreeRemover;
+import org.martus.util.DirectoryUtils;
 import org.martus.util.StreamCopier;
 
 public abstract class AbstractAmplifierTestCase extends TestCaseEnhanced
@@ -24,7 +24,7 @@ public abstract class AbstractAmplifierTestCase extends TestCaseEnhanced
 	
 	protected void teardown() throws Exception
 	{
-		DirectoryTreeRemover.deleteEntireDirectoryTree(new File(basePath));
+		DirectoryUtils.deleteEntireDirectoryTree(new File(basePath));
 	}
 	
 	protected String getTestBasePath()

@@ -42,7 +42,7 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
 import org.martus.amplifier.lucene.LuceneBulletinIndexer;
 import org.martus.common.test.TestCaseEnhanced;
-import org.martus.util.DirectoryTreeRemover;
+import org.martus.util.DirectoryUtils;
 
 public class TestRawLuceneSearching extends TestCaseEnhanced
 {
@@ -96,7 +96,7 @@ public class TestRawLuceneSearching extends TestCaseEnhanced
 
 		searcher.close();
 		
-		DirectoryTreeRemover.deleteEntireDirectoryTree(indexDir);
+		DirectoryUtils.deleteEntireDirectoryTree(indexDir);
 		assertFalse("didn't delete?", indexDir.exists());
 	}
 	

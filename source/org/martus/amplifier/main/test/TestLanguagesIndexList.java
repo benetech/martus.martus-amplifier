@@ -33,7 +33,7 @@ import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.main.LanguagesIndexedList;
 import org.martus.common.MartusUtilities;
 import org.martus.common.test.TestCaseEnhanced;
-import org.martus.util.DirectoryTreeRemover;
+import org.martus.util.DirectoryUtils;
 import org.martus.util.UnicodeReader;
 
 
@@ -72,7 +72,7 @@ public class TestLanguagesIndexList extends TestCaseEnhanced
 		
 		assertEquals("Saved copy should have 1 entry", 1, listFromFile.size());
 		assertEquals("Any Language should be in the list", SearchResultConstants.LANGUAGE_ANYLANGUAGE_LABEL, listFromFile.get(0));		
-		DirectoryTreeRemover.deleteEntireDirectoryTree(baseDir);
+		DirectoryUtils.deleteEntireDirectoryTree(baseDir);
 	}
 
 	public void testLanguagesIndexedAdd() throws Exception
@@ -163,7 +163,7 @@ public class TestLanguagesIndexList extends TestCaseEnhanced
 		{
 		}
 
-		DirectoryTreeRemover.deleteEntireDirectoryTree(baseDir);
+		DirectoryUtils.deleteEntireDirectoryTree(baseDir);
 	}
 
 	

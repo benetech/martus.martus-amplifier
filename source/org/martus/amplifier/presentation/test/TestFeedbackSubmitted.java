@@ -37,7 +37,7 @@ import org.martus.amplifier.presentation.DoSearch;
 import org.martus.amplifier.presentation.FeedbackSubmitted;
 import org.martus.amplifier.velocity.AmplifierServletSession;
 import org.martus.common.test.TestCaseEnhanced;
-import org.martus.util.DirectoryTreeRemover;
+import org.martus.util.DirectoryUtils;
 import org.martus.util.UnicodeReader;
 
 
@@ -72,7 +72,7 @@ public class TestFeedbackSubmitted extends TestCaseEnhanced
 		request.putParameter("userFeedbackDissatisfied",null);
 		request.putParameter("userFeedbackProblem","1");
 		templateName = servlet.selectTemplate(request, response, context);
-		DirectoryTreeRemover.deleteEntireDirectoryTree(tempFeedbackDir);
+		DirectoryUtils.deleteEntireDirectoryTree(tempFeedbackDir);
 
 		assertEquals("Technical problem set should get back feedbacksubmitted", "FeedbackSubmitted.vm", templateName);
 	}
@@ -101,7 +101,7 @@ public class TestFeedbackSubmitted extends TestCaseEnhanced
 		reader.readLine();//message tag
 		String dataIn = reader.readLine();
 		reader.close();
-		DirectoryTreeRemover.deleteEntireDirectoryTree(tempFeedbackDir);
+		DirectoryUtils.deleteEntireDirectoryTree(tempFeedbackDir);
 		
 		assertEquals("Searched For dind't match?", "No Previous search", searchedForIn);
 		assertEquals("data dind't match?", data, dataIn);
@@ -141,7 +141,7 @@ public class TestFeedbackSubmitted extends TestCaseEnhanced
 		reader.readLine();//message tag
 		String dataIn = reader.readLine();
 		reader.close();
-		DirectoryTreeRemover.deleteEntireDirectoryTree(tempFeedbackDir);
+		DirectoryUtils.deleteEntireDirectoryTree(tempFeedbackDir);
 		assertEquals("Basic query didn't match?", basicQueryString, basicQueryIn);
 		assertEquals("Searched For dind't match?", searchedFor, searchedForIn);
 		assertEquals("data dind't match?", data, dataIn);
@@ -181,7 +181,7 @@ public class TestFeedbackSubmitted extends TestCaseEnhanced
 		reader.readLine();//message tag
 		String dataIn = reader.readLine();
 		reader.close();
-		DirectoryTreeRemover.deleteEntireDirectoryTree(tempFeedbackDir);
+		DirectoryUtils.deleteEntireDirectoryTree(tempFeedbackDir);
 		
 		assertEquals("Basic query didn't match?", basicQueryString, basicQueryIn);
 		assertEquals("Searched For dind't match?", searchedFor, searchedForIn);
@@ -224,7 +224,7 @@ public class TestFeedbackSubmitted extends TestCaseEnhanced
 		reader.readLine();//message tag
 		String dataIn = reader.readLine();
 		reader.close();
-		DirectoryTreeRemover.deleteEntireDirectoryTree(tempFeedbackDir);
+		DirectoryUtils.deleteEntireDirectoryTree(tempFeedbackDir);
 
 	
 		assertEquals("data dind't match?", data, dataIn);

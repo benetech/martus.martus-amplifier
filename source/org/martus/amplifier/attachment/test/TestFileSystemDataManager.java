@@ -15,7 +15,7 @@ import org.martus.common.crypto.MockMartusSecurity;
 import org.martus.common.database.FileDatabase.MissingAccountMapException;
 import org.martus.common.database.FileDatabase.MissingAccountMapSignatureException;
 import org.martus.common.packet.UniversalId;
-import org.martus.util.DirectoryTreeRemover;
+import org.martus.util.DirectoryUtils;
 import org.martus.util.StringInputStream;
 
 public class TestFileSystemDataManager 
@@ -53,7 +53,7 @@ public class TestFileSystemDataManager
 		}		
 		finally
 		{
-			DirectoryTreeRemover.deleteEntireDirectoryTree(missingAccountMap);
+			DirectoryUtils.deleteEntireDirectoryTree(missingAccountMap);
 		}
 	}
 
@@ -78,7 +78,7 @@ public class TestFileSystemDataManager
 		}		
 		finally
 		{
-			DirectoryTreeRemover.deleteEntireDirectoryTree(baseDir);
+			DirectoryUtils.deleteEntireDirectoryTree(baseDir);
 		}
 	}
 

@@ -43,7 +43,7 @@ import org.martus.common.crypto.MartusCrypto.EncryptionException;
 import org.martus.common.database.Database;
 import org.martus.common.database.MockServerDatabase;
 import org.martus.common.packet.UniversalId;
-import org.martus.util.DirectoryTreeRemover;
+import org.martus.util.DirectoryUtils;
 import org.martus.util.StreamCopier;
 import org.martus.util.StringInputStream;
 
@@ -73,7 +73,7 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 		try 
 		{
 			attachmentManager.clearAllAttachments();
-			DirectoryTreeRemover.deleteEntireDirectoryTree(new File(basePath));
+			DirectoryUtils.deleteEntireDirectoryTree(new File(basePath));
 		} 
 		finally 
 		{
