@@ -474,6 +474,156 @@ public abstract class AbstractSearchTestCase
 			searcher.close();
 		}
 	}
+	
+	public void testLuceneSearchQueries() throws BulletinIndexException,ParseException
+	{
+		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
+		FieldDataPacket fdp1 	= generateSampleData(bulletinId1);		
+		UniversalId bulletinId2 = UniversalId.createDummyUniversalId();
+		FieldDataPacket fdp2 	= generateSampleFlexiData(bulletinId2);		
+		BulletinIndexer indexer = openBulletinIndexer();
+		try 
+		{
+			indexer.clearIndex();
+			indexer.indexFieldData(bulletinId1, fdp1);
+			indexer.indexFieldData(bulletinId2, fdp2);
+		} 
+		finally 
+		{
+			indexer.close();
+		}
+		
+		BulletinSearcher searcher = openBulletinSearcher();
+		BulletinSearcher.Results results = null;				
+		
+		try 
+		{		
+			String query = "-(lunch)"+ " AND \"What's for\"";
+			assertEquals("-(lunch) AND \"What's for\"", query);	
+			results = searcher.search(SEARCH_TITLE_INDEX_FIELD, query);
+			assertEquals("Combine without these words and exactphrase? ", 0, results.getCount());	
+			
+			query = "+(lunch)"+ " AND \"What's for\"";
+			assertEquals("+(lunch) AND \"What's for\"", query);	
+			results = searcher.search(SEARCH_TITLE_INDEX_FIELD, query);
+			assertEquals("Combine witt these words and exactphrase? ", 1, results.getCount());	
+		}
+		finally 
+		{
+			searcher.close();
+		}
+	}
+
+	public void testAdvancedSearchQueries() throws BulletinIndexException,ParseException
+	{
+		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
+		FieldDataPacket fdp1 	= generateSampleData(bulletinId1);		
+		UniversalId bulletinId2 = UniversalId.createDummyUniversalId();
+		FieldDataPacket fdp2 	= generateSampleFlexiData(bulletinId2);		
+		BulletinIndexer indexer = openBulletinIndexer();
+		try 
+		{
+			indexer.clearIndex();
+			indexer.indexFieldData(bulletinId1, fdp1);
+			indexer.indexFieldData(bulletinId2, fdp2);
+		} 
+		finally 
+		{
+			indexer.close();
+		}
+		
+		BulletinSearcher searcher = openBulletinSearcher();
+		BulletinSearcher.Results results = null;				
+		
+		try 
+		{
+			Date defaultDate 	= SearchConstants.SEARCH_DATE_FORMAT.parse("1970-01-01");			
+			Date entryStartDate = SearchConstants.SEARCH_DATE_FORMAT.parse("2003-08-30");		
+		
+			HashMap fields = new HashMap();
+			fields.put(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, defaultDate);
+			fields.put(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, new GregorianCalendar().getTime());		
+			
+			// simple search
+			String query = "+(lunch)"+ " AND \"What's for\"";		
+			assertEquals("+(lunch) AND \"What's for\"", query);	
+			results = searcher.search(SEARCH_TITLE_INDEX_FIELD, query);
+			assertEquals("Combine with these words and exactphrase in title? ", 1, results.getCount());
+			
+			// complex search	
+			query = "\"What's for\"";		
+			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
+			fields.put(RESULT_FIELDS_KEY, SEARCH_TITLE_INDEX_FIELD);					
+			results = searcher.search(null, fields);
+			assertEquals("Combine with exactphrase in title? ", 1, results.getCount());
+			
+			// complex search
+			query = "+(lunch)"+ " AND \"What's for\"";
+			fields.remove(RESULT_ADVANCED_QUERY_KEY);		
+			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
+			fields.remove(RESULT_FIELDS_KEY);
+			fields.put(RESULT_FIELDS_KEY, IN_ALL_FIELDS);						
+			results = searcher.search(null, fields);
+			assertEquals("Combine with these words and exactphrase in all fields? ", 1, results.getCount());
+			
+			// complex search
+			query = "-(lunch)"+ " AND \"What's for\"";
+			fields.remove(RESULT_ADVANCED_QUERY_KEY);		
+			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
+			fields.remove(RESULT_FIELDS_KEY);
+			fields.put(RESULT_FIELDS_KEY, IN_ALL_FIELDS);						
+			results = searcher.search(null, fields);
+			assertEquals("Combine without these words and exactphrase in all fields? ", 0, results.getCount());
+			
+			query = "+(sandwich beer)"+ " AND \"What's for\"";
+			fields.remove(RESULT_ADVANCED_QUERY_KEY);		
+			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
+			fields.remove(RESULT_FIELDS_KEY);
+			fields.put(RESULT_FIELDS_KEY, IN_ALL_FIELDS);						
+			results = searcher.search(null, fields);
+			assertEquals("Combine with all of these words and exactphrase in all fields? ", 0, results.getCount());			
+			
+			query = "+(sandwich beer)"+ " AND \"for lunch\"";
+			fields.remove(RESULT_ADVANCED_QUERY_KEY);		
+			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
+			fields.remove(RESULT_FIELDS_KEY);
+			fields.put(RESULT_FIELDS_KEY, IN_ALL_FIELDS);						
+			results = searcher.search(null, fields);
+			assertEquals("Combine with all of these words and exactphrase in all fields? ", 2, results.getCount());
+			
+			// all of these words, exphrase, without these words
+			query = "+(sandwich beer)"+ " AND \"for lunch\"" + " AND -(Paul)";
+			fields.remove(RESULT_ADVANCED_QUERY_KEY);		
+			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
+			fields.remove(RESULT_FIELDS_KEY);
+			fields.put(RESULT_FIELDS_KEY, IN_ALL_FIELDS);						
+			results = searcher.search(null, fields);
+			assertEquals("Combine all in all fields? ", 1, results.getCount());
+			
+			// all of these words, exphrase, without these words
+			query = "+(sandwich beer)"+ " AND \"for lunch\"" + " AND -(kitty)";
+			fields.remove(RESULT_ADVANCED_QUERY_KEY);		
+			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
+			fields.remove(RESULT_FIELDS_KEY);
+			fields.put(RESULT_FIELDS_KEY, IN_ALL_FIELDS);						
+			results = searcher.search(null, fields);
+			assertEquals("Combine all in all fields? ", 2, results.getCount());
+											
+			query = "-(salad sandwich)"+ " AND \"What's for\"";
+			fields.remove(RESULT_ADVANCED_QUERY_KEY);		
+			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
+			fields.remove(RESULT_FIELDS_KEY);
+			fields.put(RESULT_FIELDS_KEY, IN_ALL_FIELDS);						
+			results = searcher.search(null, fields);
+			assertEquals("Combine with any of these words and exactphrase in all fields? ", 1, results.getCount());
+		
+		}
+		finally 
+		{
+			searcher.close();
+		}
+	}
+
 
 	
 	public void testAdvancedSearchEventDateOnly() throws BulletinIndexException,ParseException
