@@ -135,33 +135,41 @@ public class MartusAmplifier
 
 	private void startServer(String password) throws IOException, MultiException
 	{
-		File jettyConfigDirectory = getStartupConfigDirectory();
-		//File jettyXmlFile = new File(jettyConfigDirectory, "jettyConfiguration.xml");
-		File jettyKeystore = new File(jettyConfigDirectory, "keystore");
-		
+		startSSLServer(password);
+		startNonSSLServer();
+
+		writeSyncFile(getRunningFile());
+		System.out.println("Waiting for connection...");
+	}
+
+	private void startNonSSLServer() throws IOException, MultiException
+	{
+		Server nonsslServer = new Server();
+		nonsslServer.addWebApplication("","presentationNonSSL");
+		nonsslServer.addListener(new InetAddrPort(80));
+		nonsslServer.start();
+	}
+
+	private void startSSLServer(String password) throws IOException, MultiException
+	{
 		SunJsseListener sslListener = new SunJsseListener(new InetAddrPort(443));
 		sslListener.setPassword(password);
 		sslListener.setKeyPassword(password);
-		sslListener.setKeystore(jettyKeystore.getAbsolutePath());
 		sslListener.setMaxIdleTimeMs(MAX_IDLE_TIME_MS);
 		sslListener.setMaxThreads(MAX_THREADS);
 		sslListener.setMinThreads(MIN_THREADS);
 		sslListener.setLowResourcePersistTimeMs(LOW_RESOURCE_PERSIST_TIME_MS);
+		File jettyKeystore = new File(getStartupConfigDirectory(), "keystore");
+		sslListener.setKeystore(jettyKeystore.getAbsolutePath());
+
+		//File jettyXmlFile = new File(getStartupConfigDirectory(), "jettyConfiguration.xml");
 		//Server sslServer = new Server(jettyXmlFile.getAbsolutePath());
 		Server sslServer = new Server();
-		sslServer.addWebApplication("/","presentation/");
+
+		sslServer.addWebApplication("","presentation");
 		addPasswordAuthentication(sslServer);
 		sslServer.addListener(sslListener);
-
-		Server nonsslServer = new Server();
-		nonsslServer.addWebApplication("/","presentationNonSSL/");
-		nonsslServer.addListener(new InetAddrPort(80));
-		
 		sslServer.start();
-		nonsslServer.start();
-
-		writeSyncFile(getRunningFile());
-		System.out.println("Waiting for connection...");
 	}
 
 	private void processCommandLine(String[] args)
