@@ -34,14 +34,14 @@ public class AmplifierConfiguration
 		return getGenericProperty(AMPLIFIER_BASE_PATH);
 	}
 	
-	public String getWorkingPath()
-	{
-		return getGenericProperty(AMPLIFIER_WORKING_PATH);
-	}
-	
 	public String getPacketsDirectory()
 	{
 		return getGenericProperty(AMPLIFIER_PACKETS_PATH);
+	}
+	
+	public String getFeedbackDirectory()
+	{
+		return getGenericProperty(AMPLIFIER_FEEDBACK_PATH);
 	}
 	
 	public String buildAmplifierBasePath(String directoryOrFile)
@@ -78,8 +78,8 @@ public class AmplifierConfiguration
 
 	//property keys
 	private static final String AMPLIFIER_BASE_PATH = "AMPLIFIER_BASE_DIRECTORY";
-	private static final String AMPLIFIER_WORKING_PATH = "AMPLIFIER_WORKING_DIRECTORY";
 	private static final String AMPLIFIER_PACKETS_PATH = "AMPLIFIER_PACKETS_DIRECTORY";
+	private static final String AMPLIFIER_FEEDBACK_PATH = "AMPLIFIER_FEEDBACK_DIRECTORY";
 	
 	private static final String PATH_PROPERTY_FILE = "/Path.properties";
 	private static AmplifierConfiguration instance = new AmplifierConfiguration();

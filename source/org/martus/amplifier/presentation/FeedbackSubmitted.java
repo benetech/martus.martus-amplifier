@@ -25,18 +25,98 @@ Boston, MA 02111-1307, USA.
 */
 package org.martus.amplifier.presentation;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Map;
+import java.util.Vector;
+
 import org.apache.velocity.context.Context;
+import org.martus.amplifier.common.AdvancedSearchInfo;
+import org.martus.amplifier.common.AmplifierConfiguration;
+import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.velocity.AmplifierServlet;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
 import org.martus.amplifier.velocity.AmplifierServletResponse;
+import org.martus.util.UnicodeWriter;
 
 
 public class FeedbackSubmitted extends AmplifierServlet
 {
+
+	public FeedbackSubmitted()
+	{
+		this(AmplifierConfiguration.getInstance().getFeedbackDirectory());
+	}
+
+	public FeedbackSubmitted(String basePathToUse)
+	{
+		super();
+		feedbackDirectory = basePathToUse;
+	}
+
 	public String selectTemplate(AmplifierServletRequest request, AmplifierServletResponse response, Context context)
 			throws Exception
 	{
 		super.selectTemplate(request, response, context);
+		String feedbackDissatisfied = request.getParameter("userFeedbackDissatisfied");
+		String feedbackProblem = request.getParameter("userFeedbackProblem");
+		Vector searchedFor = new Vector(); 
+		AdvancedSearchInfo advancedSearchedFor = (AdvancedSearchInfo) request.getSession().getAttribute("defaultAdvancedSearch");
+		if(advancedSearchedFor != null)
+			searchedFor = getVectorOfAdvancedSearch(advancedSearchedFor);
+		else
+		{
+			String simple = (String)request.getSession().getAttribute("searchedFor");
+			if(simple!=null)
+				searchedFor.add(simple);
+		}
+		
+		if(feedbackDissatisfied != null)
+			writeFeedback(FEEDBACK_DISSATISFIED_PREFIX, searchedFor, feedbackDissatisfied);
+		else if(feedbackProblem != null)
+			writeFeedback(FEEDBACK_TECH_PROBLEM_PREFIX, searchedFor, feedbackProblem);
+		else
+			return "InternalError.vm";
+
 		return "FeedbackSubmitted.vm";
-	}	
+	}
+
+	public Vector getVectorOfAdvancedSearch(AdvancedSearchInfo advancedSearchedFor)
+	{
+		Vector advancedSearch = new Vector();
+		Map fields = advancedSearchedFor.getFields();
+ 		for(int i=0; i< SearchResultConstants.ADVANCED_KEYS.length; i++)
+		{
+			String value = (String)fields.get(SearchResultConstants.ADVANCED_KEYS[i]);
+			if (value != null)
+				advancedSearch.add(SearchResultConstants.ADVANCED_KEYS[i] + "=" + value);				
+		}
+		return advancedSearch;
+	}
+	
+
+	private void writeFeedback(String fileName, Vector searchedFor, String message) throws IOException
+	{
+		File feedbackDirectoryFile = new File(feedbackDirectory);
+		feedbackDirectoryFile.mkdirs();
+		File feedback = File.createTempFile(fileName, FEEDBACK_SUFFIX, feedbackDirectoryFile);
+		UnicodeWriter writer = new UnicodeWriter(feedback);
+		if(searchedFor.isEmpty())
+			writer.writeln("No Previous search");
+		else
+		{
+			for(int i = 0; i < searchedFor.size(); ++i)
+			{
+				writer.writeln("Searched for:" + searchedFor.get(i));
+			}
+		}
+		writer.writeln(message);
+		writer.close();
+	}
+
+	
+	static public String FEEDBACK_DISSATISFIED_PREFIX = "Dissatisfied";	
+	static public String FEEDBACK_TECH_PROBLEM_PREFIX = "Technical";	
+	final String FEEDBACK_SUFFIX = ".txt";
+	private String feedbackDirectory;	
 }

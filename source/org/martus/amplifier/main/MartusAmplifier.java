@@ -260,7 +260,7 @@ public class MartusAmplifier
 
 	private File getWorkingDirectory()
 	{
-		return new File(AmplifierConfiguration.getInstance().getWorkingPath());
+		return new File(AmplifierConfiguration.getInstance().getBasePath());
 	}
 	
 	public boolean isAmplifierSyncing()
