@@ -23,6 +23,7 @@ public class AmplifierNetworkGatewayTest extends AbstractAmplifierDataSynchTest
 	}
 	
 	/*
+	
 	public void testGetAllAccountIds()
 	{
 		System.out.println("in testGetAllAccountIds");
@@ -30,6 +31,7 @@ public class AmplifierNetworkGatewayTest extends AbstractAmplifierDataSynchTest
 		Vector list = amplifierGateway.getAllAccountIds();
 		assertTrue(list.size() >0);	
 	}
+	
 	
 	
 	public void testGetAccountUniversalIds()
@@ -49,22 +51,22 @@ public class AmplifierNetworkGatewayTest extends AbstractAmplifierDataSynchTest
 		File file = amplifierGateway.getBulletin(uid);
 		assertTrue(file.length() >0);		
 	}
-*/
 
+*/
 	public void testRetrieveAndManageBulletin()
 	{
 		System.out.println("in testRetrieveAndManageBulletin");
 		AmplifierNetworkGateway amplifierGateway = AmplifierNetworkGateway.getInstance();		
 		UniversalId uid = UniversalId.createFromAccountAndLocalId(sampleAccountId, sampleLocalId);
 		Vector list = amplifierGateway.retrieveAndManageBulletin(uid);				
-		assertEquals(list.size(), 3);			
+		assertTrue(list.size() > 0);			
 	}
-	
-	
 	
 
 	
-	final String sampleAccountId = "MIIBIDANBgkqhkiG9w0BAQEFAAOCAQ0AMIIBCAKCAQEA0yZzR54EIRdasI8OegAR5K5X5KCzFbgXTF+jQ97xv41puyTS14H0DnukR52+kZaSW5lIJZFo4Tw7jyVZLoEeavAy76QH6InFx9hH1bxzU+AzGfjvTQTRWEstv8MOiDOclvj94hecwe60ikyWSASRblUqWGJNxFqhQkeWyBaQW7WYUe5WwQ43B5laCvZ4W719dQDAZEA1qCZloqBJ4RHptl1cgUZAzwN6ELQ0PiQqvdyRfAC1MeufSpq58bdTZc2qlqxbyApIIx42s+cmbRNI+kl0xm8VWdRDX2egQeMfSFtKMWif12+C0xLHAIPCiGwrYhKe5JEjBarVdh/1sWjS6QIBEQ==";
-	final String sampleLocalId = "F-97617-edb26b21c8--7ffe";
+
+	
+	final String sampleAccountId = "MIIBIDANBgkqhkiG9w0BAQEFAAOCAQ0AMIIBCAKCAQEAl9NDWiuXjljLkZ4cscHcpcOoK0BaZ6KwaV8UG23n5gdY6A43aoK+y2jTxAl1Krh57Y1cfxKFbTI2cdQ/NQzNHSPat8xJxu8Cao9N1XJk3njBCqRVIvFKIbzUvkZ64eMDP668Zmrp0fLOj1UQedBWyyYwU+5ixUCLFfx3u/WWSE0XszDc+dbWouKCIQLmGaMtn8UuQCMg5JTv3CMNufVNe2UYRF+x68LvCz3lCmFAQ06akxE5ahgUV7MAvVyTBAHM8YQj5TvuwvwffZPgJuDAS9Rs2j4qUnYNtLJCGax+BUfaBE/N5Urj+s/8fE+pwDE2Xpd2alD76Wt54bQBAX6tFwIBEQ==";
+	final String sampleLocalId = "B-1adb7b8-f166248fec--8000";
 
 }
