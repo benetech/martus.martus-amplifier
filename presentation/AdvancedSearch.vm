@@ -6,6 +6,7 @@
     
 	#set ($years = [1970..2004])	
     #set ($days = [1..31])
+    #set ($today = $today)
 
     <body>
 		    <img src="../images/MartusLogo.gif" 
@@ -75,10 +76,10 @@
 					<td align='right'>
 					between 
 		                    <select name="startMonth">                    	
-							    #foreach ($month in $monthFields)
-		                            <option value="$month">
-		                                $month
-		                            </option>
+							    #foreach ($monthChoice in $monthFields)
+		                            <option value="$monthChoice.tag">
+		                                $monthChoice.label
+		                            </option>		                            
 							    #end
 		                    </select>
 		
@@ -87,6 +88,7 @@
 		                            <option value="$day">
 		                                $day
 		                            </option>
+		                            
 							    #end
 		                    </select>    
 		                      
@@ -100,27 +102,43 @@
 	                        			                                                                            </p>				
 	                &nbsp;and&nbsp;
 	                   <select name="endMonth">                    	
-						    #foreach ($month in $monthFields)
-	                            <option value="$month">
-	                                $month
-	                            </option>
+						    #foreach ($monthChoice in $monthFields)
+						    	#if ($monthChoice.tag == $today.month)
+	                             	<option selected value="$monthChoice.tag">
+	                                	$monthChoice.label	                                
+	                            	</option>	                            
+	                            #end
+	                            <option value= "$monthChoice.tag">
+	                                $monthChoice.label
+	                            </option>	                          
 						    #end
 	                    </select>
 	
 	                    <select name="endDay">                    	
 						    #foreach ($day in $days)
+						    	#if ($day == $today.day)
+	                             	<option selected value="$day">	                            		                            		
+	                                	$day	                                
+	                            	</option>	                            
+	                            #end
 	                            <option value="$day">
 	                                $day
-	                            </option>
+	                            </option>	                           
 						    #end
 	                    </select>    
 	                      
 	                    <select name="endYear">                    	
 						    #foreach ($year in $years)
-	                            <option value="$year">
-	                                $year
-	                            </option>
+						     	#if ($year == $today.year)
+	                             	<option selected value="$year">	                            		                            		
+	                                	$year	                                
+	                            	</option>	                            
+	                            #end	  
+	                            <option value="$year">	                            		                            		
+	                                $year	                                
+	                            </option>	                                                     
 						    #end
+						    
 	                    </select>                              
 					</td>
 				</tr>

@@ -26,6 +26,7 @@ Boston, MA 02111-1307, USA.
 package org.martus.amplifier.presentation;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -34,7 +35,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.velocity.context.Context;
 import org.martus.amplifier.common.AmplifierConfiguration;
-import org.martus.amplifier.common.SearchFields;
 import org.martus.amplifier.common.SearchParameters;
 import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.lucene.LuceneBulletinSearcher;
@@ -83,18 +83,18 @@ public class SearchResults extends AmplifierServlet implements SearchResultConst
 	public List getSearchResults(AmplifierServletRequest request)
 		throws Exception, BulletinIndexException
 	{
-		SearchFields searcher = new SearchFields();				
+		HashMap searcher = new HashMap();				
 		String queryString = request.getParameter(RESULT_BASIC_QUERY_KEY);
 	 
 		if (queryString != null)
 		{
-			searcher.add(RESULT_BASIC_QUERY_KEY, queryString);
+			searcher.put(RESULT_BASIC_QUERY_KEY, queryString);
 			return getResults(searcher);
 		}
 
 		queryString = request.getParameter(RESULT_ADVANCED_QUERY_KEY);				
 		new SearchParameters(request, searcher);							
-		searcher.add(RESULT_ADVANCED_QUERY_KEY, queryString);
+		searcher.put(RESULT_ADVANCED_QUERY_KEY, queryString);
 										
 		return getResults(searcher);
 	}
@@ -107,7 +107,7 @@ public class SearchResults extends AmplifierServlet implements SearchResultConst
 		return new LuceneBulletinSearcher(indexPath);
 	}
 	
-	public List getResults(SearchFields fields) throws BulletinIndexException
+	public List getResults(HashMap fields) throws BulletinIndexException
 	{
 		BulletinSearcher searcher = openBulletinSearcher();
 		ArrayList list = new ArrayList();
@@ -115,7 +115,7 @@ public class SearchResults extends AmplifierServlet implements SearchResultConst
 		try {
 			BulletinSearcher.Results results;			
 		
-			String field = (String)fields.getValue(RESULT_BASIC_FIELD_KEY);			
+			String field = (String)fields.get(RESULT_BASIC_FIELD_KEY);			
 			results = searcher.search(field, fields);
 						
 			int numResults = results.getCount();

@@ -30,14 +30,14 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Hashtable;
+import java.util.HashMap;
 
 import org.martus.amplifier.search.SearchConstants;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
 
 public class SearchParameters implements SearchResultConstants, SearchConstants
 {
-	public SearchParameters(AmplifierServletRequest request, SearchFields fields)
+	public SearchParameters(AmplifierServletRequest request, HashMap fields)
 	{
 		searchRequest = request;
 		searchFields  = fields;
@@ -71,7 +71,7 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 
 	private void addField(String key, Object value)
 	{
-		searchFields.add(key, value);
+		searchFields.put(key, value);
 	}
 	
 	private void setEventDate()
@@ -107,11 +107,11 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 		return today.getTime();
 	}
 	
-	public void setSearchFields(SearchFields result)
+	public void setSearchFields(HashMap result)
 	{
 		String fields = getParameterValue(RESULT_FIELDS_KEY);
 		if (fields != null)
-			result.add(fields, fields);
+			result.put(fields, fields);
 	}	
 
 	public boolean containsKey(String key)
@@ -143,23 +143,17 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 	{	
 		if (hasEventFieldKeys())
 		 return getDate(Integer.parseInt(getValue(RESULT_START_YEAR_KEY)),					
-		               	MonthFields.getIndexOfMonth(getValue(RESULT_START_MONTH_KEY)),
+		               	Integer.parseInt(getValue(RESULT_START_MONTH_KEY)),
 		               	Integer.parseInt(getValue(RESULT_START_DAY_KEY)));
 		return null;
 	}
 		
 	public Date getEndDate()
-	{
-		int year = Integer.parseInt(getValue(RESULT_END_YEAR_KEY));
-		int month = MonthFields.getIndexOfMonth(getValue(RESULT_END_MONTH_KEY));
-		int day = Integer.parseInt(getValue(RESULT_END_DAY_KEY));
-
-		if (year <=1970 && month == 1)
-			return getTodayDate();
-
+	{	
 		if (hasEventFieldKeys())
-			return getDate(year, month, day);
-			
+			return getDate(Integer.parseInt(getValue(RESULT_END_YEAR_KEY)),					
+							Integer.parseInt(getValue(RESULT_END_MONTH_KEY)),
+							Integer.parseInt(getValue(RESULT_END_DAY_KEY)));		
 		return null;
 	}
 	
@@ -168,13 +162,8 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 		return new GregorianCalendar(year, month, day).getTime();
 	}	
 
-	public static Date getTodayDate()
-	{
-		return new GregorianCalendar().getTime();
-	}
-	
 	AmplifierServletRequest searchRequest;
-	Hashtable resultList 	= new Hashtable();
-	SearchFields	searchFields;
+	HashMap resultList 	= new HashMap();
+	HashMap	searchFields;
 	boolean hasEventFields 	= true;
 }

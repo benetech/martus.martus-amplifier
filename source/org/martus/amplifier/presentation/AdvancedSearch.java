@@ -31,7 +31,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.velocity.context.Context;
 import org.martus.amplifier.common.FindBulletinsFields;
-import org.martus.amplifier.common.MonthFields;
 import org.martus.amplifier.velocity.AmplifierServlet;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
 
@@ -39,7 +38,8 @@ public class AdvancedSearch extends AmplifierServlet
 {
 	public String selectTemplate(AmplifierServletRequest request, HttpServletResponse response, Context context)
 	{		
-		context.put("monthFields", MonthFields.getMonthDisplayNames());
+		context.put("monthFields", FindBulletinsFields.getMonthFieldDisplayNames());
+		context.put("today", FindBulletinsFields.getToday());
 				
 		Vector filterFields = FindBulletinsFields.getFindWordFilterDisplayNames();
 		context.put("filterWordFields", filterFields);

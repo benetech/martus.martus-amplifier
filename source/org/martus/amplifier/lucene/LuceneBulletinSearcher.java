@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 
 import org.apache.lucene.document.DateField;
 import org.apache.lucene.document.Document;
@@ -16,7 +17,6 @@ import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
-import org.martus.amplifier.common.SearchFields;
 import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.search.AttachmentInfo;
 import org.martus.amplifier.search.BulletinField;
@@ -78,7 +78,7 @@ public class LuceneBulletinSearcher
 		return getLuceneResults(query, field);
 	}
 	
-	private Query loadEventDateQuery(String field, String startQuery, String endQuery)
+	private Query loadEventDateQuery(String startQuery, String endQuery)
 			throws BulletinIndexException 
 	{
 		BooleanQuery booleanQuery = new BooleanQuery();						
@@ -93,33 +93,33 @@ public class LuceneBulletinSearcher
 	}
 	
 	
-	private Query getEventDateQuery(String field, Date startDate, Date endDate)
+	private Query getEventDateQuery(Date startDate, Date endDate)
 			throws BulletinIndexException
 	{
 		String startDateString = ((startDate == null) ? "*" : DateField.dateToString(startDate));
 		String endDateString   = ((endDate == null) ?  "?": DateField.dateToString(endDate));
-															
-		return loadEventDateQuery(field, setRangeQuery("*", endDateString),
+														
+		return loadEventDateQuery(setRangeQuery("*", endDateString),
 					setRangeQuery(startDateString, "?"));
 	}
 	
-	private Query handleEventDateQuery(String field, SearchFields fields)
+	private Query handleEventDateQuery(HashMap fields)
 			throws BulletinIndexException 
 	{
-		Date startDate	= (Date) fields.getValue(SEARCH_EVENT_START_DATE_INDEX_FIELD);
-		Date endDate 	= (Date) fields.getValue(SEARCH_EVENT_END_DATE_INDEX_FIELD);
+		Date startDate	= (Date) fields.get(SEARCH_EVENT_START_DATE_INDEX_FIELD);
+		Date endDate 	= (Date) fields.get(SEARCH_EVENT_END_DATE_INDEX_FIELD);
 
-		return (startDate != null && endDate != null)? getEventDateQuery(field, startDate, endDate):null;				
+		return (startDate != null && endDate != null)? getEventDateQuery(startDate, endDate):null;				
 	}
 	
-	private Query handleEntryDateQuery(SearchFields fields)
+	private Query handleEntryDateQuery(HashMap fields)
 			throws BulletinIndexException 
 	{		
-		Date startDate	= (Date) fields.getValue(SEARCH_ENTRY_DATE_INDEX_FIELD);
+		Date startDate	= (Date) fields.get(SEARCH_ENTRY_DATE_INDEX_FIELD);
 
 		if (startDate == null)				
 			return null;
-			
+	
 		String startDateString = DateField.dateToString(startDate);
 		String endDateString = DateField.dateToString(new GregorianCalendar().getTime());
 						
@@ -127,23 +127,23 @@ public class LuceneBulletinSearcher
 			"Improperly formed advanced find entry date type in bulletin query: ");		
 	}	
 	
-	private Query handleFindLanguageQuery(SearchFields fields)
+	private Query handleFindLanguageQuery(HashMap fields)
 			throws BulletinIndexException
 	{
 		Query fieldQuery = null;
-		String fieldString = (String) fields.getValue(SearchResultConstants.RESULT_LANGUAGE_KEY);
-	
+		String fieldString = (String) fields.get(SearchResultConstants.RESULT_LANGUAGE_KEY);
+
 		if (fieldString != null)				
 			fieldQuery = queryParser(fieldString,SEARCH_LANGUAGE_INDEX_FIELD, "Improperly formed advanced find language type in bulletin query: ");
 		
 		return fieldQuery;
 	} 
 	
-	private Query handleFindBulletinsQuery(String field, String query, SearchFields fields)
+	private Query handleFindBulletinsQuery(String query, HashMap fields)
 			throws BulletinIndexException 
 	{		
 		Query fieldQuery = null;
-		String fieldString = (String) fields.getValue(SearchResultConstants.RESULT_FIELDS_KEY);
+		String fieldString = (String) fields.get(SearchResultConstants.RESULT_FIELDS_KEY);
 	
 		if (query != null && query.length()>0)
 		{
@@ -156,26 +156,26 @@ public class LuceneBulletinSearcher
 		return fieldQuery;
 	}		
 		
-	public Results search(String field, SearchFields fields)
+	public Results search(String field, HashMap fields)
 		throws BulletinIndexException 
 	{	
-		String queryString = (String) fields.getValue(SearchResultConstants.RESULT_BASIC_QUERY_KEY);
+		String queryString = (String) fields.get(SearchResultConstants.RESULT_BASIC_QUERY_KEY);
 						
 		if (queryString != null)
 			return search(field, queryString);	
 			
-		queryString = (String) fields.getValue(SearchResultConstants.RESULT_ADVANCED_QUERY_KEY);												
+		queryString = (String) fields.get(SearchResultConstants.RESULT_ADVANCED_QUERY_KEY);												
 		return getLuceneResults(complexSearch(field, queryString, fields), null);
 	}	
 	
-	private Query complexSearch(String field, String queryString, SearchFields fields)
+	private Query complexSearch(String field, String queryString, HashMap fields)
 			throws BulletinIndexException 
 	{
 		BooleanQuery query = new BooleanQuery();
-		Query foundEventDateQuery = handleEventDateQuery(field, fields);					
+		Query foundEventDateQuery = handleEventDateQuery(fields);					
 		query.add(foundEventDateQuery, true, false);
 
-		Query foudBulletinsQuery = handleFindBulletinsQuery(field, queryString, fields);
+		Query foudBulletinsQuery = handleFindBulletinsQuery(queryString, fields);
 		if (foudBulletinsQuery != null)
 			query.add(foudBulletinsQuery, true, false);
 			

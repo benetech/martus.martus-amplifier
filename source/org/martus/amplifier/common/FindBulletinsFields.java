@@ -1,6 +1,8 @@
 
 package org.martus.amplifier.common;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Vector;
 
 import org.martus.amplifier.search.SearchConstants;
@@ -59,6 +61,47 @@ public class FindBulletinsFields implements SearchConstants, SearchResultConstan
 		
 		return fields;
 	}
+	
+	public static Vector getMonthFieldDisplayNames()
+	{
+		Vector fields = new Vector();
+		for (int i=0;i< MONTH_NAMES.length;i++)	
+			fields.add(new ChoiceEntry(MONTH_NAMES[i], new Integer(i).toString()));
+					
+		return fields;
+	}
+	
+	public static Object getToday()
+	{
+		return new Today();
+	}
+	
+	private static final String[] MONTH_NAMES = new String[] {
+		"January", "February", "March", "April", "May", "June",
+		"July", "August", "September", "October", "November", "December"
+	};
+
+	public static class Today
+	{
+		public static int getYear()
+		{	
+			return new GregorianCalendar().get(Calendar.YEAR);
+		}
+	
+		public static String getMonth()
+		{	
+			int month = new GregorianCalendar().get(Calendar.MONTH);
+			return new Integer(month).toString();
+		}
+	
+		public static int getDay()
+		{
+			return new GregorianCalendar().get(Calendar.DATE);
+		}				
+		
+		public Today(){}
+		
+	}
 
 	public static class ChoiceEntry
 	{
@@ -73,5 +116,5 @@ public class FindBulletinsFields implements SearchConstants, SearchResultConstan
 
 		private String tagString;
 		private String labelString;
-	}
+	}	
 }

@@ -1,6 +1,7 @@
 package org.martus.amplifier.search;
 
-import org.martus.amplifier.common.SearchFields;
+import java.util.HashMap;
+
 import org.martus.common.packet.UniversalId;
 
 public interface BulletinSearcher extends SearchConstants
@@ -10,7 +11,7 @@ public interface BulletinSearcher extends SearchConstants
 	Results search(String field, String queryString) 
 		throws BulletinIndexException;		
 		
-	Results search(String field, SearchFields fields)
+	Results search(String field, HashMap fields)
 		throws BulletinIndexException; 				
 		
 	BulletinInfo lookup(UniversalId bulletinId)
