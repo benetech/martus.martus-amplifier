@@ -63,9 +63,9 @@
 				<td></td>
 			</tr>
 			<tr>
-				#if($bulletin.fields.location != "")
-					<td>Location:</td>
-					<td>$bulletin.fields.location</td>
+				#if($bulletin.fields.organization != "")
+					<td>Organization:</td>
+					<td>$bulletin.fields.organization</td>
 				#end
 				<td></td>
 			</tr>
