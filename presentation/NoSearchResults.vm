@@ -5,9 +5,39 @@
     
     <body>
 #include ("header.vm")
-        <center>
-        No search results found.
-        </center>
+		<table cellSpacing=0 cellPadding=1 width="100%" bgColor=#3366cc border=0>
+			<tbody>
+		        <tr>
+        			<td noWrap bgColor=#3366cc>
+        				<font color=#ffffff size=-1>
+        					Searched Martus for "test". 
+        				</font>
+        			</td>
+					<td noWrap align=right bgColor=#3366cc>
+						<font color=#ffffff size=-1>
+							Results <b>1</b> - <b>10</b> of xxx total results.
+						</font>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<br/><br/><br/>
+        No bulletins matched your search terms
+		<br/><br/><br/>
+		<center>
+		    <form name="search" action="SearchResults" method="post">
+		        <p>
+		            <input name="query" size="44"/>&nbsp;
+		            <input type="submit" value="Search"/>
+		        </p>
+		    </form>
+		    <p>
+			    <font size='-1'>
+				    Dissatisfied with your search results?
+				    <a href='http://martus.org'>Help us improve.</a>
+				</font>
+			</p>
+		</center>
 #include ("footer.vm")
     </body>
 </html>

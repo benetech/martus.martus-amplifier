@@ -1,6 +1,19 @@
+<table cellSpacing='0' cellPadding='1' width="100%" bgColor='#3366cc' border='0'>
+	<tbody>
+        <tr>
+			<td noWrap bgColor='#3366cc' align='center'>
+        		<a href='http://martus.org'><font color='#ffffff' size='-1'>About Benetech</font></a>
+        		<a href='http://martus.org'><font color='#ffffff' size='-1'>Partner with Us</font></a>
+        		<a href='http://martus.org'><font color='#ffffff' size='-1'>Volunteers</font></a>
+        		<a href='http://martus.org'><font color='#ffffff' size='-1'>News & Press</font></a>
+        		<a href='http://martus.org'><font color='#ffffff' size='-1'>Help</font></a>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<br/>
 <center>
-	<br/>
-    <img src="../images/hrbs_logo.gif" 
-    	width="291" height="58" 
-    	alt="Human Rights Bulletin System"/>
+	<font size='-2'>
+        ©2003 Benetech - Technology serving humanity
+    </font>
 </center>

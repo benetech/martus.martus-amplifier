@@ -1,5 +1,20 @@
-<center>
-    <img src="../images/big_logo.gif" 
-    	width="184" height="126" 
-    	alt="Martus Amplifier"/>
-</center>
+<table border='0'>
+	<tr>
+		<td>
+			<img src="../images/big_logo.gif" width="184" height="126" alt="Martus Amplifier"/>
+		</td>
+		<td>
+        	<font size='-1'>
+        		<a href='http://martus.org'>Advanced Search</a>
+        		&nbsp;-&nbsp;
+        		<a href='http://martus.org'>Search Tips</a>
+        	</font>
+            <form name="search" action="SearchResults" method="post">
+                <p>
+                    <input name="query" size="44"/>&nbsp;
+                    <input type="submit" value="Search"/>
+                </p>
+            </form>
+		</td>
+	</tr>
+</table>
