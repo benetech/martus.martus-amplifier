@@ -27,7 +27,5 @@
 </table>
 <br/>
 <center>
-	<font size='-2'>
-	    &#0169;2003 Benetech - Technology serving humanity
-	</font>
+	#include("Copyright.vm")
 </center>

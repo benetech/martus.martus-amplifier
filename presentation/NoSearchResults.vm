@@ -11,6 +11,6 @@
         No bulletins matched your search terms
 		<br/><br/><br/>
 
-		#include ("ResultFooter.vm")
+		#parse ("ResultFooter.vm")
     </body>
 </html>

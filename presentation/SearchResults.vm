@@ -25,6 +25,6 @@
         </table>
         
 		<br/><br/><br/>
-		#include ("ResultFooter.vm")
+		#parse ("ResultFooter.vm")
     </body>
 </html>

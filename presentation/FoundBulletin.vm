@@ -8,6 +8,9 @@
 		#include ("ResultHeader.vm")
 		
 		<p><font size='-1'><a href='some url'>Printer Friendly Version</a></font></p>
+		<br/>
+		#parse("PreviousNextBulletin.vm")
+		<br/>		
 		<table>
 			<tr>
 				<td><font size="+1">Title:</font></td>
@@ -61,18 +64,10 @@
 			</tr>
 		</table>
 		
-		<br/><br/><br/>
+		<br/><br/>
 
-		<center>
-		#if ($previousBulletin >= 0)
-			<a href='FoundBulletin?index=$previousBulletin'>&lt;&lt; Previous</a>
-		#end
-			&nbsp;&nbsp;&nbsp;
-		#if ($nextBulletin >= 0)
-			<a href='FoundBulletin?index=$nextBulletin'>Next &gt;&gt;</a>
-		#end
-		</center>
-		#include ("ResultFooter.vm")
+		#parse("PreviousNextBulletin.vm")
+		#parse ("ResultFooter.vm")
     </body>
 </html>
 		
