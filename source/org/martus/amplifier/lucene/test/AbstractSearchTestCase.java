@@ -587,8 +587,8 @@ public abstract class AbstractSearchTestCase
 			fields.put(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, new GregorianCalendar().getTime());		
 			
 			// simple search
-			String query = "+(lunch)"+ " AND \"What's for\"";		
-			assertEquals("+(lunch) AND \"What's for\"", query);	
+			String query = "+(lunch)"+ " +\"What's for\"";		
+			assertEquals("+(lunch) +\"What's for\"", query);	
 			results = searcher.search(SEARCH_TITLE_INDEX_FIELD, query);
 			assertEquals("Combine with these words and exactphrase in title? ", 1, results.getCount());
 			
@@ -600,7 +600,7 @@ public abstract class AbstractSearchTestCase
 			assertEquals("Combine with exactphrase in title? ", 1, results.getCount());
 			
 			// complex search
-			query = "+(lunch)"+ " AND \"What's for\"";
+			query = "+(lunch)"+ " +\"What's for\"";
 			fields.remove(RESULT_ADVANCED_QUERY_KEY);		
 			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
 			fields.remove(RESULT_FIELDS_KEY);
@@ -609,7 +609,7 @@ public abstract class AbstractSearchTestCase
 			assertEquals("Combine with these words and exactphrase in all fields? ", 1, results.getCount());
 			
 			// complex search
-			query = "-(lunch)"+ " AND \"What's for\"";
+			query = "+(-lunch)"+ " +\"What's for\"";
 			fields.remove(RESULT_ADVANCED_QUERY_KEY);		
 			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
 			fields.remove(RESULT_FIELDS_KEY);
@@ -617,7 +617,7 @@ public abstract class AbstractSearchTestCase
 			results = searcher.search(null, fields);
 			assertEquals("Combine without these words and exactphrase in all fields? ", 0, results.getCount());
 			
-			query = "+(sandwich beer)"+ " AND \"What's for\"";
+			query = "+(+sandwich +root)"+ " +\"What's for\"";
 			fields.remove(RESULT_ADVANCED_QUERY_KEY);		
 			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
 			fields.remove(RESULT_FIELDS_KEY);
@@ -625,7 +625,7 @@ public abstract class AbstractSearchTestCase
 			results = searcher.search(null, fields);
 			assertEquals("Combine with all of these words and exactphrase in all fields? ", 0, results.getCount());			
 			
-			query = "+(sandwich beer)"+ " AND \"for lunch\"";
+			query = "+(+sandwich +root)"+ " +\"for lunch.\"";
 			fields.remove(RESULT_ADVANCED_QUERY_KEY);		
 			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
 			fields.remove(RESULT_FIELDS_KEY);
@@ -634,7 +634,7 @@ public abstract class AbstractSearchTestCase
 			assertEquals("Combine with all of these words and exactphrase in all fields? ", 2, results.getCount());
 			
 			// all of these words, exphrase, without these words
-			query = "+(sandwich beer)"+ " AND \"for lunch\"" + " AND -(Paul)";
+			query = "+(+sandwich +root)"+ " +\"for lunch.\"" + " -(Paul)";
 			fields.remove(RESULT_ADVANCED_QUERY_KEY);		
 			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
 			fields.remove(RESULT_FIELDS_KEY);
@@ -643,7 +643,7 @@ public abstract class AbstractSearchTestCase
 			assertEquals("Combine all in all fields? ", 1, results.getCount());
 			
 			// all of these words, exphrase, without these words
-			query = "+(sandwich beer)"+ " AND \"for lunch\"" + " AND -(kitty)";
+			query = "+(+sandwich +root)"+ " +\"for lunch\"" + " -(kitty)";
 			fields.remove(RESULT_ADVANCED_QUERY_KEY);		
 			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
 			fields.remove(RESULT_FIELDS_KEY);
@@ -651,7 +651,7 @@ public abstract class AbstractSearchTestCase
 			results = searcher.search(null, fields);
 			assertEquals("Combine all in all fields? ", 2, results.getCount());
 											
-			query = "-(salad sandwich)"+ " AND \"What's for\"";
+			query = "+\"What's for\""+ "-(salad2 beer)";
 			fields.remove(RESULT_ADVANCED_QUERY_KEY);		
 			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
 			fields.remove(RESULT_FIELDS_KEY);
@@ -968,15 +968,12 @@ public abstract class AbstractSearchTestCase
 			fields.put(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, defaultDate);
 			fields.put(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, defaultEndDate);
 			fields.put(RESULT_FIELDS_KEY, IN_ALL_FIELDS);
-			fields.put(RESULT_FILTER_BY_KEY, THESE_WORD_TAG);
 			String query = SearchParameters.convertToQueryString("root sandwich", THESE_WORD_TAG);			
-			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
+			fields.put(RESULT_FILTER_BY_KEY, THESE_WORD_TAG);	
 			
 			results = searcher.search(null, fields);
 			assertEquals("search for all of these words? ", 2, results.getCount());
 			
-			fields.remove(RESULT_FILTER_BY_KEY);
-			fields.put(RESULT_FILTER_BY_KEY,THESE_WORD_TAG );
 			fields.remove(RESULT_ADVANCED_QUERY_KEY);	
 			query = SearchParameters.convertToQueryString("Today Paul", THESE_WORD_TAG);		
 			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
@@ -985,7 +982,7 @@ public abstract class AbstractSearchTestCase
 			
 			fields.remove(RESULT_FILTER_BY_KEY);
 			fields.put(RESULT_FILTER_BY_KEY, EXACTPHRASE_TAG);
-			fields.remove(RESULT_ADVANCED_QUERY_KEY);	
+			fields.remove(RESULT_ADVANCED_QUERY_KEY);				
 			query = SearchParameters.convertToQueryString("egg2 salad2 sandwich", EXACTPHRASE_TAG);		
 			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
 			
@@ -995,29 +992,25 @@ public abstract class AbstractSearchTestCase
 			fields.remove(RESULT_FILTER_BY_KEY);
 			fields.put(RESULT_FILTER_BY_KEY, EXACTPHRASE_TAG);
 			fields.remove(RESULT_ADVANCED_QUERY_KEY);	
-			query = SearchParameters.convertToQueryString("sandwich", EXACTPHRASE_TAG);		
+			query = SearchParameters.convertToQueryString("for lunch.", EXACTPHRASE_TAG);		
 			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
 			
 			results = searcher.search(null, fields);
 			assertEquals("search for exact phrase? ", 2, results.getCount());
 			
-			fields.remove(RESULT_FILTER_BY_KEY);
-			fields.put(RESULT_FILTER_BY_KEY, WITHOUTWORDS_TAG);
 			fields.remove(RESULT_ADVANCED_QUERY_KEY);
-			query = SearchParameters.convertToQueryString("egg2 salad2", WITHOUTWORDS_TAG);			
+			query = SearchParameters.convertToQueryString("salad2", WITHOUTWORDS_TAG);			
 			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
 			
 			results = searcher.search(null, fields);
-//			assertEquals("search for without of those words? ", 1, results.getCount());
+			assertEquals("search for without of those words? ", 1, results.getCount());
 			
-			fields.remove(RESULT_FILTER_BY_KEY);
-			fields.put(RESULT_FILTER_BY_KEY, WITHOUTWORDS_TAG);
 			fields.remove(RESULT_ADVANCED_QUERY_KEY);
 			query = SearchParameters.convertToQueryString("Paul", WITHOUTWORDS_TAG);			
 			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
 			
 			results = searcher.search(null, fields);
-//			assertEquals("search for without of those words? ", 1, results.getCount());
+			assertEquals("search for without of those words? ", 1, results.getCount());
 										
 		}
 		finally 
@@ -1122,7 +1115,7 @@ public abstract class AbstractSearchTestCase
 	{
 		String author = "Chuck";	
 		String keywords = "2003-08-20";
-		String title = "What's for Lunch??";
+		String title = "What's for Lunch?";
 		long tenDaysOfMillis = 10*24*60*60*1000L;
 		Date tenDaysAgo = new Date(System.currentTimeMillis() - tenDaysOfMillis);
 		String entrydate= MartusFlexidate.toStoredDateFormat(tenDaysAgo);

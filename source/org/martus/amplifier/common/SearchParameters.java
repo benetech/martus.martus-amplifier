@@ -73,7 +73,7 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 	private void addField(String key, Object value)
 	{
 		searchFields.put(key, value);
-	}
+	}	
 	
 	private void setFilterKeyWords()
 	{
@@ -88,31 +88,81 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 		
 		searchFields.remove(RESULT_ADVANCED_QUERY_KEY);
 		addField(RESULT_ADVANCED_QUERY_KEY, newString);
+
+//		newFilterFormat();
+	}
+	
+	private void newFilterFormat()
+	{
+		parseAdvancedQuery(THESE_WORD_TAG);					
+		parseAdvancedQuery(EXACTPHRASE_TAG);	
+		parseAdvancedQuery(ANYWORD_TAG);
+		parseAdvancedQuery(WITHOUTWORDS_TAG);
+	
+		if (advancedQuery.length() > 0)
+		{			
+			addField(RESULT_ADVANCED_QUERY_KEY, advancedQuery);
+		}
+	}
+	
+	
+	private void parseAdvancedQuery(String key)
+	{
+		String subQuery = getValue(key);
+		if (subQuery.length() >0)
+		{			
+			
+			if (advancedQuery.length() > 1)
+			{
+				advancedQuery += " ";
+				if (!key.equals(WITHOUTWORDS_TAG))							
+					advancedQuery += PLUS;
+			}
+			advancedQuery += convertToQueryString(subQuery, key);
+		}
 	}
 	
 	public static String convertToQueryString(String text, String filterType)
 	{
 		String newString = null;
 		if (filterType.equals(WITHOUTWORDS_TAG))
-			newString = addSign(NOT, "(", text, ")");			
+			newString = addSign(NOT, text);			
 		else if (filterType.equals(EXACTPHRASE_TAG))
 			newString = "\""+text+"\"";
 		else 
-			newString = addSign(PLUS,"(", text, ")");
-
+			newString = addSign(PLUS, text);
+	
 		return newString;
-			
 	}
 	
-	private static String addSign(String sign, String start, String queryString, String end)
+//	public static String newConvertToQueryString(String text, String filterType)
+//	{
+//		String newString = null;
+//		if (filterType.equals(RESULT_EXCLUDEWORDS_QUERY_KEY))
+//			newString = NOT + "("+text+")";
+//		else if (filterType.equals(RESULT_EXACTPHRASE_QUERY_KEY))
+//			newString = "\""+text+"\"";
+//		else if (filterType.equals(RESULT_ALLWORDS_QUERY_KEY))
+//			newString = addSign(PLUS, text);
+//		else
+//			newString = "("+text+")";
+//			
+//		return newString;
+//			
+//	}
+	
+	private static String addSign(String sign, String queryString)
 	{
 		String[] words = queryString.split(" ");
-		String query = start;
+		String query = "(";
+		
+		if (words.length == 1)
+			return query+ queryString+ ")";
 
 		for (int i=0;i<words.length;i++)		
 			query += sign + words[i]+ " ";
 
-		return query + end;
+		return query + ")";
 	}
 	
 	private void setEventDate()
@@ -207,6 +257,7 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 	HashMap resultList 	= new HashMap();
 	HashMap	searchFields;
 	boolean hasEventFields 		= true;
+	String advancedQuery = PLUS;
 	final static String PLUS 	= "+";
 	final static String NOT 	= "-";
 }

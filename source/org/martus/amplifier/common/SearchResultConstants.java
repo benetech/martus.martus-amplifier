@@ -44,15 +44,16 @@ public interface SearchResultConstants
 	final String RESULT_BASIC_QUERY_KEY	= "query";
 	final String RESULT_ADVANCED_QUERY_KEY = "advancedQuery";
 	
+	final String THESE_WORD_TAG 		= "allWordsQuery";
+	final String ANYWORD_TAG 		= "anyWordsQuery";
+	final String EXACTPHRASE_TAG 	= "exactPhraseQuery";
+	final String WITHOUTWORDS_TAG  = "excludeWordsQuery";
+	
 	final static String THESE_WORD_LABEL 		= "with all of these words";
 	final static String EXACTPHRASE_LABEL 	= "with this exact phrase";
 	final static String ANYWORD_LABEL 		= "with any of these words";
 	final static String WITHOUTWORDS_LABEL  	= "without any of these words";
 	
-	final static String THESE_WORD_TAG 		= "these words";
-	final static String EXACTPHRASE_TAG 		= "exact phrase";
-	final static String ANYWORD_TAG 			= "any words";
-	final static String WITHOUTWORDS_TAG  	= "without words";
 	
 	final static String ENTRY_ANYTIME_LABEL		= "any time";
 	final static String ENTRY_PAST_WEEK_LABEL		= "week";
@@ -97,5 +98,7 @@ public interface SearchResultConstants
 		RESULT_START_YEAR_KEY, RESULT_START_MONTH_KEY, RESULT_START_DAY_KEY,
 		RESULT_END_YEAR_KEY, RESULT_END_MONTH_KEY, RESULT_END_DAY_KEY,
 		RESULT_FIELDS_KEY, RESULT_FILTER_BY_KEY, RESULT_LANGUAGE_KEY, RESULT_ENTRY_DATE_KEY,
-		RESULT_SORTBY_KEY };		
+		RESULT_SORTBY_KEY, THESE_WORD_TAG,ANYWORD_TAG,
+		EXACTPHRASE_TAG, WITHOUTWORDS_TAG, 
+ };		
 }
