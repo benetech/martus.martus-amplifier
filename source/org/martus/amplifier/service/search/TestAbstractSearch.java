@@ -234,7 +234,7 @@ public abstract class TestAbstractSearch
 		}
 		
 		try {
-			BulletinInfo info = results.getBulletinInfo(0);
+			results.getBulletinInfo(0);
 			Assert.fail(
 				"Accessing results after closing searcher should have failed.");
 		} catch (BulletinIndexException expected) {

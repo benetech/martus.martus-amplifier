@@ -1,6 +1,5 @@
 package org.martus.amplifier.test.datasynch;
 
-import org.martus.amplifier.service.datasynch.DataSynchManager;
 
 /**
  * @author skoneru
@@ -20,8 +19,8 @@ public class TestDataSynchManager extends TestAbstractAmplifierDataSynch
 
 	public void testGetAllNewBulletins()
 	{
-		System.out.println("DataSynchManagerTest:testGetAllNewBulletins");
-		DataSynchManager dataManager = DataSynchManager.getInstance();
+		//System.out.println("DataSynchManagerTest:testGetAllNewBulletins");
+		//DataSynchManager dataManager = DataSynchManager.getInstance();
 		//dataManager.getAllNewBulletins();
 	    //String bulletinWorkingDirectory = AmplifierConfiguration.getInstance().getBulletinPath();
 	    //File file = new File(bulletinWorkingDirectory);

@@ -3,7 +3,6 @@ package org.martus.amplifier.test.datasynch;
 import java.util.Vector;
 
 import org.martus.amplifier.service.datasynch.AmplifierNetworkGateway;
-import org.martus.common.packet.UniversalId;
 
 public class TestAmplifierNetworkGateway extends TestAbstractAmplifierDataSynch
 {	
@@ -41,9 +40,9 @@ public class TestAmplifierNetworkGateway extends TestAbstractAmplifierDataSynch
 	
 	public void testgetBulletin()
 	{
-		System.out.println("AmplifierNetworkGatewayTest: testGetBulletin");
-		AmplifierNetworkGateway amplifierGateway = AmplifierNetworkGateway.getInstance();
-		UniversalId uid = UniversalId.createFromAccountAndLocalId(sampleAccountId, sampleLocalId);
+		//System.out.println("AmplifierNetworkGatewayTest: testGetBulletin");
+		//AmplifierNetworkGateway amplifierGateway = AmplifierNetworkGateway.getInstance();
+		//UniversalId uid = UniversalId.createFromAccountAndLocalId(sampleAccountId, sampleLocalId);
 		//File file = amplifierGateway.getBulletin(uid);
 		//assertTrue(file.length() >0);		
 	}
@@ -52,9 +51,9 @@ public class TestAmplifierNetworkGateway extends TestAbstractAmplifierDataSynch
 
 	public void testRetrieveAndManageBulletin()
 	{
-		System.out.println("AmplifierNetworkGatewayTest:testRetrieveAndManageBulletin");
-		AmplifierNetworkGateway amplifierGateway = AmplifierNetworkGateway.getInstance();		
-		UniversalId uid = UniversalId.createFromAccountAndLocalId(sampleAccountId, sampleLocalId);
+		//System.out.println("AmplifierNetworkGatewayTest:testRetrieveAndManageBulletin");
+		//AmplifierNetworkGateway amplifierGateway = AmplifierNetworkGateway.getInstance();		
+		//UniversalId uid = UniversalId.createFromAccountAndLocalId(sampleAccountId, sampleLocalId);
 		//Vector list = amplifierGateway.retrieveAndManageBulletin(uid);				
 		//assertTrue(list.size() > 0);			
 	}
