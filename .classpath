@@ -9,5 +9,10 @@
     <classpathentry kind="var" path="Xerces"/>
     <classpathentry kind="var" path="Servlet"/>
     <classpathentry kind="var" path="JasperRuntime"/>
+    <classpathentry kind="var" path="InfiniteMonkeys"/>
+    <classpathentry kind="var" path="bccrypto"/>
+    <classpathentry kind="var" path="xmlrpc"/>
+    <classpathentry kind="var" path="jsse"/>
+    <classpathentry kind="var" path="javajce"/>
     <classpathentry kind="output" path="presentation\WEB-INF\classes"/>
 </classpath>
