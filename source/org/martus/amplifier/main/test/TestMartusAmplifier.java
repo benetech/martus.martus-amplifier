@@ -3,8 +3,8 @@ package org.martus.amplifier.main.test;
 import java.io.File;
 import java.util.List;
 
-import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.amplifier.datasynch.BackupServerInfo;
+import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.common.LoggerForTesting;
 import org.martus.common.MartusUtilities;
 import org.martus.common.crypto.MockMartusSecurity;

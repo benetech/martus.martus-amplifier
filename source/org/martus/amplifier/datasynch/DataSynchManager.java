@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
 
-import org.martus.amplifier.common.AmplifierConfiguration;
 import org.martus.amplifier.attachment.AttachmentManager;
+import org.martus.amplifier.common.AmplifierConfiguration;
 import org.martus.amplifier.search.BulletinCatalog;
 import org.martus.amplifier.search.BulletinIndexer;
 import org.martus.common.packet.UniversalId;
