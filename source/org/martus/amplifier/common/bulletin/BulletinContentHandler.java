@@ -1,9 +1,16 @@
 package org.martus.amplifier.common.bulletin;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.logging.Logger;
 
+import org.apache.lucene.document.DateField;
 import org.martus.amplifier.exception.MartusAmplifierRuntimeException;
+import org.martus.amplifier.service.search.IBulletinConstants;
+import org.martus.amplifier.service.search.ISearchConstants;
 import org.martus.common.UniversalId;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
@@ -207,6 +214,50 @@ public class BulletinContentHandler implements ContentHandler
 	 */
 	public void skippedEntity(String arg0) throws SAXException
 	{}
+	
+	public String getBulletinField(String fieldname)
+	{
+		if(fieldname == IBulletinConstants.AUTHOR_FIELD)
+		{
+			return getBulletinAuthor();
+		}
+		else if(fieldname == IBulletinConstants.KEYWORDS_FIELD)
+		{
+			return getBulletinKeywords();
+		}
+		else if(fieldname == IBulletinConstants.TITLE_FIELD)
+		{
+			return getBulletinTitle();
+		}
+		else if(fieldname == IBulletinConstants.PUBLIC_INFO_FIELD)
+		{
+			return getBulletinPublicInfo();
+		}
+		else if(fieldname == IBulletinConstants.SUMMARY_FIELD)
+		{
+			return getBulletinSummary();
+		}
+		else if(fieldname == IBulletinConstants.LOCATION_FIELD)
+		{
+			return getBulletinLocation();
+		}
+		else if(fieldname == IBulletinConstants.UNIVERSAL_ID_FIELD)
+		{
+			return getBulletinUniversalId();
+		}
+		else if(fieldname == IBulletinConstants.EVENT_DATE_FIELD)
+		{
+			return convertToDateString(getBulletinEventDate());
+		}
+		else if(fieldname == IBulletinConstants.ENTRY_DATE_FIELD)
+		{
+			return convertToDateString(getBulletinEntryDate());
+		}
+		else
+		{
+			return null;
+		}
+	}
 
 	public String getBulletinAuthor()
 	{
@@ -290,6 +341,37 @@ public class BulletinContentHandler implements ContentHandler
 	public List getBulletinAttachmentSessionKeys()
 	{
 		return bulletinAttachmentSessionKeys;
+	}
+	
+	public static String convertToDateString(String inString)
+	{
+		if(inString == null ) return inString;
+		
+		Logger logger = Logger.getLogger(ISearchConstants.SEARCH_LOGGER);
+		//String inString is of the format YYYY-MM-DD indexed as 0123-56-89
+		Date date = new Date();
+		int iYear, iMonth, iDate;
+		String dateString="";
+			
+		String yearStr  = inString.substring(0,4);
+		String monthStr = inString.substring(5,7);
+		String dateStr  = inString.substring(8);
+		try
+		{
+			iYear = Integer.parseInt(yearStr);
+			iMonth= Integer.parseInt(monthStr);
+			iDate = Integer.parseInt(dateStr);
+			//note: Month value is 0-based. e.g., 0 for January.	
+			Calendar calendar = new GregorianCalendar(iYear, iMonth-1, iDate);
+			date = calendar.getTime();
+			dateString = DateField.dateToString(date);	    	
+		}
+		catch (NumberFormatException e)
+		{
+			logger.severe("BulletinDocument.convertToDocument(): " + e.getMessage());
+		}
+		return dateString;
+  	
 	}
 
 	private String bulletinAuthor = null;

@@ -6,13 +6,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.logging.Logger;
-import java.util.zip.ZipException;
-import java.util.zip.ZipFile;
 
 import org.apache.lucene.document.DateField;
 import org.apache.lucene.document.Document;
@@ -21,13 +16,7 @@ import org.martus.amplifier.service.attachment.AttachmentManager;
 import org.martus.amplifier.service.attachment.api.AttachmentInfoListFactory;
 import org.martus.amplifier.service.search.IBulletinConstants;
 import org.martus.amplifier.service.search.ISearchConstants;
-import org.martus.common.BulletinHeaderPacket;
-import org.martus.common.FieldDataPacket;
-import org.martus.common.MartusCrypto;
-import org.martus.common.MartusSecurity;
 import org.martus.common.UniversalId;
-import org.martus.common.MartusCrypto.CryptoInitializationException;
-import org.martus.common.Packet.SignatureVerificationException;
 import org.martus.common.UniversalId.NotUniversalIdException;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -109,20 +98,23 @@ public class BulletinDocument implements IBulletinConstants, ISearchConstants
 			logger.severe("Unable to parse XML file: " + ioe.getMessage());
 		}
 		
-	    doc.add(Field.Text(AUTHOR_FIELD,handler.getBulletinAuthor()));
-	    doc.add(Field.Text(KEYWORDS_FIELD,handler.getBulletinKeywords()));
-	    doc.add(Field.Text(TITLE_FIELD,handler.getBulletinTitle()));
-	    //doc.add(Field.Keyword(EVENT_DATE_FIELD,handler.getBulletinEventDate()));
-	    doc.add(Field.Text(PUBLIC_INFO_FIELD,handler.getBulletinPublicInfo()));
-	    doc.add(Field.Text(SUMMARY_FIELD,handler.getBulletinSummary()));
-	    doc.add(Field.Text(LOCATION_FIELD,handler.getBulletinLocation()));
-	    //doc.add(Field.Keyword(ENTRY_DATE_FIELD,handler.getBulletinEventDate()));
-	    doc.add(Field.Keyword(UNIVERSAL_ID_FIELD,handler.getBulletinUniversalId()));
-	
-	    String eventDateString = convertToDateString(handler.getBulletinEventDate());
-	    doc.add(Field.Text(EVENT_DATE_FIELD, eventDateString));
-	    String entryDateString = convertToDateString(handler.getBulletinEntryDate());
-	    doc.add(Field.Text(ENTRY_DATE_FIELD, entryDateString));
+		String currentFieldname, currentField;
+		for(int i = 0; i < BULLETIN_FIELDS.length; i++)
+		{
+			currentFieldname = BULLETIN_FIELDS[i];
+			currentField = handler.getBulletinField(currentFieldname);
+			if(currentField != null)
+			{
+				if(currentFieldname == UNIVERSAL_ID_FIELD)
+				{
+					doc.add(Field.Keyword(currentFieldname, currentField));
+				}
+				else
+				{
+					doc.add(Field.Text(currentFieldname, currentField));
+				}
+			}
+		}
 	   
 	   	// store the attachments as well
 	   	// dan: not sure this is the best place for it
@@ -142,96 +134,6 @@ public class BulletinDocument implements IBulletinConstants, ISearchConstants
 	    
 	    // return the document
 	    return doc;
-  }
-  
-  public static Document convertToDocumentUsingCommonCode(File file)
-  	throws java.io.FileNotFoundException 
-  	{	 
-	    Document doc = new Document();
-	
-	    // Add the path of the file as a field named "path".  Use a Text field, so
-	    // that the index stores the path, and so that the path is searchable
-	    doc.add(Field.Text("path", file.getPath()));
-	
-	    // Add the last modified date of the file a field named "modified".  Use a
-	    // Keyword field, so that it's searchable, but so that no attempt is made
-	    // to tokenize the field into words.
-	    doc.add(Field.Keyword("modified",
-				  DateField.timeToString(file.lastModified())));
-	    	
-    	try
-    	{
-    		ZipFile zip = new ZipFile(file);
-			MartusCrypto crypto = new MartusSecurity();
-			BulletinHeaderPacket header = BulletinHeaderPacket.loadFromZipFile(zip, crypto);
-			UniversalId universalId = BulletinHeaderPacket.createUniversalId(header.getAccountId());
-			String[] fields = BULLETIN_FIELDS;
-			FieldDataPacket packet = new FieldDataPacket(universalId, fields);
-			
-			//packet.loadFromXml();
-			for(int i = 0; i < fields.length; i++)
-			{
-				doc.add(Field.Text(fields[i], packet.get(fields[i])));
-			}
-    	}
-    	catch(ZipException ze)
-    	{}
-    	catch(IOException ioe)
-    	{}
-    	catch(CryptoInitializationException cie)
-    	{}
-    	catch(SignatureVerificationException sve)
-    	{}
-    	
-//	    String eventDateString = convertToDateString(handler.getBulletinEventDate());
-//	    doc.add(Field.Text(EVENT_DATE_FIELD, eventDateString));
-//	    String entryDateString = convertToDateString(handler.getBulletinEntryDate());
-//	    doc.add(Field.Text(ENTRY_DATE_FIELD, entryDateString));
-//	   
-//	   	// store the attachments as well
-//	   	// dan: not sure this is the best place for it
-//	   	List attachmentList = 
-//	   		AttachmentInfoListFactory.createList(packet.getAttachments());
-//	   	try
-//	   	{
-//	   		UniversalId bulletinId = UniversalId.createFromString(handler.getBulletinUniversalId());
-//	   		AttachmentManager.getInstance().putAttachmentInfoList(bulletinId,
-//	   			attachmentList);
-//	   	}
-//	   	catch(NotUniversalIdException nuie)
-//	   	{}
-//	   	logger.info("Document is " + doc.toString() );
-//	    
-//	    // return the document
-	    return doc;
-  }
-  
-  public static String convertToDateString(String inString)
-  {
-  	//String inString is of the format YYYY-MM-DD indexed as 0123-56-89
-  	Date date = new Date();
-  	int iYear, iMonth, iDate;
-  	String dateString="";
-  	
-  	String yearStr  = inString.substring(0,4);
-  	String monthStr = inString.substring(5,7);
-  	String dateStr  = inString.substring(8);
-	try
-	{	
-		iYear = Integer.parseInt(yearStr);
-		iMonth= Integer.parseInt(monthStr);
-		iDate = Integer.parseInt(dateStr);
-		//note: Month value is 0-based. e.g., 0 for January.	
-	   	Calendar calendar = new GregorianCalendar(iYear, iMonth-1, iDate);
-	    date = calendar.getTime();
-	    dateString = DateField.dateToString(date);	    	
-	}
-	catch (NumberFormatException e)
-	{
-		logger.severe("BulletinDocument.convertToDocument(): " + e.getMessage());
-	}
-	return dateString;
-  	
   }
 
   private BulletinDocument() {}
