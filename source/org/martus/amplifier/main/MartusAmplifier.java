@@ -144,7 +144,7 @@ public class MartusAmplifier
 		staticSecurity = staticSecurityToUse;
 	}
 
-	void deleteAmplifierStartupFiles()
+	public void deleteAmplifierStartupFiles()
 	{
 		if(!getKeystoreFile().delete())
 		{

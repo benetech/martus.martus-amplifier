@@ -261,7 +261,7 @@ public class AmplifierNetworkGateway
 	
 	private void log(String message)
 	{
-		logger.log("Calling " + serverToPullFrom.getAddress() + ": " + message);
+		logger.log("Amp Calling " + serverToPullFrom.getAddress() + ": " + message);
 	}
 	
 	private AmplifierBulletinRetrieverGatewayInterface gateway;
