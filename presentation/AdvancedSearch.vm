@@ -13,7 +13,7 @@
     	#set ($pageTitle="Advanced Search")
     	#set ($pageInfo="")
 		#parse ("ResultHeader.vm")
-		<br/><br/><br/>
+		<br/><br/>
 		
 		<form name="search" action="SearchResults" method="post">
 			<table bgcolor='#dddddd' color='#000000'>
@@ -168,8 +168,11 @@
 			</tr>
 			</table>
 		</form>
+
+		<br/><br/>
+		Return to <a href='SimpleSearch'>Quick Search</a>
 		
-		<br/><br/><br/>
+		<br/><br/>
 		#parse ("ResultFooter.vm")
     </body>
 </html>
