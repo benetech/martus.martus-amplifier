@@ -1,20 +1,37 @@
+/*
+
+The Martus(tm) free, social justice documentation and
+monitoring software. Copyright (C) 2001-2003, Beneficent
+Technology, Inc. (Benetech).
+
+Martus is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either
+version 2 of the License, or (at your option) any later
+version with the additions and exceptions described in the
+accompanying Martus license file entitled "license.txt".
+
+It is distributed WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, including warranties of fitness of purpose or
+merchantability.  See the accompanying Martus License and
+GPL license for more details on the required license terms
+for this software.
+
+You should have received a copy of the GNU General Public
+License along with this program; if not, write to the Free
+Software Foundation, Inc., 59 Temple Place - Suite 330,
+Boston, MA 02111-1307, USA.
+
+*/
 package org.martus.amplifier.search;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.martus.common.FieldSpec;
 import org.martus.common.bulletin.BulletinConstants;
 
-/**
- * This class is used to encapsulate information about a field
- * in a bulletin.
- * 
- * @author PDAlbora
- */
 public class BulletinField implements BulletinConstants, SearchConstants
 {
 	public String getDisplayName()
@@ -44,43 +61,17 @@ public class BulletinField implements BulletinConstants, SearchConstants
 		
 	public static BulletinField getFieldByXmlId(String xmlId)
 	{
-		return (BulletinField) FIELDS.get(xmlId);
+		return (BulletinField) getFields().get(xmlId);
 	}
 	
 	public static Collection getSearchableFields()
 	{
-		return FIELDS.values();
-	}
-	
-	public static Collection getSearchableTextFields() 
-	{
-		Collection textFields = new ArrayList();
-		for (Iterator iter = FIELDS.values().iterator(); iter.hasNext();) {
-			BulletinField field = (BulletinField) iter.next();
-			if (!(field.isDateField() || field.isDateRangeField())) 
-			{
-				textFields.add(field);
-			}
-		}
-		return textFields;
-	}
-	
-	public static Collection getSearchableDateFields()
-	{
-		Collection dateFields = new ArrayList();
-		for (Iterator iter = FIELDS.values().iterator(); iter.hasNext();) {
-			BulletinField field = (BulletinField) iter.next();
-			if (field.isDateField() || field.isDateRangeField()) 
-			{
-				dateFields.add(field);
-			}
-		}
-		return dateFields;
+		return getFields().values();
 	}
 	
 	public static String[] getSearchableXmlIds()
 	{
-		return (String[]) FIELDS.keySet().toArray(new String[0]);
+		return (String[]) getFields().keySet().toArray(new String[0]);
 	}
 	
 	public static FieldSpec[] getDefaultSearchFieldSpecs()
@@ -103,12 +94,23 @@ public class BulletinField implements BulletinConstants, SearchConstants
 		this.displayName = displayName;
 	}
 	
-	private String xmlId;
-	private String indexId;
-	private String displayName;
+	private static void addField(String xmlId, String indexId, String displayName)
+	{
+		getFields().put(xmlId, new BulletinField(xmlId, indexId, displayName));
+	}
+
+	private static Map getFields()
+	{
+		if(fields == null)
+			initializeFields();
+		
+		return fields;
+	}
+
+	private static void initializeFields()
+	{
+		fields = new LinkedHashMap();
 	
-	private static final Map FIELDS = new LinkedHashMap();
-	static {
 		// NOTE paul 8-Apr-2003 -- The display names should at some
 		// point be i18n'ed strings.
 		addField(TAGAUTHOR, SEARCH_AUTHOR_INDEX_FIELD, "Author");
@@ -123,11 +125,8 @@ public class BulletinField implements BulletinConstants, SearchConstants
 		addField(TAGORGANIZATION, SEARCH_ORGANIZATION_INDEX_FIELD, "Organization");	
 	}
 	
-	private static void addField(String xmlId, String indexId, String displayName)
-	{
-		FIELDS.put(xmlId, new BulletinField(xmlId, indexId, displayName));
-	}
-	
-
+	private String xmlId;
+	private String indexId;
+	private String displayName;
+	private static Map fields;
 }
-
