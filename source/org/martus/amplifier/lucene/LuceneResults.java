@@ -47,6 +47,10 @@ import org.martus.common.packet.UniversalId.NotUniversalIdException;
 
 public class LuceneResults implements Results, LuceneSearchConstants, SearchConstants
 {
+	public LuceneResults(Hits hits)
+	{
+		this.hits = hits;
+	}
 		
 		public int getCount() throws BulletinIndexException
 		{
@@ -198,11 +202,6 @@ public class LuceneResults implements Results, LuceneSearchConstants, SearchCons
 				throw new BulletinIndexException(
 					"Invalid bulletin universal id found", e);
 			}
-		}
-		
-		public LuceneResults(Hits hits)
-		{
-			this.hits = hits;
 		}
 		
 		private Hits hits;		
