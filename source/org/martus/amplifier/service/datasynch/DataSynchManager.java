@@ -16,6 +16,7 @@ public class DataSynchManager implements IDataSynchConstants
 	private AmplifierNetworkGateway amplifierGateway = null;
 	private static Logger logger = Logger.getLogger(DATASYNC_LOGGER);
 	private static DataSynchManager instance = new DataSynchManager();
+	boolean isIndexingNeeded;
 
 	private DataSynchManager()
 	{
@@ -39,13 +40,15 @@ public class DataSynchManager implements IDataSynchConstants
 	 */
 	public void getAllNewBulletins()
 	{
-		logger.info("in DataSynchManager.getAllNewBulletins(): ");	
+		//logger.info("in DataSynchManager.getAllNewBulletins(): ");	
 	
 		String accountId = "";
 		List accountList = null;
 		Vector response;
+		isIndexingNeeded = false;
 		
 		//Step1: Retrieve all the accountids from Martus Server
+		
 		accountList = new ArrayList(amplifierGateway.getAllAccountIds());
 		if(accountList == null)
 		{
@@ -70,6 +73,7 @@ public class DataSynchManager implements IDataSynchConstants
 					{
 						logger.info("DataSynchManager.checkAndRetrieveBulletinsForUIDs():before calling  amplifierGateway.retrieveAndManageBulletin on UID = "+ uid.toString());
 						amplifierGateway.retrieveAndManageBulletin(uid);
+						isIndexingNeeded = true;
 					}
 				}
 				catch (NotUniversalIdException e)
@@ -91,10 +95,16 @@ public class DataSynchManager implements IDataSynchConstants
 	 */
 	public void indexBulletins()
 	{
-		logger.info("in DataSynchManager.indexBulletins() ");	
-		BulletinIndexer indexer = BulletinIndexer.getInstance();
-		indexer.indexBulletins();
+		//logger.info("in DataSynchManager.indexBulletins() ");	
+		if(isIndexingNeeded)
+		{
+			BulletinIndexer indexer = BulletinIndexer.getInstance();
+			indexer.indexBulletins();
+			isIndexingNeeded = false;
+		}
+		else
+		{
+			logger.info("No new bulletins retrieved. No indexing necessary");
+		}
 	}
-	
-
 }
