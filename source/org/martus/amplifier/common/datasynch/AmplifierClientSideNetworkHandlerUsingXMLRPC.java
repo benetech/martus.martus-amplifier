@@ -44,7 +44,7 @@ public class AmplifierClientSideNetworkHandlerUsingXMLRPC
 
 				
 		
-	public Vector getAccountIds(String myAccountId, Vector parameters, String signature)
+	public Vector getAccountIds(String myAccountId, Vector parameters, String signature) throws IOException
 	{
 		Vector params = new Vector();
 		params.add(myAccountId);
@@ -54,7 +54,7 @@ public class AmplifierClientSideNetworkHandlerUsingXMLRPC
 	}			
 	
 	
-	public Vector getAccountUniversalIds(String myAccountId, Vector parameters, String signature)
+	public Vector getPublicBulletinUniversalIds(String myAccountId, Vector parameters, String signature) throws IOException
 	{
 		Vector params = new Vector();
 		params.add(myAccountId);
@@ -64,7 +64,7 @@ public class AmplifierClientSideNetworkHandlerUsingXMLRPC
 		
 	}
 	
-	public Vector getBulletinChunk(String myAccountId, Vector parameters, String signature)
+	public Vector getBulletinChunk(String myAccountId, Vector parameters, String signature) throws IOException
 	{
 		Vector params = new Vector();
 		params.add(myAccountId);
@@ -73,7 +73,7 @@ public class AmplifierClientSideNetworkHandlerUsingXMLRPC
 		return (Vector)callServer(server, cmdGetAmplifierBulletinChunk, params);
 	}
 	
-	public Object callServer(String serverName, String method, Vector params)
+	public Object callServer(String serverName, String method, Vector params) throws IOException
 	{
 		
 		final String serverUrl = "https://" + serverName + ":" + port + "/RPC2";
@@ -87,8 +87,8 @@ public class AmplifierClientSideNetworkHandlerUsingXMLRPC
 		{
 			//TODO throw IOExceptions so caller can decide what to do.
 			//This was added for connection refused: connect (no server connected)
-			System.out.println("ServerInterfaceXmlRpcHandler:callServer Exception=" + e);
-			e.printStackTrace();
+			//System.out.println("ServerInterfaceXmlRpcHandler:callServer Exception=" + e);
+			throw new IOException();
 		}
 		catch (Exception e)
 		{

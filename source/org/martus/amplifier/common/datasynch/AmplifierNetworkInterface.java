@@ -1,5 +1,6 @@
 package org.martus.amplifier.common.datasynch;
 
+import java.io.IOException;
 import java.util.Vector;
 
 /**
@@ -12,8 +13,8 @@ import java.util.Vector;
  */
 public interface AmplifierNetworkInterface { 
 	
-	public Vector getAccountIds(String myAccountId, Vector parameters, String signature);
-	public Vector getAccountUniversalIds(String myAccountId, Vector parameters, String signature);
-	public Vector getBulletinChunk(String myAccountId, Vector parameters, String signature);
+	public Vector getAccountIds(String myAccountId, Vector parameters, String signature) throws IOException;
+	public Vector getPublicBulletinUniversalIds(String myAccountId, Vector parameters, String signature) throws IOException;
+	public Vector getBulletinChunk(String myAccountId, Vector parameters, String signature) throws IOException;
 
 }

@@ -83,7 +83,7 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
 		Vector result = new Vector();
 		try
 		{
-			NetworkResponse response = gateway.getAccountUniversalIds(security, accountId);
+			NetworkResponse response = gateway.getPublicBulletinUniversalIds(security, accountId);
 			String resultCode = response.getResultCode();
 			if( !resultCode.equals(NetworkInterfaceConstants.OK) )	
 					throw new ServerErrorException(resultCode);

@@ -14,7 +14,7 @@ import org.martus.common.NetworkInterfaceXmlRpcConstants;
 public interface AmplifierNetworkInterfaceXmlRpcConstants extends NetworkInterfaceXmlRpcConstants {
 	
 	public static final String cmdGetAccountIds = "getAccountIds";
-	public static final String cmdGetAccountUniversalIds = "getAccountUniversalIds";
+	public static final String cmdGetAccountUniversalIds = "getPublicBulletinUniversalIds";
 	public static final String cmdGetAmplifierBulletinChunk = "getAmplifierBulletinChunk";
 
 }
