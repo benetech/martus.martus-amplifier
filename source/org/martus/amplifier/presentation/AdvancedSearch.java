@@ -38,37 +38,29 @@ public class AdvancedSearch extends AmplifierServlet
 {
 	public String selectTemplate(AmplifierServletRequest request, AmplifierServletResponse response, Context context)
 	{		
-		try
-		{
-			context.put("monthFields", FindBulletinsFields.getMonthFieldDisplayNames());
-			context.put("today", FindBulletinsFields.getToday());
-					
-			Vector filterFields = FindBulletinsFields.getFindWordFilterDisplayNames();
-			context.put("filterWordFields", filterFields);
+		context.put("monthFields", FindBulletinsFields.getMonthFieldDisplayNames());
+		context.put("today", FindBulletinsFields.getToday());
+				
+		Vector filterFields = FindBulletinsFields.getFindWordFilterDisplayNames();
+		context.put("filterWordFields", filterFields);
 
-			Vector entryDateFields = FindBulletinsFields.getFindEntryDatesDisplayNames();
-			context.put("entryDateFields", entryDateFields);
-			
-			Vector bulletinFields = FindBulletinsFields.getBulletinFieldDisplayNames();
-			context.put("bulletinFields", bulletinFields);	
-			
-			Vector languageCodesToAdd = addLanguageCodesToDisplay();
-			Vector languageFields = FindBulletinsFields.getLanguageFieldDisplayNames(languageCodesToAdd);
-			context.put("languageFields", languageFields);		
-			
-			Vector sortByFields = FindBulletinsFields.getSortByFieldDisplayNames();
-			context.put("sortByFields", sortByFields);
+		Vector entryDateFields = FindBulletinsFields.getFindEntryDatesDisplayNames();
+		context.put("entryDateFields", entryDateFields);
+		
+		Vector bulletinFields = FindBulletinsFields.getBulletinFieldDisplayNames();
+		context.put("bulletinFields", bulletinFields);	
+		
+		Vector languageCodesToAdd = addLanguageCodesToDisplay();
+		Vector languageFields = FindBulletinsFields.getLanguageFieldDisplayNames(languageCodesToAdd);
+		context.put("languageFields", languageFields);		
+		
+		Vector sortByFields = FindBulletinsFields.getSortByFieldDisplayNames();
+		context.put("sortByFields", sortByFields);
 
-			// TODO: Remove this line when the new interface is coded		
-			context.put("oldSearchInterface", new Boolean(true));
+		// TODO: Remove this line when the new interface is coded		
+		context.put("oldSearchInterface", new Boolean(true));
 
-			return "AdvancedSearch.vm";
-		}
-		catch (RuntimeException e)
-		{
-			e.printStackTrace();
-			return "InternalError.vm";
-		}		
+		return "AdvancedSearch.vm";
 	}
 
 	private Vector addLanguageCodesToDisplay()

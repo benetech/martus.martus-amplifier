@@ -54,28 +54,21 @@ public class SearchResults extends AmplifierServlet implements SearchResultConst
 			AmplifierServletResponse response, Context context) 
 					throws Exception
 	{
-		try
-		{
-			List results = null;
-			results = getSearchResults(request);
-			if(results.size() == 0)
-				return "NoSearchResults.vm";
+		List results = null;
+		results = getSearchResults(request);
+		if(results.size() == 0)
+			return "NoSearchResults.vm";
 
-			Vector bulletins = new Vector();
-			for (Iterator iter = results.iterator(); iter.hasNext();)
-			{
-				BulletinInfo element = (BulletinInfo) iter.next();
-				bulletins.add(element);
-			}
-			context.put("foundBulletins", bulletins);
-			context.put("totalBulletins", new Integer(bulletins.size()));
-			request.getSession().setAttribute("foundBulletins", bulletins);
-			return "SearchResults.vm";
-		}
-		catch (Exception e)
+		Vector bulletins = new Vector();
+		for (Iterator iter = results.iterator(); iter.hasNext();)
 		{
-			return "InternalError.vm";
+			BulletinInfo element = (BulletinInfo) iter.next();
+			bulletins.add(element);
 		}
+		context.put("foundBulletins", bulletins);
+		context.put("totalBulletins", new Integer(bulletins.size()));
+		request.getSession().setAttribute("foundBulletins", bulletins);
+		return "SearchResults.vm";
 	}
 
 	public List getSearchResults(AmplifierServletRequest request)
