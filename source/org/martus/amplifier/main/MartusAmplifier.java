@@ -31,7 +31,10 @@ import org.martus.common.crypto.MartusCrypto.CryptoInitializationException;
 import org.martus.common.crypto.MartusCrypto.InvalidKeyPairFileVersionException;
 import org.martus.util.Base64.InvalidBase64Exception;
 import org.mortbay.http.HttpContext;
+import org.mortbay.http.SunJsseListener;
 import org.mortbay.jetty.Server;
+import org.mortbay.util.InetAddrPort;
+import org.mortbay.util.MultiException;
 
 public class MartusAmplifier
 {
@@ -55,7 +58,7 @@ public class MartusAmplifier
 			passphrase = getPassphraseFromConsole(amp);
 		amp.loadAccount(passphrase);
 		amp.displayStatistics();
-		amp.start();
+		amp.start(passphrase);
 	}
 	
 	public MartusAmplifier(File dataDirectoryToUse, LoggerInterface loggerToUse) throws CryptoInitializationException
@@ -65,7 +68,7 @@ public class MartusAmplifier
 		security = new MartusSecurity();
 	}
 
-	void start() throws Exception
+	void start(String password) throws Exception
 	{
 		deleteLuceneLockFile();
 		String packetsDirectory = new File(getBasePath(), "packets").getPath();
@@ -77,11 +80,6 @@ public class MartusAmplifier
 		backupServersList = loadServersWeWillCall(backupServersDirectory, security);
 		
 		//Code.setDebug(true);
-		Server server = new Server("jettyConfiguration.xml");
-		server.addWebApplication("/","presentation/");
-		
-		addPasswordAuthentication(server);
-
 		File indexDir = LuceneBulletinIndexer.getIndexDir(getBasePath());
 		File languages = new File(indexDir, "languagesIndexed.txt");
 		languagesIndexed = new LanguagesIndexedList(languages);
@@ -94,7 +92,7 @@ public class MartusAmplifier
 			log("Error: LanguagesIndex" + e);
 		}
 		
-		server.start();
+		startServer(password);
 		timer.scheduleAtFixedRate(timedTask, IMMEDIATELY, dataSynchIntervalMillis);
 		
 		while(! isShutdownRequested() )
@@ -102,6 +100,28 @@ public class MartusAmplifier
 		}
 	}
 	
+
+	private void startServer(String password) throws IOException, MultiException
+	{
+		File jettyConfigDirectory = getStartupConfigDirectory();
+		File jettyXmlFile = new File(jettyConfigDirectory, "jettyConfiguration.xml");
+		File jettyKeystore = new File(jettyConfigDirectory, "keystore");
+		Server server = new Server(jettyXmlFile.getAbsolutePath());
+		
+		SunJsseListener sslListener = new SunJsseListener(new InetAddrPort(8443));
+		sslListener.setPassword(password);
+		sslListener.setKeyPassword(password);
+		sslListener.setKeystore(jettyKeystore.getAbsolutePath());
+		sslListener.setMaxIdleTimeMs(30000);
+		sslListener.setMaxThreads(255);
+		sslListener.setMinThreads(5);
+		sslListener.setLowResourcePersistTimeMs(5000);
+		server.addListener(sslListener);
+		
+		server.addWebApplication("/","presentation/");
+		addPasswordAuthentication(server);
+		server.start();
+	}
 
 	private void processCommandLine(String[] args)
 	{

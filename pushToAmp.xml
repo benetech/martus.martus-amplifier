@@ -26,6 +26,8 @@
 
   <property name="push-dir" value="pushToAmp"/>
   <property name="push-presentation" value="${push-dir}/presentation"/>
+  <property name="push-MartusAmplifier" value="${push-dir}/MartusAmplifier"/>
+  <property name="push-DeleteOnStartup" value="${push-MartusAmplifier}/DeleteOnStartup"/>
   
 <!-- ================================================================== -->
 <!-- I N I T                                                            -->
@@ -39,10 +41,12 @@
 <!-- C L E A N                                                          -->
 <!-- ================================================================== -->
   <target name="clean">
-
     <mkdir dir="${push-dir}"/>
     <mkdir dir="${push-presentation}"/>
-  
+    <mkdir dir="${push-MartusAmplifier}"/>
+    <mkdir dir="${push-DeleteOnStartup}"/>
+    
+
     <!-- Remove all files from main push dir. -->
     <delete verbose="true">
         <fileset dir="${push-dir}" includes="*.*"/>
@@ -52,6 +56,12 @@
     <delete verbose="true">
         <fileset dir="${push-presentation}" includes="*.*"/>
     </delete>
+
+    <!-- Remove all files from push DeleteOnStartup dir. -->
+    <delete verbose="true">
+        <fileset dir="${push-DeleteOnStartup}" includes="*.*"/>
+    </delete>
+
   </target>
 
 <!-- ================================================================== -->
@@ -96,10 +106,10 @@
     </delete>
     
     <!-- Copy jettyConfiguration.xml -->
-	<copy todir="${push-dir}" file="jettyConfiguration.xml"/>
+	<copy todir="${push-DeleteOnStartup}" file="jettyConfiguration.xml"/>
        
     <!-- Copy keystore ssl certificate -->
-	<copy todir="${push-dir}" file="keystore"/>
+	<copy todir="${push-DeleteOnStartup}" file="keystore"/>
 	
   </target>
 
