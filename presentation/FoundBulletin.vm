@@ -46,7 +46,9 @@
 			</tr>
 			<tr>
 				<td valign='top'>Event Date:</td>
-				<td valign='top'>$bulletin.fields.eventdate</td>
+				<td valign='top'>
+					#parse("DateRange.vm")
+				</td>
 				<td></td>
 			</tr>
 			<tr>

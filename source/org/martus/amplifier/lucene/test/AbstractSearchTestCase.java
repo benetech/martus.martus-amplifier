@@ -183,13 +183,22 @@ public abstract class AbstractSearchTestCase
 			Assert.assertEquals(
 				bulletinId, found.getBulletinId());
 			Collection fields = BulletinField.getSearchableFields();
-			for (Iterator iter = fields.iterator(); iter.hasNext();) {
+			for (Iterator iter = fields.iterator(); iter.hasNext();) 
+			{
 				BulletinField field = (BulletinField) iter.next();
-				Assert.assertEquals(
-					fdp.get(field.getXmlId()), 
-					found.get(field.getIndexId()));
+				if(field.isDateRangeField())
+					Assert.assertEquals(
+						fdp.get(field.getXmlId()), 
+						found.get(field.getIndexId()+"-start"));
+					
+				else
+					Assert.assertEquals(
+						fdp.get(field.getXmlId()), 
+						found.get(field.getIndexId()));
 			}
-		} finally {
+		} 
+		finally 
+		{
 			searcher.close();
 		}
 	}

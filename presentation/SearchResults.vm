@@ -12,23 +12,25 @@
 		<br/><br/>
         
         <table width="800" border="0" cellpadding="0" cellspacing="0">
-			#foreach ($thisBulletin in $foundBulletins)
+			#foreach ($bulletin in $foundBulletins)
 	            <tr>
 	            	<td valign='top'>
 	            		$velocityCount. 
 	            	</td>
 	                <td>
-	                	<strong>Title</strong>: <a href="FoundBulletin?index=$velocityCount">$thisBulletin.fields.title</a><br/>
-						#if($thisBulletin.fields.author != "")
-		        	        <strong>Author</strong>: $thisBulletin.fields.author<br/>
+	                	<strong>Title</strong>: <a href="FoundBulletin?index=$velocityCount">$bulletin.fields.title</a><br/>
+						#if($bulletin.fields.author != "")
+		        	        <strong>Author</strong>: $bulletin.fields.author<br/>
 						#end
-						#if($thisBulletin.fields.organization != "")
-		            	    <strong>Organization</strong>: $thisBulletin.fields.organization<br/>
+						#if($bulletin.fields.organization != "")
+		            	    <strong>Organization</strong>: $bulletin.fields.organization<br/>
 						#end
-						#if($thisBulletin.fields.location != "")
-			                <strong>Location</strong>: $thisBulletin.fields.location<br/>
+						#if($bulletin.fields.location != "")
+			                <strong>Location</strong>: $bulletin.fields.location<br/>
 						#end
-		                <strong>Event Date</strong>: $thisBulletin.fields.eventdate<br/>
+		                <strong>Event Date</strong>: 
+						#parse("DateRange.vm")
+						<br/>
 		                <br/>
 		            </td>
 	            </tr>

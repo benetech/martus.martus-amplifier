@@ -119,6 +119,60 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 			searcher.close();
 		}
 	}
+
+	public void testMoreComplicatedExtraction() 
+		throws Exception
+	{
+		clearTestData();
+		BulletinIndexer indexer = null;
+		Exception closeException = null;
+		Bulletin b = createSampleBulletin2(new File[0]);
+		File f = createBulletinZipFile(b);
+		
+		try 
+		{
+			indexer = getBulletinIndexer();
+			BulletinExtractor extractor = 
+				new BulletinExtractor(
+					attachmentManager, indexer, security);
+			extractor.extractAndStoreBulletin(f);
+		} 
+		finally 
+		{
+			if (indexer != null) 
+			{
+				try 
+				{
+					indexer.close();
+				} 
+				catch (BulletinIndexException e) 
+				{
+					closeException = e;
+				}
+			}
+		}
+		
+		if (closeException != null) {
+			throw closeException;
+		}
+		
+		BulletinSearcher searcher = getBulletinSearcher();
+		try 
+		{
+			BulletinSearcher.Results results = 
+				searcher.search(
+					SEARCH_AUTHOR_INDEX_FIELD, b.get(BulletinField.TAGAUTHOR));
+			Assert.assertEquals(1, results.getCount());
+			BulletinInfo info = 
+				searcher.lookup(b.getUniversalId());
+			Assert.assertNotNull(info);
+			compareBulletins(b, info);
+		} 
+		finally 
+		{
+			searcher.close();
+		}
+	}
 	
 	// TODO pdalbora 5-May-2003 -- Expose this method to junit by
 	// removing the underscore when it's working.
@@ -181,11 +235,24 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 		Collection fields = BulletinField.getSearchableFields();
 		for (Iterator iter = fields.iterator(); iter.hasNext();) {
 			BulletinField field = (BulletinField) iter.next();
-			Object retrievedValue = retrievedData.get(field.getIndexId());
-			if (retrievedValue == null) {
+			Object retrievedValue;
+			if(field.isDateRangeField())
+			{
+				String startDateRetrieved = retrievedData.get(field.getIndexId()+"-start");
+				String endDateRetrieved = retrievedData.get(field.getIndexId()+"-end");
+				String dateOfBulletin = bulletin.get(field.getXmlId());
+				String startDate = LuceneBulletinSearcher.getStartDateRange(dateOfBulletin);
+				String endDate = LuceneBulletinSearcher.getEndDateRange(dateOfBulletin);
+				assertEquals(startDate, startDateRetrieved);
+				assertEquals(endDate, endDateRetrieved);
+				continue;
+			}
+			retrievedValue = retrievedData.get(field.getIndexId());
+			if (retrievedValue == null) 
+			{
 				retrievedValue = "";
 			}
-			Assert.assertEquals(
+			assertEquals(
 				bulletin.get(field.getXmlId()), 
 				retrievedValue);
 		}
@@ -223,6 +290,19 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 		return b;
 	}
 	
+	private Bulletin createSampleBulletin2(File[] attachments) 
+		throws EncryptionException, IOException
+	{
+		Bulletin b = new Bulletin(security);
+		b.set(BulletinField.TAGAUTHOR, "flex");
+		b.set(BulletinField.TAGKEYWORDS, "testing flexidate");
+		b.set(BulletinField.TAGEVENTDATE, "2003-08-20,20030820+3");
+		for (int i = 0; i < attachments.length; i++) {
+			b.addPublicAttachment(new AttachmentProxy(attachments[i]));
+		}
+		return b;
+	}
+
 	private File createAttachment(String data) 
 		throws IOException
 	{

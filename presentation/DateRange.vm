@@ -1,0 +1,6 @@
+#if ($bulletin.fields.eventdate-end)
+		From $bulletin.fields.eventdate-start
+		&nbsp;through&nbsp;$bulletin.fields.eventdate-end
+#else
+	$bulletin.fields.eventdate-start
+#end

@@ -253,21 +253,18 @@ public class LuceneBulletinSearcher
 				bulletinId + "; found " + numResults + " results");
 	}
 
-	static String convertDateRange(String value)
+	public static String getStartDateRange(String value)
 	{
 		MartusFlexidate mfd = MartusFlexidate.createFromMartusDateString(value);
-	
-		String beginDate = MartusFlexidate.toStoredDateFormat(mfd.getBeginDate());
-		String endDate = MartusFlexidate.toStoredDateFormat(mfd.getEndDate());
-	
-		String display = "";
-	
-		if (mfd.hasDateRange())
-			display = beginDate + "/"+ endDate;		
-		else
-			display = beginDate;	
-	
-		return display;
+		return MartusFlexidate.toStoredDateFormat(mfd.getBeginDate());
+	}
+
+	public static String getEndDateRange(String value)
+	{
+		MartusFlexidate mfd = MartusFlexidate.createFromMartusDateString(value);
+		if (!mfd.hasDateRange())
+			return null;
+		return MartusFlexidate.toStoredDateFormat(mfd.getEndDate());
 	}
 	
 	private static class LuceneResults implements Results
@@ -326,8 +323,15 @@ public class LuceneBulletinSearcher
 					if (field.isDateField()) 														
 					 	value = SEARCH_DATE_FORMAT.format(DateField.stringToDate(value));
 					 	
-					if (field.isDateRangeField())																										
-  						value = LuceneBulletinSearcher.convertDateRange(value);
+					if (field.isDateRangeField())
+					{
+						String startDate = LuceneBulletinSearcher.getStartDateRange(value);
+						info.set(field.getIndexId()+"-start", startDate);
+						String endDate = LuceneBulletinSearcher.getEndDateRange(value);
+						if(endDate != null)
+							info.set(field.getIndexId()+"-end", endDate);
+  						continue;
+					}
   						
  					info.set(field.getIndexId(), value);
 				}
