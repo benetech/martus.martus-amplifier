@@ -66,12 +66,19 @@
 			</tr>
 			#foreach ($thisAttachments in $bulletin.attachments)
 				<tr>
-					<td valign='top'>
 					#if ($velocityCount == 1)
-						Attachment(s):
+						<td valign='top'>Attachment(s):</td>
+					#else
+						<td></td>
 					#end
+					<td valign='top'>
+						<a 	href=DownloadAttachment
+							?bulletinIndex=$currentBulletin&
+							attachmentIndex=$velocityCount>
+							$thisAttachments.label
+						</a>
+						&nbsp;($thisAttachments.size Kb)
 					</td>
-					<td valign='top'><a href=DownloadAttachment?bulletinIndex=$currentBulletin&attachmentIndex=$velocityCount>$thisAttachments.label ($thisAttachments.size Kb)</a></td>
 					<td></td>
 				</tr>
 			#end
