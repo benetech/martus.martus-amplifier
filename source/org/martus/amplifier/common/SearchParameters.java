@@ -111,7 +111,7 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 		return newString;
 	}
 	
-	private static String insertBeforeEachWord(String sign, String queryString)
+	static String insertBeforeEachWord(String sign, String queryString)
 	{
 		String[] words = queryString.split(" ");
 		String query = "(";		
