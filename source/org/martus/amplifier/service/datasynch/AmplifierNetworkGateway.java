@@ -111,7 +111,8 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
 		Vector result = new Vector();
 		File tempFile = null;
 		File bulletinZippedFile = null;
-		String bulletinPrefix = "F-";
+		String bulletinPublicDataPrefix = "F-";
+		String bulletinPrefix = "B-";
 		String attachmentPrefix = "A-";
 		String dir = "";
  
@@ -129,22 +130,16 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
 			logger.severe("AmplifierNetworkGateway.getBulletin(uid):BulletinZippedFile is empty" );
 		}
 		
-		//3.Put files in Bulletin Folder and attachments folder 
-		/*
-		split the attachment xml files into certain a certain folder
-		and then the field data packets into another folder
-		then we initiate the indexing on the field data packet folder
-		for each packet that has an associated attachment
-		it will know that from the xml file and find it and index it
-		-Initiaiting the indexing is done through BulletinIndexer
-		*/
+		//3.Put Field Data packets in Bulletin Folder and
+		// attachment XML files on attachments folder 
+		
 		if( result!=null)
 		{
 			for(int i= 0; i< result.size(); i++)
 			{
 				tempFile = (File)result.get(i);	
 				tempFile.deleteOnExit();
-				if( tempFile.getName().startsWith(bulletinPrefix) )
+				if( tempFile.getName().startsWith(bulletinPrefix) || tempFile.getName().startsWith(bulletinPublicDataPrefix) )
 				{
 					dir = bulletinWorkingDirectory;
 					saveFileToFolder(tempFile, dir);
