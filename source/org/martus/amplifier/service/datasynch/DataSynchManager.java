@@ -38,25 +38,28 @@ public class DataSynchManager implements IDataSynchConstants
 	 * This calls the method checkAndRetrieveBulletinsForUIDs() for new bulletins and attachments 
 	 * Saving the attachments and bulletin files is done in AmplifierNetworkGateway.retrieveAndManageBulletin()
 	 */
-	public void getAllNewBulletins()
+	public void getAllNewBulletins(BulletinProcessor bulletinProcessor)
 	{
 		//logger.info("in DataSynchManager.getAllNewBulletins(): ");	
 	
 		String accountId = "";
 		List accountList = null;
 		Vector response;
-		isIndexingNeeded = false;
+		
+		
 		
 		//Step1: Retrieve all the accountids from Martus Server
 		
 		accountList = new ArrayList(amplifierGateway.getAllAccountIds());
-		if(accountList == null)
-		{
-			logger.severe("DataSynchManager.getAllNewBulletins(): accountList is null");
-			System.exit(0);
-		}
 		
 		BulletinCatalog catalog = BulletinCatalog.getInstance();
+		
+		// TODO pdalbora 17-Apr-2003 -- This code attempts to get all new
+		// bulletins from the server and put them into a temporary Bulletin
+		// Folder, whence they will be subsequently indexed. What happens
+		// if two different accounts have bulletins with the same local id?
+		// Currently it looks like the second bulletin will overwrite the
+		// first.
 		
 		//Step2: Retrieve the universal ids and bulletins for each account
 		for(int index=0; index <accountList.size();index++)
@@ -65,46 +68,27 @@ public class DataSynchManager implements IDataSynchConstants
 			response = amplifierGateway.getAccountUniversalIds(accountId);
 			for(int i = 0; i < response.size(); i++)
 			{
+				UniversalId uid = null;
 				try
 				{
-					UniversalId uid = UniversalId.createFromString((String) response.get(i));
+					uid = UniversalId.createFromString((String) response.get(i));
 	
 					if( !catalog.bulletinHasBeenIndexed(uid) )
 					{
 						logger.info("DataSynchManager.checkAndRetrieveBulletinsForUIDs():before calling  amplifierGateway.retrieveAndManageBulletin on UID = "+ uid.toString());
-						amplifierGateway.retrieveAndManageBulletin(uid);
-						isIndexingNeeded = true;
+						amplifierGateway.retrieveAndManageBulletin(uid, bulletinProcessor);
 					}
 				}
 				catch (NotUniversalIdException e)
 				{
 					logger.severe("DataSynchManager.getAllNewBulletins(): " + e);
 				}
+				catch (Exception e)
+				{
+					logger.severe("Unable to process " + uid + ": " + e.getMessage());
+				}
 			}
 		}
 				
-	}
-	
-   /**
-	 * This will take care of indexing bulletins and 
-	 * calling AttachmentManager
-	 * we initiate the indexing on the field data packet folder
-	 * for each packet that has an associated attachment
-	 * it will know that from the xml file and find it and index it
-	 * -Initiating the indexing is done through BulletinIndexer
-	 */
-	public void indexBulletins()
-	{
-		//logger.info("in DataSynchManager.indexBulletins() ");	
-		if(isIndexingNeeded)
-		{
-			BulletinIndexer indexer = BulletinIndexer.getInstance();
-			indexer.indexBulletins();
-			isIndexingNeeded = false;
-		}
-		else
-		{
-			logger.info("No new bulletins retrieved. No indexing necessary");
-		}
 	}
 }

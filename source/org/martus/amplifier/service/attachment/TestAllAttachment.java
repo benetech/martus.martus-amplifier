@@ -1,4 +1,6 @@
-package org.martus.amplifier.test.attachment;
+package org.martus.amplifier.service.attachment;
+
+import org.martus.amplifier.service.attachment.filesystem.TestFileSystemAttachmentManager;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -25,9 +27,9 @@ public class TestAllAttachment extends TestSuite
 	{
 		TestSuite suite =
 			new TestSuite("All Martus Amplifier Attachment Tests");
-
-		suite.addTest(new TestSuite(AttachmentManagerTest.class));
-
+		
+		suite.addTest(new TestSuite(TestFileSystemAttachmentManager.class));
+		
 		return suite;
 	}
 

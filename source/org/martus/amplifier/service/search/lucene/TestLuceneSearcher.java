@@ -1,0 +1,62 @@
+package org.martus.amplifier.service.search.lucene;
+
+import java.io.File;
+
+import org.martus.amplifier.service.search.AbstractSearchTest;
+import org.martus.amplifier.service.search.BulletinIndexException;
+import org.martus.amplifier.service.search.BulletinIndexer;
+import org.martus.amplifier.service.search.BulletinSearchException;
+import org.martus.amplifier.service.search.BulletinSearcher;
+
+public class TestLuceneSearcher extends AbstractSearchTest
+{
+	public TestLuceneSearcher(String name) 
+	{
+		super(name);
+	}
+	
+	public void testNewSearcherWithNoIndexDirectory()
+		throws BulletinIndexException
+	{
+		deleteIndexDir();
+		BulletinSearcher searcher = openBulletinSearcher();
+		searcher.close();
+	}
+	
+	public void testNewIndexerWithNoIndexDirectory()
+		throws BulletinIndexException
+	{
+		deleteIndexDir();
+		BulletinIndexer indexer = openBulletinIndexer();
+		indexer.close();
+	}
+
+	protected BulletinIndexer openBulletinIndexer()
+		throws BulletinIndexException 
+	{
+		return new LuceneBulletinIndexer(getTestIndexPath());
+	}
+
+	protected BulletinSearcher openBulletinSearcher()
+		throws BulletinIndexException 
+	{
+		return new LuceneBulletinSearcher(getTestIndexPath());
+	}
+	
+	private void deleteIndexDir() throws BulletinIndexException
+	{
+		File indexDir = new File(getTestIndexPath());
+		indexDir.mkdirs();
+		File[] indexFiles = indexDir.listFiles();
+		for (int i = 0; i < indexFiles.length; i++) {
+			File indexFile = indexFiles[i];
+			if (!indexFile.isFile()) {
+				throw new BulletinIndexException(
+					"Unexpected non-file encountered: " + indexFile);
+			}
+			indexFile.delete();
+		}
+		indexDir.delete();
+	}
+
+}

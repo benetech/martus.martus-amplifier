@@ -1,5 +1,9 @@
 package org.martus.amplifier.test;
 
+import java.io.File;
+
+import org.martus.amplifier.common.configuration.AmplifierConfiguration;
+
 import junit.framework.TestCase;
 
 /**
@@ -16,4 +20,27 @@ public abstract class AbstractAmplifierTest extends TestCase
 	{
 		super(name);
 	}
+	
+	protected void setUp() throws Exception
+	{
+		super.setUp();
+		basePath = AmplifierConfiguration.getInstance().buildAmplifierBasePath("test");
+	}
+	
+	protected String getTestBasePath()
+	{
+		return basePath;
+	}
+	
+	protected String getTestAttachmentPath()
+	{
+		return basePath + File.separator + "attachments";			
+	}
+	
+	protected String getTestIndexPath()
+	{
+		return basePath + File.separator + "index";
+	}
+	
+	private String basePath;
 }

@@ -11,14 +11,6 @@ public class SearchResultsBean
 		super();
 	}
 
-	public Hits getSearchResults(String field, String query)
-	{
-		return BulletinSearcher.getInstance().searchField(field, query);
-	}
 	
-	public Hits getSearchResults(String query)
-	{
-		return BulletinSearcher.getInstance().searchText(query);
-	}
 
 }

@@ -1,9 +1,15 @@
 package org.martus.amplifier.main;
 
 
+import java.io.IOException;
 import java.util.logging.Logger;
 
+import org.martus.amplifier.common.configuration.AmplifierConfiguration;
+import org.martus.amplifier.service.attachment.filesystem.FileSystemAttachmentManager;
+import org.martus.amplifier.service.datasynch.BulletinProcessor;
 import org.martus.amplifier.service.datasynch.DataSynchManager;
+import org.martus.amplifier.service.search.BulletinIndexException;
+import org.martus.amplifier.service.search.lucene.LuceneBulletinIndexer;
 
 /**
  * @author SKoneru
@@ -25,16 +31,36 @@ public class MartusAmplifierDataSynch {
 	public void execute() 
 	{
 		
+		LuceneBulletinIndexer indexer = null;
+		FileSystemAttachmentManager attachmentManager = null;
 		try
 		{
 			DataSynchManager dataManager = DataSynchManager.getInstance();
-			dataManager.getAllNewBulletins();
-			dataManager.indexBulletins();
+			AmplifierConfiguration config = 
+				AmplifierConfiguration.getInstance();
+			indexer = new LuceneBulletinIndexer(
+				config.buildAmplifierBasePath("index"));
+			attachmentManager = new FileSystemAttachmentManager(
+				config.buildAmplifierBasePath("attachments"));
+
+			dataManager.getAllNewBulletins(
+				new BulletinProcessor(attachmentManager, indexer));
 		}
 		catch(Exception e)
 		{
 			logger.severe("MartusAmplifierDataSynch.execute(): " + e.getMessage());
 			e.printStackTrace();
+		} 
+		finally
+		{
+			if (indexer != null) {
+				try {
+					indexer.close();
+				} catch (BulletinIndexException e) {
+					logger.severe(
+						"Unable to close the indexer: " + e.getMessage());
+				}
+			}
 		}
 					
 	}

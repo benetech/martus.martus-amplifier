@@ -1,7 +1,11 @@
 package org.martus.amplifier.service.search;
 
+import java.util.logging.Logger;
+
 import org.apache.lucene.search.Hits;
+import org.martus.amplifier.common.configuration.AmplifierConfiguration;
 import org.martus.amplifier.service.search.api.IBulletinCatalog;
+import org.martus.amplifier.service.search.lucene.LuceneBulletinSearcher;
 import org.martus.common.UniversalId;
 
 /**
@@ -23,10 +27,24 @@ public class BulletinCatalog implements IBulletinCatalog {
    
 	public boolean bulletinHasBeenIndexed(UniversalId universalId)
 	{
-        BulletinSearcher bulletinSearcher = BulletinSearcher.getInstance();
-        Hits hits = bulletinSearcher.searchKeywordField(ISearchConstants.UNIVERSAL_ID_INDEX_FIELD, universalId.toString());
-
-        return ((hits != null) && (hits.length() == 1));
+        AmplifierConfiguration config = AmplifierConfiguration.getInstance();
+        BulletinSearcher searcher = null;
+        try {
+        	searcher = 
+        		new LuceneBulletinSearcher(config.buildAmplifierBasePath("index"));
+        	return (searcher.getBulletinData(universalId) != null);
+        } catch (BulletinIndexException e) {
+        	Logger.getLogger("catalog").severe("Catalog error: " + e.getMessage());
+        } finally {
+        	if (searcher != null) {
+        		try {
+        			searcher.close();
+        		} catch (BulletinIndexException e) {
+        			Logger.getLogger("catalog").severe("Catalog error: " + e.getMessage());
+        		}
+        	}
+        }
+        return false;
 	}
 	
 	private static BulletinCatalog instance = new BulletinCatalog();

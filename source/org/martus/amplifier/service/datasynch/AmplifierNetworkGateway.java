@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
+import java.util.zip.ZipFile;
 
 import org.martus.amplifier.common.configuration.AmplifierConfiguration;
 import org.martus.amplifier.common.datasynch.AmplifierBulletinRetrieverGatewayInterface;
@@ -16,13 +17,21 @@ import org.martus.amplifier.common.datasynch.AmplifierClientSideNetworkGateway;
 import org.martus.amplifier.common.datasynch.AmplifierClientSideNetworkHandlerUsingXMLRPC;
 import org.martus.amplifier.common.datasynch.AmplifierNetworkInterface;
 import org.martus.amplifier.common.datasynch.AmplifierClientSideNetworkHandlerUsingXMLRPC.SSLSocketSetupException;
+import org.martus.amplifier.service.attachment.AttachmentStorageException;
+import org.martus.amplifier.service.search.BulletinIndexException;
 import org.martus.common.MartusCrypto;
 import org.martus.common.MartusSecurity;
 import org.martus.common.MartusUtilities;
 import org.martus.common.NetworkInterfaceConstants;
 import org.martus.common.NetworkResponse;
 import org.martus.common.UniversalId;
+import org.martus.common.Base64.InvalidBase64Exception;
+import org.martus.common.MartusCrypto.DecryptionException;
+import org.martus.common.MartusCrypto.NoKeyPairException;
 import org.martus.common.MartusUtilities.ServerErrorException;
+import org.martus.common.Packet.InvalidPacketException;
+import org.martus.common.Packet.SignatureVerificationException;
+import org.martus.common.Packet.WrongPacketTypeException;
 
 public class AmplifierNetworkGateway implements IDataSynchConstants
 {
@@ -97,60 +106,15 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
 	}
 	
 
-	public Vector retrieveAndManageBulletin(UniversalId uid)
+	public void retrieveAndManageBulletin(
+		UniversalId uid, BulletinProcessor bulletinProcessor) 
+		throws WrongPacketTypeException, IOException, DecryptionException, 
+			InvalidPacketException, BulletinIndexException, 
+			NoKeyPairException, SignatureVerificationException, 
+			AttachmentStorageException, InvalidBase64Exception
 	{
-		Vector result = new Vector();
-		File tempFile = null;
-		File bulletinZippedFile = null;
-		String bulletinPublicDataPrefix = "F-";
-		String bulletinPrefix = "B-";
-		String attachmentPrefix = "A-";
-		String dir = "";
- 
-		// 1) retrieve Bulletin in Chunks and get the Zip file
-		bulletinZippedFile = getBulletin(uid);
-		//bulletinZippedFile = new File("testdata/Firebombing of NGO O13806.mbf");
-		
-		// 2) Unzip the file and retrieve the bulletin and attachments into a Vector
-		if(bulletinZippedFile != null)
-		{
-			result = AmplifierUtilities.unZip(bulletinZippedFile);
-		}
-		else
-		{
-			logger.severe("AmplifierNetworkGateway.getBulletin(uid):BulletinZippedFile is empty" );
-		}
-		
-		//3.Put Field Data packets in Bulletin Folder and
-		// attachment XML files on attachments folder 
-		
-		if( result != null)
-		{
-			for(int i= 0; i< result.size(); i++)
-			{
-				tempFile = (File)result.get(i);	
-				tempFile.deleteOnExit();
-				if( tempFile.getName().startsWith(bulletinPrefix) || tempFile.getName().startsWith(bulletinPublicDataPrefix) )
-				{
-					dir = bulletinWorkingDirectory;
-					saveFileToFolder(tempFile, dir);
-				}
-				else
-				{
-					if( tempFile.getName().startsWith(attachmentPrefix) )
-					{
-						dir = attachmentWorkingDirectory;
-						saveFileToFolder(tempFile, dir);
-					}				
-				}
-			}
-		}	
-		else
-		{
-			logger.severe("AmplifierNetworkGateway.getBulletin(uid): Unzipping of bulletinZippedFile is not sucessful");	
-		}	
-			
-		return result;		
+		File bulletinFile = getBulletin(uid);
+		bulletinProcessor.processBulletin(bulletinFile);	
 	}
 	
 	
@@ -191,43 +155,6 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
 			logger.severe("Error" + new ServerErrorException("totalSize didn't match data length") );
 		}
 		return tempFile;
-	}
-	
-	
-	private void saveFileToFolder(File fileToSave, String dir)
-	{
-		
-		String outFileName = fileToSave.getName();
-		String path = dir + File.separator + outFileName;	
-		logger.info("saving file "+ path);
-		try
-		{
-			
-			File outFile = new File(dir);
-			if(! outFile.exists())
-			{			
-				logger.info("Creating directory "+ dir);
-				outFile.mkdir();
-			}
-			FileInputStream inStream = new FileInputStream(fileToSave);
-			FileOutputStream outStream = new FileOutputStream(path);
-			BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outStream);
-			byte[] buffer = new byte[1024];
-			int len = 0;
-			while( (len=inStream.read(buffer)) >= 0)
-			{
-				bufferedOutputStream.write(buffer, 0, len);	
-			}
-			bufferedOutputStream.flush();
-			outStream.flush();
-			inStream.close();
-			bufferedOutputStream.close();
-			outStream.close();	
-		}
-		catch(IOException ioe)
-		{
-		  logger.severe("AmplifierNetworkGateway.saveFileToFolder:IOException "+ioe.getMessage());
-		}
 	}
 	
 	

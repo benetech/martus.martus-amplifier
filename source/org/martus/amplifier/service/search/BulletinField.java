@@ -13,7 +13,7 @@ import org.martus.common.BulletinConstants;
  * 
  * @author PDAlbora
  */
-public class BulletinField implements BulletinConstants, ISearchConstants
+public class BulletinField implements BulletinConstants, SearchConstants
 {
 	public String getDisplayName()
 	{
@@ -43,6 +43,11 @@ public class BulletinField implements BulletinConstants, ISearchConstants
 	public static Collection getSearchableFields() 
 	{
 		return FIELDS.values();
+	}
+	
+	public static String[] getSearchableXmlIds()
+	{
+		return (String[]) FIELDS.keySet().toArray(new String[0]);
 	}
 	
 	private BulletinField(String xmlId, String indexId, String displayName)
