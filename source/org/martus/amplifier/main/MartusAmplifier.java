@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
-import java.util.logging.Logger;
 
 import org.martus.amplifier.attachment.AttachmentManager;
 import org.martus.amplifier.attachment.FileSystemAttachmentManager;
@@ -280,36 +279,43 @@ public class MartusAmplifier
 
 	public void pullNewBulletinsFromServers(List backupServersList) 
 	{
-		Logger fancyLogger = Logger.getLogger("MainTask");
-		
-		if(backupServersList.size() == 0)
-			return;
-				
-		BackupServerInfo backupServerToCall = (BackupServerInfo)backupServersList.get(0);
+		log("Beginning pull loop");
+		for(int i=0; i < backupServersList.size(); ++i)
+		{
+			BackupServerInfo backupServerToCall = (BackupServerInfo)backupServersList.get(i);
+			pullNewBulletinsFromOneServer(backupServerToCall);
+		}
+	}
+
+	private void pullNewBulletinsFromOneServer(BackupServerInfo backupServerToCall)
+	{
 		BulletinIndexer indexer = null;
 		try
 		{
-			DataSynchManager dataManager = new DataSynchManager(backupServerToCall, getSecurity());
+			DataSynchManager dataManager = new DataSynchManager(backupServerToCall, logger, getSecurity());
 			AmplifierConfiguration config = 
 				AmplifierConfiguration.getInstance();
 			indexer = new LuceneBulletinIndexer(
 				config.getBasePath());
-	
+		
 			dataManager.getAllNewBulletins(attachmentManager, indexer);
 		}
 		catch(Exception e)
 		{
-			fancyLogger.severe("MartusAmplifierDataSynch.execute(): " + e.getMessage());
+			log("MartusAmplifierDataSynch.execute(): " + e.getMessage());
 			e.printStackTrace();
 		} 
 		finally
 		{
-			if (indexer != null) {
-				try {
+			if (indexer != null) 
+			{
+				try 
+				{
 					indexer.close();
-				} catch (BulletinIndexException e) {
-					fancyLogger.severe(
-						"Unable to close the indexer: " + e.getMessage());
+				} 
+				catch (BulletinIndexException e) 
+				{
+					log("Unable to close the indexer: " + e.getMessage());
 				}
 			}
 		}
@@ -334,11 +340,6 @@ public class MartusAmplifier
 			}
 		}
 
-		if(serversWeWillCall.size() > 1)
-		{
-			log("ERROR: Can only call one server. Aborting.");
-			System.exit(55);
-		}
 		log("Configured to call " + serversWeWillCall.size() + " servers");
 		return serversWeWillCall;
 	}

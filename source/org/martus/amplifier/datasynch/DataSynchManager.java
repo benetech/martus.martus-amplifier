@@ -9,6 +9,7 @@ import org.martus.amplifier.attachment.AttachmentManager;
 import org.martus.amplifier.common.AmplifierConfiguration;
 import org.martus.amplifier.search.BulletinCatalog;
 import org.martus.amplifier.search.BulletinIndexer;
+import org.martus.common.LoggerInterface;
 import org.martus.common.crypto.MartusCrypto;
 import org.martus.common.packet.UniversalId;
 import org.martus.common.packet.UniversalId.NotUniversalIdException;
@@ -20,10 +21,10 @@ public class DataSynchManager
 	private static Logger logger = Logger.getLogger(AmplifierConfiguration.DATASYNC_LOGGER);
 	boolean isIndexingNeeded;
 
-	public DataSynchManager(BackupServerInfo backupServerToCall , MartusCrypto securityToUse)
+	public DataSynchManager(BackupServerInfo backupServerToCall, LoggerInterface loggerToUse, MartusCrypto securityToUse)
 	{
 		super();
-		amplifierGateway = new AmplifierNetworkGateway(backupServerToCall, securityToUse);
+		amplifierGateway = new AmplifierNetworkGateway(backupServerToCall, loggerToUse, securityToUse);
 	}
 	
 	

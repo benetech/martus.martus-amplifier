@@ -1,15 +1,12 @@
 package org.martus.amplifier.datasynch;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Vector;
-import java.util.logging.Logger;
 
 import org.martus.amplifier.attachment.AttachmentManager;
 import org.martus.amplifier.attachment.AttachmentStorageException;
-import org.martus.amplifier.common.AmplifierConfiguration;
 import org.martus.amplifier.network.AmplifierBulletinRetrieverGatewayInterface;
 import org.martus.amplifier.network.AmplifierClientSideNetworkGateway;
 import org.martus.amplifier.network.AmplifierClientSideNetworkHandlerUsingXMLRPC;
@@ -17,9 +14,11 @@ import org.martus.amplifier.network.AmplifierNetworkInterface;
 import org.martus.amplifier.network.AmplifierClientSideNetworkHandlerUsingXMLRPC.SSLSocketSetupException;
 import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinIndexer;
+import org.martus.common.LoggerInterface;
 import org.martus.common.MartusUtilities.ServerErrorException;
 import org.martus.common.bulletin.BulletinZipUtilities;
 import org.martus.common.crypto.MartusCrypto;
+import org.martus.common.crypto.MartusSecurity;
 import org.martus.common.crypto.MartusCrypto.DecryptionException;
 import org.martus.common.crypto.MartusCrypto.NoKeyPairException;
 import org.martus.common.network.NetworkInterfaceConstants;
@@ -32,18 +31,20 @@ import org.martus.util.Base64.InvalidBase64Exception;
 
 public class AmplifierNetworkGateway
 {
-	public AmplifierNetworkGateway(BackupServerInfo backupServerToCall, MartusCrypto securityToUse)
+	public AmplifierNetworkGateway(BackupServerInfo backupServerToCall, LoggerInterface loggerToUse, MartusCrypto securityToUse)
 	{
-		this(null, backupServerToCall, securityToUse);
+		this(null, backupServerToCall, loggerToUse, securityToUse);
 	}
 	
 	public AmplifierNetworkGateway(AmplifierBulletinRetrieverGatewayInterface gatewayToUse, 
 				BackupServerInfo backupServerToCall,
+				LoggerInterface loggerToUse, 
 				MartusCrypto securityToUse)
 	{
 		super();
 	
 		serverToPullFrom = backupServerToCall;
+		logger = loggerToUse;
 		gateway = gatewayToUse;
 		if(gateway == null)
 			gateway = getCurrentNetworkInterfaceGateway();
@@ -58,6 +59,7 @@ public class AmplifierNetworkGateway
 		Vector result = new Vector();
 		try
 		{
+			log("getAllAccountIds");
 			NetworkResponse response = gateway.getAccountIds(security);
 			String resultCode = response.getResultCode();
 			if(!resultCode.equals(NetworkInterfaceConstants.OK))
@@ -68,16 +70,16 @@ public class AmplifierNetworkGateway
 		{
 			//e.printStackTrace();
 			//logger.info("No server available");
-			System.out.println("No server available");
+			log("No server available");
 		}
 		catch(NotAuthorizedException e)
 		{
-			logger.severe("AmplifierNetworkGateway.getAllAccountIds() NOT AUTHORIZED");
+			log("AmplifierNetworkGateway.getAllAccountIds() NOT AUTHORIZED");
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			logger.severe("AmplifierNetworkGateway.getAllAccountIds(): ERROR: " + e.getMessage());
+			log("AmplifierNetworkGateway.getAllAccountIds(): ERROR: " + e.getMessage());
 		}
 		return result;
 	}
@@ -88,6 +90,7 @@ public class AmplifierNetworkGateway
 		Vector result = new Vector();
 		try
 		{
+			log("getAccountUniversalIds: " + MartusSecurity.getFormattedPublicCode(accountId));
 			NetworkResponse response = gateway.getPublicBulletinUniversalIds(security, accountId);
 			String resultCode = response.getResultCode();
 			if( !resultCode.equals(NetworkInterfaceConstants.OK) )	
@@ -96,7 +99,7 @@ public class AmplifierNetworkGateway
 		}	
 		catch(Exception e)
 		{
-			logger.severe("AmplifierNetworkGateway.getAccountUniversalIds(): ERROR " + e.getMessage() + ": " + accountId);
+			log("AmplifierNetworkGateway.getAccountUniversalIds(): ERROR " + e.getMessage() + ": " + accountId);
 		}
 		return result;
 	}
@@ -122,6 +125,8 @@ public class AmplifierNetworkGateway
 		int totalLength =0;
 		try 
 		{
+			log("getBulletin: " + MartusSecurity.getFormattedPublicCode(uid.getAccountId()) + 
+								":" + uid.getLocalId());
 			tempFile = File.createTempFile("$$$TempFile", null);
 			tempFile.deleteOnExit();
         	out = new FileOutputStream(tempFile);		
@@ -132,23 +137,22 @@ public class AmplifierNetworkGateway
 			}
 			catch(Exception e)
 			{
-				logger.severe("Unable to retrieve bulletin: " + e.getMessage());
+				log("Unable to retrieve bulletin: " + e.getMessage());
 			}
-		out.close();
+			finally
+			{
+				out.close();
+			}
 		}
-		catch(FileNotFoundException fe)
+		catch(Exception e)
 		{
-			logger.severe("File not found : " + fe.getMessage());	
-		}
-		catch(IOException ie)
-		{
-			logger.severe("IO Exception could not create tempfile : " + ie.getMessage());	
+			log("ERROR: " + e.getMessage());	
 		}
 
 		if(tempFile.length() != totalLength)
 		{
 			System.out.println("file=" + tempFile.length() + ", returned=" + totalLength);
-			logger.severe("Error" + new ServerErrorException("totalSize didn't match data length") );
+			log("Error" + new ServerErrorException("totalSize didn't match data length") );
 		}
 		return tempFile;
 	}
@@ -201,9 +205,14 @@ public class AmplifierNetworkGateway
 		}
 	}
 	
+	private void log(String message)
+	{
+		logger.log("Calling " + serverToPullFrom.getAddress() + ": " + message);
+	}
+	
 	private AmplifierBulletinRetrieverGatewayInterface gateway;
 	private MartusCrypto security;
-	private Logger logger = Logger.getLogger(AmplifierConfiguration.DATASYNC_LOGGER);
+	private LoggerInterface logger;
 	BackupServerInfo serverToPullFrom;
 	private AmplifierNetworkInterface currentNetworkInterfaceHandler = null;
 	private AmplifierClientSideNetworkGateway currentNetworkInterfaceGateway = null;
