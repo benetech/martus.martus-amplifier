@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.logging.Logger;
 
-import org.martus.amplifier.common.bulletin.UniversalBulletinId;
+import org.martus.common.UniversalId;
 import org.martus.amplifier.service.attachment.api.IAttachmentManager;
 
 import com.sleepycat.db.Db;
@@ -46,7 +46,7 @@ public class AttachmentManager implements IAttachmentConstants, IAttachmentManag
         
 	}
 	
-	public void putAttachmentName(UniversalBulletinId universalId, String attachmentName)
+	public void putAttachmentName(UniversalId universalId, String attachmentName)
 	{
 		AttachmentNameKeyDbt key = new AttachmentNameKeyDbt(universalId);
 		AttachmentNameValueDbt value = new AttachmentNameValueDbt(attachmentName);
@@ -61,7 +61,7 @@ public class AttachmentManager implements IAttachmentConstants, IAttachmentManag
 		}
 	}
 
-	public String getAttachmentName(UniversalBulletinId UniversalBulletinId)
+	public String getAttachmentName(UniversalId UniversalBulletinId)
 	{
 		AttachmentNameKeyDbt key = new AttachmentNameKeyDbt(UniversalBulletinId);
 		AttachmentNameValueDbt returnValue = new AttachmentNameValueDbt();
@@ -80,7 +80,7 @@ public class AttachmentManager implements IAttachmentConstants, IAttachmentManag
 		return returnValue.getString();
 	}
 
-	public void putAttachmentFile(UniversalBulletinId universalId, File attachment)
+	public void putAttachmentFile(UniversalId universalId, File attachment)
 	{
 		AttachmentFileKeyDbt key = new AttachmentFileKeyDbt(universalId);
 		AttachmentFileValueDbt value = new AttachmentFileValueDbt(attachment);
@@ -95,7 +95,7 @@ public class AttachmentManager implements IAttachmentConstants, IAttachmentManag
 		}
 	}
 	
-	public File getAttachmentFile(UniversalBulletinId UniversalBulletinId, String filePath)
+	public File getAttachmentFile(UniversalId UniversalBulletinId, String filePath)
 	{
 		AttachmentFileKeyDbt key = new AttachmentFileKeyDbt(UniversalBulletinId);
 		AttachmentFileValueDbt returnValue = new AttachmentFileValueDbt();

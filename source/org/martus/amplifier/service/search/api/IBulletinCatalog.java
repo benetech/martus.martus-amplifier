@@ -1,6 +1,6 @@
 package org.martus.amplifier.service.search.api;
 
-import org.martus.amplifier.common.bulletin.UniversalBulletinId;
+import org.martus.common.UniversalId;
 import org.martus.amplifier.service.search.api.IBulletinSearcher;
 
 /**
@@ -8,5 +8,5 @@ import org.martus.amplifier.service.search.api.IBulletinSearcher;
  *
  */
 public interface IBulletinCatalog {
-	public boolean bulletinHasBeenIndexed(UniversalBulletinId UniversalBulletinId);
+	public boolean bulletinHasBeenIndexed(UniversalId UniversalBulletinId);
 }

@@ -2,7 +2,7 @@ package org.martus.amplifier.test.search;
 
 import junit.framework.Assert;
 import org.martus.amplifier.service.search.BulletinCatalog;
-import org.martus.amplifier.common.bulletin.UniversalBulletinId;
+import org.martus.common.UniversalId;
 
 
 /**
@@ -16,8 +16,8 @@ public class BulletinCatalogTest extends AbstractAmplifierSearchTest {
 		String oxfamPacketId = "F-3c9c31-ee415a55de--1111";
 		String nonExistentPacketId = "F-3c9c31-ee415a55de--qqqq";
 		
-		UniversalBulletinId oxfamBulletinId = new UniversalBulletinId(oxfamAccountId, oxfamPacketId);
-		UniversalBulletinId nonExistentBulletinId = new UniversalBulletinId(oxfamAccountId, nonExistentPacketId);
+		UniversalId oxfamBulletinId = UniversalId.createFromAccountAndLocalId(oxfamAccountId, oxfamPacketId);
+		UniversalId nonExistentBulletinId = UniversalId.createFromAccountAndLocalId(oxfamAccountId, nonExistentPacketId);
 		
 		BulletinCatalog catalog = BulletinCatalog.getInstance();
 

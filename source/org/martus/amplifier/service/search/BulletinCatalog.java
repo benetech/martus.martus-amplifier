@@ -1,6 +1,6 @@
 package org.martus.amplifier.service.search;
 
-import org.martus.amplifier.common.bulletin.UniversalBulletinId;
+import org.martus.common.UniversalId;
 import org.martus.amplifier.service.search.api.IBulletinCatalog;
 import org.martus.amplifier.service.search.IBulletinConstants;
 import org.apache.lucene.search.Hits;
@@ -18,7 +18,7 @@ public class BulletinCatalog implements IBulletinCatalog {
 		return instance;
 	}
    
-	public boolean bulletinHasBeenIndexed(UniversalBulletinId UniversalBulletinId) {
+	public boolean bulletinHasBeenIndexed(UniversalId UniversalBulletinId) {
         BulletinSearcher bulletinSearcher = BulletinSearcher.getInstance();
 //        Hits hits = bulletinSearcher.searchField(IBulletinConstants.UNIVERSAL_ID_FIELD, "\""+UniversalBulletinId.toString()+"\"");
         Hits hits = bulletinSearcher.searchKeywordField(IBulletinConstants.UNIVERSAL_ID_FIELD, UniversalBulletinId.toString());
