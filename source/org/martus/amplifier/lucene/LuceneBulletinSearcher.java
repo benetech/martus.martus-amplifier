@@ -148,8 +148,8 @@ public class LuceneBulletinSearcher
 		if (query != null && query.length()>0)
 		{
 			if (fieldString.equals(SearchResultConstants.IN_ALL_FIELDS))
-				fieldQuery = multiFieldQueryParser(query, SEARCH_ALL_TEXT_FIELDS, "Improperly formed advanced find bulletin multiquery: ");
-			
+				return multiFieldQueryParser(query, SEARCH_ALL_TEXT_FIELDS, "Improperly formed advanced find bulletin multiquery: ");
+							
 			fieldQuery = queryParser(query, fieldString, "Improperly formed advanced find bulletin query: ");
 		}
 		
