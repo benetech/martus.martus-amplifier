@@ -539,7 +539,6 @@ public abstract class AbstractSearchTestCase
 		try 
 		{
 			Date defaultDate 	= SearchConstants.SEARCH_DATE_FORMAT.parse("1970-01-01");			
-			Date entryStartDate = SearchConstants.SEARCH_DATE_FORMAT.parse("2003-08-30");		
 		
 			HashMap fields = new HashMap();
 			fields.put(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, defaultDate);
