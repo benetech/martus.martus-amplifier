@@ -17,5 +17,16 @@
 			</New>
 		</Arg>
 	</Call>
+	<Call name="addListener">
+    <Arg>
+      <New class="org.mortbay.http.SunJsseListener">
+        <Set name="Port">8443</Set>     
+        <Set name="Keystore"><SystemProperty name="jetty.home" default="."/>/keystore</Set>
+		<Set name="Password">password</Set>
+		<Set name="KeyPassword">password</Set>
+      </New>
+    </Arg>
+  </Call>
+	
 </Configure>
 
