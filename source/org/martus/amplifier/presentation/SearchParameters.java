@@ -125,8 +125,7 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 	}
 	
 	public Date getStartDate()
-	{
-	
+	{	
 		if (hasEventFieldKeys())
 		 return getDate(Integer.parseInt(getValue(RESULT_START_YEAR_KEY)),					
 		               	MonthFields.getIndexOfMonth(getValue(RESULT_START_MONTH_KEY)),
@@ -137,7 +136,7 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 	public Date getEndDate()
 	{
 		if (hasEventFieldKeys())
-		 return getDate(Integer.parseInt(getValue(RESULT_END_YEAR_KEY)),					
+			return getDate(Integer.parseInt(getValue(RESULT_END_YEAR_KEY)),					
 						MonthFields.getIndexOfMonth(getValue(RESULT_END_MONTH_KEY)),
 						Integer.parseInt(getValue(RESULT_END_DAY_KEY)));
 		return null;

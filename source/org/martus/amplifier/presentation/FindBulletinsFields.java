@@ -10,26 +10,16 @@ public class FindBulletinsFields implements SearchConstants, SearchResultConstan
 {
 	public static Vector getFindWordFilterDisplayNames()
 	{
-		return loadWordFilterList();			
-	}
-
-	private static Vector loadWordFilterList()
-	{
 		Vector filters = new Vector();
 		filters.add(new ChoiceEntry(THESE_WORD_KEY, THESE_WORD_LABEL));
 		filters.add(new ChoiceEntry(EXACTPHRASE_KEY, EXACTPHRASE_LABEL));
 		filters.add(new ChoiceEntry(ANYWORD_KEY, ANYWORD_LABEL));
 		filters.add(new ChoiceEntry(WITHOUTWORDS_KEY, WITHOUTWORDS_LABEL));
 
-		return filters;
+		return filters;	
 	}
 	
 	public static Vector getFindEntryDatesDisplayNames()
-	{
-		return loadEntryDateList();			
-	}
-	
-	private static Vector loadEntryDateList()
 	{
 		Vector dates = new Vector();
 		dates.add(new ChoiceEntry(ENTRY_ANYTIME_KEY, ENTRY_ANYTIME_LABEL));
@@ -39,7 +29,7 @@ public class FindBulletinsFields implements SearchConstants, SearchResultConstan
 		dates.add(new ChoiceEntry(ENTRY_PAST_6_MONTH_KEY, ENTRY_PAST_6_MONTH_DAYS_LABEL));
 		dates.add(new ChoiceEntry(ENTYR_PAST_YEAR_KEY, ENTRY_PAST_YEAR_DAYS_LABEL));
 		
-		return dates;
+		return dates;		
 	}
 	
 	public static Vector getBulletinFieldDisplayNames()
@@ -56,15 +46,17 @@ public class FindBulletinsFields implements SearchConstants, SearchResultConstan
 		return fields;
 	}
 	
-	
-	public static String getFilterWordValue(String word)
+	public static Vector getLanguageFieldDisplayNames()
 	{
-		return null;
-	}
-	
-	public static String getBulletineFieldValue(String phrase)
-	{		
-		return null;
+		Vector fields = new Vector();
+		fields.add(new ChoiceEntry(LANGUAGE_ENGLISH_KEY, LANGUAGE_ENGLISH_KEY));
+		fields.add(new ChoiceEntry(LANGUAGE_FRENCH_KEY, LANGUAGE_FRENCH_KEY));
+		fields.add(new ChoiceEntry(LANGUAGE_GERMAN_KEY, LANGUAGE_GERMAN_KEY));
+		fields.add(new ChoiceEntry(LANGUAGE_INDONESIAN_KEY,LANGUAGE_INDONESIAN_KEY ));
+		fields.add(new ChoiceEntry(LANGUAGE_RUSSIAN_KEY, LANGUAGE_RUSSIAN_KEY));
+		fields.add(new ChoiceEntry(LANGUAGE_SPANISH_KEY, LANGUAGE_SPANISH_KEY ));		
+		
+		return fields;
 	}
 
 	public static class ChoiceEntry

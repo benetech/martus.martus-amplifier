@@ -75,7 +75,14 @@ public interface SearchResultConstants
 	final static String IN_DETAIL_KEY			= "in the detail";
 	final static String IN_ORGANIZATION_KEY		= "in the organization";
 	final static String IN_LOCATION_KEY			= "in the location";	
-	final static String IN_ALL_FIELDS			= "all";
+	final static String IN_ALL_FIELDS			= "all";	
+	
+	final static String LANGUAGE_ENGLISH_KEY	= "English";
+	final static String LANGUAGE_FRENCH_KEY		= "French";
+	final static String LANGUAGE_GERMAN_KEY		= "German";
+	final static String LANGUAGE_INDONESIAN_KEY	= "Indonesian";
+	final static String LANGUAGE_RUSSIAN_KEY	= "Russian";
+	final static String LANGUAGE_SPANISH_KEY	= "Spanish";
 	
 	
 	final String[] ADVANCED_KEYS = new String[] {

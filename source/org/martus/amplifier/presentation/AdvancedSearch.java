@@ -44,7 +44,10 @@ public class AdvancedSearch extends AmplifierServlet
 		context.put("entryDateFields", entryDateFields);
 		
 		Vector bulletinFields = FindBulletinsFields.getBulletinFieldDisplayNames();
-		context.put("bulletinFields", bulletinFields);				
+		context.put("bulletinFields", bulletinFields);	
+		
+		Vector languageFields = FindBulletinsFields.getLanguageFieldDisplayNames();
+		context.put("languageFields", languageFields);			
 		
 		return "AdvancedSearch.vm";
 	}
