@@ -152,9 +152,6 @@ public abstract class CommonSearchTest
 		String author = "Chuck";	
 		String keywords = "2003-08-20";
 		String title = "What's for Lunch?";
-		//long tenDaysOfMillis = 10*24*60*60*1000L;
-		//Date tenDaysAgo = new Date(System.currentTimeMillis() - tenDaysOfMillis);
-		//String entrydate= MartusFlexidate.toStoredDateFormat(tenDaysAgo);
 		String entrydate="2003-09-15";
 		String eventdate = "2003-08-20,20030820+3";
 		String publicInfo = "menu3";
@@ -173,6 +170,26 @@ public abstract class CommonSearchTest
 		FieldDataPacket fdp = createFieldDataPacket(bulletinId, author, keywords, title, eventdate, entrydate, publicInfo, summary, null, attachment1LocalId, attachment1Label, attachment2LocalId, attachment2Label, language, organization);
 		return fdp;
 	}
+
+	protected FieldDataPacket generateSampleForeignCharData(UniversalId bulletinId)
+	{
+		String author = "Charles";	
+		String keywords = "foreign";
+		String title = "Foreign Chars niños";
+		String entrydate="2003-09-15";
+		String eventdate = "2003-08-20,20030820+3";
+		String publicInfo = "menu3";
+		String language = "es";
+		String organization = "test";
+		String summary = "niños";
+		String attachment1LocalId = "att1Id";
+		String attachment1Label = "no.gif";
+		String attachment2LocalId = "att2Id";
+		String attachment2Label = "none.txt";
+		FieldDataPacket fdp = createFieldDataPacket(bulletinId, author, keywords, title, eventdate, entrydate, publicInfo, summary, null, attachment1LocalId, attachment1Label, attachment2LocalId, attachment2Label, language, organization);
+		return fdp;
+	}
+	
 	
 	private FieldDataPacket createFieldDataPacket(UniversalId bulletinId, String author, String keywords, String title, String eventdate, String entrydate, String publicInfo, String summary, String location, String attachment1LocalId, String attachment1Label, String attachment2LocalId, String attachment2Label, String language, String organization)
 	{

@@ -966,6 +966,67 @@ public class TestLuceneSearcher extends CommonSearchTest
 		fields.remove(WITHOUTWORDS_TAG);			
 	}
 	
+	public void testForeignCharsQuery() throws Exception
+	{
+		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
+		FieldDataPacket fdp1 	= generateSampleForeignCharData(bulletinId1);		
+		BulletinIndexer indexer = openBulletinIndexer();
+		try 
+		{
+			indexer.clearIndex();
+			indexer.indexFieldData(bulletinId1, fdp1);
+		} 
+		finally 
+		{
+			indexer.close();
+		}
+		
+		BulletinSearcher searcher = openBulletinSearcher();
+		Results results = null;				
+		
+		try 
+		{
+			String defaultDate 	= "1970-01-01";
+			String defaultEndDate = "2004-01-01";			
+			
+			HashMap fields = new HashMap();
+			fields.put(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, defaultDate);
+			fields.put(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, defaultEndDate);
+			fields.put(RESULT_FIELDS_KEY, IN_ALL_FIELDS);
+			
+			SearchParameters.FormatterForAllWordsSearch d = 
+				new SearchParameters.FormatterForAllWordsSearch();
+			SearchParameters.FormatterForExactPhraseSearch ed = 
+				new SearchParameters.FormatterForExactPhraseSearch();	
+			
+			//combined these words and exactphrase
+			String query = d.getFormattedString("niños");						
+			fields.put(THESE_WORD_TAG, query);		
+			
+			query = ed.getFormattedString("niños");				
+			fields.put(EXACTPHRASE_TAG, query);
+			
+			results = searcher.search(fields);
+			assertEquals("search for foreign char not found? ", 1, results.getCount());		
+			clear4Fields(fields);
+			//test again with all match
+			query = d.getFormattedString("ninos");						
+			fields.put(THESE_WORD_TAG, query);		
+			
+			query = ed.getFormattedString("ninos");				
+			fields.put(EXACTPHRASE_TAG, query);
+			
+			//TODO this will change once ninos should find niños
+			results = searcher.search(fields);
+			assertEquals("search for ninos when there is a niños", 0, results.getCount());											
+			
+		}
+		finally 
+		{
+			searcher.close();
+		}
+	}
+	
 	public void testAdvancedSearchSortByTitle() throws Exception
 	{
 		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
