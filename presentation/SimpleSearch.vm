@@ -13,7 +13,7 @@
 		<center>
 			<table>
 				<tr>
-					<td align='center' width='500'>
+					<td align='center'>
 						<font size='+1'>
 							<strong>Martus Search Engine</strong>
 						</font>
@@ -28,7 +28,7 @@
 				<tr>
 					<td align='center'>
 						<br/><br/>
-						Enter your search here:
+						<input type="submit" value="Show All Bulletins"/> 
 						#parse ("MiniSearchForm.vm")
 					</td>
 				</tr>
