@@ -5,31 +5,55 @@ I. Follow the instructions for installing the Sysdeo Eclipse Tomcat Plug-in
 Installing Sysdeo Eclipse Tomcat Launcher Plugin
 Version  2.0.1
 
-Documentation  Online instruction: http://www.sysdeo.com/eclipse/tomcatPlugin.html 
-Upgrade from Previous Version  - If you did NOT just install a new version of Eclipse, remove the old plugin directory (for example, C:\eclipse\plugins\com.sysdeo.eclipse.tomcat\) 
+Documentation  Online instruction: 
+http://www.sysdeo.com/eclipse/tomcatPlugin.html 
+Upgrade from Previous Version  - If you did NOT just install 
+a new version of Eclipse, remove the old plugin directory 
+(for example, C:\eclipse\plugins\com.sysdeo.eclipse.tomcat\) 
  
 1. Files Needed 
-- The zip can be found in the repository: martus-amplifier/tools/tomcatPluginV201.zip
+- The zip can be found in the repository: 
+martus-amplifier/tools/tomcatPluginV201.zip
 2. Install  
-- Unzip to <Eclipse install dir>\plugins (the plugin will reside under <Eclipse install dir>\plugins\com.sysdeo.eclipse.tomcat). 
+- Unzip to <Eclipse install dir>\plugins 
+(the plugin will reside under 
+<Eclipse install dir>\plugins\com.sysdeo.eclipse.tomcat). 
 3. Configure Tomcat plugin.
-- Menu "Workbench" -> Item "Preferences" -> Option "Tomcat" -> "Tomcat version", select "4.x" -> "Tomcat home", specify <Tomcat install dir>  -> Under Option "Tomcat", suboption "JVM Settings" -> "Classpath", add the Jar/Zip for tools.jar. (If you use JDK 1.4 at C:\jdk1.4, it is "C:\jdk1.4\lib\tools.jar"). This is for compiling JSP. 
+- Menu "Workbench" -> Item "Preferences" -> Option "Tomcat" -> 
+"Tomcat version", select "4.x" -> "Tomcat home", 
+specify <Tomcat install dir>  -> Under Option "Tomcat", 
+suboption "JVM Settings" -> "Classpath", add the Jar/Zip for tools.jar. 
+(If you use JDK 1.4 at C:\jdk1.4, it is "C:\jdk1.4\lib\tools.jar"). 
+This is for compiling JSP. 
 - Set classpath variable TOMCAT_HOME for project classpath reference.
-- Menu "Workbench" -> Item "Preferences" -> option "Java" -> option "Classpath Variables"  -> New variable, name "TOMCAT_HOME", value <TOMCAT install dir> (Then in .classpath of your project, you use TOMCAT_HOME for variable references.) 
+- Menu "Workbench" -> Item "Preferences" -> option "Java" -> 
+option "Classpath Variables"  -> New variable, name "TOMCAT_HOME", 
+value <TOMCAT install dir> 
+(Then in .classpath of your project, you use TOMCAT_HOME for variable 
+references.) 
 - Make sure Tomcat menu accessible.
-- Set to "Java" perspective, and make sure Tomcat menu and its 3 toolbar buttons are available. (If not, Menu Perspective -> Item "Customize" -> option "Other" -> option "Tomcat", check it.) 
+- Set to "Java" perspective, and make sure Tomcat menu and its 3 toolbar 
+buttons are available. (If not, Menu Perspective -> Item "Customize" -> 
+option "Other" -> option "Tomcat", check it.) 
 - Use menu or toolbar to Start/Stop Tomcat
-(The plugin will start/stop Tomcat as a debugging mode VM inside Eclipse, so debugging into Servlets and JSP-generated-Servlets becomes possible.)
+(The plugin will start/stop Tomcat as a debugging mode VM inside Eclipse,
+so debugging into Servlets and JSP-generated-Servlets becomes possible.)
 
 
-II. Now set up your Tomcat environment so that it knows how to serve the amplifier.
+II. Now set up your Tomcat environment so that it knows how to serve 
+the amplifier.
 
 NOTE: Please back up your web.xml server.xml files before you do anything
 The files are located in the conf directory of your Tomcat installation
 
 1. You need to uncomment out the invoker servlet in your web.xml
 
-Tomcat 4.1.12 has a bug fix done on the InvokerServlet. The InvokerServlet is responsible for serving the servlet requests. In all the previous versions the InvokerServlet will be enabled by default. In the latest version, it is commented out. You will have to uncomment this for your servlets to be serverd. The changes needs to be done in the <tomcat_home>/conf/web.xml file.
+Tomcat 4.1.12 has a bug fix done on the InvokerServlet. The InvokerServlet
+is responsible for serving the servlet requests. In all the previous 
+versions the InvokerServlet will be enabled by default. In the latest 
+version, it is commented out. You will have to uncomment this for your 
+servlets to be serverd. The changes needs to be done in the 
+<tomcat_home>/conf/web.xml file.
 Uncomment the following lines
 
 <servlet-mapping>
@@ -43,15 +67,22 @@ http://online.securityfocus.com/archive/1/292936/2002-09-21/2002-09-27/0
 
 2. Add the amplifier as a context to the server.xml file
 
-An example server.xml is in the repository at tools/eclipseconfig/server.xml
-Please adjust the docBase attribute for the Martus Amplifier context for your Eclipse installation
+An example server.xml is in the repository at 
+tools/eclipseconfig/server.xml
+Please adjust the docBase attribute for the Martus Amplifier context for 
+your Eclipse installation
 
-Add TOMCAT_HOME to your computer's Environment variables pointing to eg. C:\Program Files\Apache Group\Tomcat 4.1
+Add TOMCAT_HOME to your computer's Environment variables pointing to 
+eg. C:\Program Files\Apache Group\Tomcat 4.1
 
-3. Before running Tomcat you need to run the build.xml file at the root of the martus-amplifier (Not the one under source)
-To run it in eclipse select the build.xml file right click and use Run Ant, and then Run.
-This creates a martus-common.jar file from the martus directory needed for the amp, and also copies other needed files into the
+3. Before running Tomcat you need to run the build.xml file at the 
+root of the martus-amplifier (Not the one under source)
+To run it in eclipse select the build.xml file right click and use 
+Run Ant, and then Run.
+This creates a martus-common.jar file from the martus directory needed 
+for the amp, and also copies other needed files into the
 presentation directory.
-NOTE you will need to run this build file any time files get updated in martus-common
+NOTE you will need to run this build file any time files get 
+updated in martus-common
 
 

@@ -1,7 +1,13 @@
 Instructions for Testing the Amplifier from Eclipse
 ----------------------------------------------------
 
-I. Follow the instructions for setting up the Martus Server in "Running the Amplifier". You will also need to make sure the MartusAmplifierServer is running before running the tests. Some day it might be nice to have the amplifier test automatically start the MartusAmplifierServer on setUp() and stop it when the tests are completed. Or possibly have the tests be able to run without an actual MartusAmplifierServer running, by creating a dummy network endpoint.
+I. Follow the instructions for setting up the Martus Server in 
+"Running the Amplifier". You will also need to make sure the 
+MartusAmplifierServer is running before running the tests. 
+Some day it might be nice to have the amplifier test automatically 
+start the MartusAmplifierServer on setUp() and stop it when the tests 
+are completed. Or possibly have the tests be able to run without an 
+actual MartusAmplifierServer running, by creating a dummy network endpoint.
 
 II. Set up a JUnit Launch Configuration.
 
@@ -17,4 +23,5 @@ II. Set up a JUnit Launch Configuration.
 
 4. Run it. Wait for results.
 
-5. This Launch Configuration is now saved and can be used for future test execution.
+5. This Launch Configuration is now saved and can be used for future test 
+execution.

@@ -1,11 +1,15 @@
 
-Set jstl_standard build path variable (see Set up Eclipse Instructions #7) to martus-amplifier/buildfiles/jakarta-taglibs/standard-1.0.3/lib/standard.jar
+Set jstl_standard build path variable (see Set up Eclipse Instructions #7)
+to martus-amplifier/buildfiles/jakarta-taglibs/standard-1.0.3/lib/standard.jar
 
-Set LuceneEngine build path variable (see Set up Eclipse Instructions #7) to martus-amplifier/buildfiles/jars/lucene-1.2.jar
+Set LuceneEngine build path variable (see Set up Eclipse Instructions #7) 
+to martus-amplifier/buildfiles/jars/lucene-1.2.jar
 
-Set Xerces build path variable (see Set up Eclipse Instructions #7) to martus-amplifier/buildfiles/jars/xerces.jar
+Set Xerces build path variable (see Set up Eclipse Instructions #7) to 
+martus-amplifier/buildfiles/jars/xerces.jar
 
-Add the Jar buildfiles/jars/jasper-runtime.jar to the Java Build Path under Project Properties (Add Jar)
+Add the Jar buildfiles/jars/jasper-runtime.jar to the Java Build Path 
+under Project Properties (Add Jar)
 
 
 

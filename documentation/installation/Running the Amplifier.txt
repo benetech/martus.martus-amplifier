@@ -1,7 +1,10 @@
 Instructions for Running the Amplifier from Eclipse
 ----------------------------------------------------
 
-I. Set up the Martus Amplifier Server. Copy martus-amplifier/tools/MartusServer to C:\ (or whatever your local file system root is on Windows). Do the same for martus-amplifier/tools/Martus_Amplifier_Folder.
+I. Set up the Martus Amplifier Server. 
+Copy martus-amplifier/tools/MartusServer to C:\ 
+(or whatever your local file system root is on Windows). 
+Do the same for martus-amplifier/tools/Martus_Amplifier_Folder.
 
 II. Start the servers.
 
@@ -14,17 +17,22 @@ II. Start the servers.
 4. Fill in the following fields:
 
 	Name: MartusAmplifierServer
-	Project: martus-readonly
+	Project: martus
 	Main class: org.martus.server.foramplifiers.MartusAmplifierServer
 
-5. Run it. At the console, you will be prompted for a passphrase. Enter "ivo" and hit Enter. Wait until it prints "Waiting for connection..."
+5. Run it. At the console, you will be prompted for a passphrase. 
+Enter "ivo" and hit Enter. Wait until it prints 
+"Waiting for connection..."
 
-6. Now run the MartusAmplifier. To do this, follow instructions 2 - 5, using the following for the Launch Configuration fields:
+6. Now run the MartusAmplifier. To do this, follow instructions 
+2 - 5, using the following for the Launch Configuration fields:
 
 	Name: MartusAmplifier
 	Project: martus-amplifier
 	Main class: org.martus.amplifier.main.MartusAmplifier
 
-7. These Launch Configurations are now saved and can be used for future executions of these programs.
+7. These Launch Configurations are now saved and can be used for 
+future executions of these programs.
 
-8. To test the website, point your browser to http://127.0.0.1:8080/amplifier/.
+8. To test the website, point your browser to 
+http://127.0.0.1:8080/amplifier/.
