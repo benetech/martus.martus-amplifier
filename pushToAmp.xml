@@ -45,8 +45,6 @@
 
     <mkdir dir="${push-dir}"/>
     <mkdir dir="${push-presentation}"/>
-    <mkdir dir="${push-MartusAmplifier}"/>
-    <mkdir dir="${push-DeleteOnStartup}"/>
     <mkdir dir="${push-presentationNonSSL}"/>
 
     <!-- Remove all files from main push dir. -->
