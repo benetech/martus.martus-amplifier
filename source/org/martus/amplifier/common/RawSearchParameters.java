@@ -126,7 +126,7 @@ public class RawSearchParameters
 		EventDatesIndexedList eventDatesIndexedList = EventDatesIndexedList.eventDatesIndexedSingleton;
 
 		defaultMap.put(SearchResultConstants.RESULT_START_DAY_KEY, "1");
-		defaultMap.put(SearchResultConstants.RESULT_START_MONTH_KEY, "1");
+		defaultMap.put(SearchResultConstants.RESULT_START_MONTH_KEY, "0");
 		defaultMap.put(SearchResultConstants.RESULT_START_YEAR_KEY, Integer.toString(eventDatesIndexedList.getEarliestYear()));
 		
 		defaultMap.put(SearchResultConstants.RESULT_END_DAY_KEY, Today.getDayString());
