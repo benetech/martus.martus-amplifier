@@ -43,7 +43,7 @@ public class TestSearchResults extends TestCaseEnhanced
 		String templateName = sr.selectTemplate(request, response, context);
 		assertEquals("SearchResults.vm", templateName);
 
-		int expectedFoundCount = 2;
+		int expectedFoundCount = 3;
 		Vector foundBulletins = (Vector)context.get("foundBulletins");
 		assertEquals(expectedFoundCount, foundBulletins.size());
 		BulletinInfo info = (BulletinInfo)foundBulletins.get(0);
