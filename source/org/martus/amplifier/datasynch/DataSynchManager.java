@@ -123,7 +123,7 @@ public class DataSynchManager
 				if( !catalog.bulletinHasBeenIndexed(uid) )
 				{
 					//logger.info("DataSynchManager.checkAndRetrieveBulletinsForUIDs():before calling  amplifierGateway.retrieveAndManageBulletin on UID = "+ uid.toString());
-					amplifierGateway.retrieveAndManageBulletin(uid, bulletinExtractor);
+					amplifierGateway.retrieveAndManageBulletin(uid, bulletinExtractor, amp);
 				}
 			}
 			catch (Exception e)

@@ -33,6 +33,7 @@ import java.util.Vector;
 
 import org.martus.amplifier.attachment.AttachmentStorageException;
 import org.martus.amplifier.attachment.DataManager;
+import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.amplifier.network.AmplifierBulletinRetrieverGatewayInterface;
 import org.martus.amplifier.network.AmplifierClientSideNetworkGateway;
 import org.martus.amplifier.network.AmplifierClientSideXmlrpcHandler;
@@ -151,7 +152,7 @@ public class AmplifierNetworkGateway
 	
 
 	public void retrieveAndManageBulletin(
-		UniversalId uid, BulletinExtractor bulletinExtractor) 
+		UniversalId uid, BulletinExtractor bulletinExtractor, MartusAmplifier amp) 
 		throws WrongPacketTypeException, IOException, DecryptionException, 
 			InvalidPacketException, BulletinIndexException, 
 			NoKeyPairException, SignatureVerificationException, 
@@ -159,14 +160,25 @@ public class AmplifierNetworkGateway
 	{
 		File bulletinFile = getBulletin(uid);
 		bulletinFile.deleteOnExit();
+		if(amp.isShutdownRequested())
+		{
+			bulletinFile.delete();
+			return;
+		}
+		amp.startSynch();
 		try
 		{
 			bulletinExtractor.extractAndStoreBulletin(bulletinFile);
-			bulletinFile.delete();	
+			bulletinFile.delete();
+			
 		}
 		catch(DecryptionException e)
 		{
 			throw(e);
+		}
+		finally
+		{
+			amp.endSynch();
 		}
 	}
 	
