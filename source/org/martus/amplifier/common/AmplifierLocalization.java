@@ -28,6 +28,7 @@ package org.martus.amplifier.common;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
@@ -39,11 +40,17 @@ public class AmplifierLocalization
 {
 	public static String getLanguageString(String code)
 	{
-		File languageFile = new File(AmplifierConfiguration.getInstance().getBasePath(),"englishLanguages.txt");
+		File languageFile = getEnglishLanguageTranslationFile();
 		HashMap languages = AmplifierLocalization.buildLanguageMap(languageFile);
 		if(!languages.containsKey(code))
 			return null;
 		return (String)languages.get(code);		
+	}
+
+	public static File getEnglishLanguageTranslationFile()
+	{
+		URL url = AmplifierLocalization.class.getResource("LanguageNames_en.txt");
+		return new File(url.getFile());
 	}
 
 	public static HashMap buildLanguageMap(File languageFile)

@@ -65,4 +65,18 @@ public class TestAmplifierLocalization extends TestCaseEnhanced
 		assertTrue("Should contain Anylanguage Only", noFileExists.containsKey(SearchResultConstants.LANGUAGE_ANYLANGUAGE_LABEL));
 
 	}
+	
+	public void testEnglishTranslations()throws Exception
+	{
+		File englishLanguageTranslationFile = AmplifierLocalization.getEnglishLanguageTranslationFile();
+		assertTrue("English File should exist.", englishLanguageTranslationFile.exists());
+
+		HashMap languages = AmplifierLocalization.buildLanguageMap(englishLanguageTranslationFile);
+		assertEquals("Should contain 41 languages", 41, languages.size());
+		assertEquals("en should give us English", "English", languages.get("en"));		
+		assertEquals("fr should give us French", "French", languages.get("fr"));		
+		assertEquals("es should give us Spanish", "Spanish", languages.get("es"));		
+	
+	}
+
 }
