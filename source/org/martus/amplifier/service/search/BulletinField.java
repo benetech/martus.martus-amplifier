@@ -37,8 +37,13 @@ public class BulletinField implements BulletinConstants, SearchConstants
 	public boolean isDateField()
 	{
 		return (FieldSpec.getStandardType(xmlId) == FieldSpec.TYPE_DATE);
-	}
+	}		
 	
+	public boolean isDateRangeField()
+	{
+		return (FieldSpec.getStandardType(xmlId) == FieldSpec.TYPE_DATERANGE);		
+	}
+		
 	public static BulletinField getFieldByXmlId(String xmlId)
 	{
 		return (BulletinField) FIELDS.get(xmlId);

@@ -20,6 +20,7 @@ import org.martus.amplifier.service.search.BulletinInfo;
 import org.martus.amplifier.service.search.BulletinSearcher;
 import org.martus.common.packet.UniversalId;
 import org.martus.common.packet.UniversalId.NotUniversalIdException;
+import org.martus.util.MartusFlexidate;
 
 public class LuceneBulletinSearcher 
 	implements BulletinSearcher, LuceneSearchConstants
@@ -146,13 +147,36 @@ public class LuceneBulletinSearcher
 						"Unknown field " + fieldIds[i]);
 				}
 				String value = doc.get(field.getIndexId());
-				if (value != null) {
-					if (field.isDateField()) {
-						value = DATE_FORMAT.format(DateField.stringToDate(value));
-					}
+				if (value != null) 
+				{
+					if (field.isDateField()) 														
+					 	value = DATE_FORMAT.format(DateField.stringToDate(value));
+					 	
+// Flexidate date range ...
+//					if (field.isDateRangeField())																																						
+//						value = convertDateRange(value);
+																									
 					info.set(field.getIndexId(), value);
 				}
 			}
+		}
+		
+
+		private static String convertDateRange(String value)
+		{
+			MartusFlexidate mfd = MartusFlexidate.createFromMartusDateString(value);
+		
+			String beginDate = MartusFlexidate.toStoredDateFormat(mfd.getBeginDate());
+			String endDate = MartusFlexidate.toStoredDateFormat(mfd.getEndDate());
+		
+			String display = "";
+
+			if (mfd.hasDateRange())
+				display = beginDate + "/"+ endDate;		
+			else
+				display = beginDate;	
+				
+			return display;
 		}
 		
 		private static void addAttachments(BulletinInfo info, Document doc) 
