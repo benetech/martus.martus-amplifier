@@ -26,6 +26,7 @@ import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinIndexer;
 import org.martus.amplifier.search.BulletinInfo;
 import org.martus.amplifier.search.BulletinSearcher;
+import org.martus.amplifier.search.Results;
 import org.martus.amplifier.search.SearchConstants;
 import org.martus.amplifier.test.AbstractAmplifierTestCase;
 import org.martus.common.FieldSpec;
@@ -132,15 +133,15 @@ public abstract class AbstractSearchTestCase
 				
 			HashMap fields = new HashMap();			
 			fields.put(RESULT_BASIC_QUERY_KEY, fdp.get(SEARCH_AUTHOR_INDEX_FIELD) );
-			Assert.assertEquals(1, searcher.search(SEARCH_AUTHOR_INDEX_FIELD, fields).getCount());
+			Assert.assertEquals(1, searcher.search(fields).getCount());
 			
 			fields = new HashMap();	
 			fields.put(RESULT_BASIC_QUERY_KEY, fdp.get(SEARCH_KEYWORDS_INDEX_FIELD));
-			Assert.assertEquals(1,searcher.search(SEARCH_KEYWORDS_INDEX_FIELD, fields).getCount());
+			Assert.assertEquals(1,searcher.search(fields).getCount());
 			
 			fields = new HashMap();
 			fields.put(RESULT_BASIC_QUERY_KEY, fdp.get(SEARCH_DETAILS_INDEX_FIELD));											
-			Assert.assertEquals(1, searcher.search(SEARCH_DETAILS_INDEX_FIELD , fields).getCount());
+			Assert.assertEquals(1, searcher.search(fields).getCount());
 		} finally {
 			searcher.close();
 		}
@@ -248,11 +249,11 @@ public abstract class AbstractSearchTestCase
 		}
 		
 		BulletinSearcher searcher = openBulletinSearcher();
-		BulletinSearcher.Results results = null;
+		Results results = null;
 		try {
 			HashMap fields = new HashMap();			
 			fields.put(RESULT_BASIC_QUERY_KEY, fdp.get(SEARCH_AUTHOR_INDEX_FIELD) );
-			results = searcher.search(SEARCH_AUTHOR_INDEX_FIELD, fields);
+			results = searcher.search(fields);
 		} finally {
 			searcher.close();
 		}
@@ -281,7 +282,7 @@ public abstract class AbstractSearchTestCase
 		}
 		
 		BulletinSearcher searcher = openBulletinSearcher();
-		BulletinSearcher.Results results = null;
+		Results results = null;
 		try 
 		{
 			HashMap fields = new HashMap();
@@ -293,44 +294,44 @@ public abstract class AbstractSearchTestCase
 			fields.put(SEARCH_TITLE_INDEX_FIELD, fdp.get(BulletinField.SEARCH_TITLE_INDEX_FIELD));
 			
 			fields.put(RESULT_BASIC_QUERY_KEY, fdp.get(BulletinField.SEARCH_AUTHOR_INDEX_FIELD));								
-			results = searcher.search(null, fields);							
+			results = searcher.search(fields);							
 			assertEquals("Should have found a result for author", 1, results.getCount());
 			
 			fields.remove(RESULT_BASIC_QUERY_KEY);
 			fields.put(RESULT_BASIC_QUERY_KEY, fdp.get(SEARCH_DETAILS_INDEX_FIELD));								
-			results = searcher.search(null, fields);							
+			results = searcher.search( fields);							
 			assertEquals("Should have found a result for details", 1, results.getCount());
 						
 			fields.remove(RESULT_BASIC_QUERY_KEY);
 			fields.put(RESULT_BASIC_QUERY_KEY, fdp.get(SEARCH_KEYWORDS_INDEX_FIELD));								
-			results = searcher.search(null, fields);	
+			results = searcher.search( fields);	
 			assertEquals("Should have found a result for keyword", 1, results.getCount());
 			
 			fields.remove(RESULT_BASIC_QUERY_KEY);
 			fields.put(RESULT_BASIC_QUERY_KEY, fdp.get(SEARCH_LOCATION_INDEX_FIELD));								
-			results = searcher.search(null, fields);				
+			results = searcher.search(fields);				
 			assertEquals("Should have found a result for location", 1, results.getCount());
 			
 			
 			fields.remove(RESULT_BASIC_QUERY_KEY);
 			fields.put(RESULT_BASIC_QUERY_KEY, fdp.get(SEARCH_SUMMARY_INDEX_FIELD));								
-			results = searcher.search(null, fields);				
+			results = searcher.search( fields);				
 			assertEquals("Should have found a result for summary", 1, results.getCount());
 			
 			fields.remove(RESULT_BASIC_QUERY_KEY);
 			fields.put(RESULT_BASIC_QUERY_KEY, fdp.get(SEARCH_TITLE_INDEX_FIELD));								
-			results = searcher.search(null, fields);		
+			results = searcher.search( fields);		
 			assertEquals("Should have found a result for title", 1, results.getCount());
 			
 			
 			fields.remove(RESULT_BASIC_QUERY_KEY);
 			fields.put(RESULT_BASIC_QUERY_KEY, "Lunch");								
-			results = searcher.search(null, fields);			
+			results = searcher.search( fields);			
 			assertEquals("Should have found a result for the word Lunch", 1, results.getCount());
 			
 			fields.remove(RESULT_BASIC_QUERY_KEY);
 			fields.put(RESULT_BASIC_QUERY_KEY, "Luch");								
-			results = searcher.search(null, fields);	
+			results = searcher.search( fields);	
 			assertEquals("Should not have found a result for a word 'Luch' not in the bulletin", 0, results.getCount());
 			
 		} 
@@ -356,7 +357,7 @@ public abstract class AbstractSearchTestCase
 		}
 		
 		BulletinSearcher searcher = openBulletinSearcher();
-		BulletinSearcher.Results results = null;
+		Results results = null;
 		try 
 		{			
 			HashMap fields = new HashMap();
@@ -369,7 +370,7 @@ public abstract class AbstractSearchTestCase
 		
 			fields.put(RESULT_BASIC_QUERY_KEY, "for");								
 					
-			results = searcher.search(SEARCH_TITLE_INDEX_FIELD, fields);
+			results = searcher.search(fields);
 			assertEquals("Should have found 1 result for stopword 'for'", 1, results.getCount());
 		} 
 		finally 
@@ -397,7 +398,7 @@ public abstract class AbstractSearchTestCase
 		}
 		
 		BulletinSearcher searcher = openBulletinSearcher();
-		BulletinSearcher.Results results = null;
+		Results results = null;
 		try 
 		{
 			HashMap fields = new HashMap();
@@ -409,19 +410,19 @@ public abstract class AbstractSearchTestCase
 			fields.put(SEARCH_TITLE_INDEX_FIELD, fdp1.get(BulletinField.SEARCH_TITLE_INDEX_FIELD));
 		
 			fields.put(RESULT_BASIC_QUERY_KEY, "lun??");						
-			results = searcher.search(null, fields);
+			results = searcher.search(fields);
 			assertEquals("Should have found 2 result lun??", 2, results.getCount());
 			
 			
 			fields.remove(RESULT_BASIC_QUERY_KEY);
 			fields.put(RESULT_BASIC_QUERY_KEY, "sal*");	
-			results = searcher.search(null, fields);
+			results = searcher.search(fields);
 			assertEquals("Should have found 2 result sal* salad and salad2", 2, results.getCount());
 			
 			
 			fields.remove(RESULT_BASIC_QUERY_KEY);
 			fields.put(RESULT_BASIC_QUERY_KEY, "sa?ad");	
-			results = searcher.search(null, fields);		
+			results = searcher.search(fields);		
 			assertEquals("Should have found 1 result sa?ad just salad", 1 , results.getCount());
 			
 			
@@ -456,13 +457,13 @@ public abstract class AbstractSearchTestCase
 		}
 		
 		BulletinSearcher searcher = openBulletinSearcher();
-		BulletinSearcher.Results results = null;
+		Results results = null;
 		try 
 		{
 			HashMap fields = new HashMap();
 			fields.put(SEARCH_KEYWORDS_INDEX_FIELD, fdp1.get(BulletinField.SEARCH_KEYWORDS_INDEX_FIELD));
 			fields.put(RESULT_BASIC_QUERY_KEY, "ate");						
-			results = searcher.search(null, fields);
+			results = searcher.search(fields);
 			assertEquals("Should have found 1 result en", 1, results.getCount());
 			BulletinInfo info = results.getBulletinInfo(0);
 			assertEquals("The Language returned not correct?", "en", info.get(SEARCH_LANGUAGE_INDEX_FIELD));
@@ -489,7 +490,7 @@ public abstract class AbstractSearchTestCase
 		}
 		
 		BulletinSearcher searcher = openBulletinSearcher();
-		BulletinSearcher.Results results = null;
+		Results results = null;
 		try 
 		{
 			HashMap fields = new HashMap();
@@ -502,7 +503,7 @@ public abstract class AbstractSearchTestCase
 		
 			fields.put(RESULT_BASIC_QUERY_KEY, "Chuck");		
 			
-			results = searcher.search(SEARCH_SUMMARY_INDEX_FIELD, fields);
+			results = searcher.search(fields);
 			assertEquals("Should have found 1 result Chuck", 1, results.getCount());
 			
 			
@@ -537,7 +538,7 @@ public abstract class AbstractSearchTestCase
 		}
 		
 		BulletinSearcher searcher = openBulletinSearcher();
-		BulletinSearcher.Results results = null;				
+		Results results = null;				
 		
 		try 
 		{		
@@ -576,7 +577,7 @@ public abstract class AbstractSearchTestCase
 		}
 		
 		BulletinSearcher searcher = openBulletinSearcher();
-		BulletinSearcher.Results results = null;				
+		Results results = null;				
 		
 		try 
 		{
@@ -585,18 +586,12 @@ public abstract class AbstractSearchTestCase
 			HashMap fields = new HashMap();
 			fields.put(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, defaultDate);
 			fields.put(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, new GregorianCalendar().getTime());		
-			
-			// simple search
-			String query = "+(lunch)"+ " +\"What's for\"";		
-			assertEquals("+(lunch) +\"What's for\"", query);	
-			results = searcher.search(SEARCH_TITLE_INDEX_FIELD, query);
-			assertEquals("Combine with these words and exactphrase in title? ", 1, results.getCount());
-			
+					
 			// complex search	
-			query = "\"What's for\"";		
+			String query = "\"What's for\"";		
 			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
 			fields.put(RESULT_FIELDS_KEY, SEARCH_TITLE_INDEX_FIELD);					
-			results = searcher.search(null, fields);
+			results = searcher.search(fields);
 			assertEquals("Combine with exactphrase in title? ", 1, results.getCount());
 			
 			// complex search
@@ -605,7 +600,7 @@ public abstract class AbstractSearchTestCase
 			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
 			fields.remove(RESULT_FIELDS_KEY);
 			fields.put(RESULT_FIELDS_KEY, IN_ALL_FIELDS);						
-			results = searcher.search(null, fields);
+			results = searcher.search(fields);
 			assertEquals("Combine with these words and exactphrase in all fields? ", 1, results.getCount());
 			
 			// complex search
@@ -614,7 +609,7 @@ public abstract class AbstractSearchTestCase
 			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
 			fields.remove(RESULT_FIELDS_KEY);
 			fields.put(RESULT_FIELDS_KEY, IN_ALL_FIELDS);						
-			results = searcher.search(null, fields);
+			results = searcher.search(fields);
 			assertEquals("Combine without these words and exactphrase in all fields? ", 0, results.getCount());
 			
 			query = "+(+sandwich +root)"+ " +\"What's for\"";
@@ -622,7 +617,7 @@ public abstract class AbstractSearchTestCase
 			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
 			fields.remove(RESULT_FIELDS_KEY);
 			fields.put(RESULT_FIELDS_KEY, IN_ALL_FIELDS);						
-			results = searcher.search(null, fields);
+			results = searcher.search(fields);
 			assertEquals("Combine with all of these words and exactphrase in all fields? ", 0, results.getCount());			
 			
 			query = "+(+sandwich +root)"+ " +\"for lunch.\"";
@@ -630,7 +625,7 @@ public abstract class AbstractSearchTestCase
 			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
 			fields.remove(RESULT_FIELDS_KEY);
 			fields.put(RESULT_FIELDS_KEY, IN_ALL_FIELDS);						
-			results = searcher.search(null, fields);
+			results = searcher.search(fields);
 			assertEquals("Combine with all of these words and exactphrase in all fields? ", 2, results.getCount());
 			
 			// all of these words, exphrase, without these words
@@ -639,7 +634,7 @@ public abstract class AbstractSearchTestCase
 			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
 			fields.remove(RESULT_FIELDS_KEY);
 			fields.put(RESULT_FIELDS_KEY, IN_ALL_FIELDS);						
-			results = searcher.search(null, fields);
+			results = searcher.search(fields);
 			assertEquals("Combine all in all fields? ", 1, results.getCount());
 			
 			// all of these words, exphrase, without these words
@@ -648,7 +643,7 @@ public abstract class AbstractSearchTestCase
 			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
 			fields.remove(RESULT_FIELDS_KEY);
 			fields.put(RESULT_FIELDS_KEY, IN_ALL_FIELDS);						
-			results = searcher.search(null, fields);
+			results = searcher.search(fields);
 			assertEquals("Combine all in all fields? ", 2, results.getCount());
 											
 			query = "+\"What's for\""+ "-(salad2 beer)";
@@ -656,7 +651,7 @@ public abstract class AbstractSearchTestCase
 			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
 			fields.remove(RESULT_FIELDS_KEY);
 			fields.put(RESULT_FIELDS_KEY, IN_ALL_FIELDS);						
-			results = searcher.search(null, fields);
+			results = searcher.search(fields);
 			assertEquals("Combine with any of these words and exactphrase in all fields? ", 1, results.getCount());
 		
 		}
@@ -687,7 +682,7 @@ public abstract class AbstractSearchTestCase
 		}
 		
 		BulletinSearcher searcher = openBulletinSearcher();
-		BulletinSearcher.Results results = null;				
+		Results results = null;				
 		
 		try 
 		{
@@ -698,7 +693,7 @@ public abstract class AbstractSearchTestCase
 			fields.put(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, startDate);
 			fields.put(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, endDate);
 			
-			results = searcher.search(null, fields);
+			results = searcher.search(fields);
 			assertEquals("Should have found 1 match? ", 1, results.getCount());			
 		}
 		finally 
@@ -726,7 +721,7 @@ public abstract class AbstractSearchTestCase
 		}
 		
 		BulletinSearcher searcher = openBulletinSearcher();
-		BulletinSearcher.Results results = null;				
+		Results results = null;				
 		
 		try 
 		{
@@ -739,7 +734,7 @@ public abstract class AbstractSearchTestCase
 			fields.put(SearchResultConstants.RESULT_FIELDS_KEY, BulletinField.SEARCH_TITLE_INDEX_FIELD);
 			fields.put(SearchResultConstants.RESULT_ADVANCED_QUERY_KEY, "lunch");
 			
-			results = searcher.search(null, fields);
+			results = searcher.search(fields);
 			assertEquals("Combine search for eventdate and field? ", 1, results.getCount());
 		}
 		finally 
@@ -767,7 +762,7 @@ public abstract class AbstractSearchTestCase
 		}
 		
 		BulletinSearcher searcher = openBulletinSearcher();
-		BulletinSearcher.Results results = null;				
+		Results results = null;				
 		
 		try 
 		{
@@ -781,7 +776,7 @@ public abstract class AbstractSearchTestCase
 			fields.put(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, new GregorianCalendar().getTime());
 			fields.put(BulletinField.SEARCH_ENTRY_DATE_INDEX_FIELD, entryStartDate);
 			
-			results = searcher.search(null, fields);
+			results = searcher.search(fields);
 			assertEquals("search for entry date only? ", 1, results.getCount());
 			
 			fields.remove(SEARCH_EVENT_START_DATE_INDEX_FIELD);
@@ -789,7 +784,7 @@ public abstract class AbstractSearchTestCase
 			fields.put(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, startDate);
 			fields.put(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, endDate);			
 			
-			results = searcher.search(null, fields);
+			results = searcher.search(fields);
 			assertEquals("Combine search for eventdate and entry date? ", 1, results.getCount());
 		}
 		finally 
@@ -817,7 +812,7 @@ public abstract class AbstractSearchTestCase
 		}
 		
 		BulletinSearcher searcher = openBulletinSearcher();
-		BulletinSearcher.Results results = null;				
+		Results results = null;				
 		
 		try 
 		{
@@ -831,7 +826,7 @@ public abstract class AbstractSearchTestCase
 			fields.put(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, defaultEndDate);		
 		
 			fields.put(BulletinField.SEARCH_LANGUAGE_INDEX_FIELD, "es");		
-			results = searcher.search(null, fields);			
+			results = searcher.search(fields);			
 			assertEquals("search laguage with default event date? ", 1, results.getCount());
 				
 			fields = new HashMap();			
@@ -841,12 +836,12 @@ public abstract class AbstractSearchTestCase
 			fields.put(BulletinField.SEARCH_LANGUAGE_INDEX_FIELD, "en");
 			fields.put(SearchResultConstants.RESULT_ADVANCED_QUERY_KEY, "lunch");
 			
-			results = searcher.search(null, fields);
+			results = searcher.search(fields);
 			assertEquals("Combine search for eventdate, field, and laguage? ", 0, results.getCount());
 			
 			fields.remove(SEARCH_LANGUAGE_INDEX_FIELD);
 			fields.put(BulletinField.SEARCH_LANGUAGE_INDEX_FIELD, "fr");
-			results = searcher.search(null, fields);
+			results = searcher.search(fields);
 			assertEquals("Combine search for eventdate, bulletin field, and language (not match)? ", 0, results.getCount());			
 						
 		}
@@ -875,7 +870,7 @@ public abstract class AbstractSearchTestCase
 		}
 		
 		BulletinSearcher searcher = openBulletinSearcher();
-		BulletinSearcher.Results results = null;				
+		Results results = null;				
 		
 		try 
 		{
@@ -896,27 +891,27 @@ public abstract class AbstractSearchTestCase
 			
 			//2003-05-11 and 2003-08-30
 			fields.put(BulletinField.SEARCH_ENTRY_DATE_INDEX_FIELD, pastWeek);		
-			results = searcher.search(null, fields);			
+			results = searcher.search(fields);			
 			assertEquals("search for entry date submitted in past 1 week? ", 0, results.getCount());
 						
 			fields.remove(SEARCH_ENTRY_DATE_INDEX_FIELD);
 			fields.put(SEARCH_ENTRY_DATE_INDEX_FIELD, pastMonth);
-			results = searcher.search(null, fields);			
+			results = searcher.search(fields);			
 			assertEquals("search for entry date submitted in past 1 month? ", 1, results.getCount());
 			
 			fields.remove(SEARCH_ENTRY_DATE_INDEX_FIELD);
 			fields.put(SEARCH_ENTRY_DATE_INDEX_FIELD, past3Month);
-			results = searcher.search(null, fields);			
+			results = searcher.search(fields);			
 			assertEquals("search for entry date submitted in past 3 month? ", 1, results.getCount());
 			
 			fields.remove(SEARCH_ENTRY_DATE_INDEX_FIELD);
 			fields.put(SEARCH_ENTRY_DATE_INDEX_FIELD, past6Month);
-			results = searcher.search(null, fields);			
+			results = searcher.search(fields);			
 			assertEquals("search for entry date submitted in past 6 month? ", 2, results.getCount());
 			
 			fields.remove(SEARCH_ENTRY_DATE_INDEX_FIELD);
 			fields.put(SEARCH_ENTRY_DATE_INDEX_FIELD, pastYear);
-			results = searcher.search(null, fields);			
+			results = searcher.search(fields);			
 			assertEquals("search for entry date submitted in past 1 year? ", 2, results.getCount());
 			
 									
@@ -928,7 +923,7 @@ public abstract class AbstractSearchTestCase
 			fields.put(SEARCH_ENTRY_DATE_INDEX_FIELD, past3Month);
 			fields.put(SearchResultConstants.RESULT_ADVANCED_QUERY_KEY, "lunch");
 			
-			results = searcher.search(null, fields);
+			results = searcher.search(fields);
 			assertEquals("Combine search for eventdate, field, laguage, and event date? ", 1, results.getCount());
 								
 		}
@@ -957,7 +952,7 @@ public abstract class AbstractSearchTestCase
 		}
 		
 		BulletinSearcher searcher = openBulletinSearcher();
-		BulletinSearcher.Results results = null;				
+		Results results = null;				
 		
 		try 
 		{
@@ -971,13 +966,13 @@ public abstract class AbstractSearchTestCase
 			String query = SearchParameters.convertToQueryString("root sandwich", THESE_WORD_TAG);			
 			fields.put(RESULT_FILTER_BY_KEY, THESE_WORD_TAG);	
 			
-			results = searcher.search(null, fields);
+			results = searcher.search(fields);
 			assertEquals("search for all of these words? ", 2, results.getCount());
 			
 			fields.remove(RESULT_ADVANCED_QUERY_KEY);	
 			query = SearchParameters.convertToQueryString("Today Paul", THESE_WORD_TAG);		
 			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
-			results = searcher.search(null, fields);
+			results = searcher.search(fields);
 			assertEquals("search for all of these words? ", 1, results.getCount());
 			
 			fields.remove(RESULT_FILTER_BY_KEY);
@@ -986,7 +981,7 @@ public abstract class AbstractSearchTestCase
 			query = SearchParameters.convertToQueryString("egg2 salad2 sandwich", EXACTPHRASE_TAG);		
 			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
 			
-			results = searcher.search(null, fields);
+			results = searcher.search(fields);
 			assertEquals("search for exact phrase? ", 1, results.getCount());
 			
 			fields.remove(RESULT_FILTER_BY_KEY);
@@ -995,21 +990,21 @@ public abstract class AbstractSearchTestCase
 			query = SearchParameters.convertToQueryString("for lunch.", EXACTPHRASE_TAG);		
 			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
 			
-			results = searcher.search(null, fields);
+			results = searcher.search(fields);
 			assertEquals("search for exact phrase? ", 2, results.getCount());
 			
 			fields.remove(RESULT_ADVANCED_QUERY_KEY);
 			query = SearchParameters.convertToQueryString("salad2", WITHOUTWORDS_TAG);			
 			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
 			
-			results = searcher.search(null, fields);
+			results = searcher.search(fields);
 			assertEquals("search for without of those words? ", 1, results.getCount());
 			
 			fields.remove(RESULT_ADVANCED_QUERY_KEY);
 			query = SearchParameters.convertToQueryString("Paul", WITHOUTWORDS_TAG);			
 			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
 			
-			results = searcher.search(null, fields);
+			results = searcher.search(fields);
 			assertEquals("search for without of those words? ", 1, results.getCount());
 										
 		}
@@ -1038,7 +1033,7 @@ public abstract class AbstractSearchTestCase
 		}
 		
 		BulletinSearcher searcher = openBulletinSearcher();
-		BulletinSearcher.Results results = null;				
+		Results results = null;				
 		
 		try 
 		{
@@ -1052,7 +1047,7 @@ public abstract class AbstractSearchTestCase
 			fields.put(RESULT_SORTBY_KEY, SEARCH_TITLE_INDEX_FIELD);			
 			fields.put(RESULT_ADVANCED_QUERY_KEY, "lunch");			
 			
-			results = searcher.search(null, fields);
+			results = searcher.search(fields);
 			assertEquals("Should have found 2 matches? ", 2, results.getCount());
 			
 			int count = results.getCount();												

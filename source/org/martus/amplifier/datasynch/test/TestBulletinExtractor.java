@@ -26,6 +26,7 @@ import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinIndexer;
 import org.martus.amplifier.search.BulletinInfo;
 import org.martus.amplifier.search.BulletinSearcher;
+import org.martus.amplifier.search.Results;
 import org.martus.amplifier.search.SearchConstants;
 import org.martus.amplifier.test.AbstractAmplifierTestCase;
 import org.martus.common.bulletin.AttachmentProxy;
@@ -107,7 +108,7 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 		
 		BulletinSearcher searcher = getBulletinSearcher();
 		try {
-			BulletinSearcher.Results results = 
+			Results results = 
 				searcher.search(
 					SEARCH_AUTHOR_INDEX_FIELD, b.get(BulletinField.TAGAUTHOR));
 			Assert.assertEquals(1, results.getCount());
@@ -159,7 +160,7 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 		BulletinSearcher searcher = getBulletinSearcher();
 		try 
 		{
-			BulletinSearcher.Results results = 
+			Results results = 
 				searcher.search(
 					SEARCH_AUTHOR_INDEX_FIELD, b.get(BulletinField.TAGAUTHOR));
 			Assert.assertEquals(1, results.getCount());
@@ -211,7 +212,7 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 		
 		BulletinSearcher searcher = getBulletinSearcher();
 		try {
-			BulletinSearcher.Results results = 
+			Results results = 
 				searcher.search(
 					SEARCH_AUTHOR_INDEX_FIELD, b.get(BulletinField.TAGAUTHOR));
 			Assert.assertEquals(1, results.getCount());

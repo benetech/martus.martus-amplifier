@@ -42,6 +42,7 @@ import org.martus.amplifier.lucene.LuceneBulletinSearcher;
 import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinInfo;
 import org.martus.amplifier.search.BulletinSearcher;
+import org.martus.amplifier.search.Results;
 import org.martus.amplifier.search.SearchConstants;
 import org.martus.amplifier.velocity.AmplifierServlet;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
@@ -108,10 +109,10 @@ public class SearchResults extends AmplifierServlet implements SearchResultConst
 		ArrayList list = new ArrayList();
 		
 		try {
-			BulletinSearcher.Results results;			
+			Results results;			
 		
 			String field = (String)fields.get(RESULT_BASIC_FIELD_KEY);			
-			results = searcher.search(field, fields);
+			results = searcher.search(fields);
 						
 			int numResults = results.getCount();
 			for (int i = 0; i < numResults; i++)
