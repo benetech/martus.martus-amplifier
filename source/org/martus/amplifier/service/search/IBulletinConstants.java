@@ -24,4 +24,8 @@ public interface IBulletinConstants
 	public static final String SUMMARY_FIELD = "summary";
 	public static final String LOCATION_FIELD = "location";
 	public static final String ENTRY_DATE_FIELD = "entry_date";
+
+	public static final String[] BULLETIN_FIELDS = 
+		{AUTHOR_FIELD, KEYWORDS_FIELD, TITLE_FIELD, EVENT_DATE_FIELD, 
+			PUBLIC_INFO_FIELD, SUMMARY_FIELD, LOCATION_FIELD, ENTRY_DATE_FIELD};
 }
