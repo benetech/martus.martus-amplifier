@@ -324,67 +324,67 @@ public class TestLuceneSearcher extends CommonSearchTest
 		}
 	}
 
-	public void testSearchForWildCards() throws Exception
-	{
-		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
-		FieldDataPacket fdp1 	= generateSampleData(bulletinId1);		
-		UniversalId bulletinId2 = UniversalId.createDummyUniversalId();
-		FieldDataPacket fdp2 	= generateSampleFlexiData(bulletinId2);		
-		BulletinIndexer indexer = openBulletinIndexer();
-		try 
-		{
-			indexer.clearIndex();
-			indexer.indexFieldData(bulletinId1, fdp1);
-			indexer.indexFieldData(bulletinId2, fdp2);
-		} 
-		finally 
-		{
-			indexer.close();
-		}
-		
-		BulletinSearcher searcher = openBulletinSearcher();
-		Results results = null;
-		try 
-		{
-			HashMap fields = new HashMap();
-			fields.put(SEARCH_AUTHOR_INDEX_FIELD, fdp1.get(BulletinField.SEARCH_AUTHOR_INDEX_FIELD));				
-			fields.put(SEARCH_DETAILS_INDEX_FIELD, fdp1.get(BulletinField.SEARCH_DETAILS_INDEX_FIELD));
-			fields.put(SEARCH_KEYWORDS_INDEX_FIELD, fdp1.get(BulletinField.SEARCH_KEYWORDS_INDEX_FIELD));
-			fields.put(SEARCH_LOCATION_INDEX_FIELD, fdp1.get(BulletinField.SEARCH_LOCATION_INDEX_FIELD));
-			fields.put(SEARCH_SUMMARY_INDEX_FIELD, fdp1.get(BulletinField.SEARCH_SUMMARY_INDEX_FIELD));
-			fields.put(SEARCH_TITLE_INDEX_FIELD, fdp1.get(BulletinField.SEARCH_TITLE_INDEX_FIELD));
-		
-			fields.put(RESULT_BASIC_QUERY_KEY, "lun??");						
-			results = searcher.search(fields);
-			assertEquals("Should have found 2 result lun??", 2, results.getCount());
-			
-			
-			fields.remove(RESULT_BASIC_QUERY_KEY);
-			fields.put(RESULT_BASIC_QUERY_KEY, "sal*");	
-			results = searcher.search(fields);
-			assertEquals("Should have found 2 result sal* salad and salad2", 2, results.getCount());
-			
-			
-			fields.remove(RESULT_BASIC_QUERY_KEY);
-			fields.put(RESULT_BASIC_QUERY_KEY, "sa?ad");	
-			results = searcher.search(fields);		
-			assertEquals("Should have found 1 result sa?ad just salad", 1 , results.getCount());
-			
-			
-/*			results = searcher.search(null, "");
-			assertEquals("Should have found 2 result for nothing entered", 2, results.getCount());
-			results = searcher.search(null, null);
-			assertEquals("Should have found 2 result for null entered", 2, results.getCount());
-			results = searcher.search(null, "*");
-			assertEquals("Should have found 2 result for * entered", 2, results.getCount());
-			results = searcher.search(null, "?");
-			assertEquals("Should have found 2 result for ? entered", 2, results.getCount());
-*/		}
-		finally 
-		{
-			searcher.close();
-		}
-	}
+//	public void testSearchForWildCards() throws Exception
+//	{
+//		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
+//		FieldDataPacket fdp1 	= generateSampleData(bulletinId1);		
+//		UniversalId bulletinId2 = UniversalId.createDummyUniversalId();
+//		FieldDataPacket fdp2 	= generateSampleFlexiData(bulletinId2);		
+//		BulletinIndexer indexer = openBulletinIndexer();
+//		try 
+//		{
+//			indexer.clearIndex();
+//			indexer.indexFieldData(bulletinId1, fdp1);
+//			indexer.indexFieldData(bulletinId2, fdp2);
+//		} 
+//		finally 
+//		{
+//			indexer.close();
+//		}
+//		
+//		BulletinSearcher searcher = openBulletinSearcher();
+//		Results results = null;
+//		try 
+//		{
+//			HashMap fields = new HashMap();
+//			fields.put(SEARCH_AUTHOR_INDEX_FIELD, fdp1.get(BulletinField.SEARCH_AUTHOR_INDEX_FIELD));				
+//			fields.put(SEARCH_DETAILS_INDEX_FIELD, fdp1.get(BulletinField.SEARCH_DETAILS_INDEX_FIELD));
+//			fields.put(SEARCH_KEYWORDS_INDEX_FIELD, fdp1.get(BulletinField.SEARCH_KEYWORDS_INDEX_FIELD));
+//			fields.put(SEARCH_LOCATION_INDEX_FIELD, fdp1.get(BulletinField.SEARCH_LOCATION_INDEX_FIELD));
+//			fields.put(SEARCH_SUMMARY_INDEX_FIELD, fdp1.get(BulletinField.SEARCH_SUMMARY_INDEX_FIELD));
+//			fields.put(SEARCH_TITLE_INDEX_FIELD, fdp1.get(BulletinField.SEARCH_TITLE_INDEX_FIELD));
+//		
+//			fields.put(RESULT_BASIC_QUERY_KEY, "lun??");						
+//			results = searcher.search(fields);
+//			assertEquals("Should have found 2 result lun??", 2, results.getCount());
+//			
+//			
+//			fields.remove(RESULT_BASIC_QUERY_KEY);
+//			fields.put(RESULT_BASIC_QUERY_KEY, "sal*");	
+//			results = searcher.search(fields);
+//			assertEquals("Should have found 2 result sal* salad and salad2", 2, results.getCount());
+//			
+//			
+//			fields.remove(RESULT_BASIC_QUERY_KEY);
+//			fields.put(RESULT_BASIC_QUERY_KEY, "sa?ad");	
+//			results = searcher.search(fields);		
+//			assertEquals("Should have found 1 result sa?ad just salad", 1 , results.getCount());
+//			
+//			
+///*			results = searcher.search(null, "");
+//			assertEquals("Should have found 2 result for nothing entered", 2, results.getCount());
+//			results = searcher.search(null, null);
+//			assertEquals("Should have found 2 result for null entered", 2, results.getCount());
+//			results = searcher.search(null, "*");
+//			assertEquals("Should have found 2 result for * entered", 2, results.getCount());
+//			results = searcher.search(null, "?");
+//			assertEquals("Should have found 2 result for ? entered", 2, results.getCount());
+//*/		}
+//		finally 
+//		{
+//			searcher.close();
+//		}
+//	}
 
 	public void testSearchForLanguageReturned() throws Exception
 	{

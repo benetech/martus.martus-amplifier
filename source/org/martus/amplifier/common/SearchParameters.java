@@ -83,7 +83,7 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 	
 	private void parseAdvancedQuery(String key)
 	{
-		String subQuery = getValue(key);
+		String subQuery = CharacterUtil.removeRestrictCharacters(getValue(key));
 		if (subQuery.length() >0)
 		{			
 			subQuery = convertToQueryString(subQuery, key);
