@@ -40,7 +40,7 @@ public class TestAmplifierNetworkGateway extends TestAbstractAmplifierDataSynch
 		BackupServerInfo serverToCall = new BackupServerInfo("test", "10.1.1.1", 1, "key");
 		AmplifierNetworkGateway amplifierGateway = new AmplifierNetworkGateway(abrgi, serverToCall,  dummyLogger, MockMartusSecurity.createOtherServer());
 		
-		Vector list = amplifierGateway.getAccountBulletinLocalIds(sampleAccountId);
+		Vector list = amplifierGateway.getAccountPublicBulletinLocalIds(sampleAccountId);
 		assertTrue(list.size() > 0);
 		assertEquals(list.get(0), sampleLocalId);	
 	}

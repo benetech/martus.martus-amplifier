@@ -55,13 +55,13 @@ public class AmplifierClientSideNetworkHandlerUsingXMLRPC
 	}			
 	
 	
-	public Vector getPublicBulletinUniversalIds(String myAccountId, Vector parameters, String signature) throws IOException
+	public Vector getPublicBulletinLocalIds(String myAccountId, Vector parameters, String signature) throws IOException
 	{
 		Vector params = new Vector();
 		params.add(myAccountId);
 		params.add(parameters);
 		params.add(signature);
-		return (Vector)callServer(server, cmdGetAccountUniversalIds, params);
+		return (Vector)callServer(server, cmdGetPublicBulletinLocalIds, params);
 		
 	}
 	

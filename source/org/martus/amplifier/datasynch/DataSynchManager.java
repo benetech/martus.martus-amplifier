@@ -57,7 +57,7 @@ public class DataSynchManager
 		for(int index=0; index <accountList.size();index++)
 		{
 			accountId = (String) accountList.get(index);
-			response = amplifierGateway.getAccountBulletinLocalIds(accountId);
+			response = amplifierGateway.getAccountPublicBulletinLocalIds(accountId);
 			for(int i = 0; i < response.size(); i++)
 			{
 				UniversalId uid = null;

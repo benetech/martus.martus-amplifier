@@ -14,7 +14,7 @@ import java.util.Vector;
 public interface AmplifierNetworkInterface { 
 	
 	public Vector getAccountIds(String myAccountId, Vector parameters, String signature) throws IOException;
-	public Vector getPublicBulletinUniversalIds(String myAccountId, Vector parameters, String signature) throws IOException;
+	public Vector getPublicBulletinLocalIds(String myAccountId, Vector parameters, String signature) throws IOException;
 	public Vector getBulletinChunk(String myAccountId, Vector parameters, String signature) throws IOException;
 
 }

@@ -36,7 +36,7 @@ public class AmplifierClientSideNetworkGateway implements AmplifierBulletinRetri
 		Vector parameters = new Vector();
 		parameters.add(accountId);
 		String signature = signer.createSignatureOfVectorOfStrings(parameters);
-		return new NetworkResponse(server.getPublicBulletinUniversalIds(signer.getPublicKeyString(), parameters, signature));
+		return new NetworkResponse(server.getPublicBulletinLocalIds(signer.getPublicKeyString(), parameters, signature));
 			
 	}
 					

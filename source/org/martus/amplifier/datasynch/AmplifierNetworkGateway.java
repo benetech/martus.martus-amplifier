@@ -85,12 +85,12 @@ public class AmplifierNetworkGateway
 	}
 	
 	
-	public Vector getAccountBulletinLocalIds(String accountId) //throws ServerErrorException
+	public Vector getAccountPublicBulletinLocalIds(String accountId) //throws ServerErrorException
 	{
 		Vector result = new Vector();
 		try
 		{
-			log("getAccountLocalIds: " + MartusSecurity.getFormattedPublicCode(accountId));
+			log("getAccountPublicBulletinLocalIds: " + MartusSecurity.getFormattedPublicCode(accountId));
 			NetworkResponse response = gateway.getPublicBulletinLocalIds(security, accountId);
 			String resultCode = response.getResultCode();
 			if( !resultCode.equals(NetworkInterfaceConstants.OK) )	
