@@ -5,11 +5,12 @@ import java.io.InputStream;
 
 import junit.framework.Assert;
 
-import org.martus.amplifier.test.TestAbstractAmplifier;
+import org.martus.amplifier.test.AbstractAmplifierTestCase;
 import org.martus.common.packet.UniversalId;
+import org.martus.util.StringInputStream;
 
 public abstract class TestAbstractAttachmentManager 
-	extends TestAbstractAmplifier
+	extends AbstractAmplifierTestCase
 {
 	public void testClearAllAttachments() 
 		throws AttachmentStorageException, IOException
@@ -17,7 +18,7 @@ public abstract class TestAbstractAttachmentManager
 		AttachmentManager attachmentManager = getAttachmentManager();
 		UniversalId id = UniversalId.createDummyUniversalId();
 		String testString = "ClearAll";
-		InputStream sin = stringToInputStream(testString);
+		InputStream sin = new StringInputStream(testString);
 		try {
 			attachmentManager.putAttachment(id, sin);
 		} finally {
@@ -54,7 +55,7 @@ public abstract class TestAbstractAttachmentManager
 		attachmentManager.clearAllAttachments();
 		UniversalId id = UniversalId.createDummyUniversalId();
 		String testString = "SimplePutAndGet";
-		InputStream sin = stringToInputStream(testString);
+		InputStream sin = new StringInputStream(testString);
 		try {
 			attachmentManager.putAttachment(id, sin);
 		} finally {
@@ -78,7 +79,7 @@ public abstract class TestAbstractAttachmentManager
 		attachmentManager.clearAllAttachments();
 		UniversalId id = UniversalId.createDummyUniversalId();
 		String testString = "PutAndGetTwoSameAccount";
-		InputStream sin = stringToInputStream(testString);
+		InputStream sin = new StringInputStream(testString);
 		try {
 			attachmentManager.putAttachment(id, sin);
 		} finally {
@@ -96,7 +97,7 @@ public abstract class TestAbstractAttachmentManager
 		
 		UniversalId id2 = UniversalId.createDummyUniversalId();
 		String testString2 = "PutAndGetTwoSameAccount2";
-		sin = stringToInputStream(testString2);
+		sin = new StringInputStream(testString2);
 		try {
 			attachmentManager.putAttachment(id2, sin);
 		} finally {
@@ -121,7 +122,7 @@ public abstract class TestAbstractAttachmentManager
 		UniversalId id = 
 			UniversalId.createFromAccountAndLocalId("Account1", "Test");
 		String testString = "PutAndGetTwoDifferentAccounts";
-		InputStream sin = stringToInputStream(testString);
+		InputStream sin = new StringInputStream(testString);
 		try {
 			attachmentManager.putAttachment(id, sin);
 		} finally {
@@ -140,7 +141,7 @@ public abstract class TestAbstractAttachmentManager
 		UniversalId id2 = 
 			UniversalId.createFromAccountAndLocalId("Account2", "Test");
 		String testString2 = "PutAndGetTwoDifferentAccounts2";
-		sin = stringToInputStream(testString2);
+		sin = new StringInputStream(testString2);
 		try {
 			attachmentManager.putAttachment(id2, sin);
 		} finally {
@@ -164,7 +165,7 @@ public abstract class TestAbstractAttachmentManager
 		attachmentManager.clearAllAttachments();
 		UniversalId id = UniversalId.createDummyUniversalId();
 		String testString = "OverwriteExisting";
-		InputStream sin = stringToInputStream(testString);
+		InputStream sin = new StringInputStream(testString);
 		try {
 			attachmentManager.putAttachment(id, sin);
 		} finally {
@@ -181,7 +182,7 @@ public abstract class TestAbstractAttachmentManager
 		}
 		
 		String testString2 = "OverwriteExisting2";
-		sin = stringToInputStream(testString2);
+		sin = new StringInputStream(testString2);
 		try {
 			attachmentManager.putAttachment(id, sin);
 		} finally {

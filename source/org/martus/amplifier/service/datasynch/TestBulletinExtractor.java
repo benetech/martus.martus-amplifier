@@ -24,7 +24,7 @@ import org.martus.amplifier.service.search.BulletinSearcher;
 import org.martus.amplifier.service.search.SearchConstants;
 import org.martus.amplifier.service.search.lucene.LuceneBulletinIndexer;
 import org.martus.amplifier.service.search.lucene.LuceneBulletinSearcher;
-import org.martus.amplifier.test.TestAbstractAmplifier;
+import org.martus.amplifier.test.AbstractAmplifierTestCase;
 import org.martus.common.bulletin.AttachmentProxy;
 import org.martus.common.bulletin.Bulletin;
 import org.martus.common.bulletin.BulletinForTesting;
@@ -37,8 +37,9 @@ import org.martus.common.database.Database;
 import org.martus.common.database.MockServerDatabase;
 import org.martus.common.packet.UniversalId;
 import org.martus.util.StreamCopier;
+import org.martus.util.StringInputStream;
 
-public class TestBulletinExtractor extends TestAbstractAmplifier
+public class TestBulletinExtractor extends AbstractAmplifierTestCase
 	implements SearchConstants
 {
 	public TestBulletinExtractor(String name) 
@@ -220,7 +221,7 @@ public class TestBulletinExtractor extends TestAbstractAmplifier
 	private File stringToFile(String s) throws IOException
 	{
 		File temp = createTempFileFromName("$$$MartusAmpTempAttachment");
-		InputStream in = stringToInputStream(s);
+		InputStream in = new StringInputStream(s);
 		OutputStream out = new FileOutputStream(temp);
 		try {
 			new StreamCopier().copyStream(in, out);

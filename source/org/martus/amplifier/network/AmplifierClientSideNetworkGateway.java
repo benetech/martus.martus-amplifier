@@ -1,4 +1,4 @@
-package org.martus.amplifier.common.datasynch;
+package org.martus.amplifier.network;
 
 import java.io.IOException;
 import java.util.Vector;

@@ -3,7 +3,7 @@ package org.martus.amplifier.test.datasynch;
 import java.io.IOException;
 import java.util.Vector;
 
-import org.martus.amplifier.common.datasynch.AmplifierBulletinRetrieverGatewayInterface;
+import org.martus.amplifier.network.AmplifierBulletinRetrieverGatewayInterface;
 import org.martus.amplifier.service.datasynch.AmplifierNetworkGateway;
 import org.martus.common.crypto.MartusCrypto;
 import org.martus.common.crypto.MockMartusSecurity;

@@ -9,7 +9,7 @@ import java.util.Vector;
 import java.util.logging.Logger;
 
 import org.martus.amplifier.common.AmplifierConfiguration;
-import org.martus.amplifier.common.datasynch.AmplifierClientSideNetworkHandlerUsingXMLRPC.SSLSocketSetupException;
+import org.martus.amplifier.network.AmplifierClientSideNetworkHandlerUsingXMLRPC.SSLSocketSetupException;
 import org.martus.amplifier.service.attachment.AttachmentManager;
 import org.martus.amplifier.service.attachment.AttachmentStorageException;
 import org.martus.amplifier.service.attachment.FileSystemAttachmentManager;

@@ -1,4 +1,4 @@
-package org.martus.amplifier.test.configuration;
+package org.martus.amplifier.test;
 
 import org.martus.common.test.TestCaseEnhanced;
 

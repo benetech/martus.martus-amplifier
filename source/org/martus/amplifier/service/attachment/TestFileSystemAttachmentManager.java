@@ -7,6 +7,7 @@ import java.io.InputStream;
 import junit.framework.Assert;
 
 import org.martus.common.packet.UniversalId;
+import org.martus.util.StringInputStream;
 
 public class TestFileSystemAttachmentManager 
 	extends TestAbstractAttachmentManager
@@ -22,7 +23,7 @@ public class TestFileSystemAttachmentManager
 	{
 		UniversalId id = UniversalId.createDummyUniversalId();
 		String testString = "FileSystemClearAll";
-		InputStream sin = stringToInputStream(testString);
+		InputStream sin = new StringInputStream(testString);
 		try {
 			attachmentManager.putAttachment(id, sin);
 		} finally {
@@ -44,7 +45,7 @@ public class TestFileSystemAttachmentManager
 		UniversalId id = UniversalId.createFromAccountAndPrefix(
 			"AnAccount/With/Slashes", "Test");
 		String testString = "AccountWithFileSeparators";
-		InputStream sin = stringToInputStream(testString);
+		InputStream sin = new StringInputStream(testString);
 		try {
 			attachmentManager.putAttachment(id, sin);
 		} finally {

@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
 
-import org.martus.amplifier.common.datasynch.AmplifierBulletinRetrieverGatewayInterface;
-import org.martus.amplifier.common.datasynch.AmplifierClientSideNetworkGateway;
-import org.martus.amplifier.common.datasynch.AmplifierClientSideNetworkHandlerUsingXMLRPC;
-import org.martus.amplifier.common.datasynch.AmplifierNetworkInterface;
-import org.martus.amplifier.common.datasynch.AmplifierClientSideNetworkHandlerUsingXMLRPC.SSLSocketSetupException;
+import org.martus.amplifier.network.AmplifierBulletinRetrieverGatewayInterface;
+import org.martus.amplifier.network.AmplifierClientSideNetworkGateway;
+import org.martus.amplifier.network.AmplifierClientSideNetworkHandlerUsingXMLRPC;
+import org.martus.amplifier.network.AmplifierNetworkInterface;
+import org.martus.amplifier.network.AmplifierClientSideNetworkHandlerUsingXMLRPC.SSLSocketSetupException;
 import org.martus.amplifier.service.attachment.AttachmentManager;
 import org.martus.amplifier.service.attachment.AttachmentStorageException;
 import org.martus.amplifier.service.search.BulletinIndexException;

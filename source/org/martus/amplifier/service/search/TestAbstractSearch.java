@@ -11,14 +11,14 @@ import junit.framework.Assert;
 
 import org.martus.amplifier.presentation.SearchFields;
 import org.martus.amplifier.presentation.SearchResultConstants;
-import org.martus.amplifier.test.TestAbstractAmplifier;
+import org.martus.amplifier.test.AbstractAmplifierTestCase;
 import org.martus.common.FieldSpec;
 import org.martus.common.bulletin.AttachmentProxy;
 import org.martus.common.packet.FieldDataPacket;
 import org.martus.common.packet.UniversalId;
 
 public abstract class TestAbstractSearch 
-	extends TestAbstractAmplifier implements SearchConstants, SearchResultConstants
+	extends AbstractAmplifierTestCase implements SearchConstants, SearchResultConstants
 {
 	
 	public void testClearIndex() 

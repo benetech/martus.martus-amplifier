@@ -1,4 +1,4 @@
-package org.martus.amplifier.common.datasynch;
+package org.martus.amplifier.network;
 
 
 import org.martus.common.network.NetworkInterfaceXmlRpcConstants;
