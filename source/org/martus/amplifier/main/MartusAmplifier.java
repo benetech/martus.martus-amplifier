@@ -1,3 +1,28 @@
+/*
+
+The Martus(tm) free, social justice documentation and
+monitoring software. Copyright (C) 2001-2003, Beneficent
+Technology, Inc. (Benetech).
+
+Martus is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either
+version 2 of the License, or (at your option) any later
+version with the additions and exceptions described in the
+accompanying Martus license file entitled "license.txt".
+
+It is distributed WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, including warranties of fitness of purpose or
+merchantability.  See the accompanying Martus License and
+GPL license for more details on the required license terms
+for this software.
+
+You should have received a copy of the GNU General Public
+License along with this program; if not, write to the Free
+Software Foundation, Inc., 59 Temple Place - Suite 330,
+Boston, MA 02111-1307, USA.
+
+*/
 package org.martus.amplifier.main;
 
 import java.io.BufferedReader;
@@ -104,23 +129,30 @@ public class MartusAmplifier
 	private void startServer(String password) throws IOException, MultiException
 	{
 		File jettyConfigDirectory = getStartupConfigDirectory();
-		File jettyXmlFile = new File(jettyConfigDirectory, "jettyConfiguration.xml");
+		//File jettyXmlFile = new File(jettyConfigDirectory, "jettyConfiguration.xml");
 		File jettyKeystore = new File(jettyConfigDirectory, "keystore");
-		Server server = new Server(jettyXmlFile.getAbsolutePath());
 		
 		SunJsseListener sslListener = new SunJsseListener(new InetAddrPort(443));
 		sslListener.setPassword(password);
 		sslListener.setKeyPassword(password);
 		sslListener.setKeystore(jettyKeystore.getAbsolutePath());
-		sslListener.setMaxIdleTimeMs(30000);
-		sslListener.setMaxThreads(255);
-		sslListener.setMinThreads(5);
-		sslListener.setLowResourcePersistTimeMs(5000);
-		server.addListener(sslListener);
+		sslListener.setMaxIdleTimeMs(MAX_IDLE_TIME_MS);
+		sslListener.setMaxThreads(MAX_THREADS);
+		sslListener.setMinThreads(MIN_THREADS);
+		sslListener.setLowResourcePersistTimeMs(LOW_RESOURCE_PERSIST_TIME_MS);
+
+		//Server sslServer = new Server(jettyXmlFile.getAbsolutePath());
+		Server sslServer = new Server();
+		sslServer.addWebApplication("/","presentation/");
+		addPasswordAuthentication(sslServer);
+		sslServer.addListener(sslListener);
+
+		Server nonsslServer = new Server();
+		nonsslServer.addWebApplication("/","presentationNonSSL/");
+		nonsslServer.addListener(new InetAddrPort(80));
 		
-		server.addWebApplication("/","presentation/");
-		addPasswordAuthentication(server);
-		server.start();
+		sslServer.start();
+		nonsslServer.start();
 
 		writeSyncFile(getRunningFile());
 		System.out.println("Waiting for connection...");
@@ -492,4 +524,8 @@ public class MartusAmplifier
 	private static final String KEYPAIRFILENAME = "keypair.dat";
 	private static final String ADMINTRIGGERDIRECTORY = "adminTriggers";
 	private static final String ADMINSTARTUPCONFIGDIRECTORY = "deleteOnStartup";
+	private static final int MAX_IDLE_TIME_MS = 30000;
+	private static final int LOW_RESOURCE_PERSIST_TIME_MS = 5000;
+	private static final int MIN_THREADS = 5;
+	private static final int MAX_THREADS = 255;
 }
