@@ -33,6 +33,7 @@ import org.martus.common.bulletin.AttachmentProxy;
 import org.martus.common.packet.FieldDataPacket;
 import org.martus.common.packet.UniversalId;
 import org.martus.util.DirectoryTreeRemover;
+import org.martus.util.MartusFlexidate;
 
 public abstract class AbstractSearchTestCase 
 	extends AbstractAmplifierTestCase implements SearchConstants, SearchResultConstants
@@ -1081,7 +1082,9 @@ public abstract class AbstractSearchTestCase
 		String author = "Chuck";	
 		String keywords = "2003-08-20";
 		String title = "What's for Lunch??";
-		String entrydate= "2003-08-30";
+		long tenDaysOfMillis = 10*24*60*60*1000L;
+		Date tenDaysAgo = new Date(System.currentTimeMillis() - tenDaysOfMillis);
+		String entrydate= MartusFlexidate.toStoredDateFormat(tenDaysAgo);
 		String eventdate = "2003-08-20,20030820+3";
 		String publicInfo = "menu3";
 		String language = "es";
