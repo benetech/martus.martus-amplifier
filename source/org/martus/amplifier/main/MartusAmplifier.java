@@ -45,6 +45,7 @@ import org.martus.common.Version;
 import org.martus.common.crypto.MartusCrypto;
 import org.martus.common.crypto.MartusCrypto.CryptoInitializationException;
 import org.martus.common.network.MartusXmlrpcClient.SSLSocketSetupException;
+import org.martus.util.DirectoryUtils;
 import org.mortbay.http.HttpContext;
 import org.mortbay.http.SunJsseListener;
 import org.mortbay.jetty.Server;
@@ -157,20 +158,7 @@ public class MartusAmplifier
 	public void deleteAmplifierStartupFiles()
 	{
 		MartusUtilities.deleteAllFiles(getDeleteOnStartupFiles());
-		
-		File serversWhoWeCallDir = getServersWhoWeCallDirectory();
-		if(!serversWhoWeCallDir.exists())
-			return;
-		File[] toDeleteFile = serversWhoWeCallDir.listFiles();
-		if(toDeleteFile != null)
-		{
-			for (int i = 0; i < toDeleteFile.length; i++)
-			{
-				File toCallFile = toDeleteFile[i];
-				toCallFile.delete();
-			}
-		}
-		serversWhoWeCallDir.delete();
+		DirectoryUtils.deleteEntireDirectoryTree(getServersWhoWeCallDirectory());
 	}
 
 	public boolean isAmplifierSyncing()
