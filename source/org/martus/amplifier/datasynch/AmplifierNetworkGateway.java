@@ -27,6 +27,7 @@ import org.martus.common.packet.UniversalId;
 import org.martus.common.packet.Packet.InvalidPacketException;
 import org.martus.common.packet.Packet.SignatureVerificationException;
 import org.martus.common.packet.Packet.WrongPacketTypeException;
+import org.martus.server.tools.DecryptFile;
 import org.martus.util.Base64.InvalidBase64Exception;
 
 public class AmplifierNetworkGateway
@@ -113,7 +114,14 @@ public class AmplifierNetworkGateway
 			AttachmentStorageException, InvalidBase64Exception
 	{
 		File bulletinFile = getBulletin(uid);
-		bulletinExtractor.extractAndStoreBulletin(bulletinFile);	
+		try
+		{
+			bulletinExtractor.extractAndStoreBulletin(bulletinFile);	
+		}
+		catch(DecryptionException e)
+		{
+			throw(e);
+		}
 	}
 	
 	
