@@ -67,6 +67,21 @@ public class MartusAmplifier
 		staticAmplifierDirectory = coreServer.getDataDirectory();
 		deleteLuceneLockFile();
 		String packetsDirectory = getAmplifierPacketsDirectory().getPath();
+		
+		File webAuthorizedUserPasswordFile = getWebPasswordConfigurationFile();
+		if(webAuthorizedUserPasswordFile.exists())
+		{
+			Vector webPassword = MartusUtilities.loadListFromFile(webAuthorizedUserPasswordFile);
+			webAuthorizedUser = (String)webPassword.get(0);
+			webAuthorizedPassword = (String)webPassword.get(1);
+			webPasswordProtected = true;
+			log("password Required Martus Web Search Engine");
+		}
+		else
+		{
+			webPasswordProtected = false;
+			log("** No password Required for Martus Web Search Engine **");
+		}
 
 		dataManager = new FileSystemDataManager(packetsDirectory);
 		
@@ -140,7 +155,8 @@ public class MartusAmplifier
 		Server sslServer = new Server();
 
 		sslServer.addWebApplication("", getPresentationBasePath() + "presentation");
-		addPasswordAuthentication(sslServer);
+		if(webPasswordProtected)
+			addPasswordAuthentication(sslServer);
 		sslServer.addListener(sslListener);
 		sslServer.start();
 	}
@@ -154,13 +170,24 @@ public class MartusAmplifier
 	{
 		staticSecurity = staticSecurityToUse;
 	}
+	
+	public static String getStaticWebAuthorizedUser()
+	{
+		return webAuthorizedUser;
+	}
 
+	public static String getStaticWebAuthorizedPassword()
+	{
+		return webAuthorizedPassword;
+	}
+	
 	public Vector getDeleteOnStartupFiles()
 	{
 		Vector startupFiles = new Vector();
 		startupFiles.add(getKeystoreFile());
 		startupFiles.add(getAccountsNotAmplifiedFile());
 		startupFiles.add(getJettyConfigurationFile());
+		startupFiles.add(getWebPasswordConfigurationFile());
 		return startupFiles;
 	}
 	
@@ -365,6 +392,11 @@ public class MartusAmplifier
 		return new File(coreServer.getStartupConfigDirectory(), JETTY_CONFIGURATION_FILE);
 	}
 	
+	private File getWebPasswordConfigurationFile()
+	{
+		return new File(coreServer.getStartupConfigDirectory(), WEB_PASSWORD_CONFIGURATION_FILE);
+	}
+	
 	private File getKeystoreFile()
 	{
 		return new File(coreServer.getStartupConfigDirectory(), KEYSTORE_FILE);
@@ -404,10 +436,12 @@ public class MartusAmplifier
 	ServerCallbackInterface coreServer;
 	private boolean loggedCanExitNoAmpSyncing;
 	private boolean loggedCanExitYes;
+	private boolean webPasswordProtected;
 	
 	private static final String SERVERS_WHO_WE_CALL_DIRIRECTORY = "serversWhoWeCall";
 	private static final String ACCOUNTS_NOT_AMPLIFIED_FILE = "accountsNotAmplified.txt";
 	private static final String JETTY_CONFIGURATION_FILE = "jettyConfiguration.xml";
+	private static final String WEB_PASSWORD_CONFIGURATION_FILE = "webauthorized.txt";
 	private static final String KEYSTORE_FILE = "keystore";
 	
 	static final long IMMEDIATELY = 0;
@@ -425,5 +459,6 @@ public class MartusAmplifier
 	public static DataManager dataManager;
 	public static File staticAmplifierDirectory;
 	private static MartusCrypto staticSecurity;
-
+	private static String webAuthorizedUser;
+	private static String webAuthorizedPassword;
 }

@@ -66,7 +66,9 @@ public class PasswordAuthenticationHandler extends AbstractHttpHandler
 
 	private boolean isAuthorized(String user, String password)
 	{
-		return !(user == null || password == null || !user.equals("ampbeta")|| !password.equals("witness"));
+		String authorizedUser = MartusAmplifier.getStaticWebAuthorizedUser();
+		String authorizedPassword = MartusAmplifier.getStaticWebAuthorizedPassword();
+		return !(user == null || password == null || !user.equals(authorizedUser)|| !password.equals(authorizedPassword));
 	}
 
 	private void returnUnauthorized(HttpRequest request, HttpResponse response) throws IOException
