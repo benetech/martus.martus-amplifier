@@ -66,11 +66,11 @@ public class SearchResults extends AmplifierServlet
 			endYearString == null)
 			return;
 		
-		Date startDate = getDate(Integer.parseInt(startYearString),
-								 Integer.parseInt(startMonthString), 
+		Date startDate = getDate(Integer.parseInt(startYearString),								
+								 MonthFields.getIndexOfMonth(startMonthString), 								
 								 Integer.parseInt(startDayString));
-		Date endDate = getDate(Integer.parseInt(endYearString),
-							   Integer.parseInt(endMonthString),
+		Date endDate = getDate(Integer.parseInt(endYearString),					
+							   MonthFields.getIndexOfMonth(endMonthString),
 							   Integer.parseInt(endDayString));
 
 		searcher.setStartDate(startDate);

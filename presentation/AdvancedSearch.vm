@@ -3,8 +3,7 @@
         <title>Martus Amplifier Search Query</title>
     </head>
     
-	#set ($years = [1970..2004])
-    #set ($months = [1..12])
+	#set ($years = [1970..2004])	
     #set ($days = [1..31])
 
     <body>
@@ -77,7 +76,7 @@
 					<td align='right'>
 					between 
 		                    <select name="startMonth">                    	
-							    #foreach ($month in $months)
+							    #foreach ($month in $monthFields)
 		                            <option value="$month">
 		                                $month
 		                            </option>
@@ -102,7 +101,7 @@
 	                        			                                                                            </p>				
 	                &nbsp;and&nbsp;
 	                   <select name="endMonth">                    	
-						    #foreach ($month in $months)
+						    #foreach ($month in $monthFields)
 	                            <option value="$month">
 	                                $month
 	                            </option>

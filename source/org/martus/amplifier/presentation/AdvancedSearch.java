@@ -40,7 +40,9 @@ public class AdvancedSearch extends AmplifierServlet
 		searchableDateFields.add("Entry Date");
 		searchableDateFields.add("Event Date");
 		
-		context.put("searchableDateFields", searchableDateFields);
+		context.put("searchableDateFields", searchableDateFields);		
+		context.put("monthFields", MonthFields.getMonthDisplayNames());
+		
 		return "AdvancedSearch.vm";
 	}
 }

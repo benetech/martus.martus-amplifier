@@ -108,11 +108,6 @@ public class SearchBean implements Serializable
 		return BulletinField.getSearchableDateFields();
 	}
 	
-	public List getMonthNames()
-	{
-		return BulletinField.getMonthNames();
-	}
-	
 	public SearchResultsBean getResults()
 		throws BulletinIndexException
 	{
