@@ -68,12 +68,11 @@ public class MartusAmplifier
 	void start() throws Exception
 	{
 		deleteLuceneLockFile();
-		String basePath = getBasePath();
 		String packetsDirectory = new File(getBasePath(), "packets").getPath();
 
 		dataManager = new FileSystemDataManager(packetsDirectory);
 		
-		File configDirectory = new File(basePath);
+		File configDirectory = getStartupConfigDirectory();
 		File backupServersDirectory = new File(configDirectory, "serversWhoWeCall");
 		backupServersList = loadServersWeWillCall(backupServersDirectory, security);
 		
