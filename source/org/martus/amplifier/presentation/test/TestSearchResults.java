@@ -73,6 +73,20 @@ public class TestSearchResults extends TestCaseEnhanced
 		assertEquals("Unknown LanguageCode should be returned unchanged?", bulletin3Language, bulletinInfo3.get("language"));
 		
 	}
+
+	public void testSearchedFor() throws Exception
+	{
+		MockAmplifierRequest request = new MockAmplifierRequest();
+		MockAmplifierResponse response = null;
+		Context context = new MockContext();
+		
+		SearchResults sr = new SearchResults();
+		String basicSearchString = "mybasicsearch";
+		request.putParameter("query", basicSearchString);
+		sr.selectTemplate(request, response, context);
+		assertEquals("Didn't get back correct search string", basicSearchString, context.get("searchedFor"));
+	
+	}
 	
 /*	private Context createSampleSearchResults(MockAmplifierRequest request, HttpServletResponse response) throws Exception
 	{

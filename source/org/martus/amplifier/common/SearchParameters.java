@@ -78,7 +78,7 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 	private void setFilterKeyWords()
 	{
 		String filterString = getValue(RESULT_FILTER_BY_KEY);
-		if (filterString.equals(ANYWORD_TAG))
+		if (filterString == null || filterString.equals(ANYWORD_TAG))
 			return;
 
 		addField(RESULT_FILTER_BY_KEY, filterString); 		

@@ -55,6 +55,15 @@ public class SearchResults extends AmplifierServlet implements SearchResultConst
 			AmplifierServletResponse response, Context context) 
 					throws Exception
 	{
+		String basicQueryString = request.getParameter(RESULT_BASIC_QUERY_KEY);
+		String advanceQueryString = request.getParameter(RESULT_ADVANCED_QUERY_KEY);
+		if(basicQueryString != null)
+			context.put("searchedFor", basicQueryString);
+		else if (advanceQueryString != null)
+			context.put("searchedFor", advanceQueryString);
+		else		
+			context.put("searchedFor", null);
+
 		List results = getSearchResults(request);
 		if(results.size() == 0)
 			return "NoSearchResults.vm";
@@ -67,6 +76,7 @@ public class SearchResults extends AmplifierServlet implements SearchResultConst
 		}
 		context.put("foundBulletins", bulletins);
 		context.put("totalBulletins", new Integer(bulletins.size()));
+			
 		request.getSession().setAttribute("foundBulletins", bulletins);
 		return "SearchResults.vm";
 	}
@@ -74,24 +84,24 @@ public class SearchResults extends AmplifierServlet implements SearchResultConst
 	public List getSearchResults(AmplifierServletRequest request)
 		throws Exception, BulletinIndexException
 	{
-		HashMap searcher = new HashMap();				
+		HashMap fields = new HashMap();				
 		String queryString = request.getParameter(RESULT_BASIC_QUERY_KEY);
 	 
 		if (queryString != null)
 		{
 			if (queryString.equals(""))
 				return new ArrayList();
-			searcher.put(RESULT_BASIC_QUERY_KEY, queryString);
-			return getResults(searcher);
+			fields.put(RESULT_BASIC_QUERY_KEY, queryString);
+			return getResults(fields);
 		}
 
 		queryString = request.getParameter(RESULT_ADVANCED_QUERY_KEY);
 		if (queryString != null)		
-			searcher.put(RESULT_ADVANCED_QUERY_KEY, queryString);
+			fields.put(RESULT_ADVANCED_QUERY_KEY, queryString);
 				
-		new SearchParameters(request, searcher);									
+		new SearchParameters(request, fields);									
 										
-		return getResults(searcher);
+		return getResults(fields);
 	}
 	
 	BulletinSearcher openBulletinSearcher() throws BulletinIndexException
