@@ -70,8 +70,7 @@ public class MartusAmplifier
 		File backupServersDirectory = getServersWhoWeCallDirectory();
 		backupServersList = loadServersWeWillCall(backupServersDirectory, getSecurity());
 		
-		File notAmplifiedAccountsFile = getAccountsNotAmplifiedFile();
-		loadAccountsWeWillNotAmplify(notAmplifiedAccountsFile);
+		loadAccountsWeWillNotAmplify(getAccountsNotAmplifiedFile());
 		log(notAmplifiedAccountsList.size() + " account(s) will not get amplified");
 
 		File indexDir = LuceneBulletinIndexer.getIndexDir(getStaticAmplifierDataPath());
