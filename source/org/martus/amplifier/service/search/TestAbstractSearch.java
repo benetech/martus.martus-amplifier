@@ -450,7 +450,7 @@ public abstract class TestAbstractSearch
 			startDate = SearchConstants.DATE_FORMAT.parse("2003-08-21");
 			endDate = SearchConstants.DATE_FORMAT.parse("2003-08-22");		
 			results = searcher.searchDateRange(EVENT_DATE_INDEX_FIELD, startDate, endDate);
-//			assertEquals("FlexiDate (startEventDate[]endEvetnDate) range Event Date found?",1, results.getCount());
+			assertEquals("FlexiDate (startEventDate[]endEvetnDate) range Event Date found?",1, results.getCount());
 			
 		} 
 		finally 
