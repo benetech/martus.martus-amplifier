@@ -41,4 +41,5 @@
         </tr>
         </table>
 </center>
+<jsp:include page="footer.jsp"/>
 
