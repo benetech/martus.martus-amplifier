@@ -121,7 +121,7 @@ public class DataSynchManager
 
 				if( !catalog.bulletinHasBeenIndexed(uid) )
 				{
-					logger.info("DataSynchManager.checkAndRetrieveBulletinsForUIDs():before calling  amplifierGateway.retrieveAndManageBulletin on UID = "+ uid.toString());
+					//logger.info("DataSynchManager.checkAndRetrieveBulletinsForUIDs():before calling  amplifierGateway.retrieveAndManageBulletin on UID = "+ uid.toString());
 					amplifierGateway.retrieveAndManageBulletin(uid, bulletinExtractor);
 				}
 			}
