@@ -232,17 +232,9 @@ public class MartusAmplifier
 			System.out.println("***RUNNING IN INSECURE MODE***");
 	}
 	
-	private static InetAddress getAmpIpAddress()
+	private static InetAddress getAmpIpAddress() throws UnknownHostException
 	{
-		try
-		{
-			return InetAddress.getByName(ampIpAddress);
-		}
-		catch (UnknownHostException e)
-		{
-			e.printStackTrace();
-		}
-		return null;
+		return InetAddress.getByName(ampIpAddress);
 	}
 
 	private void displayStatistics() throws InvalidBase64Exception
