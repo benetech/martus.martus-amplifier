@@ -39,6 +39,7 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
 import org.martus.amplifier.common.SearchResultConstants;
+import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.amplifier.search.BulletinCatalog;
 import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinInfo;
@@ -165,8 +166,9 @@ public class LuceneBulletinSearcher implements BulletinSearcher
 			if(leafs.contains(uid))
 				results.add(doc);
 		}
-		System.out.println("Final Version Bulletins = " + leafs.size());
-		System.out.println("All Bulletins = " + docs.size());
+		
+		MartusAmplifier.getLogger().logDebug("Final Version Bulletins = " + leafs.size());
+		MartusAmplifier.getLogger().logDebug("All Bulletins = " + docs.size());
 		
 		return results;
 	}

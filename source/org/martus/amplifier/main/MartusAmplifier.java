@@ -423,25 +423,30 @@ public class MartusAmplifier implements LoggerInterface
 	{
 		return "Amp: " + message;
 	}
+	
+	public static LoggerInterface getLogger()
+	{
+		return coreServer.getLogger();
+	}
 
 	public void logError(String message)
 	{
-		coreServer.logError(createLogString(message));
+		getLogger().logError(createLogString(message));
 	}
 
 	public void logNotice(String message)
 	{
-		coreServer.logNotice(createLogString(message));
+		getLogger().logNotice(createLogString(message));
 	}
 
 	public void logInfo(String message)
 	{
-		coreServer.logInfo(createLogString(message));
+		getLogger().logInfo(createLogString(message));
 	}
 
 	public void logDebug(String message)
 	{
-		coreServer.logDebug(createLogString(message));
+		getLogger().logDebug(createLogString(message));
 	}
 
 	public static String getPresentationBasePath()
@@ -529,7 +534,6 @@ public class MartusAmplifier implements LoggerInterface
 	boolean isSyncing;
 	private List backupServersList;
 	List notAmplifiedAccountsList;
-	ServerCallbackInterface coreServer;
 	private boolean loggedCanExitNoAmpSyncing;
 	private boolean loggedCanExitYes;
 	private boolean webPasswordProtected;
@@ -549,7 +553,7 @@ public class MartusAmplifier implements LoggerInterface
 	private static final int MIN_THREADS = 5;
 	private static final int MAX_THREADS = 255;
 	private static final String AMP_DEFAULT_LANGUAGE = "en";
-
+	static ServerCallbackInterface coreServer;
 
 	// NOTE: The following members *MUST* be static because they are 
 	// used by servlets that do not have access to an amplifier object! 
