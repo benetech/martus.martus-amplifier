@@ -36,20 +36,24 @@
             gateway calling the handler interface</li>
         </ul>
       </li>
-      <li>[brian] amp gets list of bulletins it already has</li>
-      <li>[brian] amp compares the new list to the old list of what it already has</li>
+      <li>[working] amp can test to see if the bulletin id has already been
+        indexed</li>
+      <li>[brian] amp iterates through list of bulletin ids to see which ones
+        have not been indexed</li>
       <li>[sri] amp gets new bulletins (and attachments) from server
         <ul>
           <li>gateway does decryption and unzipping</li>
         </ul>
       </li>
-      <li>[dan] amp indexes new documents</li>
+      <li>[working] amp indexes new documents</li>
       <li>[dan] amp deals with user any access concurrency problems during re-indexing</li>
     </ul>
   </li>
   <li>search page
     <ul>
       <li>[working] user types URL in browser, browser returns amp search page</li>
+      <li>[dan, sri] user can use a dropbox to switch to any of several
+        supported languages</li>
       <li>[working] amp search page has a text field and a search button</li>
       <li>[working] user hits search button with search-text field empty, browser returns
         something</li>
@@ -233,7 +237,7 @@
   <li>tech docs
     <ul>
       <li>tech docs (e.g. list of jars used)</li>
-      <li>[dan] package dependencies</li>
+      <li>[done] package dependencies</li>
       <li>[brian] brief project history</li>
     </ul>
   </li>
