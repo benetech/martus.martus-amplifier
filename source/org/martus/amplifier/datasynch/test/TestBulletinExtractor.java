@@ -255,12 +255,9 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 			if (retrievedValue == null ) 
 			{	
 				retrievedValue = "";
-			}			
-
-			if (field.isTitleField())
-				assertEquals("untitled", retrievedValue);
-			else				
-				assertEquals(bulletin.get(field.getXmlId()), retrievedValue);
+			}	
+						
+			assertEquals(bulletin.get(field.getXmlId()), retrievedValue);
 		}
 	}
 	

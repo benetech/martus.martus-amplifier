@@ -1069,46 +1069,5 @@ public class TestLuceneSearcher extends CommonSearchTest
 		{
 			searcher.close();
 		}
-	}				
-	
-	public void testNullTitle() throws Exception
-	{	
-		UniversalId bulletinId = UniversalId.createDummyUniversalId();
-		FieldDataPacket fdp = generateEmptyBullteinData(bulletinId);		
-		BulletinIndexer indexer = openBulletinIndexer();
-		try 
-		{
-			indexer.clearIndex();
-			indexer.indexFieldData(bulletinId, fdp);
-		} 
-		finally 
-		{
-			indexer.close();
-		}
-		
-		BulletinSearcher searcher = openBulletinSearcher();
-		Results results = null;	
-		
-		try 
-		{
-			HashMap fields = new HashMap();			
-			fields.put(SEARCH_TITLE_INDEX_FIELD, fdp.get(BulletinField.SEARCH_TITLE_INDEX_FIELD));			
-			fields.put(SEARCH_AUTHOR_INDEX_FIELD, fdp.get(BulletinField.SEARCH_AUTHOR_INDEX_FIELD));				
-			fields.put(SEARCH_DETAILS_INDEX_FIELD, fdp.get(BulletinField.SEARCH_DETAILS_INDEX_FIELD));
-			fields.put(SEARCH_KEYWORDS_INDEX_FIELD, fdp.get(BulletinField.SEARCH_KEYWORDS_INDEX_FIELD));
-			
-			fields.put(RESULT_BASIC_QUERY_KEY, "Test");
-								
-			results = searcher.search(fields);
-			assertEquals("Should have found 1", 1, results.getCount());
-			
-			BulletinInfo bulletin = results.getBulletinInfo(0);	
-			String title = bulletin.get(SEARCH_TITLE_INDEX_FIELD);
-			assertEquals("untitled", title);
-		}
-		finally 
-		{
-			searcher.close();
-		}
-	}
+	}					
 }

@@ -110,9 +110,7 @@ public class LuceneResults implements Results, LuceneSearchConstants, SearchCons
 			BulletinField field = getField(fieldIds[i]);
 			
 			String value = doc.get(field.getIndexId());
-			if (field.isTitleField() && value == null)
-				value = "untitled";				
-
+			
 			if (value != null) 
 			{
 				if (field.isDateRangeField())

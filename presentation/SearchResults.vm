@@ -17,8 +17,14 @@
 	            	<td valign='top'>
 	            		$velocityCount. 
 	            	</td>
-	                <td>
-	                	<strong>Title</strong>: <a href="FoundBulletin?index=$velocityCount&searchedFor=$searchedFor">$bulletin.fields.title</a><br/>
+	                <td>	                	           	
+	                	<strong>Title</strong>: <a href="FoundBulletin?index=$velocityCount&searchedFor=$searchedFor">
+	                	#if ($bulletin.fields.title == "")
+	                		untitled
+	                	#else
+	                		$bulletin.fields.title
+	                	#end	
+	                		</a><br/>
 						#if($bulletin.fields.author != "")
 		        	        <strong>Author</strong>: $bulletin.fields.author<br/>
 						#end
