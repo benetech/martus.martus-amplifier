@@ -130,7 +130,7 @@ public class LuceneBulletinSearcher implements BulletinSearcher
 		fields.put("allWordsQuery", "");
 		fields.put("$$$eventStartDate", "1900-01-01");
 		fields.put("fields", "all");
-		fields.put("$$$eventEndDate", "2099-12-31");
+		fields.put("$$$eventEndDate", "5000-12-31");
 		fields.put("entrydate", "1900-01-01");
 		return new QueryBuilder(fields).getQuery();
 	}
