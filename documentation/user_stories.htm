@@ -107,6 +107,55 @@
       <li>[sri] user sees clear message if search returned no results</li>
     </ul>
   </li>
+  <li>browser compatibility
+    <ul>
+      <li>marc says: Of course, we would have to support IE and Netscape, though
+        which versions I'm not sure of.&nbsp; More broadly, I'd love to support
+        Mozilla and Opera. &nbsp;(I saw Opera used in Russia.)</li>
+      <li>kevin says: Enough people disable Javascript on their regular browsers
+        that I don't think we can require it for the site to function. If there
+        are certain features that would be greatly enhanced with a dab of
+        Javascript, that seems ok to me.</li>
+      <li>kevin says: we should also attempt to be compatible with AOL, WebTV,
+        ancient versions of IE and Netscape, and all the other oddball browsers
+        past and future. Not that we need to test with them, but that we should
+        aim for a site that is as simple and widely compatible as possible.</li>
+      <li>kevin says: <span class="288075021-14112002">I think our goal should
+        be to rely as little as possible on browser features, so that the Amp
+        can be used by as many people as possible. We should use little or no
+        Javascript, because it is notoriously hard to debug, is notoriously
+        incompatible between browser versions, and is disabled by many people
+        for security and/or privacy reasons.&nbsp;</span></li>
+      <li>kevin says: <span class="288075021-14112002">Also, there are different
+        levels of compatibility. At a minimum, the site should not crash or be
+        invisible on a supported browser. But some amount of cosmetic
+        imperfection is probably ok, because it is almost impossible to get
+        certain HTML features to look good on all versions of all browsers,
+        without extensive browser-specific code. I would like to avoid serving
+        different pages for different browsers if at all possible.</span></li>
+      <li>kevin says: <span class="288075021-14112002">We need further
+        discussions, but my own first thought is that the absolute minimum to
+        fully support would be Windows versions of IE 5, 5.5 and 6, Mac IE&nbsp;[don't
+        know which version(s)]&nbsp;and Netscape 4.7 and 6.2, and Linux Netscape
+        4.7 and 6.2.&nbsp;</span></li>
+      <li><span class="288075021-14112002">kevin says: </span><span class="288075021-14112002">I
+        would also like to support Lynx (a text-only browser), and the latest
+        version of Opera on all three platforms. ... As for Lynx, I'm not sure
+        it's a marketing requirement. And I certainly wouldn't propose making it
+        actually look good in a text-only browser. But if we stick to simple,
+        validated standard HTML, it should be at least functional under Lynx
+        with no effort on our part. Partly this would be in line with some of
+        Benetech's other goals, which are accessibility by blind folks, and
+        compatibility with low-end Linux systems that might be in use around the
+        world.</span></li>
+    </ul>
+  </li>
+  <li>efficiency
+    <ul>
+      <li>user accesses amp from a browser with a slow Internet connection</li>
+      <li>&nbsp;</li>
+    </ul>
+  </li>
 </ul>
 <p><b>Things that are <font color="#FF0000"> not</font> user stories</b></p>
 <ul>
@@ -129,7 +178,8 @@
     <ul>
       <li>admin reads FAQ about installing amp</li>
       <li>admin downloads current version of martus amp separate from server?</li>
-      <li>admin downloads martus server, which includes amp?</li>
+      <li><font color="#FF0000">not a requirement: </font>admin downloads martus
+        server which includes amp</li>
     </ul>
   </li>
   <li>target platforms
@@ -140,8 +190,9 @@
   </li>
   <li>installation
     <ul>
-      <li>admin installs martus amp at same time as martus server?</li>
-      <li>admin installs martus amp independent of martus server?</li>
+      <li><font color="#FF0000">not a requirement: </font>admin installs martus amp at same time as martus
+        server</li>
+      <li>admin installs martus amp independent of martus server</li>
       <li>admin installs martus amp in under xxxx amount of time (60 minutes?)</li>
       <li>admin installs martus amp without agreeing to more than one set of license
         agreements (licenses for tomcat, lucene, Benetech, etc.)?</li>
