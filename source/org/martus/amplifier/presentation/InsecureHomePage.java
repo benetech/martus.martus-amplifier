@@ -45,7 +45,6 @@ public class InsecureHomePage extends HttpServlet
 			throws ServletException, IOException
 	{
 		Writer responseWriter = response.getWriter();
-		System.out.println("name <" + request.getServerName() + ">");
 		loadDefaultPage(responseWriter, request.getServerName());				
 		response.flushBuffer();
 	}
