@@ -158,7 +158,7 @@
                         alias="ssmtsjar"
                         />
                         
-        <property name="tar-filename"  value="${push-dir}/martus_amp-${DSTAMP}.tar"/>
+        <property name="tar-filename"  value="${push-dir}/martus_amp-${DSTAMP}.${build.number}.tar"/>
 	    <!-- Remove all tar files from main push dir. -->
 	    <delete verbose="true">
 	        <fileset dir="${push-dir}" includes="*.tar"/>
