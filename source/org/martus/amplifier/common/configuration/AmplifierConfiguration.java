@@ -43,6 +43,10 @@ public class AmplifierConfiguration implements IConfigurationConstants
 		return testDataPath.toString();
 	}	
 	
+	public String getTestOutputPath()
+	{
+		return getGenericProperty(TEST_OUTPUT_PATH);
+	}
 	private String getGenericProperty(String propertyKey)
 	{
 		String propertyValue = null;
@@ -62,6 +66,7 @@ public class AmplifierConfiguration implements IConfigurationConstants
 	//property keys
 	private static final String AMPLIFIER_BASE_PATH = "AMPLIFIER_BASE_DIRECTORY";
 	private static final String TEST_DATA_PATH = "TEST_DATA_DIRECTORY";
+	private static final String TEST_OUTPUT_PATH = "TEST_OUTPUT_DIRECTORY";
 	
 	private static final String PATH_PROPERTY_FILE = "/Path.properties";
 	private static AmplifierConfiguration instance = new AmplifierConfiguration();

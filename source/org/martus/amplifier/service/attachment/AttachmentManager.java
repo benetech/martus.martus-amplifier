@@ -93,7 +93,7 @@ public class AttachmentManager implements IAttachmentConstants
 		}
 	}
 	
-	public File getAttachmentFile(UniversalBulletinId UniversalBulletinId)
+	public File getAttachmentFile(UniversalBulletinId UniversalBulletinId, String filePath)
 	{
 		AttachmentFileKeyDbt key = new AttachmentFileKeyDbt(UniversalBulletinId);
 		AttachmentFileValueDbt returnValue = new AttachmentFileValueDbt();
@@ -109,7 +109,7 @@ public class AttachmentManager implements IAttachmentConstants
 		{
 			logger.severe("Unable to get attachment from database: " + de);
 		}
-		return returnValue.getFile();
+		return returnValue.getFile(filePath);
 	}
 		
 	private static AttachmentManager instance = new AttachmentManager();
