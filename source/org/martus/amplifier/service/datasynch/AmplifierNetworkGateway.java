@@ -131,7 +131,7 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
 		    try
 		 	{	
 				totalLength = BulletinZipUtilities.retrieveBulletinZipToStream
-									(uid, out, chunkSize, gateway, security, null, null);
+									(uid, out, chunkSize, gateway, security, null);
 			}
 			catch(Exception e)
 			{
