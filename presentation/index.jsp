@@ -27,10 +27,10 @@
                         <input name="query" size="44"/>&nbsp;<input type="submit" value="Search"/>
                     </p>
                     <p>
-                        <input name="maxresults" size="4" value="100"/>&nbsp;Results Per Page&nbsp;
+                        <input name="resultsPerPage" size="4" value="100"/>&nbsp;Results Per Page&nbsp;
                         &nbsp;Field:&nbsp;
-                        <select name="field" value="title">
-                            <c:forEach items="${search.searchFields}" var="field">
+                        <select name="field">
+                            <c:forEach items="${search.textSearchFields}" var="field">
                                 <option value="<c:out value="${field.indexId}"/>">
                                     <c:out value="${field.displayName}"/>
                                 </option>

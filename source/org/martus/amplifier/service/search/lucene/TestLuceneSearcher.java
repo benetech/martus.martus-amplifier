@@ -1,14 +1,11 @@
 package org.martus.amplifier.service.search.lucene;
 
 import java.io.File;
+import java.text.DateFormat;
 
-import junit.framework.Assert;
-
-import org.martus.amplifier.common.configuration.AmplifierConfiguration;
 import org.martus.amplifier.service.search.AbstractSearchTest;
 import org.martus.amplifier.service.search.BulletinIndexException;
 import org.martus.amplifier.service.search.BulletinIndexer;
-import org.martus.amplifier.service.search.BulletinSearchException;
 import org.martus.amplifier.service.search.BulletinSearcher;
 
 public class TestLuceneSearcher extends AbstractSearchTest
@@ -33,7 +30,7 @@ public class TestLuceneSearcher extends AbstractSearchTest
 		BulletinIndexer indexer = openBulletinIndexer();
 		indexer.close();
 	}
-
+	
 	protected BulletinIndexer openBulletinIndexer()
 		throws BulletinIndexException 
 	{

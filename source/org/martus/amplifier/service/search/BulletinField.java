@@ -1,9 +1,11 @@
 package org.martus.amplifier.service.search;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.martus.common.Bulletin;
@@ -59,6 +61,23 @@ public class BulletinField implements BulletinConstants, SearchConstants
 		return textFields;
 	}
 	
+	public static List getMonthNames()
+	{
+		return MONTH_NAMES;
+	}
+	
+	public static Collection getSearchableDateFields()
+	{
+		Collection dateFields = new ArrayList();
+		for (Iterator iter = FIELDS.values().iterator(); iter.hasNext();) {
+			BulletinField field = (BulletinField) iter.next();
+			if (field.isDateField()) {
+				dateFields.add(field);
+			}
+		}
+		return dateFields;
+	}
+	
 	public static String[] getSearchableXmlIds()
 	{
 		return (String[]) FIELDS.keySet().toArray(new String[0]);
@@ -74,6 +93,11 @@ public class BulletinField implements BulletinConstants, SearchConstants
 	private String xmlId;
 	private String indexId;
 	private String displayName;
+	
+	private static final List MONTH_NAMES = Arrays.asList(new String[] {
+		"January", "February", "March", "April", "May", "June",
+		"July", "August", "September", "October", "November", "December"
+	});
 	
 	private static final Map FIELDS = new LinkedHashMap();
 	static {

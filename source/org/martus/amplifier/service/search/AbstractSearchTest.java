@@ -180,7 +180,7 @@ public abstract class AbstractSearchTest
 		}
 	}
 	
-	public void testSimultaneousAccess() throws BulletinIndexException
+	public void testInterleavedAccess() throws BulletinIndexException
 	{
 		BulletinIndexer indexer = null;
 		BulletinSearcher searcher = null;

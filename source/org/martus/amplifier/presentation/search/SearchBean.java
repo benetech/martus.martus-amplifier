@@ -54,7 +54,13 @@ public class SearchBean implements Serializable
 		throws BulletinIndexException
 	{
 		this.maxCacheSize = resultsPerPage;
-		resetCache();
+		invalidateCache();
+	}
+	
+	public void setIndexPath(String indexPath)
+	{
+		this.indexPath = indexPath;
+		invalidateCache();
 	}
 	
 	public int getResultsPerPage()
@@ -69,6 +75,12 @@ public class SearchBean implements Serializable
 		return Math.min(startIndex + maxCacheSize, results.size()) - 1;
 	}
 	
+	public boolean isAtEnd() throws BulletinIndexException
+	{
+		SearchResultsBean results = getResults();
+		return (getLastIndexInCurrentPage() == (results.size() - 1));
+	}
+	
 	public int getStartIndex()
 	{
 		return startIndex;
@@ -79,9 +91,19 @@ public class SearchBean implements Serializable
 		this.startIndex = startIndex;
 	}
 	
-	public Collection getSearchFields()
+	public Collection getTextSearchFields()
 	{
 		return BulletinField.getSearchableTextFields();
+	}
+	
+	public Collection getDateSearchFields()
+	{
+		return BulletinField.getSearchableDateFields();
+	}
+	
+	public List getMonthNames()
+	{
+		return BulletinField.getMonthNames();
 	}
 	
 	public SearchResultsBean getResults()
@@ -97,13 +119,6 @@ public class SearchBean implements Serializable
 	{
 		results = null;
 		startIndex = 0;
-	}
-	
-	private void resetCache() throws BulletinIndexException
-	{
-		if (results != null) {
-			results.resetCache();
-		}
 	}
 	
 	private BulletinSearcher openBulletinSearcher() 

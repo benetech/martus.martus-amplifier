@@ -15,7 +15,8 @@ public interface SearchConstants
 	String LOCATION_INDEX_FIELD = "location";
 	String ENTRY_DATE_INDEX_FIELD = "entryDate";
 	
+	String DATE_FORMAT_PATTERN = "yyyy-MM-dd";
 	DateFormat DATE_FORMAT = 
-		new SimpleDateFormat("yyyy-MM-dd");
+		new SimpleDateFormat(DATE_FORMAT_PATTERN);
 	
 }

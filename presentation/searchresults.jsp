@@ -1,5 +1,7 @@
 <%@ page contentType="text/html" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
+
 <html>
     <head>
             <title>Martus Amplifier Search Results</title>
@@ -11,6 +13,21 @@
             class="org.martus.amplifier.presentation.search.SearchBean"
             scope="session"/>
         <jsp:setProperty name="search" property="*"/>
+        
+        <jsp:useBean 
+            id="dateValidator" 
+            class="org.martus.amplifier.presentation.search.DateValidator"
+            scope="application"/>
+        
+        <c:if test="${!empty param.startDateString}" >
+            <fmt:parseDate value="${param.startDateString}" dateStyle="short" var="startDate"/>
+            <c:set value="${startDate}" target="${search}" property="startDate"/>
+        </c:if>
+        
+        <c:if test="${!empty param.endDateString}" >
+            <fmt:parseDate value="${param.endDateString}" dateStyle="short" var="endDate"/>
+            <c:set value="${endDate}" target="${search}" property="endDate"/>
+        </c:if>
         
         <table width="800" border="0" cellspacing="0" cellpadding="0">
         <tr>
@@ -60,7 +77,16 @@
                         </c:url>
                         <td><a href="<c:out value="${resultDetail}"/>"><c:out value="${search.results[i].title}"/></a></td>
                     </tr>
-                </c:forEach> 
+                </c:forEach>
+                <c:if test="${!search.atEnd}">
+                    <tr>
+                        <td></td>
+                        <c:url value="searchresults.jsp" var="moreResults">
+                            <c:param name="startIndex" value="${search.lastIndexInCurrentPage + 1}"/>
+                        </c:url>
+                        <td><a href="<c:out value="${moreResults}"/>">More Results>></a></td>
+                    </tr>
+                </c:if>
             </c:otherwise>
         </c:choose>
         </table>
