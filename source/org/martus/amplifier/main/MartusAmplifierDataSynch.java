@@ -36,7 +36,7 @@ public class MartusAmplifierDataSynch {
 		AttachmentManager attachmentManager = null;
 		try
 		{
-			DataSynchManager dataManager = DataSynchManager.getInstance();
+			DataSynchManager dataManager = new DataSynchManager();
 			AmplifierConfiguration config = 
 				AmplifierConfiguration.getInstance();
 			indexer = new LuceneBulletinIndexer(

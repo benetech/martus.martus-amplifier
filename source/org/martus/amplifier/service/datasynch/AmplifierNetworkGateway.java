@@ -34,11 +34,11 @@ import org.martus.util.Base64.InvalidBase64Exception;
 public class AmplifierNetworkGateway implements IDataSynchConstants
 {
 	
-	protected AmplifierNetworkGateway()
+	public AmplifierNetworkGateway()
 	{
 		super();
 	
-		serverInfoList = BackupServerManager.getInstance().getBackupServersList();
+		serverInfoList = new BackupServerManager().getBackupServersList();
 		gateway = getCurrentNetworkInterfaceGateway();
 		try
 		{
@@ -50,13 +50,6 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
 			logger.severe("CryptoInitialization Exception " + e.getMessage());		
 		}
 		
-	}
-	
-	public static AmplifierNetworkGateway getInstance()
-	{
-		if(instance == null)
-		instance = new AmplifierNetworkGateway();
-		return instance;
 	}
 	
 	
@@ -203,7 +196,6 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
 		}
 	}
 	
-	private static AmplifierNetworkGateway instance = null;
 	private AmplifierBulletinRetrieverGatewayInterface gateway;
 	private MartusCrypto security;
 	private Logger logger = Logger.getLogger(DATASYNC_LOGGER);

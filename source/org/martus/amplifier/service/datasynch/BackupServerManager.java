@@ -43,21 +43,12 @@ public class BackupServerManager implements IDataSynchConstants
 		return backupServersList;
 	}
 	
-	public static BackupServerManager getInstance()
-	{
-		if(singleton != null)
-			return singleton;
-		singleton = new BackupServerManager();
-		return singleton;
-	}
-	
 	private static final String NAME_PROPERTY = "serverName";
 	private static final String IP_PROPERTY = "serverIP";
 	private static final String PORT_PROPERTY = "serverPort";
 	private static final String SERVERPUBLICKEY_PROPERTY = "serverPublicKey";
 	
 	
-	public static BackupServerManager singleton = null;
 	private List backupServersList = null;
 	private Logger logger = Logger.getLogger(DATASYNC_LOGGER);
 }

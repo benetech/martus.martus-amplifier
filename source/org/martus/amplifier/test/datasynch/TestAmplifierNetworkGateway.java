@@ -14,7 +14,7 @@ public class TestAmplifierNetworkGateway extends TestAbstractAmplifierDataSynch
 	public void testGetAllAccountIds()
 	{
 		System.out.println("AmplifierNetworkGatewayTest:testGetAllAccountIds");
-		AmplifierNetworkGateway amplifierGateway = AmplifierNetworkGateway.getInstance();
+		AmplifierNetworkGateway amplifierGateway = new AmplifierNetworkGateway();
 		Vector list = amplifierGateway.getAllAccountIds();
 		for(int i =0; i<list.size(); i++)
 		{
@@ -26,7 +26,7 @@ public class TestAmplifierNetworkGateway extends TestAbstractAmplifierDataSynch
 	public void testGetAccountUniversalIds()
 	{
 		System.out.println("AmplifierNetworkGatewayTest:testGetAccountUniversalIds");
-		AmplifierNetworkGateway amplifierGateway = AmplifierNetworkGateway.getInstance();
+		AmplifierNetworkGateway amplifierGateway = new AmplifierNetworkGateway();
 		
 		Vector list = amplifierGateway.getAccountUniversalIds(sampleAccountId);
 		System.out.println("AccountId2 = "+ sampleAccountId +"  Number of Universal IDs = "+ list.size());

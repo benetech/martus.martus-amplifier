@@ -16,22 +16,13 @@ public class DataSynchManager implements IDataSynchConstants
 
 	private AmplifierNetworkGateway amplifierGateway = null;
 	private static Logger logger = Logger.getLogger(DATASYNC_LOGGER);
-	private static DataSynchManager instance = new DataSynchManager();
 	boolean isIndexingNeeded;
 
-	private DataSynchManager()
+	public DataSynchManager()
 	{
 		super();
-		amplifierGateway = AmplifierNetworkGateway.getInstance();
+		amplifierGateway = new AmplifierNetworkGateway();
 	}
-	
-	public static DataSynchManager getInstance()
-	{
-		if(instance == null)
-		instance = new DataSynchManager();
-		return instance;
-	}
-	
 	
 	
 	/**

@@ -20,7 +20,7 @@ public class DummyUpdateFromServerTask extends TimerTask
 	{
 		logger.info("Scheduled Task started " + System.currentTimeMillis());
 		List backupServers = 
-			BackupServerManager.getInstance().getBackupServersList();
+			new BackupServerManager().getBackupServersList();
 		if(backupServers != null)
 		{
 			Iterator iterator = backupServers.iterator();
