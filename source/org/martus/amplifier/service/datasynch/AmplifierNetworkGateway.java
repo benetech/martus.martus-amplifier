@@ -10,6 +10,9 @@ import java.util.Vector;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipEntry;
 
+//from Martus common code
+import org.martus.common.UniversalId;
+
 public class AmplifierNetworkGateway
 {
 
@@ -61,7 +64,7 @@ public class AmplifierNetworkGateway
 	}
 	
 	
-	public static Vector getBulletin(String BulletinId)
+	public static Vector getBulletin(UniversalId uid)
 	{
 		Vector result = new Vector();
 		File tempFile = null;
@@ -70,8 +73,7 @@ public class AmplifierNetworkGateway
 		 * 2) Unzip the file and retrieve the bulletin and attachments
 		 * 3) 
 		 * 
-		 */
-		 
+		 */	 
 		File bulletinZippedFile = new File("c:/srilatha/martus_data/Firebombing of NGO O13806.mbf");
 		result = AmplifierUtilities.unZip(bulletinZippedFile);
 		for(int i=0; i<result.size(); i++)
@@ -79,8 +81,6 @@ public class AmplifierNetworkGateway
 			tempFile = (File)result.get(i);
 			System.out.println("FileName is "+ tempFile.getName());
 		}		
-		
-		
 		return result;		
 	}
 

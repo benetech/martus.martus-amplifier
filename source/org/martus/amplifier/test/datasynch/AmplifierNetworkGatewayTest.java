@@ -4,6 +4,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
+import org.martus.common.UniversalId;
+
 import org.martus.amplifier.service.datasynch.AmplifierNetworkGateway;
 
 public class AmplifierNetworkGatewayTest extends AbstractAmplifierDataSynchTest
@@ -33,9 +35,13 @@ public class AmplifierNetworkGatewayTest extends AbstractAmplifierDataSynchTest
 	public void testGetBulletin()
 	{
 		System.out.println("in testGetBulletin");
-		Vector list = AmplifierNetworkGateway.getBulletin("firebomb");				
+		UniversalId uid = UniversalId.createFromAccountAndLocalId(sampleAccountId, sampleLocalId);
+		Vector list = AmplifierNetworkGateway.getBulletin(uid);				
 		assertEquals(list.size(), 3);			
 
 	}	
+	
+	final String sampleAccountId = "an account id";
+	final String sampleLocalId = "a local id";
 
 }
