@@ -111,8 +111,8 @@ public class DoSearch extends AbstractSearchResultsServlet
 		{	
 			RawSearchParameters.clearSimpleSearch(session);										
 			RawSearchParameters raw = new RawSearchParameters(request);
-				
-			return getSearchResults(session, raw);
+			
+			return getSearchResults(session, raw);			
 		}
 	}
 
@@ -137,13 +137,11 @@ public class DoSearch extends AbstractSearchResultsServlet
 		raw.saveSearchInSession(session);
 		
 		SearchParameters sp = new SearchParameters(raw);
-		if (sp.getSearchFields().isEmpty())
-		{
-			RawSearchParameters.clearAdvancedSearch(session);			
+		if (sp == null)
 			return new ArrayList();
-		}	
-	
+			
 		Map fields = sp.getSearchFields();
+		
 		return getResults(fields);
 	}
 

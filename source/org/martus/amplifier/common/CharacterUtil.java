@@ -42,7 +42,7 @@ public class CharacterUtil
 				strArray[j] = ' ';													
 		}									
 										
-		return removeExtraSpaces(new String(strArray)).trim();
+		return removeExtraSpaces(new String(strArray));
 	}
 	
 	private static String removeExtraSpaces(String str)
@@ -53,7 +53,7 @@ public class CharacterUtil
 		{
 			strBuffer.append(st.nextToken()).append(" ");
 		}
-		return strBuffer.toString();
+		return strBuffer.toString().trim();
 	}
 	
 	public static boolean isAllowed(char ch)

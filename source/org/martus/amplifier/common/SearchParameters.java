@@ -43,7 +43,7 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 			
 		searchFields = new HashMap();
 		if(!inputParameters.getParameters().isEmpty())
-		{	
+		{		
 			copyFormattedQueryString(new FormatterForAllWordsSearch());
 			copyFormattedQueryString(new FormatterForExactPhraseSearch());
 			copyFormattedQueryString(new FormatterForAnyWordSearch());
@@ -63,7 +63,10 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 	private void copyFormattedQueryString(LuceneQueryFormatter formatter)
 	{
 		String decoratedString = inputParameters.getFormattedString(formatter);
-		searchFields.put(formatter.getTag(), decoratedString);
+		if (decoratedString != null)
+			searchFields.put(formatter.getTag(), decoratedString);
+		else
+			searchFields.put(formatter.getTag(), "");
 	}
 	
 	private void copyLanguageChoice()

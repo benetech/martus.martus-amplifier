@@ -68,14 +68,28 @@ public class RawSearchParameters
 		Map inputParameters = new HashMap();
 		for(int i=0; i< SearchResultConstants.ADVANCED_KEYS.length; i++)
 		{
-			String value = request.getParameter(SearchResultConstants.ADVANCED_KEYS[i]);
+			String key = SearchResultConstants.ADVANCED_KEYS[i];
+			String value = request.getParameter(key);	
 			if (value != null)
-			{				
-				inputParameters.put(SearchResultConstants.ADVANCED_KEYS[i], value);				
-			}
+				inputParameters.put(key, value);				
+			
+			if (value == null && isQueryString(key))				
+				inputParameters.put(SearchResultConstants.ADVANCED_KEYS[i], "");
+			
 		}
 		
 		return inputParameters;
+	}
+	
+	private boolean isQueryString(String key)
+	{
+		if (key.equals(SearchResultConstants.EXACTPHRASE_TAG)||
+			key.equals(SearchResultConstants.ANYWORD_TAG)||
+			key.equals(SearchResultConstants.THESE_WORD_TAG)||
+			key.equals(SearchResultConstants.WITHOUTWORDS_TAG))
+			return true;
+				
+		return false;	
 	}
 
 	public void saveSearchInSession(AmplifierServletSession session)
