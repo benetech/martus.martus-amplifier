@@ -90,7 +90,7 @@ public class DoSearch extends AbstractSearchResultsServlet
 		
 		if (searchType != null && searchType.equals("quickSearchAll"))
 		{			
-			RawSearchParameters.clearAdvancedSearch(session);				
+			RawSearchParameters.clearAdvancedSearch(session);							
 			return getSearchResults(session, new RawSearchParameters(""));
 		}										
 		
@@ -100,6 +100,7 @@ public class DoSearch extends AbstractSearchResultsServlet
 			RawSearchParameters.clearAdvancedSearch(session);
 					
 			simpleQueryString = CharacterUtil.removeRestrictCharacters(simpleQueryString);
+	
 			RawSearchParameters raw = new RawSearchParameters(simpleQueryString);
 						
 			if (simpleQueryString.equals(""))
@@ -108,10 +109,10 @@ public class DoSearch extends AbstractSearchResultsServlet
 			return getSearchResults(session, raw);
 		}
 		else
-		{
-			RawSearchParameters.clearSimpleSearch(session);								
-			
+		{	
+			RawSearchParameters.clearSimpleSearch(session);										
 			RawSearchParameters raw = new RawSearchParameters(request);
+				
 			return getSearchResults(session, raw);
 		}
 	}
@@ -137,6 +138,12 @@ public class DoSearch extends AbstractSearchResultsServlet
 		raw.saveSearchInSession(session);
 		
 		SearchParameters sp = new SearchParameters(raw);
+		if (sp.getSearchFields().isEmpty())
+		{	
+			RawSearchParameters.clearAdvancedSearch(session);		
+			return new ArrayList();
+		}		
+	
 		Map fields = sp.getSearchFields();
 		return getResults(fields);
 	}

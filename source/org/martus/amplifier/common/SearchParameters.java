@@ -40,17 +40,19 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 	public SearchParameters(RawSearchParameters rawParameters)
 	{
 		inputParameters = rawParameters;
-
+			
 		searchFields = new HashMap();
-
-		copyFormattedQueryString(new FormatterForAllWordsSearch());
-		copyFormattedQueryString(new FormatterForExactPhraseSearch());
-		copyFormattedQueryString(new FormatterForAnyWordSearch());
-		copyLanguageChoice();
-		copyFieldsChoice();
-		copyEntryDateChoice();
-		copyEventDateChoice();
-		copySortByChoice();		
+		if(!inputParameters.getParameters().isEmpty())
+		{	
+			copyFormattedQueryString(new FormatterForAllWordsSearch());
+			copyFormattedQueryString(new FormatterForExactPhraseSearch());
+			copyFormattedQueryString(new FormatterForAnyWordSearch());
+			copyLanguageChoice();
+			copyFieldsChoice();
+			copyEntryDateChoice();
+			copyEventDateChoice();
+			copySortByChoice();	
+		}			
 	}
 
 	public Map getSearchFields()
@@ -83,7 +85,7 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 
 	private void copyEntryDateChoice()
 	{
-		String entryDateDayCount = inputParameters.getEntryDate();
+		String entryDateDayCount = inputParameters.getEntryDate();		
 		String entryDate = getEntryDate(entryDateDayCount);
 		searchFields.put(SEARCH_ENTRY_DATE_INDEX_FIELD, entryDate);
 	}
