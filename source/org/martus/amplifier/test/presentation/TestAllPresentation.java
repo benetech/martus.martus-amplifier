@@ -25,6 +25,7 @@ public class TestAllPresentation extends TestSuite
 		TestSuite suite= new TestSuite("All Martus Amplifier Presentation Tests");
 		
 		suite.addTest(new TestSuite(TestSimpleSearch.class));
+		suite.addTest(new TestSuite(TestAdvancedSearch.class));
 	
 		return suite;
 	}
