@@ -28,6 +28,7 @@ public class TestAllLucene extends TestSuite
 			new TestSuite("All Martus Amplifier Lucene Tests");
 		
 		suite.addTest(new TestSuite(TestLuceneSearcher.class));
+		suite.addTest(new TestSuite(TestLuceneBulletinIndexer.class));
 		suite.addTest(new TestSuite(TestRawLuceneSearching.class));
 		
 		return suite;
