@@ -46,11 +46,11 @@ import org.martus.amplifier.search.BulletinInfo;
 import org.martus.amplifier.search.BulletinSearcher;
 import org.martus.amplifier.search.Results;
 import org.martus.common.bulletin.AttachmentProxy;
-import org.martus.common.clientside.DateUtilities;
 import org.martus.common.packet.BulletinHistory;
 import org.martus.common.packet.FieldDataPacket;
 import org.martus.common.packet.UniversalId;
 import org.martus.common.test.UnicodeConstants;
+import org.martus.common.utilities.DateUtilities;
 
 public class TestLuceneSearcher extends CommonSearchTest
 {

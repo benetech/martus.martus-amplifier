@@ -36,9 +36,9 @@ import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinInfo;
 import org.martus.amplifier.search.Results;
 import org.martus.amplifier.search.SearchConstants;
-import org.martus.common.clientside.DateUtilities;
 import org.martus.common.packet.UniversalId;
 import org.martus.common.packet.UniversalId.NotUniversalIdException;
+import org.martus.common.utilities.DateUtilities;
 
 
 public class LuceneResults implements Results, LuceneSearchConstants, SearchConstants
