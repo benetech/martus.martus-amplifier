@@ -92,6 +92,7 @@ public class AmplifierNetworkGateway implements LoggerInterface
 			if(!resultCode.equals(NetworkInterfaceConstants.OK))
 				throw new NotAuthorizedException();
 			result= response.getResultVector();
+			logDebug("getAllAccountIds: Exit");
 		}
 		catch(IOException e)
 		{

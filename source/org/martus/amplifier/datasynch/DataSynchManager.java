@@ -67,6 +67,7 @@ public class DataSynchManager
 			pullContactInfoForAccount(accountId);
 			pullNewBulletinsForAccount(accountId, bulletinExtractor);
 		}
+		amplifierGateway.logDebug("finished polling this server");
 	}
 	
 	static public List removeAccountsFromList(List allAccounts, List accountsToRemove)
