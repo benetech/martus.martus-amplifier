@@ -1,5 +1,7 @@
 package org.martus.amplifier.service.search;
 
+import org.martus.amplifier.common.configuration.AmplifierConfiguration;
+
 /**
  * @author Daniel Chu
  *
@@ -9,21 +11,13 @@ package org.martus.amplifier.service.search;
  */
 public interface IBulletinConstants
 {
-/*
+	public static final String FILES_FOLDER = "Bulletin_Folder";
 	public static final String DEFAULT_FILES_LOCATION = 
-		"amplifierdata";
-*/
-
-	public static final String DEFAULT_FILES_LOCATION = 
-		"C:\\Martus_Amplifier_Folder\\Bulletin_Folder";
-
-
-	// PENDING: It would be nice to someday remove this 
-	// hard-coded reference to C: drive.  Maybe the right
-	// thing to do is use a path found in our Path.properties file
+		AmplifierConfiguration.getInstance().buildAmplifierWorkingPath(FILES_FOLDER);
+	public static final String INDEX_FOLDER = "amplifier_index";
 	public static final String DEFAULT_INDEX_LOCATION = 
-		"C:\\amplifierindex";
-		
+		AmplifierConfiguration.getInstance().buildAmplifierWorkingPath(INDEX_FOLDER);
+
 	// Martus Amplifier Field Constants
 	/** [Brian says: In a way, all the "field" names and "visible field"
 	/* name are just two attributes of a set of "field" instances.
