@@ -10,9 +10,20 @@
         Welcome to the Martus Amplifier
     </description>
     
+     <servlet>
+      <servlet-name> SimpleSearch </servlet-name>
+      <servlet-class> org.martus.amplifier.presentation.SimpleSearch </servlet-class>
+<!--      <init-param>
+         <param-name> properties </param-name>
+         <param-value> velocity.properties </param-value>
+      </init-param>
+      -->
+    </servlet>
+
     <taglib>
         <taglib-uri>amplifiertaglib</taglib-uri>
         <taglib-location>/WEB-INF/amp.tld</taglib-location>
     </taglib>
     
+     
 </web-app>
