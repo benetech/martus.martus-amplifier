@@ -46,13 +46,11 @@ Boston, MA 02111-1307, USA.
 					Please tell us what specific information you were seeking<br/>
 					and why you were dissatisfied with the search results.<br/>
 					<br/>
-					#if ($problemReport)
-						If there was an error message, tell us what it said.<br/>
-						Also tell us what happened right before the error occurred,<br/>
-						such as what page you were on, which links you followed, <br/>
-						what options you chose or terms you entered.<br/>
-						<br/>
-					#end
+					If there was an error message, tell us what it said.<br/>
+					Also tell us what happened right before the error occurred,<br/>
+					such as what page you were on, which links you followed, <br/>
+					what options you chose or terms you entered.<br/>
+					<br/>
 					<form name="feedback" action="FeedbackSubmitted" method="post">
 						#if ($problemReport)
 							<textarea name='userFeedbackProblem' rows='10' cols='60'></textarea>
