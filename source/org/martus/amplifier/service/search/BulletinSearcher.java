@@ -13,8 +13,11 @@ import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
+import org.apache.lucene.queryParser.Token;
+import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.PrefixQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.RangeQuery;
 import org.martus.amplifier.common.logging.ILoggerConstants;
@@ -64,6 +67,75 @@ implements IBulletinSearcher, IBulletinConstants, ILoggerConstants
 		return hits;
 	}
 
+	public Hits searchWholeWordField(String field, String queryString)
+	{
+		Hits hits = null;
+		Analyzer analyzer = null;
+		Query query = null;
+		IndexSearcher searcher = null;
+		
+		Assert.assertTrue(queryString != null);
+		analyzer = new StopAnalyzer();
+		
+		try
+		{
+			query = QueryParser.parse(queryString, field, analyzer);
+		}
+		catch(ParseException pe)
+		{
+			logger.severe("Unable to parse query:" + pe.getMessage());
+		}
+		
+		try
+		{
+			searcher = new IndexSearcher(IndexReader.open(DEFAULT_INDEX_LOCATION));
+			hits = searcher.search(query);
+		}
+		catch(IOException ioe)
+		{
+			logger.severe("Unable to search index:" + ioe.getMessage());
+		}
+		
+		return hits;
+	}
+
+	public Hits searchPartialWordField(String field, String queryString)
+	{
+		Assert.assertTrue(queryString != null);
+
+		Hits hits = null;
+		Analyzer analyzer = null;
+		IndexSearcher searcher = null;
+		analyzer = new StopAnalyzer();
+		QueryParser parser = null;
+		Term currentTerm = null;
+		BooleanQuery completeQuery = null;
+		String currentTermString = null;
+		PrefixQuery currentPrefixQuery = null;
+		Token nextToken = null;
+		parser = new QueryParser(queryString, analyzer);
+		
+		while((nextToken = parser.getNextToken()) != null)
+		{
+			currentTermString = nextToken.toString();
+			currentTerm = new Term(field, currentTermString);
+			currentPrefixQuery = new PrefixQuery(currentTerm);
+			completeQuery.add(currentPrefixQuery, true, false);	
+		}
+				
+		try
+		{
+			searcher = new IndexSearcher(IndexReader.open(DEFAULT_INDEX_LOCATION));
+			hits = searcher.search(completeQuery);
+		}
+		catch(IOException ioe)
+		{
+			logger.severe("Unable to search index:" + ioe.getMessage());
+		}
+		
+		return hits;
+	}
+	
 	public Hits searchField(String field, String queryString)
 	{
 		Hits hits = null;
