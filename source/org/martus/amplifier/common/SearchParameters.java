@@ -77,50 +77,20 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 	
 	private void setFilterKeyWords()
 	{
-		String filterString = getValue(RESULT_FILTER_BY_KEY);
-		if (filterString == null || filterString.equals(ANYWORD_TAG))
-			return;
-
-		addField(RESULT_FILTER_BY_KEY, filterString); 		
-
-		String queryString = (String) searchFields.get(RESULT_ADVANCED_QUERY_KEY);
-		String newString = convertToQueryString(queryString, filterString);
-		
-		searchFields.remove(RESULT_ADVANCED_QUERY_KEY);
-		addField(RESULT_ADVANCED_QUERY_KEY, newString);
-
-//		newFilterFormat();
-	}
-	
-	// TODO: Leave this as a warning for now. 
-	// Chiawei should fix it and remove this comment by 10/03
-	private void newFilterFormat()
-	{
 		parseAdvancedQuery(THESE_WORD_TAG);					
 		parseAdvancedQuery(EXACTPHRASE_TAG);	
 		parseAdvancedQuery(ANYWORD_TAG);
-		parseAdvancedQuery(WITHOUTWORDS_TAG);
+//		parseAdvancedQuery(WITHOUTWORDS_TAG);	
 	
-		if (advancedQuery.length() > 0)
-		{			
-			addField(RESULT_ADVANCED_QUERY_KEY, advancedQuery);
-		}
 	}
-	
 	
 	private void parseAdvancedQuery(String key)
 	{
 		String subQuery = getValue(key);
 		if (subQuery.length() >0)
 		{			
-			
-			if (advancedQuery.length() > 1)
-			{
-				advancedQuery += " ";
-				if (!key.equals(WITHOUTWORDS_TAG))							
-					advancedQuery += PLUS;
-			}
-			advancedQuery += convertToQueryString(subQuery, key);
+			subQuery = convertToQueryString(subQuery, key);
+			addField(key, subQuery);
 		}
 	}
 	
@@ -128,40 +98,22 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 	{
 		String newString = null;
 		if (filterType.equals(WITHOUTWORDS_TAG))
-			newString = addSign(NOT, text);			
+			newString = NOT+"("+text+")";			
 		else if (filterType.equals(EXACTPHRASE_TAG))
 			newString = "\""+text+"\"";
 		else if (filterType.equals(THESE_WORD_TAG))
-			newString = addSign(PLUS, text);
+			newString = PLUS+"("+text+")";
 		else
 			newString = "("+text+")";
 	
 		return newString;
 	}
 	
-//	public static String newConvertToQueryString(String text, String filterType)
-//	{
-//		String newString = null;
-//		if (filterType.equals(RESULT_EXCLUDEWORDS_QUERY_KEY))
-//			newString = NOT + "("+text+")";
-//		else if (filterType.equals(RESULT_EXACTPHRASE_QUERY_KEY))
-//			newString = "\""+text+"\"";
-//		else if (filterType.equals(RESULT_ALLWORDS_QUERY_KEY))
-//			newString = addSign(PLUS, text);
-//		else
-//			newString = "("+text+")";
-//			
-//		return newString;
-//			
-//	}
 	
 	private static String addSign(String sign, String queryString)
 	{
 		String[] words = queryString.split(" ");
-		String query = "(";
-		
-		if (words.length == 1)
-			return query+ queryString+ ")";
+		String query = "(";		
 
 		for (int i=0;i<words.length;i++)		
 			query += sign + words[i]+ " ";
@@ -261,7 +213,6 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 	HashMap resultList 	= new HashMap();
 	HashMap	searchFields;
 	boolean hasEventFields 		= true;
-	String advancedQuery = PLUS;
 	final static String PLUS 	= "+";
 	final static String NOT 	= "-";
 }

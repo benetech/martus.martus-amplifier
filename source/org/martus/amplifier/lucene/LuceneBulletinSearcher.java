@@ -100,7 +100,7 @@ public class LuceneBulletinSearcher
 		return getLuceneResults(complexSearch(queryString, fields));
 	}
 
-		private Query queryParser(String query, String field, String msg)
+	private Query queryParser(String query, String field, String msg)
 			throws BulletinIndexException 
 	{
 		try {
@@ -163,36 +163,75 @@ public class LuceneBulletinSearcher
 			query = queryParser(fieldString,SEARCH_LANGUAGE_INDEX_FIELD, "Improperly formed advanced find language type in bulletin query: ");
 		
 		return query;
-	} 
-	
-	private Query queryMultiBulletinFields(String query, HashMap fields)
-			throws BulletinIndexException 
-	{		
-		Query fieldQuery = null;
-		String fieldString = (String) fields.get(SearchResultConstants.RESULT_FIELDS_KEY);
-		String queryString = (String) fields.get(SearchResultConstants.RESULT_ADVANCED_QUERY_KEY);
+	} 	
 
-		if (query != null && query.length()>0)
-		{
-			if (fieldString.equals(SearchResultConstants.IN_ALL_FIELDS))
-				return multiFieldQueryParser(query, SEARCH_ALL_TEXT_FIELDS, "Improperly formed advanced find bulletin multiquery: ");
+	private Query queryAnyWords(HashMap fields) throws BulletinIndexException
+	{
+		String fieldString = (String) fields.get(SearchResultConstants.RESULT_FIELDS_KEY);
+		String queryString = (String) fields.get(SearchResultConstants.ANYWORD_TAG);
+
+		return queryEachField(queryString, fieldString);
+	}
+
+	private Query queryTheseWords(HashMap fields) throws BulletinIndexException
+	{
+		String fieldString = (String) fields.get(SearchResultConstants.RESULT_FIELDS_KEY);
+		String queryString = (String) fields.get(SearchResultConstants.THESE_WORD_TAG);
+
+		return queryEachField(queryString, fieldString);
+	}
+
+	private Query queryExactPhrase(HashMap fields) throws BulletinIndexException
+	{
+		String fieldString = (String) fields.get(SearchResultConstants.RESULT_FIELDS_KEY);
+		String queryString = (String) fields.get(SearchResultConstants.EXACTPHRASE_TAG);
+
+		return queryEachField(queryString, fieldString);
+	}	
+
+	private Query queryWithoutWords(HashMap fields) throws BulletinIndexException
+	{
+		String fieldString = (String) fields.get(SearchResultConstants.RESULT_FIELDS_KEY);
+		String queryString = (String) fields.get(SearchResultConstants.WITHOUTWORDS_TAG);
+
+		return queryEachField(queryString, fieldString);
+	}	
+
+	private Query queryEachField(String queryString, String fieldString)
+		throws BulletinIndexException
+	{
+		if (queryString == null || queryString.length() <= 1)
+			return null;
+			
+		if (fieldString.equals(SearchResultConstants.IN_ALL_FIELDS))
+			return multiFieldQueryParser(queryString, SEARCH_ALL_TEXT_FIELDS, "Improperly formed advanced find bulletin multiquery: ");
 						
-			fieldQuery = queryParser(queryString, fieldString, "Improperly formed advanced find bulletin query: ");
-		}
-		
-		return fieldQuery;
+		return queryParser(queryString, fieldString, "Improperly formed advanced find bulletin query: ");
 	}				
 	
 	private Query complexSearch(String queryString, HashMap fields)
 			throws BulletinIndexException 
 	{
 		BooleanQuery query = new BooleanQuery();
+		
 		Query foundEventDateQuery = queryEventDate(fields);					
 		query.add(foundEventDateQuery, true, false);
 		
-		Query foudBulletinsQuery = queryMultiBulletinFields(queryString, fields);
-		if (foudBulletinsQuery != null)
-			query.add(foudBulletinsQuery, true, false);
+		Query foudAnywordsQuery = queryAnyWords(fields);
+		if (foudAnywordsQuery != null)
+			query.add(foudAnywordsQuery, true, false);
+
+		Query foudThesewordsQuery = queryTheseWords(fields);
+		if (foudThesewordsQuery != null)
+			query.add(foudThesewordsQuery, true, false);
+
+		Query foudExactPhraseQuery = queryExactPhrase(fields);
+		if (foudExactPhraseQuery != null)
+			query.add(foudExactPhraseQuery, true, false);
+
+		Query foudWithoutWordsQuery = queryWithoutWords(fields);
+		if (foudWithoutWordsQuery != null)
+			query.add(foudWithoutWordsQuery, true, false);
 			
 		Query foudLanguageQuery = queryLanguage(fields);
 		if (foudLanguageQuery != null)
