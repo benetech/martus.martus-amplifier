@@ -32,7 +32,9 @@
                                     </option>
                                 </c:forEach>
                             </select>
-                            is between 
+                            is 
+			</p>
+			<p> &nbsp;&nbsp;&nbsp;between 
                             <select name="startMonth">
                                 <c:forEach begin="0" end="11" var="i">
                                     <option value="<c:out value="${i}"/>">
@@ -45,10 +47,15 @@
                                     <option><c:out value="${i}"/></option>
                                 </c:forEach>
                             </select>
-                            <input name="startYear" size="4" value="2002">
+			    <select name = "startYear">
+				<c:forEach begin="1900" end="2003" var="i">
+                                    <option><c:out value="${i}"/></option>
+                                </c:forEach>
+                            </select>
+                            
                         </p>
                         <p>                                
-                            and
+                            &nbsp;&nbsp;&nbsp;and
                             <select name="endMonth">
                                 <c:forEach begin="0" end="11" var="i">
                                     <option value="<c:out value="${i}"/>">
@@ -61,9 +68,14 @@
                                     <option><c:out value="${i}"/></option>
                                 </c:forEach>
                             </select>
-                            <input name="endYear" size="4" value="2002">
+			    <select name = "endYear">
+				<c:forEach begin="1900" end="2003" var="i">
+                                    <option><c:out value="${i}"/></option>
+                                </c:forEach>
+                            </select>
+                            
                             <input type="submit" value="Search"/>
-                        </p>
+                        </p><p></p>
                         <p>
                             <input name="resultsPerPage" size="4" value="100"/>&nbsp;Results Per Page&nbsp;
                         </p>
