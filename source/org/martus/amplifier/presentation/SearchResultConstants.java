@@ -43,6 +43,41 @@ public interface SearchResultConstants
 	final String RESULT_BASIC_QUERY_KEY	= "query";
 	final String RESULT_ADVANCED_QUERY_KEY = "advancedQuery";
 	
+	final static String THESE_WORD_KEY 		= "with all of these words";
+	final static String EXACTPHRASE_KEY 	= "with this exact phrase";
+	final static String ANYWORD_KEY 		= "with any of these words";
+	final static String WITHOUTWORDS_KEY  	= "without any of these words";
+	
+	final static String THESE_WORD_LABEL 		= "these words";
+	final static String EXACTPHRASE_LABEL 		= "exact phrase";
+	final static String ANYWORD_LABEL 			= "any words";
+	final static String WITHOUTWORDS_LABEL  	= "without words";
+	
+	final static String ENTRY_ANYTIME_KEY		= "any time";
+	final static String ENTRY_PAST_WEEK_KEY		= "past week";
+	final static String ENTRY_PAST_MONTH_KEY	= "past month";
+	final static String ENTRY_PAST_3_MONTH_KEY  = "past 3 months";
+	final static String ENTRY_PAST_6_MONTH_KEY	= "past 6 months";
+	final static String ENTYR_PAST_YEAR_KEY		= "past year";
+	
+	final static String ENTRY_ANYTIME_LABEL				= "0";
+	final static String ENTRY_PAST_WEEK_DAYS_LABEL		= "7";
+	final static String ENTRY_PAST_MONTH_DAYS_LABEL		= "30";
+	final static String ENTRY_PAST_3_MONTH_DAYS_LABEL	= "90";
+	final static String ENTRY_PAST_6_MONTH_DAYS_LABEL	= "180";
+	final static String ENTRY_PAST_YEAR_DAYS_LABEL		= "365";	
+	
+	final static String ANYWHERE_IN_BULLETIN_KEY= "anywhere in the bulletin";
+	final static String IN_TITLE_KEY			= "in the title";
+	final static String IN_KEYWORDS_KEY			= "in the keywords";
+	final static String IN_SUMMARY_KEY			= "in the summary";
+	final static String IN_AUTHOR_KEY			= "in the author";
+	final static String IN_DETAIL_KEY			= "in the detail";
+	final static String IN_ORGANIZATION_KEY		= "in the organization";
+	final static String IN_LOCATION_KEY			= "in the location";	
+	final static String IN_ALL_FIELDS			= "all";
+	
+	
 	final String[] ADVANCED_KEYS = new String[] {
 		RESULT_START_YEAR_KEY, RESULT_START_MONTH_KEY, RESULT_START_DAY_KEY,
 		RESULT_END_YEAR_KEY, RESULT_END_MONTH_KEY, RESULT_END_DAY_KEY,

@@ -118,13 +118,13 @@ public class LuceneBulletinSearcher
 
 		String queryString = (String) fields.getValue(SearchResultConstants.RESULT_ADVANCED_QUERY_KEY);
 		String fieldString = (String) fields.getValue(SearchResultConstants.RESULT_FIELDS_KEY);
-
+		
 		if (queryString != null && queryString.length()>0)
 		{
 			if (fieldString.equals("all"))
-				fieldQuery = multiFieldQueryParser(queryString, SEARCH_ALL_TEXT_FIELDS, "Improperly formed advanced find bulletine multiquery: ");
+				fieldQuery = multiFieldQueryParser(queryString, SEARCH_ALL_TEXT_FIELDS, "Improperly formed advanced find bulletin multiquery: ");
 			
-			fieldQuery = queryParser(queryString, fieldString, "Improperly formed advance find bulletine query: ");
+			fieldQuery = queryParser(queryString, fieldString, "Improperly formed advance find bulletin query: ");
 		}
 		
 		return fieldQuery;

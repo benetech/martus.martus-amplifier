@@ -33,9 +33,9 @@ import java.util.Hashtable;
 
 import org.martus.amplifier.service.search.SearchConstants;
 
-public class LoadAdvancedSearchResults implements SearchResultConstants, SearchConstants
+public class SearchParameters implements SearchResultConstants, SearchConstants
 {
-	public LoadAdvancedSearchResults(AmplifierServletRequest request, SearchFields fields)
+	public SearchParameters(AmplifierServletRequest request, SearchFields fields)
 	{
 		searchRequest = request;
 		searchFields  = fields;
