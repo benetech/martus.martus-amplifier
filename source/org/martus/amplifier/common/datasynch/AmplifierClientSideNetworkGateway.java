@@ -2,10 +2,9 @@ package org.martus.amplifier.common.datasynch;
 
 import java.util.Vector;
 
-import org.martus.common.BulletinRetrieverGatewayInterface;
+
 import org.martus.common.MartusCrypto;
 import org.martus.common.MartusUtilities;
-import org.martus.common.NetworkInterface;
 import org.martus.common.NetworkResponse;
 
 /**
@@ -16,19 +15,14 @@ import org.martus.common.NetworkResponse;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-public class AmplifierClientSideNetworkGateway implements BulletinRetrieverGatewayInterface
+public class AmplifierClientSideNetworkGateway implements AmplifierBulletinRetrieverGatewayInterface
 {
-	public AmplifierClientSideNetworkGateway(NetworkInterface serverToUse)
+	public AmplifierClientSideNetworkGateway(AmplifierNetworkInterface serverToUse)
 	{
 		server = serverToUse;
 	}
 	
-	public NetworkResponse getServerInfo()
-	{
-		Vector parameters = new Vector();
-		return new NetworkResponse(server.getServerInfo(parameters));
-	}
-	
+
 					
 	public NetworkResponse getBulletinChunk(MartusCrypto signer, String authorAccountId, String bulletinLocalId, 
 					int chunkOffset, int maxChunkSize) throws 
@@ -42,5 +36,6 @@ public class AmplifierClientSideNetworkGateway implements BulletinRetrieverGatew
 		String signature = MartusUtilities.sign(parameters, signer);
 		return new NetworkResponse(server.getBulletinChunk(signer.getPublicKeyString(), parameters, signature));
 	}
-	NetworkInterface server;
+	
+	AmplifierNetworkInterface server;
 }
