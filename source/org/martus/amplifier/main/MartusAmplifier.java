@@ -15,12 +15,22 @@ import org.martus.amplifier.service.datasynch.DataSynchManager;
 import org.martus.amplifier.service.search.BulletinIndexException;
 import org.martus.amplifier.service.search.BulletinIndexer;
 import org.martus.amplifier.service.search.lucene.LuceneBulletinIndexer;
+import org.mortbay.http.SocketListener;
+import org.mortbay.jetty.Server;
 
 public class MartusAmplifier
 {
-	public static void main(String[] args)
+	public static void main(String[] args) throws Exception
 	{	
 		timer.scheduleAtFixedRate(timedTask, IMMEDIATELY, dataSynchIntervalMillis);
+
+		SocketListener listener = new SocketListener();
+		listener.setPort(8080); 
+
+		Server server = new Server();
+		server.addListener(listener);
+		server.addWebApplication("/","presentation/");
+		server.start();
 
 		while(! isShutdownRequested() )
 		{
