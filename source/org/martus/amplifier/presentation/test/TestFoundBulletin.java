@@ -119,7 +119,7 @@ public class TestFoundBulletin extends TestCaseEnhanced
 	
 		FoundBulletin servlet = new FoundBulletin();
 		servlet.selectTemplate(request, response, context);
-		String publicCode = MartusCrypto.formatPublicCode(MartusCrypto.computePublicCode(bulletinInfo1.getAccountId()));
+		String publicCode = MartusCrypto.computeFormattedPublicCode(bulletinInfo1.getAccountId());
 		assertEquals("Didn't get account public code correct", publicCode, context.get("accountPublicCode"));
 		assertEquals("Didn't get bulletin local ID correct", bulletinInfo1.getLocalId(), context.get("bulletinLocalId"));
 	}

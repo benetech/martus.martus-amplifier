@@ -47,7 +47,7 @@ public class FoundBulletin extends AmplifierServlet
 		int index = Integer.parseInt(request.getParameter("index"));
 		BulletinInfo info = (BulletinInfo)bulletins.get(index - 1);
 		context.put("bulletin", info);
-		context.put("accountPublicCode", MartusCrypto.formatPublicCode(MartusCrypto.computePublicCode(info.getAccountId())));
+		context.put("accountPublicCode", MartusCrypto.computeFormattedPublicCode(info.getAccountId()));
 		context.put("bulletinLocalId", info.getLocalId());
 
 		if(info.hasContactInfo())
