@@ -32,7 +32,7 @@ public class LuceneBulletinIndexer
 		indexDir.mkdirs();
 		try {
 			createIndexIfNecessary(indexDir);
-			writer = new IndexWriter(indexDir, createAnalyzer(), false);
+			writer = new IndexWriter(indexDir, getAnalyzer(), false);
 		} catch (IOException e) {
 			throw new BulletinIndexException(
 				"Could not create LuceneBulletinIndexer", e);
@@ -42,6 +42,7 @@ public class LuceneBulletinIndexer
 	public void close() throws BulletinIndexException
 	{
 		try {
+			// TODO pdalbora 23-Apr-2003 -- Don't call this unnecessarily.
 			writer.optimize();
 		} catch (IOException e) {
 			throw new BulletinIndexException("Unable to close the index", e);
@@ -88,15 +89,15 @@ public class LuceneBulletinIndexer
 	{
 		if (!IndexReader.indexExists(indexDir)) {
 			IndexWriter writer = 
-				new IndexWriter(indexDir, createAnalyzer(), true);
+				new IndexWriter(indexDir, getAnalyzer(), true);
 			writer.close();
 		}
 	}
 	
 	/* package */
-	static Analyzer createAnalyzer()
+	static Analyzer getAnalyzer()
 	{
-		return new StandardAnalyzer();
+		return ANALYZER;
 	}
 	
 	private static void addBulletinId(Document doc, UniversalId bulletinId)
@@ -166,4 +167,5 @@ public class LuceneBulletinIndexer
 	
 	private File indexDir;
 	private IndexWriter writer;
+	private final static Analyzer ANALYZER = new StandardAnalyzer();
 }

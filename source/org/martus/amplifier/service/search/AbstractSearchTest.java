@@ -175,6 +175,67 @@ public abstract class AbstractSearchTest
 		}
 	}
 	
+	public void testSimultaneousAccess() throws BulletinIndexException
+	{
+		BulletinIndexer indexer = null;
+		BulletinSearcher searcher = null;
+		BulletinIndexException closeException = null;
+		
+		try {
+			indexer = openBulletinIndexer();
+			searcher = openBulletinSearcher();
+		} finally {
+			if (indexer != null) {
+				try {
+					indexer.close();
+				} catch (BulletinIndexException e) {
+					closeException = e;
+				}
+			}
+			if (searcher != null) {
+				try {
+					searcher.close();
+				} catch (BulletinIndexException e) {
+					closeException = e;
+				}
+			}
+		}
+		if (closeException != null) {
+			throw closeException;
+		}
+			
+		
+	}
+	
+	public void testSearchResultsAfterClose() throws BulletinIndexException
+	{
+		UniversalId bulletinId = UniversalId.createDummyUniversalId();
+		FieldDataPacket fdp = generateSampleData(bulletinId);		
+		BulletinIndexer indexer = openBulletinIndexer();
+		try {
+			indexer.clearIndex();
+			indexer.indexFieldData(bulletinId, fdp);
+		} finally {
+			indexer.close();
+		}
+		
+		BulletinSearcher searcher = openBulletinSearcher();
+		BulletinSearcher.Results results = null;
+		try {
+			results = searcher.searchField(
+				AUTHOR_INDEX_FIELD, fdp.get(BulletinField.TAGAUTHOR));
+		} finally {
+			searcher.close();
+		}
+		
+		try {
+			fdp = results.getFieldDataPacket(0);
+			Assert.fail(
+				"Accessing results after closing searcher should have failed.");
+		} catch (BulletinIndexException expected) {
+		}
+	}
+	
 	protected FieldDataPacket generateSampleData(UniversalId bulletinId)
 	{
 		String author = "Paul";

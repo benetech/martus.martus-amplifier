@@ -31,7 +31,7 @@ public class BulletinCatalog implements IBulletinCatalog {
         BulletinSearcher searcher = null;
         try {
         	searcher = 
-        		new LuceneBulletinSearcher(config.buildAmplifierBasePath("index"));
+        		new LuceneBulletinSearcher(config.buildAmplifierBasePath(BulletinSearcher.INDEX_DIR_NAME));
         	return (searcher.getBulletinData(universalId) != null);
         } catch (BulletinIndexException e) {
         	Logger.getLogger("catalog").severe("Catalog error: " + e.getMessage());

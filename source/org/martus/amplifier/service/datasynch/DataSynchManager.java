@@ -38,7 +38,7 @@ public class DataSynchManager implements IDataSynchConstants
 	 * This calls the method checkAndRetrieveBulletinsForUIDs() for new bulletins and attachments 
 	 * Saving the attachments and bulletin files is done in AmplifierNetworkGateway.retrieveAndManageBulletin()
 	 */
-	public void getAllNewBulletins(BulletinProcessor bulletinProcessor)
+	public void getAllNewBulletins(BulletinExtractor bulletinExtractor)
 	{
 		//logger.info("in DataSynchManager.getAllNewBulletins(): ");	
 	
@@ -76,7 +76,7 @@ public class DataSynchManager implements IDataSynchConstants
 					if( !catalog.bulletinHasBeenIndexed(uid) )
 					{
 						logger.info("DataSynchManager.checkAndRetrieveBulletinsForUIDs():before calling  amplifierGateway.retrieveAndManageBulletin on UID = "+ uid.toString());
-						amplifierGateway.retrieveAndManageBulletin(uid, bulletinProcessor);
+						amplifierGateway.retrieveAndManageBulletin(uid, bulletinExtractor);
 					}
 				}
 				catch (NotUniversalIdException e)

@@ -78,7 +78,7 @@ public class LuceneBulletinSearcher
 		{
 			query = QueryParser.parse(
 				queryString, field, 
-				LuceneBulletinIndexer.createAnalyzer());
+				LuceneBulletinIndexer.getAnalyzer());
 		}
 		catch(ParseException pe)
 		{

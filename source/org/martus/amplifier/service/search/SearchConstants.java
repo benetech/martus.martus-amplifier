@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 
 public interface SearchConstants
 {
+	String INDEX_DIR_NAME = "index";
+	
 	// Index field ids
 	String AUTHOR_INDEX_FIELD = "author";
 	String KEYWORDS_INDEX_FIELD = "keywords";

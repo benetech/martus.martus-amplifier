@@ -6,9 +6,10 @@ import java.util.logging.Logger;
 
 import org.martus.amplifier.common.configuration.AmplifierConfiguration;
 import org.martus.amplifier.service.attachment.filesystem.FileSystemAttachmentManager;
-import org.martus.amplifier.service.datasynch.BulletinProcessor;
+import org.martus.amplifier.service.datasynch.BulletinExtractor;
 import org.martus.amplifier.service.datasynch.DataSynchManager;
 import org.martus.amplifier.service.search.BulletinIndexException;
+import org.martus.amplifier.service.search.BulletinIndexer;
 import org.martus.amplifier.service.search.lucene.LuceneBulletinIndexer;
 
 /**
@@ -39,12 +40,12 @@ public class MartusAmplifierDataSynch {
 			AmplifierConfiguration config = 
 				AmplifierConfiguration.getInstance();
 			indexer = new LuceneBulletinIndexer(
-				config.buildAmplifierBasePath("index"));
+				config.buildAmplifierBasePath(BulletinIndexer.INDEX_DIR_NAME));
 			attachmentManager = new FileSystemAttachmentManager(
 				config.buildAmplifierBasePath("attachments"));
 
 			dataManager.getAllNewBulletins(
-				new BulletinProcessor(attachmentManager, indexer));
+				new BulletinExtractor(attachmentManager, indexer));
 		}
 		catch(Exception e)
 		{

@@ -107,14 +107,14 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
 	
 
 	public void retrieveAndManageBulletin(
-		UniversalId uid, BulletinProcessor bulletinProcessor) 
+		UniversalId uid, BulletinExtractor bulletinExtractor) 
 		throws WrongPacketTypeException, IOException, DecryptionException, 
 			InvalidPacketException, BulletinIndexException, 
 			NoKeyPairException, SignatureVerificationException, 
 			AttachmentStorageException, InvalidBase64Exception
 	{
 		File bulletinFile = getBulletin(uid);
-		bulletinProcessor.processBulletin(bulletinFile);	
+		bulletinExtractor.extractAndStoreBulletin(bulletinFile);	
 	}
 	
 	

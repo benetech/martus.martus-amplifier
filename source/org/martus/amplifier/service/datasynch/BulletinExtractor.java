@@ -34,9 +34,9 @@ import org.martus.common.Packet.WrongPacketTypeException;
  * 
  * @author PDAlbora
  */
-public class BulletinProcessor
+public class BulletinExtractor
 {
-	public BulletinProcessor(
+	public BulletinExtractor(
 		AttachmentManager attachmentManager, 
 		BulletinIndexer bulletinIndexer)
 	{
@@ -44,7 +44,7 @@ public class BulletinProcessor
 		this.bulletinIndexer = bulletinIndexer;
 	}
 	
-	public void processBulletin(File bulletinFile) 
+	public void extractAndStoreBulletin(File bulletinFile) 
 		throws IOException, SignatureVerificationException, 
 			BulletinIndexException, NoKeyPairException, 
 			InvalidPacketException, DecryptionException, 

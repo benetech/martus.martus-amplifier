@@ -1,20 +1,15 @@
 package org.martus.amplifier.presentation.search;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 import org.martus.amplifier.service.search.BulletinField;
 
-public class SearchQueryBean
+public class SearchBean implements Serializable
 {
-
-	public SearchQueryBean()
-	{
-		super();
-	}
-
 	public Collection getSearchFields()
 	{
-		return BulletinField.getSearchableFields();
+		return BulletinField.getSearchableTextFields();
 	}
-	
 }
+

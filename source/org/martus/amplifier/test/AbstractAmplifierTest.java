@@ -3,6 +3,7 @@ package org.martus.amplifier.test;
 import java.io.File;
 
 import org.martus.amplifier.common.configuration.AmplifierConfiguration;
+import org.martus.amplifier.service.search.SearchConstants;
 
 import junit.framework.TestCase;
 
@@ -39,7 +40,7 @@ public abstract class AbstractAmplifierTest extends TestCase
 	
 	protected String getTestIndexPath()
 	{
-		return basePath + File.separator + "index";
+		return basePath + File.separator + SearchConstants.INDEX_DIR_NAME;
 	}
 	
 	private String basePath;

@@ -26,7 +26,7 @@ public class TestAllSearch extends TestSuite
 	public static Test suite()
 	{
 		TestSuite suite =
-			new TestSuite("All Martus Amplifier Attachment Tests");
+			new TestSuite("All Martus Amplifier Search Tests");
 		
 		suite.addTest(new TestSuite(TestLuceneSearcher.class));
 		

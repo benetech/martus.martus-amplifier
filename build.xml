@@ -16,9 +16,11 @@
   <property name="common-dir" value="org/martus/common"/>
   
   <property name="built-jars" value="buildfiles/jars"/>
+  <property name="jstl" value="buildfiles/jakarta-taglibs/standard-1.0.3"/>
   
   <property name="web-app-dir" value="presentation/WEB-INF"/>
   <property name="web-app-lib" value="${web-app-dir}/lib"/>
+  <property name="custom-tlds" value="presentation/tld"/>
   
   
 <!-- ================================================================== -->
@@ -36,7 +38,12 @@
   
     <!-- Remove web app jars -->
     <delete verbose="true">
-        <fileset dir="${web-app-lib}" includes="**/*.jar"/>
+        <fileset dir="${web-app-lib}" includes="*.jar"/>
+    </delete>
+    
+    <!-- Remove tlds -->
+    <delete verbose="true">
+    	<fileset dir="${web-app-dir}" includes="*.tld"/>
     </delete>
     
   </target>
@@ -57,7 +64,21 @@
 	<!-- Move necessary pre-built jars to web app dir. -->
 	<copy todir="${web-app-lib}">
 		<fileset dir="${built-jars}" 
-			includes="db.jar,lucene-1.2.jar,junit.jar"/>
+			includes="lucene-1.2.jar"/>
+	</copy>
+	
+	<!-- Move jstl files (jars, tlds) to web app dir. -->
+	<copy todir="${web-app-dir}">
+		<fileset dir="${jstl}/tld" includes="*.tld"/>
+	</copy>
+	
+	<copy todir="${web-app-lib}">
+		<fileset dir="${jstl}/lib" includes="*.jar"/>
+	</copy>
+	
+	<!-- Move custom taglib files to web app dir. -->
+	<copy todir="${web-app-dir}">
+		<fileset dir="${custom-tlds}" includes="*.tld"/>
 	</copy>
 
   </target>

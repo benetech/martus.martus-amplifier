@@ -1,7 +1,9 @@
 package org.martus.amplifier.service.search;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.martus.common.Bulletin;
@@ -40,9 +42,21 @@ public class BulletinField implements BulletinConstants, SearchConstants
 		return (BulletinField) FIELDS.get(xmlId);
 	}
 	
-	public static Collection getSearchableFields() 
+	public static Collection getSearchableFields()
 	{
 		return FIELDS.values();
+	}
+	
+	public static Collection getSearchableTextFields() 
+	{
+		Collection textFields = new ArrayList();
+		for (Iterator iter = FIELDS.values().iterator(); iter.hasNext();) {
+			BulletinField field = (BulletinField) iter.next();
+			if (!field.isDateField()) {
+				textFields.add(field);
+			}
+		}
+		return textFields;
 	}
 	
 	public static String[] getSearchableXmlIds()
@@ -61,7 +75,7 @@ public class BulletinField implements BulletinConstants, SearchConstants
 	private String indexId;
 	private String displayName;
 	
-	private static final Map FIELDS = new HashMap();
+	private static final Map FIELDS = new LinkedHashMap();
 	static {
 		// NOTE paul 8-Apr-2003 -- The display names should at some
 		// point be i18n'ed strings.
