@@ -70,6 +70,9 @@ public class LanguagesIndexedList
 
 	public void updateLanguagesIndexed(String language) throws IOException
 	{
+		if(language.length() == 0)
+			return;
+		
 		if(languagesIndexed == null)
 			createInitialList();
 		if(!languagesIndexed.contains(language))

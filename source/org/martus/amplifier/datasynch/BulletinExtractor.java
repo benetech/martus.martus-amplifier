@@ -35,11 +35,13 @@ import java.util.zip.ZipFile;
 
 import org.martus.amplifier.attachment.AttachmentStorageException;
 import org.martus.amplifier.attachment.DataManager;
+import org.martus.amplifier.main.LanguagesIndexedList;
 import org.martus.amplifier.search.BulletinField;
 import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinIndexer;
 import org.martus.common.FieldSpec;
 import org.martus.common.bulletin.AttachmentProxy;
+import org.martus.common.bulletin.BulletinConstants;
 import org.martus.common.crypto.MartusCrypto;
 import org.martus.common.crypto.MartusCrypto.DecryptionException;
 import org.martus.common.crypto.MartusCrypto.NoKeyPairException;
@@ -111,8 +113,14 @@ public class BulletinExtractor
 			verifier);
 			
 		bulletinIndexer.indexFieldData(bhp.getUniversalId(), fdp, bhp.getHistory());
+		indexLanguage(fdp.get(BulletinConstants.TAGLANGUAGE));
 		
 		return fdp;
+	}
+	
+	public void indexLanguage(String languageCode) throws IOException
+	{
+		LanguagesIndexedList.languagesIndexedSingleton.updateLanguagesIndexed(languageCode);
 	}
 	
 	private void storeAttachments(

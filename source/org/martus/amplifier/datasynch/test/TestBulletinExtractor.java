@@ -35,7 +35,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Vector;
+
 import junit.framework.Assert;
+
 import org.martus.amplifier.attachment.AttachmentStorageException;
 import org.martus.amplifier.attachment.DataManager;
 import org.martus.amplifier.attachment.FileSystemDataManager;
@@ -103,6 +106,33 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 		{
 			super.tearDown();
 		}
+	}
+
+	public void testIndexingLanguages() throws Exception
+	{
+		LanguagesIndexedList.languagesIndexedSingleton = new LanguagesIndexedList(createTempFile());
+		LanguagesIndexedList.languagesIndexedSingleton.loadLanguagesAlreadyIndexed();
+		
+		Vector languages = LanguagesIndexedList.languagesIndexedSingleton.getListOfLanguagesIndexed();
+		assertEquals("Should not have any yet file exists but is empty", 0, languages.size());
+		
+		String language = "eo";	
+		
+		BulletinIndexer indexer = getBulletinIndexer(); 
+		try 
+		{
+			BulletinExtractor extractor = new BulletinExtractor(attachmentManager, indexer, security);
+			extractor.indexLanguage(language);
+			extractor.indexLanguage("");
+		}
+		finally
+		{
+			indexer.close();
+		}
+		languages = LanguagesIndexedList.languagesIndexedSingleton.getListOfLanguagesIndexed();
+		assertEquals("Should only have esperanto", 1, languages.size());
+		assertTrue("Should contain esperanto", languages.contains(language));
+		
 	}
 
 	public void testSimpleExtraction() 
