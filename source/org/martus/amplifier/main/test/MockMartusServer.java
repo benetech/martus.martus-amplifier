@@ -82,6 +82,11 @@ public class MockMartusServer implements ServerCallbackInterface
 		logger.logNotice(message);
 	}
 
+	public void logWarning(String message)
+	{
+		logger.logWarning(message);
+	}
+
 	public void logDebug(String message)
 	{
 		logger.logDebug(message);

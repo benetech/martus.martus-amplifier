@@ -286,6 +286,11 @@ public class AmplifierNetworkGateway implements LoggerInterface
 		logger.logNotice(createLogString(message));
 	}
 
+	public void logWarning(String message)
+	{
+		logger.logWarning(createLogString(message));
+	}
+
 	public void logInfo(String message)
 	{
 		logger.logInfo(createLogString(message));
