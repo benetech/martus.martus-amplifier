@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Vector;
 
 import org.martus.common.crypto.MartusCrypto;
-import org.martus.common.MartusUtilities;
 import org.martus.common.network.NetworkResponse;
 
 /**
@@ -27,7 +26,7 @@ public class AmplifierClientSideNetworkGateway implements AmplifierBulletinRetri
 			MartusCrypto.MartusSignatureException, IOException
 	{
 		Vector parameters = new Vector();
-		String signature = MartusCrypto.sign(parameters, signer);
+		String signature = signer.createSignatureOfVectorOfStrings(parameters);
 		return new NetworkResponse(server.getAccountIds(signer.getPublicKeyString(), parameters, signature));
 	}
 
@@ -36,7 +35,7 @@ public class AmplifierClientSideNetworkGateway implements AmplifierBulletinRetri
 	{
 		Vector parameters = new Vector();
 		parameters.add(accountId);
-		String signature = MartusUtilities.sign(parameters, signer);
+		String signature = signer.createSignatureOfVectorOfStrings(parameters);
 		return new NetworkResponse(server.getPublicBulletinUniversalIds(signer.getPublicKeyString(), parameters, signature));
 			
 	}
@@ -50,7 +49,7 @@ public class AmplifierClientSideNetworkGateway implements AmplifierBulletinRetri
 		parameters.add(bulletinLocalId);
 		parameters.add(new Integer(chunkOffset));
 		parameters.add(new Integer(maxChunkSize));
-		String signature = MartusUtilities.sign(parameters, signer);
+		String signature = signer.createSignatureOfVectorOfStrings(parameters);
 		return new NetworkResponse(server.getBulletinChunk(signer.getPublicKeyString(), parameters, signature));
 	}
 
