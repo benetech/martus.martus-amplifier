@@ -875,11 +875,11 @@ public abstract class AbstractSearchTestCase
 			Date defaultStartDate 	= SearchConstants.SEARCH_DATE_FORMAT.parse("1970-01-01");		
 			Date todayDate 			= SearchConstants.SEARCH_DATE_FORMAT.parse("2003-09-24");
 			
-			Date pastWeek 	= SearchParameters.getEntryDate(ENTRY_PAST_WEEK_DAYS_LABEL);
-			Date pastMonth 	= SearchParameters.getEntryDate(ENTRY_PAST_MONTH_DAYS_LABEL);
-			Date past3Month = SearchParameters.getEntryDate(ENTRY_PAST_3_MONTH_DAYS_LABEL);
-			Date past6Month = SearchParameters.getEntryDate(ENTRY_PAST_6_MONTH_DAYS_LABEL);
-			Date pastYear 	= SearchParameters.getEntryDate(ENTRY_PAST_YEAR_DAYS_LABEL);
+			Date pastWeek 	= SearchParameters.getEntryDate(ENTRY_PAST_WEEK_DAYS_TAG);
+			Date pastMonth 	= SearchParameters.getEntryDate(ENTRY_PAST_MONTH_DAYS_TAG);
+			Date past3Month = SearchParameters.getEntryDate(ENTRY_PAST_3_MONTH_DAYS_TAG);
+			Date past6Month = SearchParameters.getEntryDate(ENTRY_PAST_6_MONTH_DAYS_TAG);
+			Date pastYear 	= SearchParameters.getEntryDate(ENTRY_PAST_YEAR_DAYS_TAG);
 		
 			HashMap fields = new HashMap();
 			fields.put(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, defaultStartDate);
@@ -959,52 +959,52 @@ public abstract class AbstractSearchTestCase
 			fields.put(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, defaultDate);
 			fields.put(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, defaultEndDate);
 			fields.put(RESULT_FIELDS_KEY, IN_ALL_FIELDS);
-			fields.put(RESULT_FILTER_BY_KEY, THESE_WORD_LABEL);
-			String query = SearchParameters.convertToQueryString("root sandwich", THESE_WORD_LABEL);			
+			fields.put(RESULT_FILTER_BY_KEY, THESE_WORD_TAG);
+			String query = SearchParameters.convertToQueryString("root sandwich", THESE_WORD_TAG);			
 			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
 			
 			results = searcher.search(null, fields);
 			assertEquals("search for all of these words? ", 2, results.getCount());
 			
 			fields.remove(RESULT_FILTER_BY_KEY);
-			fields.put(RESULT_FILTER_BY_KEY,THESE_WORD_LABEL );
+			fields.put(RESULT_FILTER_BY_KEY,THESE_WORD_TAG );
 			fields.remove(RESULT_ADVANCED_QUERY_KEY);	
-			query = SearchParameters.convertToQueryString("Today Paul", THESE_WORD_LABEL);		
+			query = SearchParameters.convertToQueryString("Today Paul", THESE_WORD_TAG);		
 			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
 			results = searcher.search(null, fields);
 			assertEquals("search for all of these words? ", 1, results.getCount());
 			
 			fields.remove(RESULT_FILTER_BY_KEY);
-			fields.put(RESULT_FILTER_BY_KEY, EXACTPHRASE_LABEL);
+			fields.put(RESULT_FILTER_BY_KEY, EXACTPHRASE_TAG);
 			fields.remove(RESULT_ADVANCED_QUERY_KEY);	
-			query = SearchParameters.convertToQueryString("egg2 salad2 sandwich", EXACTPHRASE_LABEL);		
+			query = SearchParameters.convertToQueryString("egg2 salad2 sandwich", EXACTPHRASE_TAG);		
 			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
 			
 			results = searcher.search(null, fields);
 			assertEquals("search for exact phrase? ", 1, results.getCount());
 			
 			fields.remove(RESULT_FILTER_BY_KEY);
-			fields.put(RESULT_FILTER_BY_KEY, EXACTPHRASE_LABEL);
+			fields.put(RESULT_FILTER_BY_KEY, EXACTPHRASE_TAG);
 			fields.remove(RESULT_ADVANCED_QUERY_KEY);	
-			query = SearchParameters.convertToQueryString("sandwich", EXACTPHRASE_LABEL);		
+			query = SearchParameters.convertToQueryString("sandwich", EXACTPHRASE_TAG);		
 			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
 			
 			results = searcher.search(null, fields);
 			assertEquals("search for exact phrase? ", 2, results.getCount());
 			
 			fields.remove(RESULT_FILTER_BY_KEY);
-			fields.put(RESULT_FILTER_BY_KEY, WITHOUTWORDS_LABEL);
+			fields.put(RESULT_FILTER_BY_KEY, WITHOUTWORDS_TAG);
 			fields.remove(RESULT_ADVANCED_QUERY_KEY);
-			query = SearchParameters.convertToQueryString("egg2 salad2", WITHOUTWORDS_LABEL);			
+			query = SearchParameters.convertToQueryString("egg2 salad2", WITHOUTWORDS_TAG);			
 			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
 			
 			results = searcher.search(null, fields);
 //			assertEquals("search for without of those words? ", 1, results.getCount());
 			
 			fields.remove(RESULT_FILTER_BY_KEY);
-			fields.put(RESULT_FILTER_BY_KEY, WITHOUTWORDS_LABEL);
+			fields.put(RESULT_FILTER_BY_KEY, WITHOUTWORDS_TAG);
 			fields.remove(RESULT_ADVANCED_QUERY_KEY);
-			query = SearchParameters.convertToQueryString("Paul", WITHOUTWORDS_LABEL);			
+			query = SearchParameters.convertToQueryString("Paul", WITHOUTWORDS_TAG);			
 			fields.put(RESULT_ADVANCED_QUERY_KEY, query);
 			
 			results = searcher.search(null, fields);

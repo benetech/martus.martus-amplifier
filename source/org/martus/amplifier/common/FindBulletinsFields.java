@@ -12,9 +12,9 @@ public class FindBulletinsFields implements SearchConstants, SearchResultConstan
 	{
 		Vector filters = new Vector();
 		
-		filters.add(new ChoiceEntry(ANYWORD_LABEL, ANYWORD_KEY));
-		filters.add(new ChoiceEntry(THESE_WORD_LABEL, THESE_WORD_KEY));
-		filters.add(new ChoiceEntry(EXACTPHRASE_LABEL, EXACTPHRASE_KEY));		
+		filters.add(new ChoiceEntry(ANYWORD_TAG, ANYWORD_LABEL));
+		filters.add(new ChoiceEntry(THESE_WORD_TAG, THESE_WORD_LABEL));
+		filters.add(new ChoiceEntry(EXACTPHRASE_TAG, EXACTPHRASE_LABEL));		
 //		filters.add(new ChoiceEntry(WITHOUTWORDS_LABEL, WITHOUTWORDS_KEY));
 
 		return filters;	
@@ -23,12 +23,12 @@ public class FindBulletinsFields implements SearchConstants, SearchResultConstan
 	public static Vector getFindEntryDatesDisplayNames()
 	{
 		Vector dates = new Vector();
-		dates.add(new ChoiceEntry(ENTRY_ANYTIME_LABEL, ENTRY_ANYTIME_KEY));
-		dates.add(new ChoiceEntry(ENTRY_PAST_WEEK_DAYS_LABEL, ENTRY_PAST_WEEK_KEY));
-		dates.add(new ChoiceEntry(ENTRY_PAST_MONTH_DAYS_LABEL, ENTRY_PAST_MONTH_KEY));
-		dates.add(new ChoiceEntry(ENTRY_PAST_3_MONTH_DAYS_LABEL,ENTRY_PAST_3_MONTH_KEY ));
-		dates.add(new ChoiceEntry(ENTRY_PAST_6_MONTH_DAYS_LABEL, ENTRY_PAST_6_MONTH_KEY));
-		dates.add(new ChoiceEntry(ENTRY_PAST_YEAR_DAYS_LABEL, ENTYR_PAST_YEAR_KEY));
+		dates.add(new ChoiceEntry(ENTRY_ANYTIME_TAG, ENTRY_ANYTIME_LABEL));
+		dates.add(new ChoiceEntry(ENTRY_PAST_WEEK_DAYS_TAG, ENTRY_PAST_WEEK_LABEL));
+		dates.add(new ChoiceEntry(ENTRY_PAST_MONTH_DAYS_TAG, ENTRY_PAST_MONTH_LABEL));
+		dates.add(new ChoiceEntry(ENTRY_PAST_3_MONTH_DAYS_TAG,ENTRY_PAST_3_MONTH_LABEL ));
+		dates.add(new ChoiceEntry(ENTRY_PAST_6_MONTH_DAYS_TAG, ENTRY_PAST_6_MONTH_LABEL));
+		dates.add(new ChoiceEntry(ENTRY_PAST_YEAR_DAYS_TAG, ENTYR_PAST_YEAR_LABEL));
 		
 		return dates;		
 	}
@@ -52,11 +52,11 @@ public class FindBulletinsFields implements SearchConstants, SearchResultConstan
 	{
 		Vector fields = new Vector();
 		
-		fields.add(new ChoiceEntry(SEARCH_TITLE_INDEX_FIELD, SORT_BY_TITLE_LABEL));
-		fields.add(new ChoiceEntry(SEARCH_AUTHOR_INDEX_FIELD, SORT_BY_AUTHOR_LABEL));
-		fields.add(new ChoiceEntry(SEARCH_EVENT_DATE_INDEX_FIELD, SORT_BY_EVENTDATE_LABEL ));
-		fields.add(new ChoiceEntry(SEARCH_LOCATION_INDEX_FIELD, SORT_BY_LOCATION_LABEL ));
-		fields.add(new ChoiceEntry(SEARCH_ORGANIZATION_INDEX_FIELD, SORT_BY_ORGANIZATION_LABEL));
+		fields.add(new ChoiceEntry(SEARCH_TITLE_INDEX_FIELD, SORT_BY_TITLE_TAG));
+		fields.add(new ChoiceEntry(SEARCH_AUTHOR_INDEX_FIELD, SORT_BY_AUTHOR_TAG));
+		fields.add(new ChoiceEntry(SEARCH_EVENT_DATE_INDEX_FIELD, SORT_BY_EVENTDATE_TAG ));
+		fields.add(new ChoiceEntry(SEARCH_LOCATION_INDEX_FIELD, SORT_BY_LOCATION_TAG ));
+		fields.add(new ChoiceEntry(SEARCH_ORGANIZATION_INDEX_FIELD, SORT_BY_ORGANIZATION_TAG));
 		
 		return fields;
 	}

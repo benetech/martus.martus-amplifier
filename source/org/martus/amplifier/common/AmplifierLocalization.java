@@ -41,13 +41,13 @@ public class AmplifierLocalization
 	private static HashMap buildLanguageMap()
 	{
 		HashMap languages = new HashMap();
-		languages.put(SearchResultConstants.LANGUAGE_ANYLANGUAGE_KEY, SearchResultConstants.LANGUAGE_ANYLANGUAGE_KEY);
-		languages.put("en", SearchResultConstants.LANGUAGE_ENGLISH_KEY);
-		languages.put("fr", SearchResultConstants.LANGUAGE_FRENCH_KEY);
-		languages.put("de", SearchResultConstants.LANGUAGE_GERMAN_KEY);
-		languages.put("id", SearchResultConstants.LANGUAGE_INDONESIAN_KEY);
-		languages.put("ru", SearchResultConstants.LANGUAGE_RUSSIAN_KEY);
-		languages.put("es", SearchResultConstants.LANGUAGE_SPANISH_KEY);
+		languages.put(SearchResultConstants.LANGUAGE_ANYLANGUAGE_LABEL, SearchResultConstants.LANGUAGE_ANYLANGUAGE_LABEL);
+		languages.put("en", SearchResultConstants.LANGUAGE_ENGLISH_LABEL);
+		languages.put("fr", SearchResultConstants.LANGUAGE_FRENCH_LABEL);
+		languages.put("de", SearchResultConstants.LANGUAGE_GERMAN_LABEL);
+		languages.put("id", SearchResultConstants.LANGUAGE_INDONESIAN_LABEL);
+		languages.put("ru", SearchResultConstants.LANGUAGE_RUSSIAN_LABEL);
+		languages.put("es", SearchResultConstants.LANGUAGE_SPANISH_LABEL);
 		return languages;
 	}
 

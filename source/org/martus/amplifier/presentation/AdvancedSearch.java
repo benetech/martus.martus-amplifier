@@ -82,7 +82,7 @@ public class AdvancedSearch extends AmplifierServlet
 	Vector getAvailableLanguageCodes()
 	{
 		Vector languageCodesToAdd = new Vector();
-		languageCodesToAdd.add(SearchResultConstants.LANGUAGE_ANYLANGUAGE_KEY);
+		languageCodesToAdd.add(SearchResultConstants.LANGUAGE_ANYLANGUAGE_LABEL);
 		languageCodesToAdd.add("en");
 		languageCodesToAdd.add("fr");
 		languageCodesToAdd.add("de");

@@ -78,7 +78,7 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 	private void setFilterKeyWords()
 	{
 		String filterString = getValue(RESULT_FILTER_BY_KEY);
-		if (filterString.equals(ANYWORD_LABEL))
+		if (filterString.equals(ANYWORD_TAG))
 			return;
 
 		addField(RESULT_FILTER_BY_KEY, filterString); 		
@@ -93,9 +93,9 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 	public static String convertToQueryString(String text, String filterType)
 	{
 		String newString = null;
-		if (filterType.equals(WITHOUTWORDS_LABEL))
+		if (filterType.equals(WITHOUTWORDS_TAG))
 			newString = addSign(NOT, "(", text, ")");			
-		else if (filterType.equals(EXACTPHRASE_LABEL))
+		else if (filterType.equals(EXACTPHRASE_TAG))
 			newString = "\""+text+"\"";
 		else 
 			newString = addSign(PLUS,"(", text, ")");
@@ -132,7 +132,7 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 		addField(RESULT_FIELDS_KEY, getValue(RESULT_FIELDS_KEY));
 		
 		String languageString = getValue(RESULT_LANGUAGE_KEY);
-		if (languageString != null && !languageString.equals(LANGUAGE_ANYLANGUAGE_KEY))
+		if (languageString != null && !languageString.equals(LANGUAGE_ANYLANGUAGE_LABEL))
 			addField(RESULT_LANGUAGE_KEY, languageString);
 			
 		Date entryDate = getEntryDate(getValue(RESULT_ENTRY_DATE_KEY));
@@ -145,7 +145,7 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 
 	public static Date getEntryDate(String dayString)
 	{
-		if (dayString.equals(ENTRY_ANYTIME_LABEL))
+		if (dayString.equals(ENTRY_ANYTIME_TAG))
 			return getDate(1970, 1,1);
 			
 		int days = Integer.parseInt(dayString);	
