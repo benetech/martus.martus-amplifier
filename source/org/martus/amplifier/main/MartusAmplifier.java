@@ -168,6 +168,24 @@ public class MartusAmplifier
 		DirectoryUtils.deleteEntireDirectoryTree(getDeleteOnStartupFolders());
 	}
 
+	public boolean canExitNow()
+	{
+		boolean canExit = isAmplifierSyncing();
+		if(canExit && !loggedCanExitYes)
+		{	
+			log("Amplifier can exit.");
+			loggedCanExitNoAmpSyncing = false;
+			loggedCanExitYes = true;
+		}
+		if(!canExit && !loggedCanExitNoAmpSyncing)
+		{	
+			log("Unable to exit, amplifier Syncing.");
+			loggedCanExitNoAmpSyncing = true;
+			loggedCanExitYes = false;
+		}
+		return canExit;
+	}
+	
 	public boolean isAmplifierSyncing()
 	{
 		return isSyncing;
@@ -372,7 +390,9 @@ public class MartusAmplifier
 	public List backupServersList;
 	List notAmplifiedAccountsList;
 	ServerCallbackInterface coreServer;
-
+	private boolean loggedCanExitNoAmpSyncing;
+	private boolean loggedCanExitYes;
+	
 	private static final String SERVERS_WHO_WE_CALL_DIRIRECTORY = "serversWhoWeCall";
 	private static final String ACCOUNTS_NOT_AMPLIFIED_FILE = "accountsNotAmplified.txt";
 	private static final String JETTY_CONFIGURATION_FILE = "jettyConfiguration.xml";
