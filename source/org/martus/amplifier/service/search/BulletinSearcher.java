@@ -168,6 +168,15 @@ implements IBulletinSearcher, IBulletinConstants, ISearchConstants
 		return hits;
 	}
 	
+	/**
+     * Searches a keyword field.  Unlike the searchField method, 
+     * this method does not parse the queryString.  Use this 
+     * method when you want to search fields that have not been
+     * tokenized, such as the "universal_id" field.
+     * 
+     * @return a hits list that includes all the matching documents
+	 *
+	 */
 	public Hits searchKeywordField(String field, String queryString)
 	{
 		Hits hits = null;

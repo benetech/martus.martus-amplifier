@@ -6,7 +6,11 @@ import org.martus.common.UniversalId;
 
 
 /**
+ * A class for testing the BulletinCatalog class.  
+ * 
  * @author Bskinner
+ * @version first created Dec 2002
+ * @see org.martus.amplifier.service.search.BulletinCatalog
  *
  */
 public class BulletinCatalogTest extends AbstractAmplifierSearchTest {

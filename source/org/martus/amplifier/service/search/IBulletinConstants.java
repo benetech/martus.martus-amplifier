@@ -12,10 +12,21 @@ public interface IBulletinConstants
 
 	public static final String DEFAULT_FILES_LOCATION = 
 		"amplifierdata";
+
+	// PENDING: It would be nice to someday remove this 
+	// hard-coded reference to C: drive.  Maybe the right
+	// thing to do is use a path found in our Path.properties file
 	public static final String DEFAULT_INDEX_LOCATION = 
 		"C:\\amplifierindex";
 		
 	// Martus Amplifier Field Constants
+	/** [Brian says: In a way, all the "field" names and "visible field"
+	/* name are just two attributes of a set of "field" instances.
+	 * We might want to think about making these fields into first-class
+	 * objects someday.  That would make it easier/cleaner if we wanted
+	 * to add new attributes, like an attribute to indicate whether the
+	 * field should be included on our JSP search page.]
+	 */
 	public static final String AUTHOR_FIELD = "author";
 	public static final String VISIBLE_AUTHOR_FIELD = "Author";
 	public static final String KEYWORDS_FIELD = "keywords";
@@ -34,6 +45,7 @@ public interface IBulletinConstants
 	public static final String VISIBLE_ENTRY_DATE_FIELD = "Entry Date";	
 	public static final String UNIVERSAL_ID_FIELD = "universal_id";
 	
+	// The list of fields that the SearchQueryBean knows about
 	public static final String[] BULLETIN_FIELDS = 
 		{AUTHOR_FIELD, KEYWORDS_FIELD, TITLE_FIELD, EVENT_DATE_FIELD, 
 			PUBLIC_INFO_FIELD, SUMMARY_FIELD, LOCATION_FIELD, ENTRY_DATE_FIELD};

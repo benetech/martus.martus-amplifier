@@ -6,7 +6,11 @@ import org.martus.amplifier.service.search.IBulletinConstants;
 import org.apache.lucene.search.Hits;
 
 /**
+ * A class that represents a catalog of all of the 
+ * bulletins that have been indexed.  
+ * 
  * @author Bskinner
+ * @version first created Dec 2002
  *
  */
 public class BulletinCatalog implements IBulletinCatalog {
@@ -18,10 +22,9 @@ public class BulletinCatalog implements IBulletinCatalog {
 		return instance;
 	}
    
-	public boolean bulletinHasBeenIndexed(UniversalId UniversalBulletinId) {
+	public boolean bulletinHasBeenIndexed(UniversalId universalId) {
         BulletinSearcher bulletinSearcher = BulletinSearcher.getInstance();
-//        Hits hits = bulletinSearcher.searchField(IBulletinConstants.UNIVERSAL_ID_FIELD, "\""+UniversalBulletinId.toString()+"\"");
-        Hits hits = bulletinSearcher.searchKeywordField(IBulletinConstants.UNIVERSAL_ID_FIELD, UniversalBulletinId.toString());
+        Hits hits = bulletinSearcher.searchKeywordField(IBulletinConstants.UNIVERSAL_ID_FIELD, universalId.toString());
 
         return ((hits != null) && (hits.length() == 1));
 	}
