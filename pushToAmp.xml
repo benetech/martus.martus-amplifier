@@ -28,13 +28,14 @@
   <property name="push-dir" value="pushToAmp"/>
   <property name="push-presentation" value="${push-dir}/presentation"/>
   <property name="push-presentationNonSSL" value="${push-dir}/presentationNonSSL"/>
-  
+    
 <!-- ================================================================== -->
 <!-- I N I T                                                            -->
 <!-- ================================================================== -->  
   <target name="init"  depends="">
     <!-- tstamp task initializes ${DSTAMP} etc -->
     <tstamp/>
+    <buildnumber/>
   </target>
 
 <!-- ================================================================== -->
@@ -115,6 +116,55 @@
 	</copy>
 
   </target>
+  
+  <!-- ================================================================== -->
+  <!-- S I G N - J A R   &   Z I P                                                          -->
+  <!-- ================================================================== -->
+  <target name="release" depends="check_storepass, check_keypass, check_keystore,build">
+  
+        <signjar jar="${push-dir}/amplifier.jar"
+                        keystore="${sign.keystore}"
+                        storepass="${sign.storepass}"
+                        keypass="${sign.keypass}"
+                        alias="ssmtsjar"
+                        />
+                        
+        <property name="zip-filename"  value="martus_amp-${DSTAMP}.zip"/>
+                        
+          <zip destfile="${zip-filename}" basedir="${push-dir}" >
+          	<fileset dir="${push-dir}" includes="**/*"/>
+          </zip>
+  </target>
+    
+<!-- ================================================================== -->
+<!-- C H E C K  V A R S                                                  -->
+<!-- ================================================================== -->
+    <target name="check_keypass" unless="sign.keypass">
+
+        <input
+            message="Please enter key pw:"
+            addproperty="sign.keypass"
+        />
+
+    </target>
+
+    <target name="check_storepass" unless="sign.storepass">
+
+        <input
+            message="Please enter store pw:"
+            addproperty="sign.storepass"
+        />
+
+    </target>
+
+    <target name="check_keystore" unless="sign.keystore">
+
+        <input
+            message="Please enter keystore location:"
+            addproperty="sign.keystore"
+        />
+
+    </target>
 
 </project>
 
