@@ -59,7 +59,7 @@ public class MartusAmplifier
 
 	}
 
-	void initalizeAmplifier(char[] password) throws Exception
+	public void initalizeAmplifier(char[] password) throws Exception
 	{
 		staticAmplifierDirectory = coreServer.getDataDirectory();
 		deleteLuceneLockFile();
@@ -315,8 +315,16 @@ public class MartusAmplifier
 	public static String getPresentationBasePath()
 	{
 		String presentationBasePath = null;
-		if(StubServer.isRunningUnderWindows())
-			presentationBasePath = "";
+		if(MartusServer.isRunningUnderWindows())
+		{	
+			File amplifierPath = new File(MartusAmplifier.class.getResource("MartusAmplifier.class").getPath());
+			File amplifierBasePath = amplifierPath.getParentFile().getParentFile().getParentFile().getParentFile().getParentFile();
+			if(amplifierBasePath.getPath().endsWith("classes"))
+				amplifierBasePath = amplifierBasePath.getParentFile();
+			presentationBasePath = amplifierBasePath.getPath();
+			if(!presentationBasePath.endsWith("\\"))
+				presentationBasePath += "\\";
+		}
 		else
 			presentationBasePath = "/usrlocal/martus/htdocs/MartusAmplifier/";
 		return presentationBasePath;
@@ -379,12 +387,12 @@ public class MartusAmplifier
 
 
 	boolean isSyncing;
-	List backupServersList;
+	public List backupServersList;
 	List notAmplifiedAccountsList;
 	MartusServer coreServer;
 
 	static final long IMMEDIATELY = 0;
-	static final long DEFAULT_HOURS_TO_SYNC = 24;
+	public static final long DEFAULT_HOURS_TO_SYNC = 24;
 	
 	private static final String SERVERS_WHO_WE_CALL_DIRIRECTORY = "serversWhoWeCall";
 	private static final String ACCOUNTS_NOT_AMPLIFIED_FILE = "accountsNotAmplified.txt";
