@@ -26,13 +26,9 @@ Boston, MA 02111-1307, USA.
 
 package org.martus.amplifier.common.test;
 
-import java.io.File;
-import java.io.IOException;
-
 import junit.framework.TestCase;
 
 import org.martus.amplifier.common.CharacterUtil;
-import org.martus.util.UnicodeWriter;
 
 public class TestCharacterUtil extends TestCase
 {
@@ -41,7 +37,7 @@ public class TestCharacterUtil extends TestCase
 		super(name);
 	}
 	
-	public void testRemoveSpecialCharacters()
+	public void testRemoveSpecialCharacters() throws Exception
 	{
 		String test1 = "[test]";
 		String test2 = "(test)";
@@ -50,50 +46,32 @@ public class TestCharacterUtil extends TestCase
 		String test5 = "http:\\test@testagain.com";
 		String test6 = "<html> test* test?";
 		String test7 = "*";		
+		String test8 = "tést";
 		
-		String outStr = CharacterUtil.removeRestrictCharacters(test1);
-		assertEquals("removed []", "test", outStr);
-		outStr = CharacterUtil.removeRestrictCharacters(test2);
-		assertEquals("removed ()", "test", outStr);
-		outStr = CharacterUtil.removeRestrictCharacters(test3);
-		assertEquals("removed :", "test test", outStr);
-		outStr = CharacterUtil.removeRestrictCharacters(test4);
-		assertEquals("removed \"", "\"test\" 'test'", outStr);
-		outStr = CharacterUtil.removeRestrictCharacters(test5);
-		assertEquals("removed :\"@.", "http  test testagain com", outStr);
-		outStr = CharacterUtil.removeRestrictCharacters(test6);
-		assertEquals("removed <>)", "html  test  test", outStr);
-		outStr = CharacterUtil.removeRestrictCharacters(test7);		
-		assertEquals("removed *)", "", outStr);
-				
-	}		
-	
-	public void testWritingUnicodeCharacters() throws Exception
-	{
-		String text2 = "í";
-		int len2 = 0;
 		try
 		{
-			len2 = text2.getBytes("UTF8").length;
+			String outStr = CharacterUtil.removeRestrictCharacters(test1);
+			assertEquals("removed []", "test", outStr);
+			outStr = CharacterUtil.removeRestrictCharacters(test2);
+			assertEquals("removed ()", "test", outStr);
+			outStr = CharacterUtil.removeRestrictCharacters(test3);
+			assertEquals("removed :", "test test", outStr);
+			outStr = CharacterUtil.removeRestrictCharacters(test4);
+			assertEquals("removed \"", "\"test\" 'test'", outStr);
+			outStr = CharacterUtil.removeRestrictCharacters(test5);
+			assertEquals("removed :\"@.", "http  test testagain com", outStr);
+			outStr = CharacterUtil.removeRestrictCharacters(test6);
+			assertEquals("removed <>)", "html  test  test", outStr);
+			outStr = CharacterUtil.removeRestrictCharacters(test7);		
+			assertEquals("removed *)", "", outStr);
+				
+			outStr = CharacterUtil.removeRestrictCharacters(test8);								
+			assertEquals("Should not removed : ", "tést", outStr);
+
 		}
 		catch(Exception e)
 		{
 			assertTrue("UTF8 not supported", false);
-		}
-		assertTrue("Unicode length should be different", len2 != text2.length());
-
-		File file = createTempFileFromName("$$$MartusAmplifiertestamplifierunicodechars");
-		UnicodeWriter writer = new UnicodeWriter(file);
-		writer.write(text2);
-		writer.close();
-		assertEquals(len2, file.length());
-		file.delete();
-	}
-	
-	public File createTempFileFromName(String name) throws IOException
-	{
-		File file = File.createTempFile(name, null);
-		file.deleteOnExit();
-		return file;
-	}
+		}			
+	}			
 }

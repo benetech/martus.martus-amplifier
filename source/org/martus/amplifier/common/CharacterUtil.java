@@ -41,11 +41,10 @@ public class CharacterUtil
 	
 	public static boolean isAllowed(char ch)
 	{
-		if ((ch >= 48 && ch <= 57) ||
-			(ch >= 65 && ch <= 90) ||
-			(ch >= 97 && ch <= 122) ||
-			(ch == 34 || ch == 39 || ch >= 128))
-			return true;			
+		if (Character.isLetterOrDigit(ch)||
+			ch == '\"' || ch == '\'' || 
+			ch >= 128)
+			return true;
 			
 		return false;	
 	}
