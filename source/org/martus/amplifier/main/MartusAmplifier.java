@@ -31,7 +31,6 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Vector;
-
 import org.martus.amplifier.ServerCallbackInterface;
 import org.martus.amplifier.attachment.DataManager;
 import org.martus.amplifier.attachment.FileSystemDataManager;
@@ -42,9 +41,9 @@ import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinIndexer;
 import org.martus.common.EnglishCommonStrings;
 import org.martus.common.MartusUtilities;
+import org.martus.common.MiniLocalization;
 import org.martus.common.Version;
 import org.martus.common.clientside.Localization;
-import org.martus.common.clientside.UiBasicLocalization;
 import org.martus.common.crypto.MartusCrypto;
 import org.martus.common.crypto.MartusCrypto.CryptoInitializationException;
 import org.martus.common.network.MartusXmlrpcClient.SSLSocketSetupException;
@@ -63,18 +62,10 @@ public class MartusAmplifier
 	{
 		coreServer = serverToUse;
 		setStaticSecurity(coreServer.getSecurity());
-		localization = new UiBasicLocalization(getDefaultAmpDirectory(), EnglishCommonStrings.strings);
+		localization = new MiniLocalization(EnglishCommonStrings.strings);
 		localization.setCurrentLanguageCode(AMP_DEFAULT_LANGUAGE);
 		localization.setCurrentDateFormatCode(Localization.getDefaultDateFormatForLanguage(AMP_DEFAULT_LANGUAGE));
 		
-	}
-
-	private File getDefaultAmpDirectory() throws IOException
-	{
-		//TODO remove this entirely once we switch to miniLocalization
-		File tempDirectory = File.createTempFile("$$$Martus_Amplifier","dir");
-		tempDirectory.deleteOnExit();
-		return tempDirectory;
 	}
 
 	public void initalizeAmplifier(char[] password) throws Exception
@@ -544,7 +535,7 @@ public class MartusAmplifier
 	// USE THEM CAREFULLY!
 	public static DataManager dataManager;
 	public static File staticAmplifierDirectory;
-	public static UiBasicLocalization localization;
+	public static MiniLocalization localization;
 
 	private static MartusCrypto staticSecurity;
 	private static String webAuthorizedUser;
