@@ -47,7 +47,7 @@ public class BulletinIndexer implements BulletinConstants, LoggerConstants
 	public void indexDocs(IndexWriter writer, File file)
     throws IOException 
     {
-    	// this is ugly, maybe we need to remove amplifierindex from source control
+    	// this is ugly, maybe we need to remove amplifierdata
     	if(file.getName().equals("CVS"))
     		return;
     		
