@@ -41,7 +41,7 @@ public class DateUtilities
 	{
 		MartusFlexidate mfd = MartusFlexidate.createFromMartusDateString(storedFlexidateString);
 		if (!mfd.hasDateRange())
-			return null;
+			return "";
 		return MartusFlexidate.toStoredDateFormat(mfd.getEndDate());
 	}
 }

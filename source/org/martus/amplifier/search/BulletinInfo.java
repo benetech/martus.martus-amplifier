@@ -51,7 +51,10 @@ public class BulletinInfo implements Serializable
 	
 	public String get(String field)
 	{
-		return (String) fields.get(field);
+		String value = (String) fields.get(field);
+		if (value == null)
+			value = "";
+		return value;
 	}
 	
 	public void addAttachment(AttachmentInfo attachment)

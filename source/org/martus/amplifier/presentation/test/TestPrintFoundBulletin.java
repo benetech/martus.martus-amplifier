@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Vector;
 
 import org.apache.velocity.context.Context;
+import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.presentation.DoSearch;
 import org.martus.amplifier.presentation.PrintFoundBulletin;
 import org.martus.amplifier.search.BulletinIndexException;
@@ -60,6 +61,7 @@ public class TestPrintFoundBulletin extends TestCaseEnhanced
 	public void testCurrentBulletin() throws Exception
 	{
 		MockAmplifierRequest request = new MockAmplifierRequest();
+		request.parameters.put(SearchResultConstants.RESULT_SORTBY_KEY, "title" );
 		MockAmplifierResponse response = null;
 		Context context = createSampleSearchResults(request, response);
 	

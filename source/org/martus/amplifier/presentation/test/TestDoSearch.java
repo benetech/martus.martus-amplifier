@@ -76,6 +76,7 @@ public class TestDoSearch extends TestCaseEnhanced
 	public void testYesResults() throws Exception
 	{
 		MockAmplifierRequest request = new MockAmplifierRequest();
+		request.parameters.put(SearchResultConstants.RESULT_SORTBY_KEY, "title");
 		MockAmplifierResponse response = null;
 		Context context = new MockContext();
 
@@ -148,7 +149,7 @@ public class TestDoSearch extends TestCaseEnhanced
 		request.putParameter("query", sampleQueryString);
 		
 		sr.selectTemplate(request, response, context);
-		assertEquals("title", session.getAttribute(SearchResultConstants.RESULT_SORTBY_KEY));
+		assertEquals("entrydate", session.getAttribute(SearchResultConstants.RESULT_SORTBY_KEY));
 		
 		request.putParameter(SearchResultConstants.RESULT_SORTBY_KEY, sortBy);
 		sr.selectTemplate(request, response, context);

@@ -88,7 +88,7 @@ public class DoSearch extends AbstractSearchResultsServlet
 		AmplifierServletSession session = request.getSession();
 		String searchType = (String) session.getAttribute("typeOfSearch");
 		
-		if (searchType.equals("quickSearchAll"))
+		if (searchType != null && searchType.equals("quickSearchAll"))
 		{			
 			RawSearchParameters.clearAdvancedSearch(session);				
 			return getSearchResults(session, new RawSearchParameters(""));

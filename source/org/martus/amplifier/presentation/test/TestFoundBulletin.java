@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Vector;
 
 import org.apache.velocity.context.Context;
+import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.presentation.DoSearch;
 import org.martus.amplifier.presentation.FoundBulletin;
 import org.martus.amplifier.presentation.SimpleSearch;
@@ -62,15 +63,17 @@ public class TestFoundBulletin extends TestCaseEnhanced
 	public void testPreviousAndNext() throws Exception
 	{
 		MockAmplifierRequest request = new MockAmplifierRequest();
+		request.parameters.put(SearchResultConstants.RESULT_SORTBY_KEY, "title");		
 		MockAmplifierResponse response = null;
-		Context context = createSampleSearchResults(request, response);
-	
+		request.parameters.put(SearchResultConstants.RESULT_SORTBY_KEY, "title");
+		Context context = createSampleSearchResults(request, response);	
 	
 		FoundBulletin servlet = new FoundBulletin();
 		String templateName = servlet.selectTemplate(request, response, context);
 		assertEquals("FoundBulletin.vm", templateName);
 		assertEquals("previousBulletin not -1?", new Integer(-1), context.get("previousBulletin"));
-		assertEquals("nextBulletin not 2?", new Integer(2), context.get("nextBulletin"));
+		assertEquals("nextBulletin not 2?", new Integer(2), context.get("nextBulletin"));		
+
 		BulletinInfo bulletinInfo1 = (BulletinInfo)context.get("bulletin");
 		assertEquals("Bulletin 1's ID didn't match", uid1, bulletinInfo1.getBulletinId());
 		assertEquals("Bulletin 1's title didn't match", bulletin1Title, bulletinInfo1.get("title"));
@@ -109,6 +112,7 @@ public class TestFoundBulletin extends TestCaseEnhanced
 	public void testAccountBulletinIds() throws Exception
 	{
 		MockAmplifierRequest request = new MockAmplifierRequest();
+		request.parameters.put(SearchResultConstants.RESULT_SORTBY_KEY, "title");
 		MockAmplifierResponse response = null;
 		Context context = createSampleSearchResults(request, response);
 	
@@ -124,6 +128,7 @@ public class TestFoundBulletin extends TestCaseEnhanced
 	public void testPopulateSimpleSearch() throws Exception
 	{
 		MockAmplifierRequest request = new MockAmplifierRequest();
+		request.parameters.put(SearchResultConstants.RESULT_SORTBY_KEY, "title");
 		MockAmplifierResponse response = null;		
 		Context context = new MockContext();
 		
@@ -145,6 +150,7 @@ public class TestFoundBulletin extends TestCaseEnhanced
 	public void testContactInfo() throws Exception
 	{
 		MockAmplifierRequest request = new MockAmplifierRequest();
+		request.parameters.put(SearchResultConstants.RESULT_SORTBY_KEY, "title");
 		MockAmplifierResponse response = null;
 		Context context = createSampleSearchResults(request, response);
 	
