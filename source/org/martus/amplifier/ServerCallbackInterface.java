@@ -29,11 +29,10 @@ import java.io.File;
 import org.martus.common.LoggerInterface;
 import org.martus.common.crypto.MartusCrypto;
 
-public interface ServerCallbackInterface
+public interface ServerCallbackInterface extends LoggerInterface
 {
 	public abstract MartusCrypto getSecurity();
 	public abstract boolean isShutdownRequested();
-	public abstract void log(String message);
 	public abstract File getStartupConfigDirectory();
 	public abstract File getDataDirectory();
 	public abstract String getAmpIpAddress();
