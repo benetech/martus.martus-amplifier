@@ -34,6 +34,7 @@ import java.util.Map;
 
 import org.martus.amplifier.search.SearchConstants;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
+import org.martus.amplifier.velocity.AmplifierServletSession;
 import org.martus.util.MartusFlexidate;
 
 public class SearchParameters implements SearchResultConstants, SearchConstants
@@ -216,10 +217,10 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 		request.getSession().setAttribute("defaultAdvancedSearch", new AdvancedSearchInfo(resultList));	
 	}	
 	
-	public static void clearAdvancedSearch(AmplifierServletRequest request)
+	public static void clearAdvancedSearch(AmplifierServletSession session)
 	{
 		AdvancedSearchInfo info = new AdvancedSearchInfo(setDefaultAdvancedFields());
-		request.getSession().setAttribute("defaultAdvancedSearch", info);	
+		session.setAttribute("defaultAdvancedSearch", info);	
 	}
 	
 	public static void clearSimpleSearch(AmplifierServletRequest request)

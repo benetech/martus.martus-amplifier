@@ -42,12 +42,12 @@ import org.martus.amplifier.search.BulletinInfo;
 import org.martus.amplifier.search.BulletinSearcher;
 import org.martus.amplifier.search.Results;
 import org.martus.amplifier.search.SearchConstants;
-import org.martus.amplifier.velocity.AmplifierServlet;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
 import org.martus.amplifier.velocity.AmplifierServletResponse;
+import org.martus.amplifier.velocity.AmplifierServletSession;
 
 
-public class DoSearch extends AmplifierServlet implements SearchResultConstants
+public class DoSearch extends AbstractSearchResultsServlet
 {	
 	public String selectTemplate(AmplifierServletRequest request,
 			AmplifierServletResponse response, Context context) 
@@ -57,9 +57,9 @@ public class DoSearch extends AmplifierServlet implements SearchResultConstants
 		
 		String simpleQuery = request.getParameter("query");
 		request.getSession().setAttribute("simpleQuery", simpleQuery);
-		SearchResults.updateSortByInSession(request);
+		updateSortByInSession(request);
 
-		SearchResults.setSearchedFor(request, context);
+		setSearchedFor(request, context);
 
 		List results = getSearchResults(request);
 		if(results.size() == 0)
@@ -72,30 +72,40 @@ public class DoSearch extends AmplifierServlet implements SearchResultConstants
 			bulletins.add(element);
 		}
 
-		SearchResults.setReturnContext(request, bulletins, context);		
+		SearchResults.setSearchResultsContext(request, bulletins, context);		
 		return "SearchResults.vm";
 	}
 
 	public List getSearchResults(AmplifierServletRequest request)
 		throws Exception
 	{
-		String queryString = request.getParameter(RESULT_BASIC_QUERY_KEY);
+		String simpleQueryString = request.getParameter(SearchResultConstants.RESULT_BASIC_QUERY_KEY);
 	 
-		if (queryString != null)
-		{	
-			if (queryString.equals(""))
-				return new ArrayList();
-			HashMap fields = new HashMap();				
-			fields.put(RESULT_BASIC_QUERY_KEY, queryString);
-						
-			SearchParameters.clearAdvancedSearch(request);			
-			return getResults(fields);
-		}
-				
+		if (simpleQueryString != null)
+			return getSimpleSearchResults(request.getSession(), simpleQueryString);
+
+		return getComplexSearchResults(request);
+	}
+
+	private List getComplexSearchResults(AmplifierServletRequest request)
+		throws Exception
+	{
 		SearchParameters sp = new SearchParameters(request);
-		Map fields = sp.getSearchFields();
 		SearchParameters.clearSimpleSearch(request);								
-										
+		Map fields = sp.getSearchFields();
+		return getResults(fields);
+	}
+
+	private List getSimpleSearchResults(
+		AmplifierServletSession session,
+		String simpleQueryString)
+		throws Exception
+	{
+		if (simpleQueryString.equals(""))
+			return new ArrayList();
+		Map fields = new HashMap();				
+		fields.put(SearchResultConstants.RESULT_BASIC_QUERY_KEY, simpleQueryString);
+		SearchParameters.clearAdvancedSearch(session);			
 		return getResults(fields);
 	}	
 		
@@ -125,7 +135,7 @@ public class DoSearch extends AmplifierServlet implements SearchResultConstants
 				list.add(bulletinInfo);
 			}
 
-			String sortField = (String) fields.get(RESULT_SORTBY_KEY);
+			String sortField = (String) fields.get(SearchResultConstants.RESULT_SORTBY_KEY);
 			if (sortField != null)
 				SearchResults.sortBulletins(list, sortField);
 

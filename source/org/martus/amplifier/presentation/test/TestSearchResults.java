@@ -112,7 +112,7 @@ public class TestSearchResults extends TestCaseEnhanced
 		assertEquals("Didn't get back correct search string from context", basicSearchString, context.get("searchedFor"));		
 	}
 
-	public void testSetReturnContext() throws Exception
+	public void testSetSearchResultsContext() throws Exception
 	{
 		MockAmplifierRequest request = new MockAmplifierRequest();
 		Context context = new MockContext();
@@ -121,7 +121,7 @@ public class TestSearchResults extends TestCaseEnhanced
 		Vector fakeBulletins = new Vector();
 		fakeBulletins.add("hello");
 		fakeBulletins.add("there");
-		SearchResults.setReturnContext(request, fakeBulletins, context);
+		SearchResults.setSearchResultsContext(request, fakeBulletins, context);
 
 		assertEquals("wrong second bulletin in session?", fakeBulletins.get(1), ((Vector)request.getSession().getAttribute("foundBulletins")).get(1));		
 

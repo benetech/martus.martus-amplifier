@@ -25,23 +25,16 @@ Boston, MA 02111-1307, USA.
 */
 package org.martus.amplifier.presentation;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 import java.util.Vector;
 
 import org.apache.velocity.context.Context;
-import org.martus.amplifier.common.FindBulletinsFields;
 import org.martus.amplifier.common.SearchResultConstants;
-import org.martus.amplifier.search.BulletinInfo;
-import org.martus.amplifier.search.SearchConstants;
-import org.martus.amplifier.velocity.AmplifierServlet;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
 import org.martus.amplifier.velocity.AmplifierServletResponse;
 import org.martus.amplifier.velocity.AmplifierServletSession;
 
 
-public class SearchResults extends AmplifierServlet implements SearchResultConstants
+public class SearchResults extends AbstractSearchResultsServlet
 {	
 	public String selectTemplate(AmplifierServletRequest request,
 			AmplifierServletResponse response, Context context) 
@@ -54,94 +47,15 @@ public class SearchResults extends AmplifierServlet implements SearchResultConst
 		updateSortByInSession(request);
 
 		AmplifierServletSession session = request.getSession();
-		String sortField = (String)session.getAttribute(RESULT_SORTBY_KEY);
+		String sortField = (String)session.getAttribute(SearchResultConstants.RESULT_SORTBY_KEY);
 		Vector bulletins = (Vector)session.getAttribute("foundBulletins");
 		if(bulletins == null || bulletins.size() == 0)
 			return "NoSearchResults.vm";
 			
 		sortBulletins(bulletins, sortField);
 
-		setReturnContext(request, bulletins, context);
+		setSearchResultsContext(request, bulletins, context);
 		return "SearchResults.vm";				
-	}
-
-
-	static public void updateSortByInSession(AmplifierServletRequest request)
-	{
-		AmplifierServletSession session = request.getSession();
-		
-		String sortField = request.getParameter(RESULT_SORTBY_KEY);
-		if(sortField == null)
-			sortField = (String)session.getAttribute(RESULT_SORTBY_KEY);
-		if(sortField == null)
-			sortField = SORT_BY_TITLE_TAG;
-		session.setAttribute(RESULT_SORTBY_KEY, sortField);
-	}
-	
-
-	static public void setReturnContext(AmplifierServletRequest request, Vector bulletins, Context context)
-	{
-		request.getSession().setAttribute("foundBulletins", bulletins);
-		context.put("foundBulletins", bulletins);
-		context.put("totalBulletins", new Integer(bulletins.size()));
-		Vector sortByFields = FindBulletinsFields.getSortByFieldDisplayNames();
-		context.put("sortByFields", sortByFields);
-		String sortBy = request.getParameter(RESULT_SORTBY_KEY);
-		context.put("currentlySortingBy", sortBy);
-	}
-
-
-	static public void setSearchedFor(AmplifierServletRequest request, Context context)
-	{
-		String basicQueryString = request.getParameter(RESULT_BASIC_QUERY_KEY);
-		String advancedQueryString = "Advanced Search";		
-		
-		if(basicQueryString != null)
-		{
-			context.put("searchedFor", basicQueryString);
-			request.getSession().setAttribute("searchedFor", basicQueryString);
-			
-			String simpleQuery = request.getParameter("query");		
-			context.put("defaultSimpleSearch", basicQueryString);	
-			request.getSession().setAttribute("defaultSimpleSearch", simpleQuery);
-		}
-		else if (advancedQueryString != null)
-		{
-			context.put("searchedFor", advancedQueryString);
-			request.getSession().setAttribute("searchedFor", advancedQueryString);
-			context.put("defaultSimpleSearch", "");
-		}
-		else		
-		{
-			String searchedForString = (String)request.getSession().getAttribute("searchedFor");
-			context.put("searchedFor", searchedForString);
-			request.getSession().setAttribute("searchedFor", searchedForString);
-		}
-	}
-
-
-	public static void sortBulletins(List list, final String field)
-	{
-		Collections.sort(list, new BulletinSorter(field));
-	}	
-
-	static class BulletinSorter implements Comparator
-	{
-		private final String field;
-		BulletinSorter(String field)
-		{
-			super();
-			if(field.equals(SearchConstants.SEARCH_EVENT_DATE_INDEX_FIELD))
-				this.field = SearchConstants.SEARCH_EVENT_DATE_INDEX_FIELD +"-start";
-			else
-				this.field = field;
-		}
-		public int compare(Object o1, Object o2)
-		{
-			String string1 = ((BulletinInfo)o1).get(field);
-			String string2 = ((BulletinInfo)o2).get(field);	  			  		
-			return ((Comparable)string1.toLowerCase()).compareTo(string2.toLowerCase());
-		}
 	}
 
 }
