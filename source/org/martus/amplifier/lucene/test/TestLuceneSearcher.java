@@ -231,12 +231,6 @@ public class TestLuceneSearcher extends CommonSearchTest
 		try 
 		{
 			HashMap fields = new HashMap();
-			fields.put(SEARCH_AUTHOR_INDEX_FIELD, fdp.get(BulletinField.SEARCH_AUTHOR_INDEX_FIELD));				
-			fields.put(SEARCH_DETAILS_INDEX_FIELD, fdp.get(BulletinField.SEARCH_DETAILS_INDEX_FIELD));
-			fields.put(SEARCH_KEYWORDS_INDEX_FIELD, fdp.get(BulletinField.SEARCH_KEYWORDS_INDEX_FIELD));
-			fields.put(SEARCH_LOCATION_INDEX_FIELD, fdp.get(BulletinField.SEARCH_LOCATION_INDEX_FIELD));
-			fields.put(SEARCH_SUMMARY_INDEX_FIELD, fdp.get(BulletinField.SEARCH_SUMMARY_INDEX_FIELD));
-			fields.put(SEARCH_TITLE_INDEX_FIELD, fdp.get(BulletinField.SEARCH_TITLE_INDEX_FIELD));
 			
 			fields.put(RESULT_BASIC_QUERY_KEY, fdp.get(BulletinField.SEARCH_AUTHOR_INDEX_FIELD));								
 			results = searcher.search(fields);							
@@ -305,14 +299,7 @@ public class TestLuceneSearcher extends CommonSearchTest
 		Results results = null;
 		try 
 		{			
-			HashMap fields = new HashMap();
-			fields.put(SEARCH_AUTHOR_INDEX_FIELD, fdp.get(BulletinField.SEARCH_AUTHOR_INDEX_FIELD));				
-			fields.put(SEARCH_DETAILS_INDEX_FIELD, fdp.get(BulletinField.SEARCH_DETAILS_INDEX_FIELD));
-			fields.put(SEARCH_KEYWORDS_INDEX_FIELD, fdp.get(BulletinField.SEARCH_KEYWORDS_INDEX_FIELD));
-			fields.put(SEARCH_LOCATION_INDEX_FIELD, fdp.get(BulletinField.SEARCH_LOCATION_INDEX_FIELD));
-			fields.put(SEARCH_SUMMARY_INDEX_FIELD, fdp.get(BulletinField.SEARCH_SUMMARY_INDEX_FIELD));
-			fields.put(SEARCH_TITLE_INDEX_FIELD, fdp.get(BulletinField.SEARCH_TITLE_INDEX_FIELD));
-		
+			HashMap fields = new HashMap();	
 			fields.put(RESULT_BASIC_QUERY_KEY, "for");								
 					
 			results = searcher.search(fields);
@@ -406,7 +393,6 @@ public class TestLuceneSearcher extends CommonSearchTest
 		try 
 		{
 			HashMap fields = new HashMap();
-			fields.put(SEARCH_KEYWORDS_INDEX_FIELD, fdp1.get(BulletinField.SEARCH_KEYWORDS_INDEX_FIELD));
 			fields.put(RESULT_BASIC_QUERY_KEY, "ate");						
 			results = searcher.search(fields);
 			assertEquals("Should have found 1 result en", 1, results.getCount());
@@ -478,14 +464,7 @@ public class TestLuceneSearcher extends CommonSearchTest
 		Results results = null;
 		try 
 		{
-			HashMap fields = new HashMap();
-			fields.put(SEARCH_AUTHOR_INDEX_FIELD, fdp.get(BulletinField.SEARCH_AUTHOR_INDEX_FIELD));				
-			fields.put(SEARCH_DETAILS_INDEX_FIELD, fdp.get(BulletinField.SEARCH_DETAILS_INDEX_FIELD));
-			fields.put(SEARCH_KEYWORDS_INDEX_FIELD, fdp.get(BulletinField.SEARCH_KEYWORDS_INDEX_FIELD));
-			fields.put(SEARCH_LOCATION_INDEX_FIELD, fdp.get(BulletinField.SEARCH_LOCATION_INDEX_FIELD));
-			fields.put(SEARCH_SUMMARY_INDEX_FIELD, fdp.get(BulletinField.SEARCH_SUMMARY_INDEX_FIELD));
-			fields.put(SEARCH_TITLE_INDEX_FIELD, fdp.get(BulletinField.SEARCH_TITLE_INDEX_FIELD));
-		
+			HashMap fields = new HashMap();	
 			fields.put(RESULT_BASIC_QUERY_KEY, "Chuck");		
 			
 			results = searcher.search(fields);
