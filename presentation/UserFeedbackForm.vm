@@ -30,10 +30,11 @@
 						what options you chose or terms you entered.<br/>
 						<br/>
 					#end
-					<textarea rows='10' cols='60'></textarea>
-					<br/><br/>
-					<input type='submit' value='Submit'></input>
-					
+					<form name="feedback" action="FeedbackSubmitted" method="post">
+						<textarea rows='10' cols='60'></textarea>
+						<br/><br/>
+						<input type='submit' value='Submit'></input>
+					</form>					
 				</td>
 				<td></td>
 			</tr>
