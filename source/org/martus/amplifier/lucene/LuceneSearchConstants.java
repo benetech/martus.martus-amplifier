@@ -31,5 +31,5 @@ public interface LuceneSearchConstants
 	String HISTORY_INDEX_FIELD = "$$$history";
 	String ATTACHMENT_LIST_INDEX_FIELD = "attachments";
 	String ATTACHMENT_LIST_SEPARATOR = "\n";	
-		
+	String FIELD_DATA_PACKET_LOCAL_ID_INDEX_FIELD = "field_data_packet_local_id";
 }

@@ -36,9 +36,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-
 import junit.framework.Assert;
-
 import org.martus.amplifier.attachment.AttachmentStorageException;
 import org.martus.amplifier.attachment.DataManager;
 import org.martus.amplifier.attachment.FileSystemDataManager;
@@ -59,6 +57,7 @@ import org.martus.amplifier.search.Results;
 import org.martus.amplifier.search.SearchConstants;
 import org.martus.amplifier.test.AbstractAmplifierTestCase;
 import org.martus.common.BulletinStore;
+import org.martus.common.FieldSpec;
 import org.martus.common.bulletin.AttachmentProxy;
 import org.martus.common.bulletin.Bulletin;
 import org.martus.common.bulletin.BulletinForTesting;
@@ -67,6 +66,7 @@ import org.martus.common.crypto.MockMartusSecurity;
 import org.martus.common.crypto.MartusCrypto.CryptoException;
 import org.martus.common.crypto.MartusCrypto.EncryptionException;
 import org.martus.common.database.ReadableDatabase;
+import org.martus.common.packet.FieldDataPacket;
 import org.martus.common.packet.UniversalId;
 import org.martus.common.test.MockBulletinStore;
 import org.martus.common.utilities.DateUtilities;
@@ -196,6 +196,8 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 				new BulletinExtractor(
 					attachmentManager, indexer, security);
 			extractor.extractAndStoreBulletin(f);
+			
+			compareFieldDataPackets(b.getFieldDataPacket(), attachmentManager.getFieldDataPacket(b.getFieldDataPacket().getUniversalId()));
 		} 
 		finally 
 		{
@@ -235,8 +237,6 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 		}
 	}
 	
-	// TODO pdalbora 5-May-2003 -- Expose this method to junit by
-	// removing the underscore when it's working.
 	public void testExtractionWithAttachments() 
 		throws Exception
 	{
@@ -285,14 +285,25 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 			searcher.close();
 		}
 	}
-	
+
+	private void compareFieldDataPackets(FieldDataPacket original, FieldDataPacket retrievedData)
+	{
+		FieldSpec[] originalSpecs = original.getFieldSpecs();
+		assertEquals(original.getUniversalId(), retrievedData.getUniversalId());
+		for(int i = 0; i < originalSpecs.length; ++i)
+		{
+			String tag = originalSpecs[i].getTag();
+			assertEquals(original.get(tag), retrievedData.get(tag));
+		}
+		assertEquals(original.getAuthorizedToReadKeys().toStringWithLabel(), retrievedData.getAuthorizedToReadKeys().toStringWithLabel());
+	}
 	
 	private void compareBulletins(
 		Bulletin bulletin, BulletinInfo retrievedData) 
 		throws IOException
 	{
-		Assert.assertEquals(
-			bulletin.getUniversalId(), retrievedData.getBulletinId());
+		assertEquals(bulletin.getUniversalId(), retrievedData.getBulletinId());
+		assertEquals(bulletin.getFieldDataPacket().getUniversalId(), retrievedData.getFieldDataPacketUId());
 		Collection fields = BulletinField.getSearchableFields();
 		for (Iterator iter = fields.iterator(); iter.hasNext();) {
 			BulletinField field = (BulletinField) iter.next();
@@ -348,6 +359,8 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 		for (int i = 0; i < attachments.length; i++) {
 			b.addPublicAttachment(new AttachmentProxy(attachments[i]));
 		}
+		b.setAllPrivate(false);
+		b.getFieldDataPacket().setEncrypted(false);
 		b.setSealed();
 		return b;
 	}
@@ -362,6 +375,9 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 		for (int i = 0; i < attachments.length; i++) {
 			b.addPublicAttachment(new AttachmentProxy(attachments[i]));
 		}
+		b.setAllPrivate(false);
+		b.getFieldDataPacket().setEncrypted(false);
+		b.setSealed();
 		return b;
 	}
 

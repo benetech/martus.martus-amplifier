@@ -30,7 +30,6 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.Collection;
 import java.util.Iterator;
-
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.document.Document;
@@ -109,8 +108,9 @@ public class LuceneBulletinIndexer
 			throw new BulletinIndexException(
 				"Unable to index field data for " + bulletinId, e1);
 		}
-		addAttachmentIds(doc, fdp.getAccountId(), fdp.getAttachments());
+		addAttachmentIds(doc, fdp.getAttachments());
 		addHistory(doc, history);
+		addFieldDataPacketId(doc, fdp.getLocalId());
 		
 		try {
 			writer.addDocument(doc);
@@ -241,7 +241,7 @@ public class LuceneBulletinIndexer
 	}
 	
 	private static void addAttachmentIds(
-		Document doc, String accountId, AttachmentProxy[] proxies)
+		Document doc, AttachmentProxy[] proxies)
 	{
 		if (proxies.length > 0) {
 			StringBuffer buf = new StringBuffer();
@@ -259,9 +259,12 @@ public class LuceneBulletinIndexer
 	
 	private static void addHistory(Document doc, BulletinHistory history)
 	{
-		doc.add(Field.UnIndexed(
-				HISTORY_INDEX_FIELD, history.toString()));
-		
+		doc.add(Field.UnIndexed(HISTORY_INDEX_FIELD, history.toString()));
+	}
+	
+	private static void addFieldDataPacketId(Document doc, String fieldDataPacketLocalId)
+	{
+		doc.add(Field.UnIndexed(FIELD_DATA_PACKET_LOCAL_ID_INDEX_FIELD, fieldDataPacketLocalId));		
 	}
 	
 	private static void convertDateRangeToSearchableString(Document doc, BulletinField field, String value) throws BulletinIndexException

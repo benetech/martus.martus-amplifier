@@ -64,6 +64,7 @@ public class LuceneResults implements Results, LuceneSearchConstants, SearchCons
 		addAttachments(info, doc);
 		addContactInfo(info);
 		addHistory(info, doc);
+		addFieldDataPacketId(info, doc);
 		return info;
 	}
 	
@@ -163,6 +164,11 @@ public class LuceneResults implements Results, LuceneSearchConstants, SearchCons
 	private static void addHistory(BulletinInfo info, Document doc)
 	{
 		info.setHistory(doc.get(HISTORY_INDEX_FIELD));
+	}
+	
+	private static void addFieldDataPacketId(BulletinInfo info, Document doc)
+	{
+		info.setFieldDataPacketUId(doc.get(FIELD_DATA_PACKET_LOCAL_ID_INDEX_FIELD));
 	}
 	
 	private static long getAttachmentSizeInKb(UniversalId uId)

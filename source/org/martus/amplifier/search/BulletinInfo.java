@@ -42,6 +42,7 @@ public class BulletinInfo implements Serializable
 		fields = new HashMap();
 		attachments = new ArrayList();
 		bulletinId = bulletinIdToUse;
+		fieldDataPacketLocalId = null;
 		contactInfoFile = null;
 	}
 	
@@ -90,6 +91,16 @@ public class BulletinInfo implements Serializable
 		return bulletinId;
 	}
 	
+	public void setFieldDataPacketUId(String localId)
+	{
+		fieldDataPacketLocalId = localId;
+	}
+	
+	public UniversalId getFieldDataPacketUId()
+	{
+		return UniversalId.createFromAccountAndLocalId(bulletinId.getAccountId(), fieldDataPacketLocalId);
+	}
+	
 	public String getAccountId()
 	{
 		return bulletinId.getAccountId();
@@ -120,5 +131,6 @@ public class BulletinInfo implements Serializable
 	private UniversalId bulletinId;
 	private File contactInfoFile;
 	BulletinHistory history;
+	private String fieldDataPacketLocalId;
 
 }

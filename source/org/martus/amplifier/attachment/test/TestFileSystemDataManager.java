@@ -29,16 +29,19 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Vector;
-
 import junit.framework.Assert;
-
 import org.martus.amplifier.attachment.AttachmentStorageException;
 import org.martus.amplifier.attachment.DataManager;
 import org.martus.amplifier.attachment.FileSystemDataManager;
 import org.martus.amplifier.main.MartusAmplifier;
+import org.martus.amplifier.search.BulletinField;
+import org.martus.common.bulletin.Bulletin;
+import org.martus.common.bulletin.BulletinHtmlGenerator;
+import org.martus.common.clientside.UiBasicLocalization;
 import org.martus.common.crypto.MockMartusSecurity;
 import org.martus.common.database.FileDatabase.MissingAccountMapException;
 import org.martus.common.database.FileDatabase.MissingAccountMapSignatureException;
+import org.martus.common.packet.FieldDataPacket;
 import org.martus.common.packet.UniversalId;
 import org.martus.common.test.UniversalIdForTesting;
 import org.martus.util.DirectoryUtils;
@@ -127,6 +130,30 @@ public class TestFileSystemDataManager
 		Assert.assertNull(
 			"attachments directory not empty", 
 			attachmentDir.listFiles());
+	}
+	
+	public void testPutGetFieldDataPackets() throws Exception
+	{
+		MockMartusSecurity security = new MockMartusSecurity();
+		security.createKeyPair();
+		Bulletin b = new Bulletin(security);
+		b.set(BulletinField.TAGAUTHOR, "paul");
+		b.set(BulletinField.TAGKEYWORDS, "testing");
+		b.set(BulletinField.TAGENTRYDATE, "2003-04-30");
+		b.setAllPrivate(false);
+		b.setSealed();
+		
+		FieldDataPacket publicData = b.getFieldDataPacket();
+		publicData.setEncrypted(false);
+		
+		dataManager.putFieldDataPacket(publicData);
+		FieldDataPacket publicDataPacketRetrieved = dataManager.getFieldDataPacket(publicData.getUniversalId());
+		assertNotNull(publicDataPacketRetrieved);
+		assertEquals("Uids not the same?",publicData.getUniversalId(), publicDataPacketRetrieved.getUniversalId());
+		
+		UiBasicLocalization localization = new UiBasicLocalization(createTempDirectory(), new String[]{});
+		BulletinHtmlGenerator htmlGenerator = new BulletinHtmlGenerator(80, localization);
+		assertEquals("HTML representation not the same?", htmlGenerator.getSectionHtmlString(publicData), htmlGenerator.getSectionHtmlString(publicDataPacketRetrieved));
 	}
 	
 	public void testAccountWithFileSeparators() 

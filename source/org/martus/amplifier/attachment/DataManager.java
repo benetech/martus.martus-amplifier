@@ -29,7 +29,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Vector;
-
+import org.martus.common.packet.FieldDataPacket;
 import org.martus.common.packet.UniversalId;
 
 /**
@@ -57,4 +57,7 @@ public interface DataManager
 	public File getContactInfoFile(String accountId) throws IOException;
 	public void writeContactInfoToFile(String accountId, Vector contactInfo) throws IOException;
 	public Vector getContactInfo(String accountId) throws IOException;
+	
+	public void putFieldDataPacket(FieldDataPacket fpd) throws IOException;
+	public FieldDataPacket getFieldDataPacket(UniversalId uid) throws IOException;
 }

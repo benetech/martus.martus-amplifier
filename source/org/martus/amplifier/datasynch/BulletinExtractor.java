@@ -60,11 +60,11 @@ import org.martus.util.inputstreamwithseek.ZipEntryInputStreamWithSeek;
 public class BulletinExtractor
 {
 	public BulletinExtractor(
-		DataManager attachmentManager, 
+		DataManager bulletinDataManager, 
 		BulletinIndexer bulletinIndexer,
 		MartusCrypto verifier)
 	{
-		this.attachmentManager = attachmentManager;
+		this.bulletinDataManager = bulletinDataManager;
 		this.bulletinIndexer = bulletinIndexer;
 		this.verifier = verifier;
 	}
@@ -82,7 +82,7 @@ public class BulletinExtractor
 				BulletinHeaderPacket.loadFromZipFile(bulletinZipFile, verifier);
 			
 			FieldDataPacket fdp = indexFieldData(bhp, bulletinZipFile);
-			
+			storeFieldDataPacket(fdp);
 			storeAttachments(fdp.getAttachments(), bulletinZipFile);
 		} finally {
 			bulletinZipFile.close();
@@ -112,7 +112,6 @@ public class BulletinExtractor
 		fdp.loadFromXml(
 			new ZipEntryInputStreamWithSeek(bulletinZipFile, fieldDataEntry),
 			verifier);
-			
 		bulletinIndexer.indexFieldData(bhp.getUniversalId(), fdp, bhp.getHistory());
 		indexLanguage(fdp.get(BulletinConstants.TAGLANGUAGE));
 		indexEventDate(fdp.get(BulletinConstants.TAGEVENTDATE));
@@ -128,6 +127,11 @@ public class BulletinExtractor
 	public void indexEventDate(String flexidateString) throws IOException
 	{
 		EventDatesIndexedList.eventDatesIndexedSingleton.addValue(flexidateString);
+	}
+	
+	private void storeFieldDataPacket(FieldDataPacket fdp) throws IOException
+	{
+		bulletinDataManager.putFieldDataPacket(fdp);	
 	}
 	
 	private void storeAttachments(
@@ -153,7 +157,7 @@ public class BulletinExtractor
 			InputStream attachmentData = new FileInputStream(proxy.getFile());
 			try 
 			{
-				attachmentManager.putAttachment(attachmentId, attachmentData);
+				bulletinDataManager.putAttachment(attachmentId, attachmentData);
 			} 
 			finally 
 			{
@@ -163,7 +167,7 @@ public class BulletinExtractor
 		}
 	}
 	
-	private DataManager attachmentManager;
+	private DataManager bulletinDataManager;
 	private BulletinIndexer bulletinIndexer;
 	private MartusCrypto verifier;
 }

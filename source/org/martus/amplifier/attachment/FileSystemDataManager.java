@@ -29,17 +29,20 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Vector;
-
 import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.common.ContactInfo;
+import org.martus.common.FieldSpec;
+import org.martus.common.StandardFieldSpecs;
 import org.martus.common.MartusUtilities.FileVerificationException;
 import org.martus.common.crypto.MartusCrypto;
 import org.martus.common.database.DatabaseKey;
 import org.martus.common.database.ServerFileDatabase;
 import org.martus.common.database.FileDatabase.MissingAccountMapException;
 import org.martus.common.database.FileDatabase.MissingAccountMapSignatureException;
+import org.martus.common.packet.FieldDataPacket;
 import org.martus.common.packet.UniversalId;
 import org.martus.common.utilities.MartusServerUtilities;
+import org.martus.util.inputstreamwithseek.FileInputStreamWithSeek;
 
 
 public class FileSystemDataManager implements DataManager
@@ -160,6 +163,38 @@ public class FileSystemDataManager implements DataManager
 		info.remove(0);//Account ID
 		info.remove(0);//# of data elements
 		info.remove(info.size() - 1);//Signature
+	}
+
+	public void putFieldDataPacket(FieldDataPacket fdp) throws IOException
+	{
+		try
+		{
+			fdp.writeXmlToDatabase(db, DatabaseKey.createSealedKey(fdp.getUniversalId()), false, db.security);
+		}
+		catch(Exception e)
+		{
+			throw new IOException(e.getMessage());
+		}
+	}
+
+	public FieldDataPacket getFieldDataPacket(UniversalId uid) throws IOException
+	{
+		FieldSpec[] standardPublicFieldSpecs = StandardFieldSpecs.getDefaultPublicFieldSpecs();
+		FieldDataPacket fdp = new FieldDataPacket(uid, standardPublicFieldSpecs);
+		FileInputStreamWithSeek in = new FileInputStreamWithSeek(db.getFileForRecord(DatabaseKey.createSealedKey(fdp.getUniversalId())));
+		try
+		{
+			fdp.loadFromXml(in, null);
+		}
+		catch(Exception e)
+		{
+			throw new IOException(e.getMessage());
+		}
+		finally
+		{
+			in.close();
+		}
+		return fdp;
 	}
 
 	private ServerFileDatabase db;
