@@ -49,8 +49,7 @@ public class TestSearchResults extends TestCaseEnhanced
 		assertEquals("Didn't get back correct search string from session", basicSearchString, request.getSession().getAttribute("searchedFor"));
 		assertEquals("Didn't get back correct search string from context", basicSearchString, context.get("searchedFor"));
 		
-		request.putParameter(SearchResultConstants.RESULT_BASIC_QUERY_KEY, null);
-		request.putParameter(SearchResultConstants.RESULT_ADVANCED_QUERY_KEY, null);
+		request.putParameter(SearchResultConstants.RESULT_BASIC_QUERY_KEY, null);	
 		SearchResults.setSearchedFor(request, context);
 		assertEquals("Session Didn't get back correct search string from the original session", basicSearchString, request.getSession().getAttribute("searchedFor"));
 		assertEquals("Context Didn't get back correct search string from the original session", basicSearchString, context.get("searchedFor"));

@@ -41,7 +41,6 @@ public interface SearchResultConstants
 	final String RESULT_SORTBY_KEY		= "sortBy";
 	final String RESULT_BASIC_FIELD_KEY	= "field";
 	final String RESULT_BASIC_QUERY_KEY	= "query";
-	final String RESULT_ADVANCED_QUERY_KEY = "advancedQuery";
 	
 	final String THESE_WORD_TAG 		= "allWordsQuery";
 	final String ANYWORD_TAG 			= "anyWordsQuery";

@@ -627,7 +627,7 @@ public abstract class AbstractSearchTestCase
 			fields.put(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, startDate);
 			fields.put(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, endDate);
 			fields.put(SearchResultConstants.RESULT_FIELDS_KEY, BulletinField.SEARCH_TITLE_INDEX_FIELD);
-			fields.put(SearchResultConstants.RESULT_ADVANCED_QUERY_KEY, "lunch");
+			fields.put(ANYWORD_TAG, "lunch");
 			
 			results = searcher.search(fields);
 			assertEquals("Combine search for eventdate and field? ", 1, results.getCount());
@@ -729,7 +729,7 @@ public abstract class AbstractSearchTestCase
 			fields.put(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, endDate);
 			fields.put(SearchResultConstants.RESULT_FIELDS_KEY, BulletinField.SEARCH_TITLE_INDEX_FIELD);
 			fields.put(BulletinField.SEARCH_LANGUAGE_INDEX_FIELD, "en");
-			fields.put(SearchResultConstants.RESULT_ADVANCED_QUERY_KEY, "lunch");
+			fields.put(ANYWORD_TAG, "lunch");
 			
 			results = searcher.search(fields);
 			assertEquals("Combine search for eventdate, field, and laguage? ", 0, results.getCount());
@@ -816,7 +816,7 @@ public abstract class AbstractSearchTestCase
 			fields.put(SearchResultConstants.RESULT_FIELDS_KEY, BulletinField.SEARCH_TITLE_INDEX_FIELD);			
 			fields.put(BulletinField.SEARCH_LANGUAGE_INDEX_FIELD, "es");
 			fields.put(SEARCH_ENTRY_DATE_INDEX_FIELD, past3Month);
-			fields.put(SearchResultConstants.RESULT_ADVANCED_QUERY_KEY, "lunch");
+			fields.put(ANYWORD_TAG, "lunch");
 			
 			results = searcher.search(fields);
 			assertEquals("Combine search for eventdate, field, laguage, and event date? ", 1, results.getCount());
@@ -963,7 +963,7 @@ public abstract class AbstractSearchTestCase
 	
 	private void clear4Fields(HashMap fields)
 	{
-		fields.remove(WITHOUTWORDS_TAG);
+		fields.remove(ANYWORD_TAG);
 		fields.remove(EXACTPHRASE_TAG);	
 		fields.remove(THESE_WORD_TAG);
 		fields.remove(WITHOUTWORDS_TAG);			
@@ -1000,7 +1000,7 @@ public abstract class AbstractSearchTestCase
 			fields.put(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, defaultEndDate);
 			fields.put(RESULT_FIELDS_KEY, IN_ALL_FIELDS);
 			fields.put(RESULT_SORTBY_KEY, SEARCH_TITLE_INDEX_FIELD);			
-			fields.put(RESULT_ADVANCED_QUERY_KEY, "lunch");			
+			fields.put(ANYWORD_TAG, "lunch");			
 			
 			results = searcher.search(fields);
 			assertEquals("Should have found 2 matches? ", 2, results.getCount());
@@ -1059,7 +1059,7 @@ public abstract class AbstractSearchTestCase
 			fields.put(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, defaultEndDate);
 			fields.put(RESULT_FIELDS_KEY, IN_ALL_FIELDS);
 			fields.put(RESULT_SORTBY_KEY, SEARCH_EVENT_DATE_INDEX_FIELD);			
-			fields.put(RESULT_ADVANCED_QUERY_KEY, "lunch");			
+			fields.put(ANYWORD_TAG, "lunch");			
 			
 			results = searcher.search(fields);
 			assertEquals("Should have found 2 matches? ", 2, results.getCount());

@@ -83,10 +83,6 @@ public class DoSearch extends AmplifierServlet implements SearchResultConstants
 			fields.put(RESULT_BASIC_QUERY_KEY, queryString);
 			return getResults(fields);
 		}
-
-		queryString = request.getParameter(RESULT_ADVANCED_QUERY_KEY);
-		if (queryString != null)		
-			fields.put(RESULT_ADVANCED_QUERY_KEY, queryString);
 				
 		new SearchParameters(request, fields);									
 										
@@ -107,10 +103,7 @@ public class DoSearch extends AmplifierServlet implements SearchResultConstants
 		ArrayList list = new ArrayList();
 		
 		try {
-			Results results;			
-		
-			String field = (String)fields.get(RESULT_BASIC_FIELD_KEY);			
-			results = searcher.search(fields);
+			Results results = searcher.search(fields);
 						
 			int numResults = results.getCount();
 			for (int i = 0; i < numResults; i++)

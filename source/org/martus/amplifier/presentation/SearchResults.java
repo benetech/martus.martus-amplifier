@@ -71,7 +71,7 @@ public class SearchResults extends AmplifierServlet implements SearchResultConst
 	static public void setSearchedFor(AmplifierServletRequest request, Context context)
 	{
 		String basicQueryString = request.getParameter(RESULT_BASIC_QUERY_KEY);
-		String advanceQueryString = request.getParameter(RESULT_ADVANCED_QUERY_KEY);
+		String advanceQueryString = request.getParameter(ANYWORD_TAG);
 		if(basicQueryString != null)
 		{
 			context.put("searchedFor", basicQueryString);
