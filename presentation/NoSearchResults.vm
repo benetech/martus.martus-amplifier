@@ -1,3 +1,4 @@
+#set ($barColor = "#5588ee")
 <html>
     <head>
      	#include("Meta.vm")
@@ -5,12 +6,16 @@
     </head>
     
     <body>
-		#include ("ResultHeader.vm")
+    	#set ($pageTitle="Searched Martus for: test")
+    	#set ($pageInfo="No bulletins found")
+		#set ($showSearchForm = false)
+		#parse ("ResultHeader.vm")
 		
 		<br/><br/><br/>
         No bulletins matched your search terms
 		<br/><br/><br/>
 
+		#set ($showSearchForm = true)
 		#parse ("ResultFooter.vm")
     </body>
 </html>

@@ -6,7 +6,7 @@
 			</a>
 		</td>
 		<td align='center'>
-			#if (!$noSearchForm)
+			#if ($showSearchForm)
 				#include ("MiniSearchForm.vm")
 			#end
 		</td>

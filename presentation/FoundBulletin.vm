@@ -9,6 +9,7 @@
     <body>
     	#set ($pageTitle="Searched Martus for: test")
     	#set ($pageInfo="Bulletin $currentBulletin of xxx")
+		#set ($showSearchForm = true)
 		#parse ("ResultHeader.vm")
 		<p><font size='-1'><a href='some url'>Printer Friendly Version</a></font></p>
 		<br/>
@@ -81,6 +82,7 @@
 		<br/><br/>
 
 		#parse("PreviousNextBulletin.vm")
+		#set ($showSearchForm = true)
 		#parse ("ResultFooter.vm")
     </body>
 </html>

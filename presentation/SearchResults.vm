@@ -7,6 +7,7 @@
     <body>
     	#set ($pageTitle="Searched Martus for: test")
     	#set ($pageInfo="Found xxx bulletins")
+		#set ($showSearchForm = true)
 		#parse ("ResultHeader.vm")
 		
 		<br/><br/>
@@ -37,6 +38,7 @@
         </table>
         
 		<br/><br/>
+		#set ($showSearchForm = true)
 		#parse ("ResultFooter.vm")
     </body>
 </html>
