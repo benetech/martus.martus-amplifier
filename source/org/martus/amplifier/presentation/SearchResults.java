@@ -94,7 +94,7 @@ public class SearchResults extends AmplifierServlet implements SearchResultConst
 	static public void setSearchedFor(AmplifierServletRequest request, Context context)
 	{
 		String basicQueryString = request.getParameter(RESULT_BASIC_QUERY_KEY);
-		String advanceQueryString = request.getParameter(ANYWORD_TAG);
+		String advancedQueryString = "Advanced Search";		
 		
 		if(basicQueryString != null)
 		{
@@ -105,10 +105,10 @@ public class SearchResults extends AmplifierServlet implements SearchResultConst
 			context.put("defaultSimpleSearch", basicQueryString);	
 			request.getSession().setAttribute("defaultSimpleSearch", simpleQuery);
 		}
-		else if (advanceQueryString != null)
+		else if (advancedQueryString != null)
 		{
-			context.put("searchedFor", advanceQueryString);
-			request.getSession().setAttribute("searchedFor", advanceQueryString);
+			context.put("searchedFor", advancedQueryString);
+			request.getSession().setAttribute("searchedFor", advancedQueryString);
 			context.put("defaultSimpleSearch", "");
 		}
 		else		

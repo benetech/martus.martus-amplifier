@@ -44,7 +44,6 @@ public class AdvancedSearch extends AmplifierServlet
 	public String selectTemplate(AmplifierServletRequest request, AmplifierServletResponse response, Context context) throws Exception
 	{				
 		context.put("monthFields", FindBulletinsFields.getMonthFieldDisplayNames());
-		context.put("today", FindBulletinsFields.getToday());
 				
 		Vector filterFields = FindBulletinsFields.getFindWordFilterDisplayNames();
 		context.put("filterWordFields", filterFields);

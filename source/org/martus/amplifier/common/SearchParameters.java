@@ -42,7 +42,7 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 		searchRequest = request;
 		searchFields  = fields;
 		loadFromRequest();		
-		storeAdvancedFields(request);	
+		rememberAdvancedFields(request);	
 	}
 	
 	private void loadFromRequest()
@@ -193,22 +193,22 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 		return new GregorianCalendar(year, month, day).getTime();
 	}	
 	
-	private void storeAdvancedFields(AmplifierServletRequest request)
+	private void rememberAdvancedFields(AmplifierServletRequest request)
 	{		
 		String exactPhraseWords = (String) resultList.get(SearchResultConstants.EXACTPHRASE_TAG);
 		if (exactPhraseWords == null)			
-		resultList.put(SearchResultConstants.EXACTPHRASE_TAG, "");
+			resultList.put(SearchResultConstants.EXACTPHRASE_TAG, "");
 			
 		String anyWords = (String) resultList.get(SearchResultConstants.ANYWORD_TAG);
 		if (anyWords == null)			
-		resultList.put(SearchResultConstants.ANYWORD_TAG, "");
+			resultList.put(SearchResultConstants.ANYWORD_TAG, "");
 			
 		String theseWords = (String) resultList.get(SearchResultConstants.THESE_WORD_TAG);
 		if (theseWords == null)			
-		resultList.put(SearchResultConstants.THESE_WORD_TAG, "");	
+			resultList.put(SearchResultConstants.THESE_WORD_TAG, "");	
 			
 		request.getSession().setAttribute("defaultAdvancedSearch", new AdvancedSearchInfo(resultList));	
-	}
+	}	
 	
 	public static void clearAdvancedSearch(AmplifierServletRequest request)
 	{
@@ -245,5 +245,5 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 	HashMap resultList 	= new HashMap();
 	HashMap	searchFields;
 	final static String PLUS 	= "+";
-	final static String NOT 	= "-";
+	final static String NOT 	= "-";	
 }
