@@ -284,6 +284,7 @@ public class LuceneBulletinSearcher
 					"Unable to retrieve FieldDataPacket " + n, ioe);
 			}
 			BulletinInfo info = new BulletinInfo(getBulletinId(doc));
+			
 			addAllEmptyFields(info);
 			addFields(info, doc);
 			addAttachments(info, doc);

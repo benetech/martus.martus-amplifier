@@ -1,8 +1,11 @@
 package org.martus.amplifier.lucene.test;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -812,6 +815,73 @@ public abstract class AbstractSearchTestCase
 		{
 			searcher.close();
 		}
+	}
+	
+	public void testAdvancedSearchSortBy() throws BulletinIndexException,ParseException
+	{
+		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
+		FieldDataPacket fdp1 	= generateSampleData(bulletinId1);		
+		UniversalId bulletinId2 = UniversalId.createDummyUniversalId();
+		FieldDataPacket fdp2 	= generateSampleFlexiData(bulletinId2);		
+		BulletinIndexer indexer = openBulletinIndexer();
+		try 
+		{
+			indexer.clearIndex();
+			indexer.indexFieldData(bulletinId1, fdp1);
+			indexer.indexFieldData(bulletinId2, fdp2);
+		} 
+		finally 
+		{
+			indexer.close();
+		}
+		
+		BulletinSearcher searcher = openBulletinSearcher();
+		BulletinSearcher.Results results = null;				
+		
+		try 
+		{
+			Date defaultDate 	= SearchConstants.SEARCH_DATE_FORMAT.parse("1970-01-01");
+			Date defaultEndDate = SearchConstants.SEARCH_DATE_FORMAT.parse("2004-01-01");
+			
+			HashMap fields = new HashMap();			
+			fields.put(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, defaultDate);
+			fields.put(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, defaultEndDate);
+			fields.put(RESULT_FIELDS_KEY, IN_ALL_FIELDS);
+			fields.put(RESULT_SORTBY_KEY, SEARCH_TITLE_INDEX_FIELD);			
+			fields.put(RESULT_ADVANCED_QUERY_KEY, "lunch");			
+			
+			results = searcher.search(null, fields);
+			assertEquals("Should have found 2 matches? ", 2, results.getCount());
+			
+			int count = results.getCount();												
+			ArrayList list = new ArrayList();
+			for (int i = 0; i < count; i++)
+			{
+				BulletinInfo bulletin = results.getBulletinInfo(i);					
+				list.add(bulletin);
+			}
+			
+			Collections.sort(list, new Comparator()
+			{
+			  public int compare(Object o1, Object o2)
+			  {
+				Object string1 = ((BulletinInfo)o1).get(SEARCH_TITLE_INDEX_FIELD);
+				Object string2 = ((BulletinInfo)o2).get(SEARCH_TITLE_INDEX_FIELD);	  			  		
+				return ((Comparable)string1).compareTo(string2);
+			   }
+			});
+			
+			String title1 = ((BulletinInfo)list.get(0)).get(SEARCH_TITLE_INDEX_FIELD);
+			String title2 = ((BulletinInfo)list.get(1)).get(SEARCH_TITLE_INDEX_FIELD);
+						
+			assertEquals("What's for Lunch??", title1);
+			assertEquals("ZZZ Lunch?", title2);
+												
+		}
+		finally 
+		{
+			searcher.close();
+		}
 	}				
 		
 	protected FieldDataPacket generateSampleData(UniversalId bulletinId)
@@ -819,7 +889,7 @@ public abstract class AbstractSearchTestCase
 		String author = "Paul";
 		String keyword = "ate";
 		String keywords = keyword + " egg salad root beer";
-		String title = "What's for Lunch";
+		String title = "ZZZ Lunch?";
 		String eventdate = "2003-04-10";
 		String entrydate = "2003-05-11";
 		String publicInfo = "menu";

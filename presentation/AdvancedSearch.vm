@@ -152,6 +152,20 @@
 						</select>
 					</td>
 				</tr>
+				<tr bgcolor='#dddddd' color='#000000'>
+					<td><strong>Sort bulletins</strong></td>
+					<td>
+						<select name='sortBy'>
+							#foreach ($fieldChoice in $sortByFields)	
+									<option value="$fieldChoice.tag"> 
+		                                $fieldChoice.label	
+		                            </option>                              
+							#end							
+						</select>
+					</td>
+					<td></td>
+					<td bgcolor='#ffffff' color='#000000'></td>
+				</tr>
 			</table>
 			</td>
 			</tr>

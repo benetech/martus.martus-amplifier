@@ -94,7 +94,7 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 	{
 		String newString = null;
 		if (filterType.equals(WITHOUTWORDS_LABEL))
-			newString = addSign(NOT, "(", text, ")");
+			newString = addSign(NOT, "(", text, ")");			
 		else if (filterType.equals(EXACTPHRASE_LABEL))
 			newString = "\""+text+"\"";
 		else 
@@ -136,7 +136,11 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 			addField(RESULT_LANGUAGE_KEY, languageString);
 			
 		Date entryDate = getEntryDate(getValue(RESULT_ENTRY_DATE_KEY));
-		addField(SEARCH_ENTRY_DATE_INDEX_FIELD, entryDate);	
+		addField(SEARCH_ENTRY_DATE_INDEX_FIELD, entryDate);
+		
+		String sortByString = getValue(RESULT_SORTBY_KEY);
+		if (sortByString != null)
+			addField(RESULT_SORTBY_KEY, sortByString);	
 	}
 
 	public static Date getEntryDate(String dayString)
@@ -202,7 +206,7 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 	AmplifierServletRequest searchRequest;
 	HashMap resultList 	= new HashMap();
 	HashMap	searchFields;
-	boolean hasEventFields 	= true;
-	final static String PLUS = "+";
-	final static String NOT = "-";
+	boolean hasEventFields 		= true;
+	final static String PLUS 	= "+";
+	final static String NOT 	= "-";
 }

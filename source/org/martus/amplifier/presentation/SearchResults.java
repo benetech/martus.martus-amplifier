@@ -26,6 +26,8 @@ Boston, MA 02111-1307, USA.
 package org.martus.amplifier.presentation;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -121,11 +123,29 @@ public class SearchResults extends AmplifierServlet implements SearchResultConst
 						
 			int numResults = results.getCount();
 			for (int i = 0; i < numResults; i++)				
-				list.add(results.getBulletinInfo(i));				
+				list.add(results.getBulletinInfo(i));
+			
+			String sortField = (String) fields.get(RESULT_SORTBY_KEY);
+			if (sortField != null)
+				sortBulletin(list, sortField);					
 	
 		} finally {
 			searcher.close();
 		}
 		return list;	
+	}
+	
+	public void sortBulletin(List list, final String field)
+	{
+		Collections.sort(list, new Comparator()
+		{
+		  public int compare(Object o1, Object o2)
+		  {
+			String string1 = ((BulletinInfo)o1).get(field);
+			String string2 = ((BulletinInfo)o2).get(field);	  			  		
+			return ((Comparable)string1.toLowerCase()).compareTo(string2.toLowerCase());
+		   }
+		});
+	
 	}	
 }

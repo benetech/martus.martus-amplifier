@@ -62,6 +62,19 @@ public class FindBulletinsFields implements SearchConstants, SearchResultConstan
 		return fields;
 	}
 	
+	public static Vector getSortByFieldDisplayNames()
+	{
+		Vector fields = new Vector();
+		
+		fields.add(new ChoiceEntry(SEARCH_TITLE_INDEX_FIELD, SORT_BY_TITLE_LABEL));
+		fields.add(new ChoiceEntry(SEARCH_AUTHOR_INDEX_FIELD, SORT_BY_AUTHOR_LABEL));
+		fields.add(new ChoiceEntry(SEARCH_EVENT_DATE_INDEX_FIELD, SORT_BY_EVENTDATE_LABEL ));
+		fields.add(new ChoiceEntry(SEARCH_LOCATION_INDEX_FIELD, SORT_BY_LOCATION_LABEL ));
+		fields.add(new ChoiceEntry(SEARCH_ORGANIZATION_INDEX_FIELD, SORT_BY_ORGANIZATION_LABEL));
+		
+		return fields;
+	}
+	
 	public static Vector getMonthFieldDisplayNames()
 	{
 		Vector fields = new Vector();
@@ -80,4 +93,5 @@ public class FindBulletinsFields implements SearchConstants, SearchResultConstan
 		"January", "February", "March", "April", "May", "June",
 		"July", "August", "September", "October", "November", "December"
 	};
+	
 }

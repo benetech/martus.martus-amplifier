@@ -39,6 +39,7 @@ public interface SearchResultConstants
 	final String RESULT_LANGUAGE_KEY 	= "language";
 	final String RESULT_FIELDS_KEY		= "fields";
 	final String RESULT_ENTRY_DATE_KEY	= "entryDate";
+	final String RESULT_SORTBY_KEY		= "sortBy";
 	final String RESULT_BASIC_FIELD_KEY	= "field";
 	final String RESULT_BASIC_QUERY_KEY	= "query";
 	final String RESULT_ADVANCED_QUERY_KEY = "advancedQuery";
@@ -85,9 +86,16 @@ public interface SearchResultConstants
 	final static String LANGUAGE_RUSSIAN_KEY	= "Russian";
 	final static String LANGUAGE_SPANISH_KEY	= "Spanish";
 	
+	final static String SORT_BY_TITLE_LABEL		= "by title";
+	final static String SORT_BY_AUTHOR_LABEL	= "by author";
+	final static String SORT_BY_LOCATION_LABEL	= "by location";
+	final static String SORT_BY_EVENTDATE_LABEL	= "by event date";
+	final static String SORT_BY_ORGANIZATION_LABEL= "by organization";
+		
 	
 	final String[] ADVANCED_KEYS = new String[] {
 		RESULT_START_YEAR_KEY, RESULT_START_MONTH_KEY, RESULT_START_DAY_KEY,
 		RESULT_END_YEAR_KEY, RESULT_END_MONTH_KEY, RESULT_END_DAY_KEY,
-		RESULT_FIELDS_KEY, RESULT_FILTER_BY_KEY, RESULT_LANGUAGE_KEY, RESULT_ENTRY_DATE_KEY};		
+		RESULT_FIELDS_KEY, RESULT_FILTER_BY_KEY, RESULT_LANGUAGE_KEY, RESULT_ENTRY_DATE_KEY,
+		RESULT_SORTBY_KEY };		
 }
