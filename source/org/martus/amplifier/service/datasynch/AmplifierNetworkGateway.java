@@ -21,6 +21,7 @@ import org.martus.common.MartusUtilities.ServerErrorException;
 import org.martus.common.bulletin.BulletinZipUtilities;
 import org.martus.common.crypto.MartusCrypto;
 import org.martus.common.crypto.MartusSecurity;
+import org.martus.common.crypto.MockMartusSecurity;
 import org.martus.common.crypto.MartusCrypto.DecryptionException;
 import org.martus.common.crypto.MartusCrypto.NoKeyPairException;
 import org.martus.common.network.NetworkInterfaceConstants;
@@ -33,16 +34,27 @@ import org.martus.util.Base64.InvalidBase64Exception;
 
 public class AmplifierNetworkGateway implements IDataSynchConstants
 {
-	
 	public AmplifierNetworkGateway(List backupServersToCall)
+	{
+		this(backupServersToCall, null, null);
+	}
+	
+	public AmplifierNetworkGateway(List backupServersToCall, 
+				AmplifierBulletinRetrieverGatewayInterface gatewayToUse,
+				MartusSecurity securityToUse)
 	{
 		super();
 	
 		serverInfoList = backupServersToCall;
-		gateway = getCurrentNetworkInterfaceGateway();
+		gateway = gatewayToUse;
+		if(gateway == null)
+			gateway = getCurrentNetworkInterfaceGateway();
+			
 		try
 		{
-			security = new MartusSecurity();
+			security = securityToUse;
+			if(security == null)
+				security = new MockMartusSecurity();
 			security.createKeyPair();
 		}
 		catch(Exception e)
@@ -51,7 +63,6 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
 		}
 		
 	}
-	
 	
 	public Vector getAllAccountIds() //throws ServerErrorException
 	{
@@ -71,6 +82,7 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
 		}
 		catch(Exception e)
 		{
+			e.printStackTrace();
 			logger.severe("AmplifierNetworkGateway.getAllAccountIds(): Unable to retrieve AccountIds: " + e.getMessage());
 		}
 		return result;
