@@ -1,4 +1,4 @@
-package org.martus.amplifier.service.attachment.filesystem;
+package org.martus.amplifier.service.attachment;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,9 +10,6 @@ import java.io.OutputStream;
 import java.util.Iterator;
 import java.util.Properties;
 
-import org.martus.amplifier.service.attachment.AttachmentManager;
-import org.martus.amplifier.service.attachment.AttachmentNotFoundException;
-import org.martus.amplifier.service.attachment.AttachmentStorageException;
 import org.martus.common.packet.UniversalId;
 import org.martus.util.StreamCopier;
 

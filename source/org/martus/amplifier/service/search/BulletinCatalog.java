@@ -2,8 +2,7 @@ package org.martus.amplifier.service.search;
 
 import java.util.logging.Logger;
 
-import org.martus.amplifier.common.configuration.AmplifierConfiguration;
-import org.martus.amplifier.service.search.api.IBulletinCatalog;
+import org.martus.amplifier.common.AmplifierConfiguration;
 import org.martus.amplifier.service.search.lucene.LuceneBulletinSearcher;
 import org.martus.common.packet.UniversalId;
 

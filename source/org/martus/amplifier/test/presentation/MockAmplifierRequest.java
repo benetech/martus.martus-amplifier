@@ -28,8 +28,8 @@ package org.martus.amplifier.test.presentation;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.martus.amplifier.presentation.AmplifierServletRequest;
-import org.martus.amplifier.presentation.AmplifierServletSession;
+import org.martus.amplifier.common.AmplifierServletRequest;
+import org.martus.amplifier.common.AmplifierServletSession;
 
 public class MockAmplifierRequest implements AmplifierServletRequest
 {

@@ -1,4 +1,4 @@
-package org.martus.amplifier.service.search.api;
+package org.martus.amplifier.service.search;
 
 import org.apache.lucene.search.Hits;
 

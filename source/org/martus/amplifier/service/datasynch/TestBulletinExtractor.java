@@ -14,7 +14,7 @@ import junit.framework.Assert;
 
 import org.martus.amplifier.service.attachment.AttachmentManager;
 import org.martus.amplifier.service.attachment.AttachmentStorageException;
-import org.martus.amplifier.service.attachment.filesystem.FileSystemAttachmentManager;
+import org.martus.amplifier.service.attachment.FileSystemAttachmentManager;
 import org.martus.amplifier.service.search.AttachmentInfo;
 import org.martus.amplifier.service.search.BulletinField;
 import org.martus.amplifier.service.search.BulletinIndexException;

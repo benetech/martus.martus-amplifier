@@ -8,11 +8,11 @@ import java.util.TimerTask;
 import java.util.Vector;
 import java.util.logging.Logger;
 
-import org.martus.amplifier.common.configuration.AmplifierConfiguration;
+import org.martus.amplifier.common.AmplifierConfiguration;
 import org.martus.amplifier.common.datasynch.AmplifierClientSideNetworkHandlerUsingXMLRPC.SSLSocketSetupException;
 import org.martus.amplifier.service.attachment.AttachmentManager;
 import org.martus.amplifier.service.attachment.AttachmentStorageException;
-import org.martus.amplifier.service.attachment.filesystem.FileSystemAttachmentManager;
+import org.martus.amplifier.service.attachment.FileSystemAttachmentManager;
 import org.martus.amplifier.service.datasynch.BackupServerInfo;
 import org.martus.amplifier.service.datasynch.DataSynchManager;
 import org.martus.amplifier.service.search.BulletinIndexException;

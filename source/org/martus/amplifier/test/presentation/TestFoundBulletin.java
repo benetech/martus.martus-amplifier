@@ -6,7 +6,7 @@ import java.util.Vector;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.velocity.context.Context;
-import org.martus.amplifier.presentation.AmplifierServletRequest;
+import org.martus.amplifier.common.AmplifierServletRequest;
 import org.martus.amplifier.presentation.FoundBulletin;
 import org.martus.amplifier.presentation.SearchResults;
 import org.martus.amplifier.service.search.BulletinIndexException;

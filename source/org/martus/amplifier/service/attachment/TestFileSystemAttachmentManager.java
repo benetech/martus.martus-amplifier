@@ -1,4 +1,4 @@
-package org.martus.amplifier.service.attachment.filesystem;
+package org.martus.amplifier.service.attachment;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,9 +6,6 @@ import java.io.InputStream;
 
 import junit.framework.Assert;
 
-import org.martus.amplifier.service.attachment.TestAbstractAttachmentManager;
-import org.martus.amplifier.service.attachment.AttachmentManager;
-import org.martus.amplifier.service.attachment.AttachmentStorageException;
 import org.martus.common.packet.UniversalId;
 
 public class TestFileSystemAttachmentManager 

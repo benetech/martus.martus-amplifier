@@ -3,7 +3,6 @@ package org.martus.amplifier.service.attachment;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import org.martus.amplifier.service.attachment.filesystem.TestFileSystemAttachmentManager;
 
 public class TestAllAttachment extends TestSuite
 {

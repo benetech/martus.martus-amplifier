@@ -1,4 +1,4 @@
-package org.martus.amplifier.common.configuration;
+package org.martus.amplifier.common;
 
 import java.io.File;
 import java.io.IOException;
