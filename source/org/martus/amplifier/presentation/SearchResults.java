@@ -109,13 +109,13 @@ searcher.setField("author");
 			if(resultCount > 0)
 			{
 				templateName ="SearchResults.vm";
-				Vector titles = new Vector();
+				Vector bulletins = new Vector();
 				for (Iterator iter = results.iterator(); iter.hasNext();)
 				{
 					BulletinInfo element = (BulletinInfo) iter.next();
-					titles.add(element.get("title"));
+					bulletins.add(element);
 				}
-				ctx.put("foundTitles", titles);
+				ctx.put("foundBulletins", bulletins);
 			}
 			return getTemplate(templateName);
 	   }

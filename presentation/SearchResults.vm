@@ -1,7 +1,7 @@
 <html>
     <head>
             <title>Martus Amplifier Search Results</title>
-            <link rel="stylesheet" href="stylesheets/style.css" type="text/css">
+            <link rel="stylesheet" href="../stylesheets/style.css" type="text/css">
     </head>
     <body>
 		#include ("header.vm")
@@ -21,10 +21,10 @@
         <table width="800" border="0" cellpadding="0" cellspacing="0">
 	        <tr>
 	        <td>
-	                <img src="images/spacer.gif" width="20" height="0"/>
+	                <img src="../images/spacer.gif" width="20" height="0"/>
 	        </td>
 	        <td colspan="3">
-	                <img src="images/spacer.gif" width="0" height="30"/>
+	                <img src="../images/spacer.gif" width="0" height="30"/>
 	        </td>
 	        </tr>
 	
@@ -36,13 +36,15 @@
 	        </tr>
 	        <tr>
 	            <td>&nbsp;</td>
-	            <td colspan="3"><img src="images/spacer.gif" width="0" height="5"/></td>
+	            <td colspan="3"><img src="../images/spacer.gif" width="0" height="5"/></td>
 	        </tr>
 	
-			#foreach ($thisTitle in $foundTitles)
+			#foreach ($thisBulletin in $foundBulletins)
 	            <tr>
 	                <td>&nbsp;</td>
-	                <td><a href="some url">$thisTitle</a></td>
+	                <td>$thisBulletin.fields.author</td>
+	                <td>$thisBulletin.fields.eventDate</td>
+	                <td><a href="some url">$thisBulletin.fields.title</a></td>
 	            </tr>
 			
 			#end
