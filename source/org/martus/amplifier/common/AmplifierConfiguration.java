@@ -113,6 +113,8 @@ public class AmplifierConfiguration
 	private Logger logger = Logger.getLogger("CONFIGURATION_LOGGER");
 	private Properties pathProperties = null;
 	
+	public static final String DATASYNC_LOGGER = "DATASYNC_LOGGER";
+
 	//property keys
 	private static final String AMPLIFIER_BASE_PATH = "AMPLIFIER_BASE_DIRECTORY";
 	private static final String AMPLIFIER_WORKING_PATH = "AMPLIFIER_WORKING_DIRECTORY";

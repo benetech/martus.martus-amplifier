@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
 
+import org.martus.amplifier.common.AmplifierConfiguration;
 import org.martus.amplifier.network.AmplifierBulletinRetrieverGatewayInterface;
 import org.martus.amplifier.network.AmplifierClientSideNetworkGateway;
 import org.martus.amplifier.network.AmplifierClientSideNetworkHandlerUsingXMLRPC;
@@ -32,7 +33,7 @@ import org.martus.common.packet.Packet.SignatureVerificationException;
 import org.martus.common.packet.Packet.WrongPacketTypeException;
 import org.martus.util.Base64.InvalidBase64Exception;
 
-public class AmplifierNetworkGateway implements IDataSynchConstants
+public class AmplifierNetworkGateway
 {
 	public AmplifierNetworkGateway(List backupServersToCall)
 	{
@@ -211,7 +212,7 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
 	
 	private AmplifierBulletinRetrieverGatewayInterface gateway;
 	private MartusCrypto security;
-	private Logger logger = Logger.getLogger(DATASYNC_LOGGER);
+	private Logger logger = Logger.getLogger(AmplifierConfiguration.DATASYNC_LOGGER);
 	private List serverInfoList = null;
 	private AmplifierNetworkInterface currentNetworkInterfaceHandler = null;
 	private AmplifierClientSideNetworkGateway currentNetworkInterfaceGateway = null;
