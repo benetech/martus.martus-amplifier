@@ -219,8 +219,7 @@ public class TestBulletinExtractor extends TestAbstractAmplifier
 	
 	private File stringToFile(String s) throws IOException
 	{
-		File temp = File.createTempFile("TempAttachment", null);
-		temp.deleteOnExit();
+		File temp = createTempFile("$$$MartusAmpTempAttachment");
 		InputStream in = stringToInputStream(s);
 		OutputStream out = new FileOutputStream(temp);
 		try {
@@ -244,8 +243,7 @@ public class TestBulletinExtractor extends TestAbstractAmplifier
 	private File createBulletinZipFile(Bulletin b) 
 		throws IOException, CryptoException			
 	{
-		File tempFile = File.createTempFile("BulletinExtractorTest", null);
-		tempFile.deleteOnExit();
+		File tempFile = createTempFile("$$$MartusAmpBulletinExtractorTest");
 		BulletinForTesting.saveToFile(db, b, tempFile, security);
 		return tempFile;
 	}
