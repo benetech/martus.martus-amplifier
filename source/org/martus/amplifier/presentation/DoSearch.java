@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import org.apache.velocity.context.Context;
@@ -78,20 +79,21 @@ public class DoSearch extends AmplifierServlet implements SearchResultConstants
 	public List getSearchResults(AmplifierServletRequest request)
 		throws Exception
 	{
-		HashMap fields = new HashMap();				
 		String queryString = request.getParameter(RESULT_BASIC_QUERY_KEY);
 	 
 		if (queryString != null)
 		{	
 			if (queryString.equals(""))
 				return new ArrayList();
+			HashMap fields = new HashMap();				
 			fields.put(RESULT_BASIC_QUERY_KEY, queryString);
 						
 			SearchParameters.clearAdvancedSearch(request);			
 			return getResults(fields);
 		}
 				
-		new SearchParameters(request, fields);		
+		SearchParameters sp = new SearchParameters(request);
+		Map fields = sp.getSearchFields();
 		SearchParameters.clearSimpleSearch(request);								
 										
 		return getResults(fields);
@@ -105,7 +107,7 @@ public class DoSearch extends AmplifierServlet implements SearchResultConstants
 		return new LuceneBulletinSearcher(indexPath);
 	}
 	
-	public List getResults(HashMap fields) throws Exception
+	public List getResults(Map fields) throws Exception
 	{
 		BulletinSearcher searcher = openBulletinSearcher();
 		ArrayList list = new ArrayList();

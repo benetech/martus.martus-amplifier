@@ -28,7 +28,7 @@ package org.martus.amplifier.lucene;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.IndexSearcher;
@@ -49,7 +49,7 @@ public class LuceneBulletinSearcher implements BulletinSearcher
 		searcher = new IndexSearcher(indexDir.getPath());
 	}	
 	
-	public Results search(HashMap fields) throws Exception 
+	public Results search(Map fields) throws Exception 
 	{	
 		if (isComplexSearch(fields))
 			return getComplexSearchResults(fields);
@@ -88,20 +88,20 @@ public class LuceneBulletinSearcher implements BulletinSearcher
 		return new LuceneResults(searcher, query.getQuery());
 	}
 
-	private boolean isComplexSearch(HashMap fields)
+	private boolean isComplexSearch(Map fields)
 	{
 		String queryString = (String) fields.get(SearchResultConstants.RESULT_BASIC_QUERY_KEY);
 		return (queryString == null);
 	}
 
-	private Results getComplexSearchResults(HashMap fields)
+	private Results getComplexSearchResults(Map fields)
 		throws Exception, IOException
 	{
 		QueryBuilder query = new QueryBuilder(fields);
 		return new LuceneResults(searcher, query.getQuery());
 	}
 
-	private Results getSimpleSearchResults(HashMap fields)
+	private Results getSimpleSearchResults(Map fields)
 		throws Exception, IOException
 	{
 		String queryString = (String) fields.get(SearchResultConstants.RESULT_BASIC_QUERY_KEY);

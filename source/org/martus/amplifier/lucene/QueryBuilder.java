@@ -26,7 +26,7 @@ Boston, MA 02111-1307, USA.
 
 package org.martus.amplifier.lucene;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
@@ -44,7 +44,7 @@ public class QueryBuilder
 		query = parseMultiFieldQuery(queryString, fields, ERROR_PARSING_MULTIQUERY);
 	}
 
-	QueryBuilder(HashMap fields) throws Exception
+	QueryBuilder(Map fields) throws Exception
 	{
 		query = parseAdvancedQuery(fields);
 	}
@@ -62,7 +62,7 @@ public class QueryBuilder
 	}
 	
 
-	static Query parseEventDateQuery(HashMap fields)
+	static Query parseEventDateQuery(Map fields)
 			throws Exception 
 	{
 		String startDate	= (String) fields.get(SearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD);
@@ -78,7 +78,7 @@ public class QueryBuilder
 	
 	}
 	
-	static Query parseEntryDateQuery(HashMap fields)
+	static Query parseEntryDateQuery(Map fields)
 			throws Exception 
 	{		
 		String startDate	= (String) fields.get(SearchConstants.SEARCH_ENTRY_DATE_INDEX_FIELD);
@@ -92,7 +92,7 @@ public class QueryBuilder
 			"Improperly formed advanced find entry date type in bulletin query: ");		
 	}	
 	
-	static Query parseLanguageQuery(HashMap fields)
+	static Query parseLanguageQuery(Map fields)
 			throws Exception
 	{
 		Query query = null;
@@ -104,27 +104,27 @@ public class QueryBuilder
 		return query;
 	} 	
 
-	static Query parseAnyWordsQuery(HashMap fields) throws Exception
+	static Query parseAnyWordsQuery(Map fields) throws Exception
 	{
 		return parseStringQuery(fields, SearchResultConstants.ANYWORD_TAG);
 	}
 
-	static Query parseTheseWordsQuery(HashMap fields) throws Exception
+	static Query parseTheseWordsQuery(Map fields) throws Exception
 	{
 		return parseStringQuery(fields, SearchResultConstants.THESE_WORD_TAG);
 	}
 
-	static Query parseExactPhraseQuery(HashMap fields) throws Exception
+	static Query parseExactPhraseQuery(Map fields) throws Exception
 	{
 		return parseStringQuery(fields, SearchResultConstants.EXACTPHRASE_TAG);
 	}	
 
-	static Query parseWithoutWordsQuery(HashMap fields) throws Exception
+	static Query parseWithoutWordsQuery(Map fields) throws Exception
 	{
 		return parseStringQuery(fields, SearchResultConstants.WITHOUTWORDS_TAG);
 	}
 
-	private static Query parseStringQuery(HashMap fields, String queryTag)
+	private static Query parseStringQuery(Map fields, String queryTag)
 		throws Exception
 	{
 		String fieldString = (String) fields.get(SearchResultConstants.RESULT_FIELDS_KEY);
@@ -139,7 +139,7 @@ public class QueryBuilder
 		return parseSingleFieldQuery(queryString, fieldString, "Improperly formed advanced find bulletin query: ");
 	}	
 
-	static Query parseAdvancedQuery(HashMap fields) throws Exception
+	static Query parseAdvancedQuery(Map fields) throws Exception
 	{
 		BooleanQuery query = new BooleanQuery();
 		

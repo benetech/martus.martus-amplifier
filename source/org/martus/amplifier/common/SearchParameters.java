@@ -30,6 +30,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.martus.amplifier.search.SearchConstants;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
@@ -37,12 +38,17 @@ import org.martus.util.MartusFlexidate;
 
 public class SearchParameters implements SearchResultConstants, SearchConstants
 {
-	public SearchParameters(AmplifierServletRequest request, HashMap fields)
+	public SearchParameters(AmplifierServletRequest request)
 	{
 		searchRequest = request;
-		searchFields  = fields;
+		searchFields  = new HashMap();
 		loadFromRequest();		
 		rememberAdvancedFields(request);	
+	}
+	
+	public Map getSearchFields()
+	{
+		return searchFields;
 	}
 	
 	private void loadFromRequest()
