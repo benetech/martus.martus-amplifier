@@ -194,7 +194,7 @@ public class MartusAmplifier
 		
 		try
 		{
-			startServer(password);
+			startServers(password);
 		}
 		catch (Exception e1)
 		{
@@ -203,32 +203,33 @@ public class MartusAmplifier
 		}
 		deleteStartupFiles();
 
-		timer.scheduleAtFixedRate(timedTask, IMMEDIATELY, dataSynchIntervalMillis);
-		
-		while(! isShutdownRequested() )
-		{
-		}
-		serverExit(0);
+		startBackgroundTimers();
+
+		writeSyncFile(getRunningFile());
+		System.out.println("Waiting for connection...");
+	}
+
+	void startBackgroundTimers()
+	{
+		MartusUtilities.startTimer(new UpdateFromServerTask(), dataSynchIntervalMillis);
+		MartusUtilities.startTimer(new ShutdownRequestMonitor(), shutdownRequestIntervalMillis);
 	}
 	
 
 	private File getServersWhoWeCallDirectory()
 	{
-		return new File(getStartupConfigDirectory(), "serversWhoWeCall");
+		return new File(getStartupConfigDirectory(), SERVERS_WHO_WE_CALL_DIRIRECTORY);
 	}
 
 	private File getAccountsNotAmplifiedFile()
 	{
-		return new File(getStartupConfigDirectory(), ACCOUNTSNOTAMPLIFIED_FILE);
+		return new File(getStartupConfigDirectory(), ACCOUNTS_NOT_AMPLIFIED_FILE);
 	}
 
-	private void startServer(String password) throws IOException, MultiException
+	private void startServers(String password) throws IOException, MultiException
 	{
 		startSSLServer(password);
 		startNonSSLServer();
-
-		writeSyncFile(getRunningFile());
-		System.out.println("Waiting for connection...");
 	}
 
 	private void startNonSSLServer() throws IOException, MultiException
@@ -355,13 +356,13 @@ public class MartusAmplifier
 
 	private File getRunningFile()
 	{
-		File runningFile = new File(getTriggerDirectory(), "running");
+		File runningFile = new File(getTriggerDirectory(), AMP_RUNNING_FILE);
 		return runningFile;
 	}
 
 	static public File getShutdownFile()
 	{
-		return new File(getTriggerDirectory(), "exit");
+		return new File(getTriggerDirectory(), EXIT_AMP_FILE);
 	}
 
 	public boolean isSecureMode()
@@ -376,7 +377,7 @@ public class MartusAmplifier
 	
 	static File getTriggerDirectory()
 	{
-		return new File(getBasePath(), ADMINTRIGGERDIRECTORY);
+		return new File(getBasePath(), ADMIN_TRIGGER_DIRECTORY);
 		
 	}
 
@@ -387,7 +388,7 @@ public class MartusAmplifier
 	
 	public File getStartupConfigDirectory()
 	{
-		return new File(getBasePath(), ADMINSTARTUPCONFIGDIRECTORY);
+		return new File(getBasePath(), ADMIN_STARTUP_CONFIG_DIRECTORY);
 	}
 
 	boolean hasAccount()
@@ -397,7 +398,7 @@ public class MartusAmplifier
 	
 	File getKeyPairFile()
 	{
-		return new File(getStartupConfigDirectory(), KEYPAIRFILENAME);
+		return new File(getStartupConfigDirectory(), KEYPAIR_FILENAME);
 	}
 
 	void deleteLuceneLockFile() throws BulletinIndexException
@@ -423,7 +424,7 @@ public class MartusAmplifier
 		System.out.print("Enter passphrase: ");
 		System.out.flush();
 		
-		File waitingFile = new File(getTriggerDirectory(), "waiting");
+		File waitingFile = new File(getTriggerDirectory(), AMP_WAITING_FILE);
 		waitingFile.delete();
 		writeSyncFile(waitingFile);
 		
@@ -458,21 +459,14 @@ public class MartusAmplifier
 		security.readKeyPair(in, passphrase);
 	}
 	
-	static public boolean doesShutdownFileExist()
+	static public boolean isShutdownRequested()
 	{
-		return getShutdownFile().exists();
+		return(getShutdownFile().exists());
 	}
 	
-	boolean isShutdownRequested()
+	public boolean canExitNow()
 	{
-		if(!doesShutdownFileExist())
-			return false;
-		if(isAmplifierSyncing())
-			return false;
-		
-		File shutdownFile = getShutdownFile();
-		shutdownFile.delete();
-		return true;
+		return !(isAmplifierSyncing());
 	}
 	
 	MartusSecurity getSecurity()
@@ -499,7 +493,7 @@ public class MartusAmplifier
 	{
 		for(int i=0; i < backupServersList.size(); ++i)
 		{
-			if(doesShutdownFileExist())
+			if(isShutdownRequested())
 				return;
 			BackupServerInfo backupServerToCall = (BackupServerInfo)backupServersList.get(i);
 			pullNewDataFromOneServer(backupServerToCall);
@@ -612,15 +606,33 @@ public class MartusAmplifier
 			if(! isAmplifierSyncing() )
 			{
 				startSynch();
-				//System.out.println("Scheduled Task started " + System.currentTimeMillis());
-
 				pullNewDataFromServers(backupServersList);
-				
-				//System.out.println("Scheduled Task finished " + System.currentTimeMillis() + "\n");
 				endSynch();
 			}
 		}
 	}
+
+	private class ShutdownRequestMonitor extends TimerTask
+	{
+		public void run()
+		{
+			if( isShutdownRequested() && canExitNow() )
+			{
+				log("Shutdown request received.");
+				getShutdownFile().delete();
+				log("Server has exited.");
+				try
+				{
+					serverExit(0);
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
 
 	private static void displayVersion()
 	{
@@ -698,8 +710,6 @@ public class MartusAmplifier
 	static final long DEFAULT_HOURS_TO_SYNC = 24;
 	long dataSynchIntervalMillis;
 
-	Timer timer = new Timer(true);
-	TimerTask timedTask = new UpdateFromServerTask();
 	boolean isSyncing;
 	
 	List backupServersList;
@@ -709,12 +719,21 @@ public class MartusAmplifier
 
 	public static LanguagesIndexedList languagesIndexed;
 	public static DataManager dataManager;
-	private static final String KEYPAIRFILENAME = "keypair.dat";
-	private static final String ADMINTRIGGERDIRECTORY = "adminTriggers";
-	private static final String ADMINSTARTUPCONFIGDIRECTORY = "deleteOnStartup";
+
+	private static final String ADMIN_TRIGGER_DIRECTORY = "adminTriggers";
+	private static final String ADMIN_STARTUP_CONFIG_DIRECTORY = "deleteOnStartup";
+	private static final String SERVERS_WHO_WE_CALL_DIRIRECTORY = "serversWhoWeCall";
+	private static final String KEYPAIR_FILENAME = "keypair.dat";
+	private static final String ACCOUNTS_NOT_AMPLIFIED_FILE = "accountsNotAmplified.txt";
+	private static final String EXIT_AMP_FILE = "exitamp";
+	private static final String AMP_RUNNING_FILE = "runningamp";
+	private static final String AMP_WAITING_FILE = "waitingamp";
+	
+
 	private static final int MAX_IDLE_TIME_MS = 30000;
 	private static final int LOW_RESOURCE_PERSIST_TIME_MS = 5000;
 	private static final int MIN_THREADS = 5;
 	private static final int MAX_THREADS = 255;
-	private static final String ACCOUNTSNOTAMPLIFIED_FILE = "accountsNotAmplified.txt";
+
+	private static final long shutdownRequestIntervalMillis = 1000;
 }
