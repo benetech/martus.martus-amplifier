@@ -165,10 +165,10 @@
 	    </delete>
 	    <!-- Remove all md5 files from main push dir. -->
 	    <delete verbose="true">
-	        <fileset dir="${push-dir}" includes="*.MD5"/>
+	        <fileset dir="${push-dir}" includes="*.md5"/>
 	    </delete>
         <tar destfile="${tar-filename}" basedir="${push-dir}"/>
-        <checksum file="${tar-filename}"/>
+        <checksum file="${tar-filename}" fileext="md5"/>
     </target>
     
 <!-- ================================================================== -->
