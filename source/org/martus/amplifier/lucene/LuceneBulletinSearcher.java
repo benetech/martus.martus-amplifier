@@ -31,6 +31,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 
+import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.DateField;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
@@ -58,45 +59,73 @@ public class LuceneBulletinSearcher
 		searcher = new IndexSearcher(indexDir.getPath());
 	}	
 	
-	private Results getLuceneResults(Query query) throws Exception 
-	{
-		return new LuceneResults(searcher.search(query));
-	}
-	
 	public Results search(String field, String queryString) throws Exception 
 	{
 		Query query = queryParser(queryString, field, "Improperly formed query: ");
-		return getLuceneResults(query);
+		return new LuceneResults(searcher, query);
 	}
 
 	public Results search(HashMap fields) throws Exception 
 	{	
 		String queryString = (String) fields.get(SearchResultConstants.RESULT_BASIC_QUERY_KEY);
+		Query query = null;
 		if (queryString != null)
-		{
-			Query query = multiFieldQueryParser(queryString, SEARCH_ALL_TEXT_FIELDS, "Improperly formed multiquery: ");				
-			return getLuceneResults(query);	
-		}	
-			
-		return getLuceneResults(complexSearch(fields));
+			query = multiFieldQueryParser(queryString, SEARCH_ALL_TEXT_FIELDS, "Improperly formed multiquery: ");				
+		else
+			query = complexSearch(fields);
+
+		return new LuceneResults(searcher, query);
+	}
+
+	public BulletinInfo lookup(UniversalId bulletinId) throws Exception 
+	{
+		Term term = new Term(
+			BULLETIN_UNIVERSAL_ID_INDEX_FIELD, bulletinId.toString());
+		Query query = new TermQuery(term);
+		
+		Results results = new LuceneResults(searcher, query);
+
+		int numResults = results.getCount();
+		if (numResults == 0) {
+			return null;
+		}
+		if (numResults == 1) {
+			return results.getBulletinInfo(0);
+		}
+		throw new BulletinIndexException(
+			"Found more than one field data set for the same bulletin id: " +
+				bulletinId + "; found " + numResults + " results");
+	}
+
+	public void close() throws Exception
+	{
+		searcher.close();
+	}
+
+	public static String getStartDateRange(String value)
+	{
+		MartusFlexidate mfd = MartusFlexidate.createFromMartusDateString(value);
+		return MartusFlexidate.toStoredDateFormat(mfd.getBeginDate());
+	}
+
+	public static String getEndDateRange(String value)
+	{
+		MartusFlexidate mfd = MartusFlexidate.createFromMartusDateString(value);
+		if (!mfd.hasDateRange())
+			return null;
+		return MartusFlexidate.toStoredDateFormat(mfd.getEndDate());
 	}
 
 	private Query queryParser(String query, String field, String msg)
 			throws Exception 
 	{
-		return QueryParser.parse(
-			query,
-			field,
-			LuceneBulletinIndexer.getAnalyzer());
+		return QueryParser.parse(query, field, getAnalyzer());
 	}
 
 	private Query multiFieldQueryParser(String query, String[] fields, String msg)
 			throws Exception 
 	{
-		return MultiFieldQueryParser.parse(
-			query,
-			fields,
-			LuceneBulletinIndexer.getAnalyzer());
+		return MultiFieldQueryParser.parse(query, fields, getAnalyzer());
 	}
 	
 	private Query queryEventDate(HashMap fields)
@@ -222,45 +251,6 @@ public class LuceneBulletinSearcher
 		return query;	
 	}			
 
-	public BulletinInfo lookup(UniversalId bulletinId) throws Exception 
-	{
-		Term term = new Term(
-			BULLETIN_UNIVERSAL_ID_INDEX_FIELD, bulletinId.toString());
-		Query query = new TermQuery(term);
-		
-		Results results = new LuceneResults(searcher.search(query));
-
-		int numResults = results.getCount();
-		if (numResults == 0) {
-			return null;
-		}
-		if (numResults == 1) {
-			return results.getBulletinInfo(0);
-		}
-		throw new BulletinIndexException(
-			"Found more than one field data set for the same bulletin id: " +
-				bulletinId + "; found " + numResults + " results");
-	}
-
-	public void close() throws Exception
-	{
-		searcher.close();
-	}
-
-	public static String getStartDateRange(String value)
-	{
-		MartusFlexidate mfd = MartusFlexidate.createFromMartusDateString(value);
-		return MartusFlexidate.toStoredDateFormat(mfd.getBeginDate());
-	}
-
-	public static String getEndDateRange(String value)
-	{
-		MartusFlexidate mfd = MartusFlexidate.createFromMartusDateString(value);
-		if (!mfd.hasDateRange())
-			return null;
-		return MartusFlexidate.toStoredDateFormat(mfd.getEndDate());
-	}
-
 	private String setRangeQuery(String from, String to)
 	{
 		return "[ " + from + " TO " + to + " ]";
@@ -271,6 +261,11 @@ public class LuceneBulletinSearcher
 		return name+":"+query;
 	}
 		
+	private static Analyzer getAnalyzer()
+	{
+		return LuceneBulletinIndexer.getAnalyzer();
+	}
+
 	private IndexSearcher searcher;	
 	final String AND= " AND ";
 }

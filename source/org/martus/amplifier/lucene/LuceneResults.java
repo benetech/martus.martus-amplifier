@@ -30,6 +30,8 @@ import java.io.IOException;
 import org.apache.lucene.document.DateField;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.search.Hits;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
 import org.martus.amplifier.attachment.AttachmentManager;
 import org.martus.amplifier.attachment.AttachmentStorageException;
 import org.martus.amplifier.attachment.FileSystemAttachmentManager;
@@ -47,9 +49,9 @@ import org.martus.common.packet.UniversalId.NotUniversalIdException;
 
 public class LuceneResults implements Results, LuceneSearchConstants, SearchConstants
 {
-	public LuceneResults(Hits hits)
+	public LuceneResults(IndexSearcher searcher, Query query) throws IOException
 	{
-		this.hits = hits;
+		hits = searcher.search(query);
 	}
 		
 	public int getCount() throws BulletinIndexException
