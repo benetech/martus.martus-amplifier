@@ -37,7 +37,7 @@ Boston, MA 02111-1307, USA.
 		<br/><br/><br/>
         No bulletins were found that matched your search terms.
         <br/><br/>
-        Note: The current version of the Martus Search Engine cannot perform a search using characters from a non-Latin alphabet, such as Russian, Thai, or Arabic.
+        Note: The current version of the Martus Search Engine ignores punctuation in search strings, and cannot perform a search using an alphabet that does not separate words with spaces, such as Thai.
 		<br/><br/><br/>
 
 		#set ($showSearchForm = true)
