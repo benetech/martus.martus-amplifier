@@ -13,8 +13,12 @@
 
   <property name="martus-dir" value="../martus"/>
   
-  <property name="common-basedir"   value="../martus-common"/>
+  <property name="common-basedir"   value="../martus-common/bin"/>
   <property name="common-dir" value="org/martus/common"/>
+
+  <property name="servertools-basedir"   value="../martus-server/bin"/>
+  <property name="servertools-dir" value="org/martus/server/tools"/>
+
 
   <property name="util-basedir"   value="../martus-utils/bin"/>
   <property name="util-dir"   value="org/martus/util"/>
@@ -95,6 +99,12 @@
         update="false"
    		basedir="${common-basedir}"
    		includes="${common-dir}/**/*.class"/>
+
+    <!-- Jar up martus server tools and throw it in the push dir -->
+    <jar jarfile="${ampjar-filename}"
+        update="false"
+   		basedir="${servertools-basedir}"
+   		includes="${servertools-dir}/**/*.class"/>
 	
     <!-- Jar up martus-util and throw it in the push dir -->
     <jar jarfile="${ampjar-filename}"
