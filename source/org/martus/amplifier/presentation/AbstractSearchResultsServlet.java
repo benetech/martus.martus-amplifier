@@ -43,19 +43,13 @@ import org.martus.amplifier.velocity.AmplifierServletSession;
 public abstract class AbstractSearchResultsServlet extends AmplifierServlet
 {
 
-	public static void updateSortByInSession(AmplifierServletRequest request)
+	public static void setSortByInSession(String sortField, AmplifierServletRequest request)
 	{
 		AmplifierServletSession session = request.getSession();
-		
-		String sortField = request.getParameter(SearchResultConstants.RESULT_SORTBY_KEY);
-		if(sortField == null)
-			sortField = (String)session.getAttribute(SearchResultConstants.RESULT_SORTBY_KEY);
-		if(sortField == null)
-			sortField = SearchResultConstants.SORT_BY_TITLE_TAG;
 		session.setAttribute(SearchResultConstants.RESULT_SORTBY_KEY, sortField);
 	}
 
-	public static void setSearchResultsContext(AmplifierServletRequest request, Vector bulletins, Context context)
+	public static void setSearchResultsContext(Vector bulletins, AmplifierServletRequest request, Context context)
 	{
 		request.getSession().setAttribute("foundBulletins", bulletins);
 		context.put("foundBulletins", bulletins);
@@ -66,7 +60,7 @@ public abstract class AbstractSearchResultsServlet extends AmplifierServlet
 		context.put("currentlySortingBy", sortBy);
 	}
 
-	public static void setSearchedFor(AmplifierServletRequest request, Context context)
+	public static void setSearchedForInContextAndSession(AmplifierServletRequest request, Context context)
 	{
 		String basicQueryString = request.getParameter(SearchResultConstants.RESULT_BASIC_QUERY_KEY);
 		String advancedQueryString = "Advanced Search";		
@@ -118,7 +112,7 @@ public abstract class AbstractSearchResultsServlet extends AmplifierServlet
 		}
 	}
 
-	protected String getFieldToSortBy(AmplifierServletRequest request)
+	protected static String getFieldToSortBy(AmplifierServletRequest request)
 	{
 		AmplifierServletSession session = request.getSession();
 		String sortField = request.getParameter(SearchResultConstants.RESULT_SORTBY_KEY);

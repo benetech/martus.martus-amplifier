@@ -35,7 +35,7 @@ public class UserFeedbackForm extends AmplifierServlet
 {
 	public String selectTemplate(AmplifierServletRequest request, AmplifierServletResponse response, Context context)
 	{
-		SearchResults.setSearchedFor(request, context);
+		SearchResults.setSearchedForInContextAndSession(request, context);
 		boolean isProblemReport = (request.getParameter("problemReport") != null);
 		context.put("problemReport", new Boolean(isProblemReport));
 		return "UserFeedbackForm.vm";

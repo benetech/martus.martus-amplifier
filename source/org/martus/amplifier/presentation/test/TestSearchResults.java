@@ -107,7 +107,7 @@ public class TestSearchResults extends TestCaseEnhanced
 		request.putParameter("query", basicSearchString);
 		Context context = new MockContext();
 		
-		SearchResults.setSearchedFor(request, context);
+		SearchResults.setSearchedForInContextAndSession(request, context);
 		assertEquals("Didn't get back correct search string from session", basicSearchString, request.getSession().getAttribute("searchedFor"));
 		assertEquals("Didn't get back correct search string from context", basicSearchString, context.get("searchedFor"));		
 	}
@@ -121,7 +121,7 @@ public class TestSearchResults extends TestCaseEnhanced
 		Vector fakeBulletins = new Vector();
 		fakeBulletins.add("hello");
 		fakeBulletins.add("there");
-		SearchResults.setSearchResultsContext(request, fakeBulletins, context);
+		SearchResults.setSearchResultsContext(fakeBulletins, request, context);
 
 		assertEquals("wrong second bulletin in session?", fakeBulletins.get(1), ((Vector)request.getSession().getAttribute("foundBulletins")).get(1));		
 

@@ -45,11 +45,11 @@ public class SearchResults extends AbstractSearchResultsServlet
 		String sortField = getFieldToSortBy(request);
 
 		sortBulletins(bulletins, sortField);
-		setSearchedFor(request, context);
-		setSearchResultsContext(request, bulletins, context);
-		updateSortByInSession(request);
+		setSearchedForInContextAndSession(request, context);
+		setSearchResultsContext(bulletins, request, context);
+		setSortByInSession(sortField, request);
 
-		if(bulletins == null || bulletins.size() == 0)
+		if(bulletins.size() == 0)
 			return "NoSearchResults.vm";
 			
 		return "SearchResults.vm";				
