@@ -28,7 +28,6 @@ package org.martus.amplifier.presentation;
 import java.util.Vector;
 
 import org.apache.velocity.context.Context;
-import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
 import org.martus.amplifier.velocity.AmplifierServletResponse;
 import org.martus.amplifier.velocity.AmplifierServletSession;
@@ -42,20 +41,27 @@ public class SearchResults extends AbstractSearchResultsServlet
 	{
 		super.selectTemplate(request, response, context);
 		
-		setSearchedFor(request, context);
+		Vector bulletins = getBulletinsToDisplay(request);
+		String sortField = getFieldToSortBy(request);
 
+		sortBulletins(bulletins, sortField);
+		setSearchedFor(request, context);
+		setSearchResultsContext(request, bulletins, context);
 		updateSortByInSession(request);
 
-		AmplifierServletSession session = request.getSession();
-		String sortField = (String)session.getAttribute(SearchResultConstants.RESULT_SORTBY_KEY);
-		Vector bulletins = (Vector)session.getAttribute("foundBulletins");
 		if(bulletins == null || bulletins.size() == 0)
 			return "NoSearchResults.vm";
 			
-		sortBulletins(bulletins, sortField);
-
-		setSearchResultsContext(request, bulletins, context);
 		return "SearchResults.vm";				
+	}
+	
+	private Vector getBulletinsToDisplay(AmplifierServletRequest request)
+	{
+		AmplifierServletSession session = request.getSession();
+		Vector bulletins = (Vector)session.getAttribute("foundBulletins");
+		if(bulletins == null)
+			bulletins = new Vector();
+		return bulletins;
 	}
 
 }

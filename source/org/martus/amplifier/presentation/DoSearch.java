@@ -54,26 +54,40 @@ public class DoSearch extends AbstractSearchResultsServlet
 					throws Exception
 	{
 		super.selectTemplate(request, response, context);
+
+		copySimpleQueryFromRequestToSession(request);
 		
-		String simpleQuery = request.getParameter("query");
-		request.getSession().setAttribute("simpleQuery", simpleQuery);
-		updateSortByInSession(request);
+		Vector bulletins = getBulletinsToDisplay(request);
+		String sortField = getFieldToSortBy(request);
 
+		sortBulletins(bulletins, sortField);
 		setSearchedFor(request, context);
-
-		List results = getSearchResults(request);
-		if(results.size() == 0)
+		setSearchResultsContext(request, bulletins, context);		
+		updateSortByInSession(request);
+		
+		if(bulletins == null || bulletins.size() == 0)
 			return "NoSearchResults.vm";
 
+		return "SearchResults.vm";
+	}
+
+	private void copySimpleQueryFromRequestToSession(AmplifierServletRequest request)
+	{
+		String simpleQuery = request.getParameter("query");
+		request.getSession().setAttribute("simpleQuery", simpleQuery);
+	}
+
+	private Vector getBulletinsToDisplay(AmplifierServletRequest request)
+		throws Exception
+	{
+		List results = getSearchResults(request);
 		Vector bulletins = new Vector();
 		for (Iterator iter = results.iterator(); iter.hasNext();)
 		{
 			BulletinInfo element = (BulletinInfo) iter.next();
 			bulletins.add(element);
 		}
-
-		SearchResults.setSearchResultsContext(request, bulletins, context);		
-		return "SearchResults.vm";
+		return bulletins;
 	}
 
 	public List getSearchResults(AmplifierServletRequest request)
@@ -134,11 +148,6 @@ public class DoSearch extends AbstractSearchResultsServlet
 				formatDataForHtmlDisplay(bulletinInfo.getFields());
 				list.add(bulletinInfo);
 			}
-
-			String sortField = (String) fields.get(SearchResultConstants.RESULT_SORTBY_KEY);
-			if (sortField != null)
-				SearchResults.sortBulletins(list, sortField);
-
 		}
 		finally
 		{
@@ -156,6 +165,5 @@ public class DoSearch extends AbstractSearchResultsServlet
 		if(languageString == null)
 			return;				
 		bulletinInfo.set(SearchConstants.SEARCH_LANGUAGE_INDEX_FIELD, languageString);
-	}		
-
+	}
 }

@@ -94,9 +94,9 @@ public abstract class AbstractSearchResultsServlet extends AmplifierServlet
 		}
 	}
 
-	public static void sortBulletins(List list, final String field)
+	public static void sortBulletins(List bulletinList, final String sortByFieldTag)
 	{
-		Collections.sort(list, new BulletinSorter(field));
+		Collections.sort(bulletinList, new BulletinSorter(sortByFieldTag));
 	}
 
 	static class BulletinSorter implements Comparator
@@ -116,6 +116,17 @@ public abstract class AbstractSearchResultsServlet extends AmplifierServlet
 			String string2 = ((BulletinInfo)o2).get(field);	  			  		
 			return ((Comparable)string1.toLowerCase()).compareTo(string2.toLowerCase());
 		}
+	}
+
+	protected String getFieldToSortBy(AmplifierServletRequest request)
+	{
+		AmplifierServletSession session = request.getSession();
+		String sortField = request.getParameter(SearchResultConstants.RESULT_SORTBY_KEY);
+		if (sortField == null)
+			sortField = (String)session.getAttribute(SearchResultConstants.RESULT_SORTBY_KEY);
+		if(sortField == null)
+			sortField = SearchResultConstants.SORT_BY_TITLE_TAG;
+		return sortField;
 	}
 
 }
