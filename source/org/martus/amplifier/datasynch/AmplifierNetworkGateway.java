@@ -247,7 +247,7 @@ public class AmplifierNetworkGateway
 		try 
 		{
 			AmplifierClientSideXmlrpcHandler handler = new AmplifierClientSideXmlrpcHandler(ourServer, ourPort);
-		//	handler.getSimpleX509TrustManager().setExpectedPublicKey(getConfigInfo().getServerPublicKey());
+		//	handler.getSimpleX509TrustManager().setExpectedPublicKey(getContactInfo().getServerPublicKey());
 		    handler.getSimpleX509TrustManager().setExpectedPublicKey(serverInfo.getServerPublicKey());
 			return handler;
 		} 
