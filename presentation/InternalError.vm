@@ -1,6 +1,6 @@
 <html>
     <head>
-     	#include("Meta.vm")
+     	#parse("Meta.vm")
         <title>Martus Amplifier Internal Error</title>
     </head>
     

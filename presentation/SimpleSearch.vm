@@ -1,6 +1,6 @@
 <html>
     <head>
-   		#include("Meta.vm")
+   		#parse("Meta.vm")
         <title>Martus Amplifier Search Query</title>
     </head>
     
@@ -28,7 +28,7 @@
 					<td align='center'>
 						<br/><br/>
 						Enter your search here:
-						#include ("MiniSearchForm.vm")
+						#parse ("MiniSearchForm.vm")
 					</td>
 				</tr>
 			</table>

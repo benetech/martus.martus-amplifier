@@ -1,7 +1,7 @@
 #set ($barColor = "#5588ee")
 #if ($showSearchForm)
 	<center>
-		#include ("MiniSearchForm.vm")
+		#parse ("MiniSearchForm.vm")
 	    <p>
 		    <font size='-1'>
 			    Dissatisfied with your search results?
@@ -25,5 +25,5 @@
 </table>
 <br/>
 <center>
-	#include("Copyright.vm")
+	#parse("Copyright.vm")
 </center>
