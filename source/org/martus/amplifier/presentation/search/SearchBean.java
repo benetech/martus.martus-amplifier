@@ -176,7 +176,7 @@ public class SearchBean implements Serializable
 			BulletinSearcher searcher = openBulletinSearcher();
 			try {
 				BulletinSearcher.Results results;
-		
+	
 				if (query != null) {
 					results = searcher.search(field, query);
 				} else {
