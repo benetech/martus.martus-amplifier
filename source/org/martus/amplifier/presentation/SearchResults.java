@@ -34,8 +34,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.velocity.context.Context;
 import org.martus.amplifier.common.AmplifierConfiguration;
-import org.martus.amplifier.common.AmplifierServlet;
-import org.martus.amplifier.common.AmplifierServletRequest;
 import org.martus.amplifier.common.SearchFields;
 import org.martus.amplifier.common.SearchParameters;
 import org.martus.amplifier.common.SearchResultConstants;
@@ -43,6 +41,8 @@ import org.martus.amplifier.lucene.LuceneBulletinSearcher;
 import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinInfo;
 import org.martus.amplifier.search.BulletinSearcher;
+import org.martus.amplifier.velocity.AmplifierServlet;
+import org.martus.amplifier.velocity.AmplifierServletRequest;
 
 
 public class SearchResults extends AmplifierServlet implements SearchResultConstants

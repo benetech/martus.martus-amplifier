@@ -1,6 +1,7 @@
-package org.martus.amplifier.common;
+package org.martus.amplifier.velocity;
 
 import javax.servlet.http.HttpServletRequest;
+
 
 
 public class WrappedServletRequest implements AmplifierServletRequest

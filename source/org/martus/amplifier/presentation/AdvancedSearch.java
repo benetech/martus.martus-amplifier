@@ -30,10 +30,10 @@ import java.util.Vector;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.velocity.context.Context;
-import org.martus.amplifier.common.AmplifierServlet;
-import org.martus.amplifier.common.AmplifierServletRequest;
 import org.martus.amplifier.common.FindBulletinsFields;
 import org.martus.amplifier.common.MonthFields;
+import org.martus.amplifier.velocity.AmplifierServlet;
+import org.martus.amplifier.velocity.AmplifierServletRequest;
 
 public class AdvancedSearch extends AmplifierServlet
 {

@@ -6,10 +6,10 @@ import java.util.Vector;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.velocity.context.Context;
-import org.martus.amplifier.common.AmplifierServletRequest;
 import org.martus.amplifier.presentation.SearchResults;
 import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinInfo;
+import org.martus.amplifier.velocity.AmplifierServletRequest;
 import org.martus.common.packet.UniversalId;
 import org.martus.common.test.TestCaseEnhanced;
 

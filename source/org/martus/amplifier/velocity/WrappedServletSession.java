@@ -1,4 +1,4 @@
-package org.martus.amplifier.common;
+package org.martus.amplifier.velocity;
 
 import javax.servlet.http.HttpSession;
 
