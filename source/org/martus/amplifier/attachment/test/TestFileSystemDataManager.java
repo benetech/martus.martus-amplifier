@@ -42,7 +42,7 @@ public class TestFileSystemDataManager
 		try
 		{
 			missingAccountMap = createTempDirectory();
-			emptyAccount = new File(missingAccountMap.getAbsolutePath() + "\\ab00");
+			emptyAccount = new File(missingAccountMap.getAbsolutePath(), "ab00");
 			emptyAccount.deleteOnExit();
 			emptyAccount.mkdir();
 			new FileSystemDataManager(missingAccountMap.getAbsolutePath());
@@ -64,10 +64,10 @@ public class TestFileSystemDataManager
 		try
 		{
 			baseDir = createTempDirectory();
-			accountDir = new File(baseDir.getAbsolutePath() + "\\ab00");
+			accountDir = new File(baseDir.getAbsolutePath(), "ab00");
 			accountDir.deleteOnExit();
 			accountDir.mkdir();
-			File accountMap = new File(baseDir.getAbsolutePath() + "\\acctmap.txt");
+			File accountMap = new File(baseDir.getAbsolutePath(), "acctmap.txt");
 			accountMap.deleteOnExit();
 			accountMap.createNewFile();
 			new FileSystemDataManager(baseDir.getAbsolutePath());
