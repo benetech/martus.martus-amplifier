@@ -44,9 +44,11 @@
                         </tr>
                             <td>Author:</td><td><c:out value="${bulletin.fields.author}"/></td>
                         </tr>
+			    <td>Keywords:</td><td><c:out value="${bulletin.fields.keywords}"/></td>
+                        </tr>
                             <td>Event Date:</td><td><c:out value="${bulletin.fields.eventDate}"/></td>
                         </tr>
-                            <td>Public Info:</td><td><c:out value="${bulletin.fields.publicInfo}"/></td>
+                            <td>Details:</td><td><c:out value="${bulletin.fields.publicInfo}"/></td>
                         </tr>
                             <td>Summary:</td><td><c:out value="${bulletin.fields.summary}"/></td>
                         </tr>
