@@ -11,7 +11,8 @@
     <classpathentry kind="var" path="junit"/>
     <classpathentry kind="var" path="bccrypto"/>
     <classpathentry kind="lib" path="buildfiles/jars/jasper-runtime.jar"/>
-    <classpathentry kind="var" path="TOMCAT_HOME"/>
     <classpathentry kind="src" path="/martus"/>
+    <classpathentry kind="var" path="JspEngine"/>
+    <classpathentry kind="var" path="ServletEngine"/>
     <classpathentry kind="output" path="presentation/WEB-INF/classes"/>
 </classpath>

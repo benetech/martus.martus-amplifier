@@ -8,9 +8,7 @@ to martus-amplifier/buildfiles/jars/lucene-1.2.jar
 Set Xerces build path variable (see Set up Eclipse Instructions #7) to 
 martus-amplifier/buildfiles/jars/xerces.jar
 
-Add the Jar buildfiles/jars/jasper-runtime.jar to the Java Build Path 
-under Project Properties (Add Jar)
+Set JspEngine build path variable 
+to martus-amplifier/buildfiles/jars/jasper-runtime.jar 
 
-
-
-
+Set ServletEngine build path variable to either TOMCAT or Jetty
