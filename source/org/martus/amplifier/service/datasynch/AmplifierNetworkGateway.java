@@ -1,8 +1,12 @@
 package org.martus.amplifier.service.datasynch;
 
+import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Vector;
+import java.util.zip.ZipFile;
 
 public class AmplifierNetworkGateway
 {
@@ -56,6 +60,35 @@ public class AmplifierNetworkGateway
 			allBulletinIds.addAll(currentBulletinList);
 		}			
 		return allBulletinIds;
+	}
+	
+	
+	public Vector getBulletin(int BulletinId)
+	{
+		Vector result = new Vector();
+		//to do later.. retrieve Bulletin in chunks
+		try
+		{
+			ZipFile bulletinZip = new ZipFile("C:/srilatha/martus_data/Firebombing of NGO O13806.mbf");
+		}
+		catch(IOException ie)
+		{ ie.printStackTrace(); }
+				
+		return result;		
+	}
+
+
+	private Vector getBulletinChunk(int chunkOffset, int maxChunkSize)
+	{
+		Vector result = new Vector();
+		return result;	
+	}
+	
+	
+	private Object callServer(String serverName, String method, Vector Params)
+	{
+		Object result = null;	
+		return result;	
 	}
 	
 }
