@@ -77,6 +77,7 @@ public interface SearchResultConstants
 	final static String IN_LOCATION_KEY			= "in the location";	
 	final static String IN_ALL_FIELDS			= "all";	
 	
+	final static String LANGUAGE_ANYLANGUAGE_KEY= "any language";
 	final static String LANGUAGE_ENGLISH_KEY	= "English";
 	final static String LANGUAGE_FRENCH_KEY		= "French";
 	final static String LANGUAGE_GERMAN_KEY		= "German";

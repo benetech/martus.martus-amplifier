@@ -44,7 +44,7 @@ public class FindBulletinsFields implements SearchConstants, SearchResultConstan
 		fields.add(new ChoiceEntry(IN_AUTHOR_KEY, SEARCH_AUTHOR_INDEX_FIELD));
 		fields.add(new ChoiceEntry(IN_DETAIL_KEY, SEARCH_DETAILS_INDEX_FIELD ));
 		fields.add(new ChoiceEntry(IN_LOCATION_KEY, SEARCH_LOCATION_INDEX_FIELD ));
-		fields.add(new ChoiceEntry(IN_ORGANIZATION_KEY,SEARCH_ORGANIZATION_INDEX_FIELD));
+		fields.add(new ChoiceEntry(IN_ORGANIZATION_KEY, SEARCH_ORGANIZATION_INDEX_FIELD));
 		
 		return fields;
 	}
@@ -52,6 +52,7 @@ public class FindBulletinsFields implements SearchConstants, SearchResultConstan
 	public static Vector getLanguageFieldDisplayNames()
 	{
 		Vector fields = new Vector();
+		fields.add(new ChoiceEntry(LANGUAGE_ANYLANGUAGE_KEY, LANGUAGE_ANYLANGUAGE_KEY));
 		fields.add(new ChoiceEntry(LANGUAGE_ENGLISH_KEY, "en"));
 		fields.add(new ChoiceEntry(LANGUAGE_FRENCH_KEY, "fr"));
 		fields.add(new ChoiceEntry(LANGUAGE_GERMAN_KEY, "de"));

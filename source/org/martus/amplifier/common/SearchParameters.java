@@ -90,7 +90,10 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 	{
 		addField(RESULT_FIELDS_KEY, resultList.get(RESULT_FIELDS_KEY));
 		addField(RESULT_FILTER_BY_KEY, resultList.get(RESULT_FILTER_BY_KEY));
-		addField(RESULT_LANGUAGE_KEY, resultList.get(RESULT_LANGUAGE_KEY));
+		
+		if (!resultList.get(RESULT_LANGUAGE_KEY).equals(LANGUAGE_ANYLANGUAGE_KEY))
+			addField(RESULT_LANGUAGE_KEY, resultList.get(RESULT_LANGUAGE_KEY));
+			
 		Date entryDate = getEntryDate((String)resultList.get(RESULT_ENTRY_DATE_KEY));
 		addField(SEARCH_ENTRY_DATE_INDEX_FIELD, entryDate);	
 	}
