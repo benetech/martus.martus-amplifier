@@ -122,9 +122,9 @@ public class TestFileSystemDataManager
 		dataManager.clearAllAttachments();
 		File attachmentDir = new File(
 			getTestBasePath());
-		Assert.assertEquals(
+		Assert.assertNull(
 			"attachments directory not empty", 
-			0, attachmentDir.listFiles().length);
+			attachmentDir.listFiles());
 	}
 	
 	public void testAccountWithFileSeparators() 
