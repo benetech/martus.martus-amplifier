@@ -27,14 +27,15 @@ Boston, MA 02111-1307, USA.
 package org.martus.amplifier.presentation;
 
 import org.apache.velocity.context.Context;
+import org.martus.amplifier.velocity.AmplifierServlet;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
 import org.martus.amplifier.velocity.AmplifierServletResponse;
 
-public class UserFeedbackForm extends AbstractSearchResultsServlet
+public class UserFeedbackForm extends AmplifierServlet
 {
 	public String selectTemplate(AmplifierServletRequest request, AmplifierServletResponse response, Context context)
 	{
-		setSearchedForInContext(request.getSession(), context);
+		AbstractSearchResultsServlet.setSearchedForInContext(request.getSession(), context);
 		boolean isProblemReport = (request.getParameter("problemReport") != null);
 		context.put("problemReport", new Boolean(isProblemReport));
 		return "UserFeedbackForm.vm";

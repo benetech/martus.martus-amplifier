@@ -38,47 +38,50 @@ import org.martus.amplifier.search.BulletinInfo;
 import org.martus.amplifier.search.SearchConstants;
 import org.martus.amplifier.velocity.AmplifierServlet;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
+import org.martus.amplifier.velocity.AmplifierServletResponse;
 import org.martus.amplifier.velocity.AmplifierServletSession;
 
 public abstract class AbstractSearchResultsServlet extends AmplifierServlet
 {
-
-	public static void setSortByInSession(String sortField, AmplifierServletRequest request)
+	public String selectTemplate(AmplifierServletRequest request,
+			AmplifierServletResponse response, Context context) 
+					throws Exception
 	{
+		super.selectTemplate(request, response, context);
+		
+		configureSessionFromRequest(request);
+
+		Vector bulletins = getBulletinsToDisplay(request);
+		String sortField = getFieldToSortBy(request);
+		
 		AmplifierServletSession session = request.getSession();
 		session.setAttribute(SearchResultConstants.RESULT_SORTBY_KEY, sortField);
+		session.setAttribute("foundBulletins", bulletins);
+
+		sortBulletins(bulletins, sortField);
+		setSearchedForInContext(request.getSession(), context);
+		setSearchResultsContext(bulletins, request, context);
+
+		if(bulletins.size() == 0)
+			return "NoSearchResults.vm";
+			
+		return "SearchResults.vm";				
 	}
+	
+	abstract void configureSessionFromRequest(AmplifierServletRequest request);
+	abstract Vector getBulletinsToDisplay(AmplifierServletRequest request) throws Exception;
 
 	public static void setSearchResultsContext(Vector bulletins, AmplifierServletRequest request, Context context)
 	{
-		request.getSession().setAttribute("foundBulletins", bulletins);
+		AmplifierServletSession session = request.getSession();
 		context.put("foundBulletins", bulletins);
 		context.put("totalBulletins", new Integer(bulletins.size()));
 		Vector sortByFields = FindBulletinsFields.getSortByFieldDisplayNames();
 		context.put("sortByFields", sortByFields);
-		String sortBy = request.getParameter(SearchResultConstants.RESULT_SORTBY_KEY);
+		String sortBy = (String)session.getAttribute(SearchResultConstants.RESULT_SORTBY_KEY);
 		context.put("currentlySortingBy", sortBy);
 	}
 
-	public static void setSearchedForInSession(AmplifierServletRequest request)
-	{
-		String basicQueryString = request.getParameter(SearchResultConstants.RESULT_BASIC_QUERY_KEY);
-		String searchedForString = (String)request.getSession().getAttribute("searchedFor");
-		
-		if(basicQueryString != null)
-		{
-			searchedForString = basicQueryString;
-		}
-		else
-		{
-			searchedForString = "Advanced Search";
-			basicQueryString = "";
-		}
-
-		request.getSession().setAttribute("searchedFor", searchedForString);
-		request.getSession().setAttribute("defaultSimpleSearch", basicQueryString);
-	}
-	
 	public static void setSearchedForInContext(AmplifierServletSession session, Context context)
 	{
 		String searchedForString = (String)session.getAttribute("searchedFor");

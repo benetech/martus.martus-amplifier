@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-import org.apache.velocity.context.Context;
 import org.martus.amplifier.common.AmplifierConfiguration;
 import org.martus.amplifier.common.AmplifierLocalization;
 import org.martus.amplifier.common.SearchParameters;
@@ -43,42 +42,34 @@ import org.martus.amplifier.search.BulletinSearcher;
 import org.martus.amplifier.search.Results;
 import org.martus.amplifier.search.SearchConstants;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
-import org.martus.amplifier.velocity.AmplifierServletResponse;
 import org.martus.amplifier.velocity.AmplifierServletSession;
 
 
 public class DoSearch extends AbstractSearchResultsServlet
-{	
-	public String selectTemplate(AmplifierServletRequest request,
-			AmplifierServletResponse response, Context context) 
-					throws Exception
+{
+	public void configureSessionFromRequest(AmplifierServletRequest request)
 	{
-		super.selectTemplate(request, response, context);
+		AmplifierServletSession session = request.getSession();
 
-		copySimpleQueryFromRequestToSession(request);
+		String basicQueryString = request.getParameter(SearchResultConstants.RESULT_BASIC_QUERY_KEY);
+		String searchedForString = (String)session.getAttribute("searchedFor");
 		
-		Vector bulletins = getBulletinsToDisplay(request);
-		String sortField = getFieldToSortBy(request);
-
-		sortBulletins(bulletins, sortField);
-		setSearchedForInSession(request);
-		setSearchedForInContext(request.getSession(), context);
-		setSearchResultsContext(bulletins, request, context);		
-		setSortByInSession(sortField, request);
+		if(basicQueryString != null)
+		{
+			searchedForString = basicQueryString;
+		}
+		else
+		{
+			searchedForString = "Advanced Search";
+			basicQueryString = "";
+		}
 		
-		if(bulletins.size() == 0)
-			return "NoSearchResults.vm";
-
-		return "SearchResults.vm";
+		session.setAttribute("searchedFor", searchedForString);
+		session.setAttribute("defaultSimpleSearch", basicQueryString);
+		session.setAttribute("simpleQuery", basicQueryString);
 	}
 
-	private void copySimpleQueryFromRequestToSession(AmplifierServletRequest request)
-	{
-		String simpleQuery = request.getParameter("query");
-		request.getSession().setAttribute("simpleQuery", simpleQuery);
-	}
-
-	private Vector getBulletinsToDisplay(AmplifierServletRequest request)
+	Vector getBulletinsToDisplay(AmplifierServletRequest request)
 		throws Exception
 	{
 		List results = getSearchResults(request);
