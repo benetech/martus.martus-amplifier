@@ -1,5 +1,7 @@
 package org.martus.amplifier.attachment;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 
 import org.martus.common.packet.UniversalId;
@@ -25,4 +27,7 @@ public interface AttachmentManager
 		throws AttachmentStorageException;
 		
 	void clearAllAttachments() throws AttachmentStorageException;
+	
+	public File getContactInfoFile(String accountId) throws IOException;
+	
 }

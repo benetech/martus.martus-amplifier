@@ -46,6 +46,8 @@ public class FoundBulletin extends AmplifierServlet
 		int index = Integer.parseInt(request.getParameter("index"));
 		BulletinInfo info = (BulletinInfo)bulletins.get(index - 1);
 		context.put("bulletin", info);
+		if(info.hasContactInfo())
+			context.put("contactInfo", "true");
 		int previousIndex = index - 1;
 		int nextIndex = index + 1;
 		if(previousIndex <= 0)

@@ -25,6 +25,7 @@ Boston, MA 02111-1307, USA.
 */
 package org.martus.amplifier.search;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,6 +41,7 @@ public class BulletinInfo implements Serializable
 		fields = new HashMap();
 		attachments = new ArrayList();
 		bulletinId = bulletinIdToUse;
+		contactInfo = null;
 	}
 	
 	public void set(String field, String value)
@@ -76,9 +78,25 @@ public class BulletinInfo implements Serializable
 	{
 		return bulletinId.getAccountId();
 	}
+	
+	public void putContactInfo(File infoFile)
+	{
+		contactInfo = infoFile;
+	}
+	
+	public File getContactInfo()
+	{
+		return contactInfo;
+	}
+	
+	public boolean hasContactInfo()
+	{
+		return(contactInfo != null && contactInfo.exists());
+	}
 
 	private Map fields;
 	private List attachments;
 	private UniversalId bulletinId;
+	private File contactInfo;
 
 }

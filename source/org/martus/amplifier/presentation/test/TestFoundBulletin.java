@@ -1,5 +1,6 @@
 package org.martus.amplifier.presentation.test;
 
+import java.io.File;
 import java.util.List;
 import java.util.Vector;
 
@@ -98,6 +99,34 @@ public class TestFoundBulletin extends TestCaseEnhanced
 		
 		assertEquals("The defaultSimpleSearch match.", sampleQuery, context.get("defaultSimpleSearch"));				
 	}	
+	
+	public void testContactInfo() throws Exception
+	{
+		MockAmplifierRequest request = new MockAmplifierRequest();
+		MockAmplifierResponse response = null;
+		Context context = createSampleSearchResults(request, response);
+	
+		FoundBulletin servlet = new FoundBulletin();
+		servlet.selectTemplate(request, response, context);
+		BulletinInfo bulletinInfo1 = (BulletinInfo)context.get("bulletin");
+		assertEquals("Bulletin 1's ID didn't match", uid1, bulletinInfo1.getBulletinId());
+
+		assertFalse("Bulletin 1 should not have any contact info", bulletinInfo1.hasContactInfo());
+		String noContactInfo = (String)context.get("contactInfo");
+		assertNull("ContactInfo should not be set", noContactInfo);
+
+		context = createSampleSearchResults2(request, response);
+	
+		servlet = new FoundBulletin();
+		servlet.selectTemplate(request, response, context);
+		BulletinInfo bulletinInfo2 = (BulletinInfo)context.get("bulletin");
+		assertEquals("Bulletin 2's ID didn't match", uid2, bulletinInfo2.getBulletinId());
+
+		assertTrue("Bulletin 2 should have contact info", bulletinInfo2.hasContactInfo());
+		String contactInfo = (String)context.get("contactInfo");
+		assertEquals("ContactInfo should not be set", "true", contactInfo);
+		assertTrue("Actual File should exist", bulletinInfo2.getContactInfo().exists());
+	}
 
 
 	private Context createSampleSearchResults(MockAmplifierRequest request, MockAmplifierResponse response) throws Exception
@@ -106,6 +135,17 @@ public class TestFoundBulletin extends TestCaseEnhanced
 		SearchResultsForTesting sr = new SearchResultsForTesting();
 		request.putParameter("query", "title");
 		request.parameters.put("index","1");
+		request.parameters.put("searchedFor","title");
+		sr.selectTemplate(request, response, context);
+		return context;
+	}
+
+	private Context createSampleSearchResults2(MockAmplifierRequest request, MockAmplifierResponse response) throws Exception
+	{
+		Context context = new MockContext();
+		SearchResultsForTesting sr = new SearchResultsForTesting();
+		request.putParameter("query", "title");
+		request.parameters.put("index","2");
 		request.parameters.put("searchedFor","title");
 		sr.selectTemplate(request, response, context);
 		return context;
@@ -134,6 +174,9 @@ public class TestFoundBulletin extends TestCaseEnhanced
 			
 			BulletinInfo bulletinInfo2 = new BulletinInfo(uid2);
 			bulletinInfo2.set("title", bulletin2Title);
+			File info2ContactInfo = createTempFile();
+			info2ContactInfo.createNewFile();
+			bulletinInfo2.putContactInfo(info2ContactInfo);
 			infos.add(bulletinInfo2);
 			
 			BulletinInfo bulletinInfo3 = new BulletinInfo(uid3);

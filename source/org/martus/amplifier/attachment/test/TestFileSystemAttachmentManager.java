@@ -125,11 +125,17 @@ public class TestFileSystemAttachmentManager
 		}
 	}
 	
+	public void testGetContactInfoFile() throws Exception
+	{
+		String accountId = "test";
+		File info = attachmentManager.getContactInfoFile(accountId);
+		assertTrue("file should end in contactInfo.dat", info.getAbsolutePath().endsWith("contactInfo.dat"));
+	}
+	
 	protected AttachmentManager getAttachmentManager()
 	{
 		return attachmentManager;
 	}
-	
 	private FileSystemAttachmentManager attachmentManager;
-	
+
 }

@@ -8,7 +8,6 @@ import java.util.Vector;
 import java.util.logging.Logger;
 
 import org.martus.amplifier.attachment.AttachmentManager;
-import org.martus.amplifier.attachment.FileSystemAttachmentManager;
 import org.martus.amplifier.common.AmplifierConfiguration;
 import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.amplifier.search.BulletinCatalog;
@@ -54,7 +53,7 @@ public class DataSynchManager
 			return;
 		try
 		{
-			File contactFile = ((FileSystemAttachmentManager)MartusAmplifier.attachmentManager).getContactInfoFile(accountId);
+			File contactFile = MartusAmplifier.attachmentManager.getContactInfoFile(accountId);
 			MartusServerUtilities.writeContatctInfo(accountId, response, contactFile);
 		}
 		catch (IOException e)

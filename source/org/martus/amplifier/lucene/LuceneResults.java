@@ -25,6 +25,7 @@ Boston, MA 02111-1307, USA.
 */
 package org.martus.amplifier.lucene;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.apache.lucene.document.Document;
@@ -74,6 +75,7 @@ public class LuceneResults implements Results, LuceneSearchConstants, SearchCons
 		addAllEmptyFields(info);
 		addFields(info, doc);
 		addAttachments(info, doc);
+		addContactInfo(info);
 		return info;
 	}
 	
@@ -151,6 +153,22 @@ public class LuceneResults implements Results, LuceneSearchConstants, SearchCons
 				AttachmentInfo attachmentInfo = new AttachmentInfo(uId, attachmentLabel, size);
 				bulletinInfo.addAttachment(attachmentInfo);
 			}
+		}
+	}
+	
+	private static void addContactInfo(BulletinInfo info)
+	{
+		String accountId = info.getAccountId();
+		try
+		{
+			File contactInfo = MartusAmplifier.attachmentManager.getContactInfoFile(accountId);
+			if(!contactInfo.exists())
+				return;
+			info.putContactInfo(contactInfo);
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
 		}
 	}
 	
