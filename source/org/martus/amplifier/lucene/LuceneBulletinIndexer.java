@@ -217,5 +217,5 @@ public class LuceneBulletinIndexer
 	private IndexWriter writer;
 	private final static Analyzer ANALYZER = new StandardAnalyzer(new String[]{""});
 	
-	private static final String INDEX_DIR_NAME = "ampIpandex";
+	private static final String INDEX_DIR_NAME = "ampIndex";
 }
