@@ -1,10 +1,11 @@
 <html>
-	#set ($pageTitle="Martus Search")
+	#set ($pageTitle="Search")
     <head>
    		#parse("Meta.vm")     
     </head>
     
     <body>
+		#set ($pageTitle="Martus Search")
     	#set ($pageInfo="")
 		#set ($noSearchForm = "1")
 		#parse ("ResultHeader.vm")
