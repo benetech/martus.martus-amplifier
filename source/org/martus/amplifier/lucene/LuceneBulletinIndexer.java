@@ -36,6 +36,7 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
+import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.amplifier.search.BulletinField;
 import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinIndexer;
@@ -94,7 +95,15 @@ public class LuceneBulletinIndexer
 	{
 		Document doc = new Document();
 		addBulletinId(doc, bulletinId);
-		addFields(doc, fdp);
+		try
+		{
+			addFields(doc, fdp);
+		}
+		catch (IOException e1)
+		{
+			throw new BulletinIndexException(
+				"Unable to index field data for " + bulletinId, e1);
+		}
 		addAttachmentIds(doc, fdp.getAccountId(), fdp.getAttachments());		
 		
 		try {
@@ -141,13 +150,17 @@ public class LuceneBulletinIndexer
 	}
 	
 	private static void addFields(Document doc, FieldDataPacket fdp) 
-		throws BulletinIndexException 
+		throws BulletinIndexException, IOException 
 	{
 		Collection fields = BulletinField.getSearchableFields();
-		for (Iterator iter = fields.iterator(); iter.hasNext();) {
+		for (Iterator iter = fields.iterator(); iter.hasNext();) 
+		{
 			BulletinField field = (BulletinField) iter.next();
 			String value = fdp.get(field.getXmlId());
-			if ((value != null) && (value.length() > 0)) {
+			if(field.isLanguageField())
+				MartusAmplifier.languagesIndexed.updateLanguagesIndexed(value);
+			if ((value != null) && (value.length() > 0)) 
+			{
 				addField(doc, field, value);
 			}
 		}

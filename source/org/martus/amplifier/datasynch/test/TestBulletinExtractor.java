@@ -19,6 +19,7 @@ import org.martus.amplifier.common.DateUtilities;
 import org.martus.amplifier.datasynch.BulletinExtractor;
 import org.martus.amplifier.lucene.LuceneBulletinIndexer;
 import org.martus.amplifier.lucene.LuceneBulletinSearcher;
+import org.martus.amplifier.main.LanguagesIndexedList;
 import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.amplifier.search.AttachmentInfo;
 import org.martus.amplifier.search.BulletinField;
@@ -61,6 +62,8 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 			new FileSystemDataManager(getTestBasePath(), security);
 		MartusAmplifier.dataManager = attachmentManager;
 		db = new MockServerDatabase();
+		MartusAmplifier.languagesIndexed = new LanguagesIndexedList(new File(getTestBasePath(),"langIndex"));
+
 	}
 
 	protected void tearDown() throws Exception 

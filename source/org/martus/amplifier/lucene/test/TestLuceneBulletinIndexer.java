@@ -25,6 +25,10 @@ Boston, MA 02111-1307, USA.
 */
 package org.martus.amplifier.lucene.test;
 
+import java.util.Vector;
+
+import org.martus.amplifier.main.LanguagesIndexedList;
+import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinIndexer;
 import org.martus.amplifier.search.BulletinSearcher;
@@ -93,5 +97,32 @@ public class TestLuceneBulletinIndexer  extends CommonSearchTest
 		BulletinIndexer indexer = openBulletinIndexer();
 		indexer.close();
 	}
+	
+	public void testIndexingLanguages() throws Exception
+	{
+		MartusAmplifier.languagesIndexed = new LanguagesIndexedList(createTempFile());
+		MartusAmplifier.languagesIndexed.loadLanguagesAlreadyIndexed();
+		
+		Vector languages = MartusAmplifier.languagesIndexed.getListOfLanguagesIndexed();
+		assertEquals("Should not have any yet file exists but is empty", 0, languages.size());
+		
+		UniversalId bulletinId = UniversalId.createDummyUniversalId();
+		FieldDataPacket fdp = generateSampleData(bulletinId);		
+		BulletinIndexer indexer = openBulletinIndexer();
+		try 
+		{
+			indexer.clearIndex();
+			indexer.indexFieldData(bulletinId, fdp);
+		} 
+		finally 
+		{
+			indexer.close();
+		}
+		languages = MartusAmplifier.languagesIndexed.getListOfLanguagesIndexed();
+		assertEquals("Should now have english", 1, languages.size());
+		assertTrue("Should contain english", languages.contains("en"));
+		
+	}
+
 
 }

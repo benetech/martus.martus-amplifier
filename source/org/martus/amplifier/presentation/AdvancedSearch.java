@@ -35,6 +35,7 @@ import org.martus.amplifier.common.ChoiceEntry;
 import org.martus.amplifier.common.FindBulletinsFields;
 import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.common.Today;
+import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.amplifier.velocity.AmplifierServlet;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
 import org.martus.amplifier.velocity.AmplifierServletResponse;
@@ -85,7 +86,7 @@ public class AdvancedSearch extends AmplifierServlet
 
 	Vector getAvailableLanguageChoices()
 	{
-		Vector languageCodes = getAvailableLanguageCodes();
+		Vector languageCodes = MartusAmplifier.languagesIndexed.getListOfLanguagesIndexed();
 		Vector fields = new Vector();
 		for(int i = 0; i < languageCodes.size(); ++i)
 		{
@@ -97,18 +98,4 @@ public class AdvancedSearch extends AmplifierServlet
 		}
 		return fields;
 	}
-
-	Vector getAvailableLanguageCodes()
-	{
-		Vector languageCodesToAdd = new Vector();
-		languageCodesToAdd.add(SearchResultConstants.LANGUAGE_ANYLANGUAGE_LABEL);
-		languageCodesToAdd.add("en");
-		languageCodesToAdd.add("fr");
-		languageCodesToAdd.add("de");
-		languageCodesToAdd.add("id");
-		languageCodesToAdd.add("ru");
-		languageCodesToAdd.add("es");
-		return languageCodesToAdd;
-	}
-
 }

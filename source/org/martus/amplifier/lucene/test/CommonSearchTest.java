@@ -36,6 +36,7 @@ import org.martus.amplifier.attachment.FileSystemDataManager;
 import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.lucene.LuceneBulletinIndexer;
 import org.martus.amplifier.lucene.LuceneBulletinSearcher;
+import org.martus.amplifier.main.LanguagesIndexedList;
 import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.amplifier.search.BulletinField;
 import org.martus.amplifier.search.BulletinIndexException;
@@ -65,6 +66,7 @@ public abstract class CommonSearchTest
 		MartusAmplifier.security = new MockMartusSecurity();
 		MartusAmplifier.security.createKeyPair();
 		MartusAmplifier.dataManager = new FileSystemDataManager(getTestBasePath());
+		MartusAmplifier.languagesIndexed = new LanguagesIndexedList(new File(getTestBasePath(),"langIndex"));
 	}
 	
 	public void tearDown() throws Exception

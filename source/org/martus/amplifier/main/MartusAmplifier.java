@@ -49,7 +49,6 @@ public class MartusAmplifier
 			System.out.println("***** Key pair file not found *****");
 			System.exit(2);
 		}
-
 		String passphrase = insecurePassword;
 		if(passphrase == null)
 			passphrase = getPassphraseFromConsole(amp);
@@ -81,6 +80,16 @@ public class MartusAmplifier
 		server.addWebApplication("/","presentation/");
 		
 		addPasswordAuthentication(server);
+		File languages = new File(AmplifierConfiguration.getInstance().getBasePath(), "languagesIndexed.txt");
+		languagesIndexed = new LanguagesIndexedList(languages);
+		try
+		{
+			languagesIndexed.loadLanguagesAlreadyIndexed();
+		}
+		catch (IOException e)
+		{
+			log("Error: LanguagesIndex" + e);
+		}
 		
 		server.start();
 		timer.scheduleAtFixedRate(timedTask, IMMEDIATELY, dataSynchIntervalMillis);
@@ -321,6 +330,7 @@ public class MartusAmplifier
 		}
 	}
 
+
 	public List loadServersWeWillCall(File directory, MartusCrypto security) throws 
 			IOException, MartusUtilities.InvalidPublicKeyFileException, MartusUtilities.PublicInformationInvalidException, SSLSocketSetupException
 	{
@@ -418,6 +428,7 @@ public class MartusAmplifier
 	
 	LoggerInterface logger;
 
+	public static LanguagesIndexedList languagesIndexed;
 	public static DataManager dataManager;
 	private static final String KEYPAIRFILENAME = "keypair.dat";
 	private static final String ADMINTRIGGERDIRECTORY = "adminTriggers";

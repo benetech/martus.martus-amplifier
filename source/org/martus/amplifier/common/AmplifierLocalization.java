@@ -26,28 +26,46 @@ Boston, MA 02111-1307, USA.
 
 package org.martus.amplifier.common;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Vector;
+
+import org.martus.common.MartusUtilities;
+import org.martus.util.UnicodeReader;
 
 public class AmplifierLocalization
 {
 	public static String getLanguageString(String code)
 	{
-		HashMap languages = AmplifierLocalization.buildLanguageMap();
+		File languageFile = new File(AmplifierConfiguration.getInstance().getBasePath(),"englishLanguages.txt");
+		HashMap languages = AmplifierLocalization.buildLanguageMap(languageFile);
 		if(!languages.containsKey(code))
 			return null;
 		return (String)languages.get(code);		
 	}
 
-	private static HashMap buildLanguageMap()
+	public static HashMap buildLanguageMap(File languageFile)
 	{
 		HashMap languages = new HashMap();
-		languages.put(SearchResultConstants.LANGUAGE_ANYLANGUAGE_LABEL, SearchResultConstants.LANGUAGE_ANYLANGUAGE_LABEL);
-		languages.put("en", SearchResultConstants.LANGUAGE_ENGLISH_LABEL);
-		languages.put("fr", SearchResultConstants.LANGUAGE_FRENCH_LABEL);
-		languages.put("de", SearchResultConstants.LANGUAGE_GERMAN_LABEL);
-		languages.put("id", SearchResultConstants.LANGUAGE_INDONESIAN_LABEL);
-		languages.put("ru", SearchResultConstants.LANGUAGE_RUSSIAN_LABEL);
-		languages.put("es", SearchResultConstants.LANGUAGE_SPANISH_LABEL);
+		try
+		{
+			UnicodeReader reader = new UnicodeReader(languageFile);
+			Vector localizedLanguages = MartusUtilities.loadListFromFile(reader);
+			for (Iterator iter = localizedLanguages.iterator(); iter.hasNext();)
+			{
+				String data = (String) iter.next();
+				String[] idAndName = data.split("=");
+				languages.put(idAndName[0], idAndName[1]);
+			}
+			reader.close();
+		}
+		catch(IOException e)
+		{
+			e.printStackTrace();
+			languages.put(SearchResultConstants.LANGUAGE_ANYLANGUAGE_LABEL, SearchResultConstants.LANGUAGE_ANYLANGUAGE_LABEL);
+		}
 		return languages;
 	}
 

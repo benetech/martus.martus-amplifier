@@ -96,10 +96,6 @@ public class TestDoSearch extends TestCaseEnhanced
 
 		SearchResultsForTesting sr = new SearchResultsForTesting();
 
-		sr.convertLanguageCode(bulletinInfo1);
-		assertEquals("English LanguageCode still exists?", "English", bulletinInfo1.get("language"));
-		sr.convertLanguageCode(bulletinInfo2);
-		assertEquals("Spanish LanguageCode still exists?", "Spanish", bulletinInfo2.get("language"));
 		sr.convertLanguageCode(bulletinInfo3);
 		assertEquals("Unknown LanguageCode should be returned unchanged?", bulletin3Language, bulletinInfo3.get("language"));
 		
