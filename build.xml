@@ -27,8 +27,11 @@
   <property name="jstl" value="buildfiles/jakarta-taglibs/standard-1.0.3"/>
   
   <property name="web-app-dir" value="presentation/WEB-INF"/>
+  <property name="web-app-classes" value="${web-app-dir}/classes"/>
   <property name="web-app-lib" value="${web-app-dir}/lib"/>
   <property name="custom-tlds" value="presentation/tld"/>
+  <property name="presentation-class" value="${web-app-dir}/classes/org/martus/amplifier/presentation"/>
+  
   
 <!-- ================================================================== -->
 <!-- I N I T                                                            -->
@@ -96,6 +99,11 @@
 	<!-- Move custom taglib files to web app dir. -->
 	<copy todir="${web-app-dir}">
 		<fileset dir="${custom-tlds}" includes="*.tld"/>
+	</copy>
+	
+	<!-- Move presentation class files to web app dir. -->
+	<copy todir="${web-app-classes}">
+		<fileset dir="${presentation-class}" includes="*.class"/>
 	</copy>
 	
   </target>
