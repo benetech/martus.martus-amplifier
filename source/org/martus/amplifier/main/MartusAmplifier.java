@@ -183,27 +183,43 @@ public class MartusAmplifier
 
 	private void processCommandLine(String[] args)
 	{
-		String hours = DEFAULT_HOURS_TO_SYNC;
+		long indexEveryXMinutes = 0;
 		String indexEveryXHourTag = "indexinghours=";
+		String indexEveryXMinutesTag = "indexingminutes=";
 
 		for(int arg = 0; arg < args.length; ++arg)
 		{
-			if(args[arg].equals("secure"))
+			String argument = args[arg];
+			if(argument.equals("secure"))
 				enterSecureMode();
-			if(args[arg].equals("nopassword"))
+			if(argument.equals("nopassword"))
 				insecurePassword = "password";
-			if(args[arg].startsWith(indexEveryXHourTag))
-				hours = args[arg].substring(indexEveryXHourTag.length());
+			if(argument.startsWith(indexEveryXHourTag))
+			{	
+				String hours = argument.substring(indexEveryXHourTag.length());
+				System.out.println("Indexing every " + hours + " hours");
+				long indexEveryXHours = new Integer(hours).longValue();
+				indexEveryXMinutes = indexEveryXHours * 60;
+			}
+			if(argument.startsWith(indexEveryXMinutesTag))
+			{	
+				String minutes = argument.substring(indexEveryXMinutesTag.length());
+				System.out.println("Indexing every " + minutes + " minutes");
+				indexEveryXMinutes = new Integer(minutes).longValue();
+			}
 		}
+		if(indexEveryXMinutes==0)
+		{
+			indexEveryXMinutes = DEFAULT_HOURS_TO_SYNC * 60;
+			System.out.println("Indexing every " + DEFAULT_HOURS_TO_SYNC + " hours");
+		}
+		
+		dataSynchIntervalMillis = indexEveryXMinutes * MINITUES_TO_MILLI;
 		
 		if(isSecureMode())
 			System.out.println("Running in SECURE mode");
 		else
 			System.out.println("***RUNNING IN INSECURE MODE***");
-
-		System.out.println("Indexing every " + hours + " hours");
-		long indexEveryXHours = new Integer(hours).longValue();
-		dataSynchIntervalMillis = indexEveryXHours * HOURS_TO_MILLI;
 	}
 
 	private void displayStatistics() throws InvalidBase64Exception
@@ -559,8 +575,8 @@ public class MartusAmplifier
 
 	public static MartusSecurity security;
 	static final long IMMEDIATELY = 0;
-	static final long HOURS_TO_MILLI = 60 * 60 * 1000;
-	static final String DEFAULT_HOURS_TO_SYNC = "24";
+	static final long MINITUES_TO_MILLI = 60 * 1000;
+	static final long DEFAULT_HOURS_TO_SYNC = 24;
 	long dataSynchIntervalMillis;
 
 	Timer timer = new Timer(true);
