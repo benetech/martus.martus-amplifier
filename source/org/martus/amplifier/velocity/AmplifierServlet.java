@@ -59,7 +59,6 @@ abstract public class AmplifierServlet extends VelocityServlet
 		throws IOException, FileNotFoundException
 	{
 		Properties p = new Properties();
-
 		/*
 		 *  first, we set the template path for the
 		 *  FileResourceLoader to the root of the 
@@ -79,11 +78,10 @@ abstract public class AmplifierServlet extends VelocityServlet
 		}
 
 		p.setProperty( Velocity.FILE_RESOURCE_LOADER_PATH,  path );
-
 		/**
 		 *  and the same for the log file
 		 */
-
+		
 		p.setProperty( "runtime.log", path + "velocity.log" );
 
 		return p;
@@ -106,7 +104,7 @@ abstract public class AmplifierServlet extends VelocityServlet
 			AmplifierServletRequest ampRequest = new WrappedServletRequest(request);
 			AmplifierServletResponse ampResponse = new WrappedServletResponse(response);
 			String templateName = selectTemplate(ampRequest, ampResponse, context);
-			return getTemplate(templateName);
+			return getTemplate(templateName, "UTF-8");
 		}
 		catch( ParseErrorException e )
 		{
@@ -181,6 +179,5 @@ abstract public class AmplifierServlet extends VelocityServlet
 		dataToFormat = dataToFormat.replaceAll("  ", "&nbsp;&nbsp;");
 		return dataToFormat;
 	}
-	
 
 }

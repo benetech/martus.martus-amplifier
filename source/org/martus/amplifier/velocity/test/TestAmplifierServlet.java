@@ -39,7 +39,7 @@ public class TestAmplifierServlet extends TestCaseEnhanced
 	{
 		super(name);
 	}
-
+	
 	public void testMapHTMLDisplayFormatting() throws Exception
 	{
 		Map testMap = new HashMap();
@@ -89,7 +89,7 @@ public class TestAmplifierServlet extends TestCaseEnhanced
 		Vector testNullVector = null;
 		AmplifierServlet.formatDataForHtmlDisplay(testNullVector);
 	}	
-	
+
 	final String key1 = "key1";
 	final String key2 = "key2";
 	final String key3 = "key3";

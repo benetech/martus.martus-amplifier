@@ -25,34 +25,22 @@ Boston, MA 02111-1307, USA.
 */
 package org.martus.amplifier.velocity.test;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.martus.amplifier.velocity.WrappedServletResponse;
+import org.martus.common.test.TestCaseEnhanced;
 
 
-public class TestAllVelocity extends TestSuite
+public class TestWrappedServletResponse extends TestCaseEnhanced
 {
-	public TestAllVelocity(String name)
+
+	public TestWrappedServletResponse(String name)
 	{
 		super(name);
 	}
-
-	public static void main (String[] args) 
-	{
-		runTests();
-	}
-
-	public static void runTests () 
-	{
-		junit.textui.TestRunner.run(suite());
-	}
-
-	public static Test suite ( ) 
-	{
-		TestSuite suite= new TestSuite("All Martus Amplifier Velocity Tests");
 	
-		suite.addTest(new TestSuite(TestAmplifierServlet.class));
-		suite.addTest(new TestSuite(TestWrappedServletResponse.class));
-		
-		return suite;
+	public void testCharacterEncoding() throws Exception
+	{
+		String content = WrappedServletResponse.getUnicodeContentType();
+		assertTrue("Must contain text/html",content.indexOf("text/html")>=0);
+		assertTrue("Must contain UTF-8",content.indexOf("UTF-8")>=0);
 	}
 }

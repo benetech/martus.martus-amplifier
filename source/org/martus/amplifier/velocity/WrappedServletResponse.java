@@ -35,9 +35,15 @@ public class WrappedServletResponse implements AmplifierServletResponse
 {
 	public WrappedServletResponse(HttpServletResponse servletResponse)
 	{
+		servletResponse.setContentType(getUnicodeContentType());		
 		response = servletResponse;
 	}
 	
+	static public String getUnicodeContentType()
+	{
+		return "text/html; charset=UTF-8";
+	}
+
 	public OutputStream getOutputStream() throws IOException
 	{
 		return response.getOutputStream();
@@ -50,8 +56,8 @@ public class WrappedServletResponse implements AmplifierServletResponse
 	
 	public boolean containsHeader(String name)
 	{
+		
 		return response.containsHeader(name);	
 	}
-
 	HttpServletResponse response;	
 }
