@@ -14,5 +14,6 @@ public class UniversalIdDbt extends Dbt
 	{
 		super();
 		set_flags(Db.DB_DBT_MALLOC);
+		set_data(id.toString().getBytes());
 	}
 }
