@@ -21,16 +21,6 @@ public class DownloadAttachmentTag extends TagSupport
 			AmplifierConfiguration.getInstance();
 		indexPath = config.getBasePath();
 	}
-	
-	public void setAccountId(String accountId)
-	{
-		accountIdEL = accountId;
-	}
-	
-	public void setLocalId(String localId)
-	{
-		localIdEL = localId;
-	}
 
 	public int doEndTag() throws JspException 
 	{
@@ -83,8 +73,5 @@ public class DownloadAttachmentTag extends TagSupport
 		return new FileSystemAttachmentManager(indexPath);
 	}
 	
-	private String accountIdEL;
-	private String localIdEL;
 	private String indexPath;
-	
 }
