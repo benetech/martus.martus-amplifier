@@ -17,6 +17,8 @@
 
   <property name="util-dir"   value="org/martus/util"/>
 
+  <property name="thirdparty-dir"   value="buildfiles/jarsNeededToRunAmp/"/>
+
   <property name="hrvdproperties-dir"   value="hrvd/date"/>
   <property name="hrvddate-dir"   value="org/hrvd/util/date"/>
   <property name="hrvdobj-dir"   value="org/hrvd/util/object"/>
@@ -111,6 +113,11 @@
     <!-- Copy all presentationNonSSL -->
 	<copy todir="${push-presentationNonSSL}">
          <fileset dir="${presentationNonSSL-dir}/"/>
+	</copy>
+	
+    <!-- Copy all 3rd party jars needed -->
+	<copy todir="${push-dir}">
+         <fileset dir="${thirdparty-dir}/"/>
 	</copy>
 
   </target>
