@@ -25,114 +25,27 @@ Boston, MA 02111-1307, USA.
 */
 package org.martus.amplifier.test.presentation;
 
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSessionContext;
+import org.martus.amplifier.presentation.AmplifierServletSession;
 
 
-	public class MockHttpSession implements HttpSession
+public class MockHttpSession implements AmplifierServletSession
+{
+	
+	public Object getAttribute(String key)
 	{
-		
-		public Object getAttribute(String key)
-		{
-			if(attributes.containsKey(key))
-				return attributes.get(key);
-			return null;
-		}
+		if(attributes.containsKey(key))
+			return attributes.get(key);
+		return null;
+	}
 
-		public Enumeration getAttributeNames()
-		{
-			// TODO Auto-generated method stub
-			return null;
-		}
+	public void setAttribute(String key , Object value)
+	{
+		attributes.put(key, value);
+	}
 
-		public long getCreationTime()
-		{
-			// TODO Auto-generated method stub
-			return 0;
-		}
-
-		public String getId()
-		{
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		public long getLastAccessedTime()
-		{
-			// TODO Auto-generated method stub
-			return 0;
-		}
-
-		public int getMaxInactiveInterval()
-		{
-			// TODO Auto-generated method stub
-			return 0;
-		}
-
-		public ServletContext getServletContext()
-		{
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		public HttpSessionContext getSessionContext()
-		{
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		public Object getValue(String arg0)
-		{
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		public String[] getValueNames()
-		{
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		public void invalidate()
-		{
-			// TODO Auto-generated method stub
-		}
-
-		public boolean isNew()
-		{
-			// TODO Auto-generated method stub
-			return false;
-		}
-
-		public void putValue(String arg0, Object arg1)
-		{
-			// TODO Auto-generated method stub
-		}
-
-		public void removeAttribute(String arg0)
-		{
-			// TODO Auto-generated method stub
-		}
-
-		public void removeValue(String arg0)
-		{
-			// TODO Auto-generated method stub
-		}
-
-		public void setAttribute(String key , Object value)
-		{
-			attributes.put(key, value);
-		}
-
-		public void setMaxInactiveInterval(int arg0)
-		{
-			// TODO Auto-generated method stub
-		}
-		Map attributes = new HashMap();
+	Map attributes = new HashMap();
 
 }

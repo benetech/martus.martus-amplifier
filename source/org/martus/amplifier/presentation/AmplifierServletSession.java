@@ -25,9 +25,8 @@ Boston, MA 02111-1307, USA.
 */
 package org.martus.amplifier.presentation;
 
-
-public interface AmplifierServletRequest
+public interface AmplifierServletSession
 {
-	public String getParameter(String key);
-	public AmplifierServletSession getSession();
+	public void setAttribute(String key, Object value);
+	public Object getAttribute(String key);
 }

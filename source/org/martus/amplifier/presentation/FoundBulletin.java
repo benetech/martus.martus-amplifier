@@ -28,7 +28,6 @@ package org.martus.amplifier.presentation;
 import java.util.Vector;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.velocity.context.Context;
 import org.martus.amplifier.service.search.BulletinInfo;
@@ -37,7 +36,7 @@ public class FoundBulletin extends AmplifierServlet
 {
 	public String selectTemplate(AmplifierServletRequest request, HttpServletResponse response, Context context)
 	{
-		HttpSession session = request.getSession();
+		AmplifierServletSession session = request.getSession();
 		Vector bulletins = (Vector)session.getAttribute("foundBulletins");
 		int index = Integer.parseInt(request.getParameter("index"));
 		BulletinInfo info = (BulletinInfo)bulletins.get(index - 1);
