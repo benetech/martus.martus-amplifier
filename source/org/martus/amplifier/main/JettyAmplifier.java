@@ -16,7 +16,7 @@ public class JettyAmplifier
 
 		try
 		{
-			server.addWebApplication("/","c:/work/eclipse/martus-amplifier/presentation/");
+			server.addWebApplication("/","presentation/");
 			
 			server.start();
 			while(true)
