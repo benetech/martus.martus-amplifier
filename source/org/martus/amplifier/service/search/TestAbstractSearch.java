@@ -10,6 +10,7 @@ import java.util.List;
 import junit.framework.Assert;
 
 import org.martus.amplifier.presentation.SearchFields;
+import org.martus.amplifier.presentation.SearchResultConstants;
 import org.martus.amplifier.test.TestAbstractAmplifier;
 import org.martus.common.FieldSpec;
 import org.martus.common.bulletin.AttachmentProxy;
@@ -345,7 +346,7 @@ public abstract class TestAbstractSearch
 		}
 	}
 	
-	public void testAdvancedSearch() throws BulletinIndexException,ParseException
+	public void testAdvancedSearchEventDateOnly() throws BulletinIndexException,ParseException
 	{
 		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
 		FieldDataPacket fdp1 = generateSampleData(bulletinId1);		
@@ -376,13 +377,54 @@ public abstract class TestAbstractSearch
 			fields.add(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, endDate);
 			
 			results = searcher.advancedSearch(null, fields);
-			assertEquals("Should have found 1 match? ", 1, results.getCount());
+			assertEquals("Should have found 1 match? ", 1, results.getCount());			
 		}
 		finally 
 		{
 			searcher.close();
 		}
-	}
+	}	
+	
+	public void testAdvancedSearchCombineEventDateAndBulletineField() throws BulletinIndexException,ParseException
+	{
+		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
+		FieldDataPacket fdp1 = generateSampleData(bulletinId1);		
+		UniversalId bulletinId2 = UniversalId.createDummyUniversalId();
+		FieldDataPacket fdp2 = generateSampleFlexiData(bulletinId2);		
+		BulletinIndexer indexer = openBulletinIndexer();
+		try 
+		{
+			indexer.clearIndex();
+			indexer.indexFieldData(bulletinId1, fdp1);
+			indexer.indexFieldData(bulletinId2, fdp2);
+		} 
+		finally 
+		{
+			indexer.close();
+		}
+		
+		BulletinSearcher searcher = openBulletinSearcher();
+		BulletinSearcher.Results results = null;				
+		
+		try 
+		{
+			Date startDate 	= SearchConstants.SEARCH_DATE_FORMAT.parse("2003-08-01");
+			Date endDate 	= SearchConstants.SEARCH_DATE_FORMAT.parse("2003-08-22");
+		
+			SearchFields fields = new SearchFields();
+			fields.add(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, startDate);
+			fields.add(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, endDate);
+			fields.add(SearchResultConstants.RESULT_FIELDS_KEY, BulletinField.SEARCH_TITLE_INDEX_FIELD);
+			fields.add(SearchResultConstants.RESULT_ADVANCED_QUERY_KEY, "lunch");
+			
+			results = searcher.advancedSearch(null, fields);
+			assertEquals("Combine search for eventdate and field? ", 1, results.getCount());
+		}
+		finally 
+		{
+			searcher.close();
+		}
+	}	
 		
 	protected FieldDataPacket generateSampleData(UniversalId bulletinId)
 	{

@@ -16,6 +16,7 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
 import org.martus.amplifier.presentation.SearchFields;
+import org.martus.amplifier.presentation.SearchResultConstants;
 import org.martus.amplifier.service.search.AttachmentInfo;
 import org.martus.amplifier.service.search.BulletinField;
 import org.martus.amplifier.service.search.BulletinIndexException;
@@ -108,14 +109,37 @@ public class LuceneBulletinSearcher
 		Date endDate 	= (Date) fields.getValue(SEARCH_EVENT_END_DATE_INDEX_FIELD);
 
 		return (startDate != null && endDate != null)? getEventDateQuery(field, startDate, endDate):null;				
+	}	
+	
+	private Query handleFindBulletinsQuery(String field, SearchFields fields)
+			throws BulletinIndexException 
+	{		
+		Query fieldQuery = null;
+
+		String queryString = (String) fields.getValue(SearchResultConstants.RESULT_ADVANCED_QUERY_KEY);
+		String fieldString = (String) fields.getValue(SearchResultConstants.RESULT_FIELDS_KEY);
+
+		if (queryString != null && queryString.length()>0)
+		{
+			if (fieldString.equals("all"))
+				fieldQuery = multiFieldQueryParser(queryString, SEARCH_ALL_TEXT_FIELDS, "Improperly formed advanced find bulletine multiquery: ");
+			
+			fieldQuery = queryParser(queryString, fieldString, "Improperly formed advance find bulletine query: ");
+		}
+		
+		return fieldQuery;
 	}		
 		
 	public Results advancedSearch(String field, SearchFields fields)
 		throws BulletinIndexException 
 	{	
 		BooleanQuery query = new BooleanQuery();
-		Query eventDateQuery = handleEventDateQuery(field, fields);						
+		Query eventDateQuery = handleEventDateQuery(field, fields);					
 		query.add(eventDateQuery, true, false);
+
+		Query findBulletinsQuery = handleFindBulletinsQuery(field, fields);
+		if (findBulletinsQuery != null)
+			query.add(findBulletinsQuery, true, false);
 							
 		return getLuceneResults(query, null);
 	}	

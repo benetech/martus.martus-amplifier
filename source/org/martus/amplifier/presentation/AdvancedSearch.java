@@ -34,6 +34,9 @@ public class AdvancedSearch extends AmplifierServlet
 	public String selectTemplate(AmplifierServletRequest request, HttpServletResponse response, Context context)
 	{
 		context.put("monthFields", MonthFields.getMonthDisplayNames());
+		context.put("filterWordFields", FindBulletinsFields.getFindBulletinsWordFilterDisplayNames());
+		context.put("bulletinesFields", FindBulletinsFields.getFindBulletinsFieldDisplayNames());
+		
 		return "AdvancedSearch.vm";
 	}
 }

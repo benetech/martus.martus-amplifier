@@ -53,7 +53,7 @@ public class SearchResults extends AmplifierServlet implements SearchResultConst
 		try
 		{
 			results = getSearchResults(request);
-			resultCount = results.size();
+			resultCount = results.size();	
 		}
 		catch (Exception e)
 		{
@@ -116,11 +116,11 @@ public class SearchResults extends AmplifierServlet implements SearchResultConst
 	
 			if (advancedSearch) 
 			{					
-				String field = (String)fields.getValue(RESULT_FIELD_KEY);			
+				String field = (String)fields.getValue(RESULT_BASIC_FIELD_KEY);			
 				results = searcher.advancedSearch(field, fields);
 			}
 			else	
-				results = searcher.search((String)fields.getValue(RESULT_FIELD_KEY),
+				results = searcher.search((String)fields.getValue(RESULT_BASIC_FIELD_KEY),
 						 (String)fields.getValue(RESULT_BASIC_QUERY_KEY));
 						
 			int numResults = results.getCount();

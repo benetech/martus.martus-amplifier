@@ -30,10 +30,11 @@
 					<td><strong>Find bulletins </strong></td>
 					<td>
 						<select name = 'filterBy'>
-							<option value='allWords'>with all of these words</option>
-							<option value='exactPhrase'>with the exact phrase</option>
-							<option value='anyWord'>with at least one of these words</option>
-							<option value='withoutWords'>without any of these words</option>
+								#foreach ($word in $filterWordFields)
+		                            <option value="$word">
+		                                $word
+		                            </option>
+							    #end			
 						</select>
 					</td>
 					<td><input name="advancedQuery" size="44"/></td>
@@ -43,7 +44,7 @@
 					<td></td>
 					<td>
 						<select name='fields'>
-							<option value="" selected>anywhere in the bulletin</option>
+							<option value="all" selected>anywhere in the bulletin</option>
 							<option value='title'>in the title</option>
 							<option value='keywords'>in the keywords</option>
 							<option value='summary'>in the summary</option>

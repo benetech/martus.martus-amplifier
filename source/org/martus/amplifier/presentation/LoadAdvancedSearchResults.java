@@ -38,10 +38,8 @@ public class LoadAdvancedSearchResults implements SearchResultConstants, SearchC
 	public LoadAdvancedSearchResults(AmplifierServletRequest request, SearchFields fields)
 	{
 		searchRequest = request;
-		loadSearchResults();
-		
-		if (hasEventFieldKeys())
-		 	setEventDate(fields);
+		searchFields  = fields;
+		loadSearchResults();		
 	}
 	
 	private void loadSearchResults()
@@ -50,7 +48,9 @@ public class LoadAdvancedSearchResults implements SearchResultConstants, SearchC
 		{
 			String value = getParameterValue(ADVANCED_KEYS[i]);
 			if (value != null)
-				resultList.put(ADVANCED_KEYS[i], value);
+			{		
+				resultList.put(ADVANCED_KEYS[i], value);				
+			}
 		}
 		
 		if (!containsKey(RESULT_START_YEAR_KEY) || 
@@ -59,19 +59,37 @@ public class LoadAdvancedSearchResults implements SearchResultConstants, SearchC
 			!containsKey(RESULT_END_YEAR_KEY) ||
 			!containsKey(RESULT_END_MONTH_KEY) ||
 			!containsKey(RESULT_END_DAY_KEY))
-				hasEventFields = false;																	
+		{				
+				hasEventFields = false;				
+		}				
+		
+		setEventDate();
+		setNormalFields();																	
 	}	
+
+	private void addField(String key, Object value)
+	{
+		searchFields.add(key, value);
+	}
 	
-	private void setEventDate(SearchFields result)
+	private void setEventDate()
 	{
 		Date startDate	= getStartDate();
 		Date endDate	= getEndDate();
 
 		if (startDate != null && endDate != null)
 		{			
-			result.add(SEARCH_EVENT_START_DATE_INDEX_FIELD, startDate);
-			result.add(SEARCH_EVENT_END_DATE_INDEX_FIELD, endDate);
+			addField(SEARCH_EVENT_START_DATE_INDEX_FIELD, startDate);
+			addField(SEARCH_EVENT_END_DATE_INDEX_FIELD, endDate);
 		}	
+	}
+
+	private void setNormalFields()
+	{
+		addField(RESULT_FIELDS_KEY, resultList.get(RESULT_FIELDS_KEY));
+		addField(RESULT_FILTER_BY_KEY, resultList.get(RESULT_FILTER_BY_KEY));
+		addField(RESULT_LANGUAGE_KEY, resultList.get(RESULT_LANGUAGE_KEY));
+		addField(RESULT_ENTRY_DATE_KEY,resultList.get(RESULT_ENTRY_DATE_KEY));	
 	}
 	
 	public void setSearchFields(SearchFields result)
@@ -132,5 +150,6 @@ public class LoadAdvancedSearchResults implements SearchResultConstants, SearchC
 
 	AmplifierServletRequest searchRequest;
 	Hashtable resultList 	= new Hashtable();
+	SearchFields	searchFields;
 	boolean hasEventFields 	= true;
 }
