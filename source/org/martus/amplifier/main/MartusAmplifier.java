@@ -32,6 +32,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -155,13 +157,17 @@ public class MartusAmplifier
 	{
 		Server nonsslServer = new Server();
 		nonsslServer.addWebApplication("", getPresentationBasePath() + "presentationNonSSL");
-		nonsslServer.addListener(new InetAddrPort(80));
+		InetAddrPort nonssllistener = new InetAddrPort(80);
+		nonssllistener.setInetAddress(ampIpAddress);
+		nonsslServer.addListener(nonssllistener);
+		
 		nonsslServer.start();
 	}
 
 	private void startSSLServer(String password) throws IOException, MultiException
 	{
 		SunJsseListener sslListener = new SunJsseListener(new InetAddrPort(443));
+		sslListener.setInetAddress(ampIpAddress);
 		sslListener.setPassword(password);
 		sslListener.setKeyPassword(password);
 		sslListener.setMaxIdleTimeMs(MAX_IDLE_TIME_MS);
@@ -186,6 +192,7 @@ public class MartusAmplifier
 		long indexEveryXMinutes = 0;
 		String indexEveryXHourTag = "indexinghours=";
 		String indexEveryXMinutesTag = "indexingminutes=";
+		String ampipTag = "ampip=";
 
 		for(int arg = 0; arg < args.length; ++arg)
 		{
@@ -194,6 +201,20 @@ public class MartusAmplifier
 				enterSecureMode();
 			if(argument.equals("nopassword"))
 				insecurePassword = "password";
+			if(argument.startsWith(ampipTag))
+			{
+				String ip = argument.substring(ampipTag.length());
+				try
+				{
+					ampIpAddress = InetAddress.getByName(ip);
+				}
+				catch (UnknownHostException e)
+				{
+					ampIpAddress = null;
+					e.printStackTrace();
+				}
+			}
+
 			if(argument.startsWith(indexEveryXHourTag))
 			{	
 				String hours = argument.substring(indexEveryXHourTag.length());
@@ -570,6 +591,7 @@ public class MartusAmplifier
 	}
 
 	boolean secureMode;
+	private InetAddress ampIpAddress;
 	static String insecurePassword;
 	public static File dataDirectory;	
 
