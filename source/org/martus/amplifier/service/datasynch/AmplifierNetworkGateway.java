@@ -66,6 +66,10 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
 				throw new ServerErrorException(resultCode);
 			result= response.getResultVector();
 		}
+		catch(IOException e)
+		{
+			logger.info("No server available");
+		}
 		catch(Exception e)
 		{
 			logger.severe("AmplifierNetworkGateway.getAllAccountIds(): Unable to retrieve AccountIds: " + e.getMessage());
