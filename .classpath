@@ -14,5 +14,6 @@
     <classpathentry kind="src" path="/martus"/>
     <classpathentry kind="var" path="JspEngine"/>
     <classpathentry kind="var" path="ServletEngine"/>
+    <classpathentry kind="var" path="Jetty"/>
     <classpathentry kind="output" path="presentation/WEB-INF/classes"/>
 </classpath>
