@@ -99,7 +99,7 @@ public class DoSearch extends AbstractSearchResultsServlet
 			String simpleQueryString = getSimpleSearchString(request);
 			RawSearchParameters.clearAdvancedSearch(session);
 					
-			simpleQueryString = CharacterUtil.removeRestrictCharacters(simpleQueryString);
+			simpleQueryString = CharacterUtil.removeRestrictCharacters(simpleQueryString);		
 			RawSearchParameters raw = new RawSearchParameters(simpleQueryString);
 						
 			if (simpleQueryString.equals(""))

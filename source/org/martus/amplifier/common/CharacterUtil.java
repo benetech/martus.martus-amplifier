@@ -26,6 +26,8 @@ Boston, MA 02111-1307, USA.
 
 package org.martus.amplifier.common;
 
+import java.util.StringTokenizer;
+
 public class CharacterUtil
 {	
 	public static String removeRestrictCharacters(String str)
@@ -38,8 +40,20 @@ public class CharacterUtil
 		{							
 			if (!isAllowed(strArray[j]) && !insideQuotes)
 				strArray[j] = ' ';													
-		}																		
-		return new String(strArray).trim();
+		}									
+										
+		return removeExtraSpaces(new String(strArray)).trim();
+	}
+	
+	private static String removeExtraSpaces(String str)
+	{
+		StringTokenizer st = new StringTokenizer(str);
+		StringBuffer strBuffer = new StringBuffer();
+		while (st.hasMoreTokens()) 
+		{
+			strBuffer.append(st.nextToken()).append(" ");
+		}
+		return strBuffer.toString();
 	}
 	
 	public static boolean isAllowed(char ch)

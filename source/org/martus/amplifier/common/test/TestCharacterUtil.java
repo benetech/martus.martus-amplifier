@@ -49,6 +49,9 @@ public class TestCharacterUtil extends TestCaseEnhanced
 		String test9 = "\"?\"";		
 		String test10 = "*\"*\"*";	
 		String test11 = null;
+		String test12 = "test +test";
+		String test13 = "test             #&$%*$^(*%()^)^ test++++++done";
+		String test14 = "       test     +-";
 		
 		try
 		{
@@ -61,9 +64,9 @@ public class TestCharacterUtil extends TestCaseEnhanced
 			outStr = CharacterUtil.removeRestrictCharacters(test4);
 			assertEquals("removed \"", "\"test\" 'test'", outStr);
 			outStr = CharacterUtil.removeRestrictCharacters(test5);
-			assertEquals("removed :\"@.", "http  test testagain com", outStr);
+			assertEquals("removed :\"@.", "http test testagain com", outStr);
 			outStr = CharacterUtil.removeRestrictCharacters(test6);
-			assertEquals("removed <>", "html  test  test", outStr);
+			assertEquals("removed <>", "html test test", outStr);
 			outStr = CharacterUtil.removeRestrictCharacters(test7);		
 			assertEquals("removed *", "", outStr);
 			outStr = CharacterUtil.removeRestrictCharacters(test8);								
@@ -72,7 +75,15 @@ public class TestCharacterUtil extends TestCaseEnhanced
 			assertEquals("should not removed ? inside quotes", test9, outStr);
 			outStr = CharacterUtil.removeRestrictCharacters(test10);		
 			assertEquals("should not removed * inside quotes but strip * ouside of quotes", "\"*\"", outStr);
-		}
+			outStr = CharacterUtil.removeRestrictCharacters(test12);
+			assertEquals("should removed all space and +sinze", "test test", outStr);
+			
+			outStr = CharacterUtil.removeRestrictCharacters(test13);
+			assertEquals("should removed all space and invalide chars", "test test done", outStr);	
+			outStr = CharacterUtil.removeRestrictCharacters(test14);
+			assertEquals("should removed all space and invalide chars", "test", outStr);
+											
+		}	
 		catch(Exception e)
 		{
 			assertTrue("UTF8 not supported", false);
