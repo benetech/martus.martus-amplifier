@@ -11,5 +11,6 @@
     <classpathentry kind="var" path="JasperRuntime"/>
     <classpathentry kind="var" path="berkeleydb"/>
     <classpathentry kind="var" path="berkeleydb_examples"/>
+    <classpathentry kind="src" path="/martus-readonly"/>
     <classpathentry kind="output" path="presentation\WEB-INF\classes"/>
 </classpath>
