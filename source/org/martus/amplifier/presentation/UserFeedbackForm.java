@@ -30,6 +30,7 @@ import org.apache.velocity.context.Context;
 import org.martus.amplifier.velocity.AmplifierServlet;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
 import org.martus.amplifier.velocity.AmplifierServletResponse;
+import org.martus.common.VersionBuildDate;
 
 public class UserFeedbackForm extends AmplifierServlet
 {
@@ -38,6 +39,7 @@ public class UserFeedbackForm extends AmplifierServlet
 		AbstractSearchResultsServlet.setSearchedForInContext(request.getSession(), context);
 		boolean isProblemReport = (request.getParameter("problemReport") != null);
 		context.put("problemReport", new Boolean(isProblemReport));
+		context.put("runningVersion", VersionBuildDate.getVersionBuildDate());
 		return "UserFeedbackForm.vm";
 	}
 }
