@@ -14,7 +14,8 @@ import org.martus.common.packet.UniversalId;
  * @version first created Dec 2002
  *
  */
-public class BulletinCatalog implements IBulletinCatalog {
+public class BulletinCatalog 
+{
 	protected BulletinCatalog()
 	{}
 	
