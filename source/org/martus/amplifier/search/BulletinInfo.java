@@ -17,7 +17,7 @@ public class BulletinInfo implements Serializable
 		this.bulletinId = bulletinId;
 	}
 	
-	public void set(String field, Object value)
+	public void set(String field, String value)
 	{
 		data.put(field, value);
 	}
