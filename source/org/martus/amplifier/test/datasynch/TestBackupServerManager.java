@@ -15,7 +15,7 @@ public class TestBackupServerManager extends TestCaseEnhanced
 	
 	public void setUp() throws Exception
 	{
-		List serverList = new BackupServerManager().getBackupServersList();
+		List serverList = BackupServerManager.getBackupServersList();
 		testInfo = (BackupServerInfo) serverList.get(0);
 	}
 	

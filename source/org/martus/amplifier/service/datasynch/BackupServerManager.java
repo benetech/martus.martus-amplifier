@@ -8,13 +8,13 @@ import java.util.logging.Logger;
 
 public class BackupServerManager implements IDataSynchConstants
 {
-	public BackupServerManager()
+	public static List getBackupServersList() 
 	{
-		super();
+		Logger logger = Logger.getLogger(DATASYNC_LOGGER);
 		Properties backupServerProperties = new Properties();
 		try
 		{
-			backupServerProperties.load(getClass().getResourceAsStream(BACKUP_SERVER_PROPERTIES));
+			backupServerProperties.load(BackupServerManager.class.getResourceAsStream(BACKUP_SERVER_PROPERTIES));
 		}
 		catch(IOException ioe)
 		{
@@ -27,7 +27,7 @@ public class BackupServerManager implements IDataSynchConstants
 		String serverPublicKey = null;
 		int currentServerPort = 0;
 		
-		backupServersList = new ArrayList();
+		List backupServersList = new ArrayList();
 		currentServerName = backupServerProperties.getProperty(NAME_PROPERTY);
 		currentServerIP = backupServerProperties.getProperty(IP_PROPERTY);
 		currentServerPortString = backupServerProperties.getProperty(PORT_PROPERTY);
@@ -36,10 +36,6 @@ public class BackupServerManager implements IDataSynchConstants
 			currentServerPort = Integer.parseInt(currentServerPortString);
 		backupServersList.add(new BackupServerInfo(currentServerName,
 			currentServerIP, currentServerPort, serverPublicKey));
-	}
-
-	public List getBackupServersList() 
-	{
 		return backupServersList;
 	}
 	
@@ -47,8 +43,4 @@ public class BackupServerManager implements IDataSynchConstants
 	private static final String IP_PROPERTY = "serverIP";
 	private static final String PORT_PROPERTY = "serverPort";
 	private static final String SERVERPUBLICKEY_PROPERTY = "serverPublicKey";
-	
-	
-	private List backupServersList = null;
-	private Logger logger = Logger.getLogger(DATASYNC_LOGGER);
 }

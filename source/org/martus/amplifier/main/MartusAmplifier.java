@@ -21,7 +21,10 @@ import org.mortbay.jetty.Server;
 public class MartusAmplifier
 {
 	public static void main(String[] args) throws Exception
-	{	
+	{
+		//File configDirectory = new File(AmplifierConfiguration.getInstance().getBasePath());
+		//File backupServersFile = new File(configDirectory, "pullfrom.txt");
+		backupServersList = BackupServerManager.getBackupServersList();
 		timer.scheduleAtFixedRate(timedTask, IMMEDIATELY, dataSynchIntervalMillis);
 
 		SocketListener listener = new SocketListener();
@@ -120,7 +123,6 @@ public class MartusAmplifier
 				startSynch();
 				//System.out.println("Scheduled Task started " + System.currentTimeMillis());
 
-				List backupServersList = new BackupServerManager().getBackupServersList();
 				MartusAmplifier.pullNewBulletinsFromServers(backupServersList);
 				
 				//System.out.println("Scheduled Task finished " + System.currentTimeMillis() + "\n");
@@ -134,4 +136,5 @@ public class MartusAmplifier
 	static final long dataSynchIntervalMillis = 100000;
 	static boolean isSyncing;
 	
+	static List backupServersList;
 }
