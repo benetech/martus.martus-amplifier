@@ -30,7 +30,9 @@ import java.util.Vector;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.velocity.context.Context;
-import org.martus.amplifier.common.*;
+import org.martus.amplifier.common.AmplifierServlet;
+import org.martus.amplifier.common.AmplifierServletRequest;
+import org.martus.amplifier.common.AmplifierServletSession;
 import org.martus.amplifier.service.search.BulletinInfo;
 
 public class FoundBulletin extends AmplifierServlet

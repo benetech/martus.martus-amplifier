@@ -31,7 +31,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Hashtable;
 
-import org.martus.amplifier.common.*;
+import org.martus.amplifier.common.AmplifierServletRequest;
 import org.martus.amplifier.service.search.SearchConstants;
 
 public class SearchParameters implements SearchResultConstants, SearchConstants

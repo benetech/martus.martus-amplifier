@@ -33,7 +33,9 @@ import java.util.Vector;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.velocity.context.Context;
-import org.martus.amplifier.common.*;
+import org.martus.amplifier.common.AmplifierConfiguration;
+import org.martus.amplifier.common.AmplifierServlet;
+import org.martus.amplifier.common.AmplifierServletRequest;
 import org.martus.amplifier.service.search.BulletinIndexException;
 import org.martus.amplifier.service.search.BulletinInfo;
 import org.martus.amplifier.service.search.BulletinSearcher;

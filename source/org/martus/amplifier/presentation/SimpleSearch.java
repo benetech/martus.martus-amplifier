@@ -28,7 +28,8 @@ package org.martus.amplifier.presentation;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.velocity.context.Context;
-import org.martus.amplifier.common.*;
+import org.martus.amplifier.common.AmplifierServlet;
+import org.martus.amplifier.common.AmplifierServletRequest;
 
 public class SimpleSearch extends AmplifierServlet
 {

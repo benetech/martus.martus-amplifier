@@ -2,10 +2,10 @@ package org.martus.amplifier.service.search.lucene;
 
 import java.io.File;
 
-import org.martus.amplifier.service.search.TestAbstractSearch;
 import org.martus.amplifier.service.search.BulletinIndexException;
 import org.martus.amplifier.service.search.BulletinIndexer;
 import org.martus.amplifier.service.search.BulletinSearcher;
+import org.martus.amplifier.service.search.TestAbstractSearch;
 
 public class TestLuceneSearcher extends TestAbstractSearch
 {
