@@ -27,5 +27,6 @@ implements ILoggerConstants
 				ioe.getMessage());
 		}
 		Assert.assertNotNull(doc);
+		Assert.assertNotNull(doc.getField("path"));
 	}
 }
