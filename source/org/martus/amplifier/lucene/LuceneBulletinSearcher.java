@@ -33,6 +33,7 @@ import java.util.Map;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.TermQuery;
+import org.martus.amplifier.common.CharacterUtil;
 import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinInfo;
@@ -105,7 +106,10 @@ public class LuceneBulletinSearcher implements BulletinSearcher
 		throws Exception, IOException
 	{
 		String queryString = (String) fields.get(SearchResultConstants.RESULT_BASIC_QUERY_KEY);
-		QueryBuilder query = new QueryBuilder(queryString, SEARCH_ALL_TEXT_FIELDS);				
+		
+		String validString = CharacterUtil.removeRestrictCharacters(queryString);
+				
+		QueryBuilder query = new QueryBuilder(validString, SEARCH_ALL_TEXT_FIELDS);				
 		return new LuceneResults(searcher, query.getQuery());
 	}
 	
