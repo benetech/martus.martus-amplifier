@@ -124,7 +124,12 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 
 	public static String daysAgo(int days)
 	{
-		GregorianCalendar today = new GregorianCalendar();
+		GregorianCalendar today = null;
+		if(todaysDateUsedForTesting == null)
+			today = new GregorianCalendar();
+		else
+			today = (GregorianCalendar) todaysDateUsedForTesting.clone();
+		
 		today.add(Calendar.DATE, -days);
 		return MartusFlexidate.toStoredDateFormat(today.getTime());
 	}
@@ -214,4 +219,5 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 	
 	RawSearchParameters inputParameters;
 	HashMap	searchFields;
+	public static GregorianCalendar todaysDateUsedForTesting = null;
 }

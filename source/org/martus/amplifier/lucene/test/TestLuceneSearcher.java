@@ -1,7 +1,9 @@
 package org.martus.amplifier.lucene.test;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -741,17 +743,21 @@ public class TestLuceneSearcher extends CommonSearchTest
 			String startDate 		= "2003-08-01";
 			String endDate 			= "2003-08-22";			
 			String defaultStartDate = "1970-01-01";		
-			String todayDate 		= "2003-09-24";
 			
-			String pastWeek 	= SearchParameters.getEntryDate(ENTRY_PAST_WEEK_DAYS_TAG);
-			String pastMonth 	= SearchParameters.getEntryDate(ENTRY_PAST_MONTH_DAYS_TAG);
+			GregorianCalendar today = new GregorianCalendar();
+			today.set(Calendar.YEAR, 2003);
+			today.set(Calendar.MONTH, Calendar.SEPTEMBER);
+			today.set(Calendar.DAY_OF_MONTH, 24);
+			SearchParameters.todaysDateUsedForTesting = today;
+
+			String pastWeek = SearchParameters.getEntryDate(ENTRY_PAST_WEEK_DAYS_TAG);
+			String pastMonth = SearchParameters.getEntryDate(ENTRY_PAST_MONTH_DAYS_TAG);
 			String past3Month = SearchParameters.getEntryDate(ENTRY_PAST_3_MONTH_DAYS_TAG);
 			String past6Month = SearchParameters.getEntryDate(ENTRY_PAST_6_MONTH_DAYS_TAG);
-			String pastYear 	= SearchParameters.getEntryDate(ENTRY_PAST_YEAR_DAYS_TAG);
+			String pastYear = SearchParameters.getEntryDate(ENTRY_PAST_YEAR_DAYS_TAG);
 		
 			HashMap fields = new HashMap();
 			fields.put(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, defaultStartDate);
-			fields.put(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, todayDate);		
 			
 			//2003-05-11 and 2003-08-30
 			fields.put(BulletinField.SEARCH_ENTRY_DATE_INDEX_FIELD, pastWeek);		

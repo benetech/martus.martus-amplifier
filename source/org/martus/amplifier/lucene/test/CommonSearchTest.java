@@ -28,7 +28,6 @@ package org.martus.amplifier.lucene.test;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.Date;
 
 import junit.framework.Assert;
 
@@ -49,7 +48,6 @@ import org.martus.common.bulletin.AttachmentProxy;
 import org.martus.common.crypto.MockMartusSecurity;
 import org.martus.common.packet.FieldDataPacket;
 import org.martus.common.packet.UniversalId;
-import org.martus.common.utilities.MartusFlexidate;
 import org.martus.util.DirectoryUtils;
 
 public abstract class CommonSearchTest 
@@ -154,9 +152,10 @@ public abstract class CommonSearchTest
 		String author = "Chuck";	
 		String keywords = "2003-08-20";
 		String title = "What's for Lunch?";
-		long tenDaysOfMillis = 10*24*60*60*1000L;
-		Date tenDaysAgo = new Date(System.currentTimeMillis() - tenDaysOfMillis);
-		String entrydate= MartusFlexidate.toStoredDateFormat(tenDaysAgo);
+		//long tenDaysOfMillis = 10*24*60*60*1000L;
+		//Date tenDaysAgo = new Date(System.currentTimeMillis() - tenDaysOfMillis);
+		//String entrydate= MartusFlexidate.toStoredDateFormat(tenDaysAgo);
+		String entrydate="2003-09-15";
 		String eventdate = "2003-08-20,20030820+3";
 		String publicInfo = "menu3";
 		String language = "es";
