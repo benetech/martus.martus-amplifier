@@ -26,6 +26,7 @@ Boston, MA 02111-1307, USA.
 package org.martus.amplifier.presentation;
 
 import org.apache.velocity.context.Context;
+import org.martus.amplifier.main.StaticData;
 import org.martus.amplifier.velocity.AmplifierServlet;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
 import org.martus.amplifier.velocity.AmplifierServletResponse;
@@ -36,6 +37,8 @@ public class SimpleSearch extends AmplifierServlet
 				AmplifierServletResponse response, 
 				Context context) throws Exception
 	{
+		context.put("name", request.getParameter("query"));
+		context.put("testValue", new Integer(StaticData.testValue));
 		super.selectTemplate(request, response, context);
 		return "SimpleSearch.vm";
     }

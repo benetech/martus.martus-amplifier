@@ -10,6 +10,7 @@
 		#set ($noSearchForm = "1")
 		#parse ("ResultHeader.vm")
 		<br/>
+		$testValue
 		<center>
 			<table>
 				<tr>

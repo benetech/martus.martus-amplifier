@@ -38,6 +38,7 @@ public class MartusAmplifier
 {
 	public static void main(String[] args) throws Exception
 	{
+		StaticData.testValue = 66;
 		displayVersion();
 		MartusAmplifier amp = new MartusAmplifier(new LoggerToConsole());
 		

@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<launchConfiguration type="org.eclipse.ant.AntBuilderLaunchConfigurationType">
-    <stringAttribute
-        key="org.eclipse.ui.externaltools.ATTR_RUN_BUILD_KINDS" value="full,incremental,auto,"/>
-    <stringAttribute key="org.eclipse.ui.externaltools.ATTR_LOCATION" value="${workspace_loc:/martus-amplifier/build.xml}"/>
-</launchConfiguration>

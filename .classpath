@@ -13,5 +13,5 @@
     <classpathentry kind="var" path="ServletEngine"/>
     <classpathentry kind="var" path="Jetty"/>
     <classpathentry kind="var" path="Velocity"/>
-    <classpathentry kind="output" path="presentation/WEB-INF/classes"/>
+    <classpathentry kind="output" path="classes"/>
 </classpath>
