@@ -21,7 +21,7 @@
 	&nbsp;&nbsp;
 	<a href='http://martus.org'>Search Tips</a>
 	&nbsp;&nbsp;
-	<a href='http://martus.org'>Report Technical Problems</a>
+	<a href='UserFeedbackForm?problemReport'>Report Technical Problems</a>
 </font>
 <br/><br/>
 <table cellSpacing=0 cellPadding=1 width="100%" bgColor="$barColor" border=0>

@@ -1,0 +1,61 @@
+<html>
+    <head>
+    		#include("Meta.vm")
+            <title>Martus Amplifier Feedback</title>
+    </head>
+    <body>
+		#if ($problemReport)
+	    	#set ($pageTitle="Report Technical Problems")
+	    #else
+	    	#set ($pageTitle="Dissatisfied with Search Results")
+	    #end
+	   	#set ($pageInfo="")
+		#set ($showSearchForm = false)
+		#parse ("ResultHeader.vm")
+		
+		<br/><br/>
+		<table cellpadding='5'>
+			<tr>
+				<td width='5%'></td>
+				<td bgcolor='#dddddd' fgcolor='#000000'>
+					You searched for: <strong>test</strong><br/>
+					<br/>
+					Please tell us what specific information you were seeking<br/>
+					and why you were dissatisfied with the search results.<br/>
+					<br/>
+					#if ($problemReport)
+						If there was an error message, tell us what it said.<br/>
+						Also tell us what happened right before the error occurred,<br/>
+						such as what page you were on, which links you followed, <br/>
+						what options you chose or terms you entered.<br/>
+						<br/>
+					#end
+					<textarea rows='10' cols='60'></textarea>
+					<br/><br/>
+					<input type='submit' value='Submit'></input>
+					
+				</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>
+					Thank you for helping us improve Martus.<br/> 
+					<br/>
+					Although we cannot respond directly to feedback submitted on this form, <br/>
+					your comments will be reviewed by our quality team. 
+					<br/><br/>
+					For more help, see the 
+					<a href='http://www.martus.org'>Martus search tips</a> page.
+					<br/><br/>
+					<strong><em>INSERT TECHNICAL SUPPORT STUFF HERE</em></strong>
+				</td>
+				<td></td>
+			</tr>
+		</table>
+        
+		<br/><br/>
+		#set ($showSearchForm = false)
+		#parse ("ResultFooter.vm")
+    </body>
+</html>
