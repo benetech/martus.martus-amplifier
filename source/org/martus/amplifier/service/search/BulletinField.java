@@ -118,7 +118,9 @@ public class BulletinField implements BulletinConstants, SearchConstants
 		addField(TAGPUBLICINFO, SEARCH_DETAILS_INDEX_FIELD, "Details");
 		addField(TAGSUMMARY, SEARCH_SUMMARY_INDEX_FIELD, "Summary");
 		addField(TAGLOCATION, SEARCH_LOCATION_INDEX_FIELD, "Location");
-		addField(TAGENTRYDATE, SEARCH_ENTRY_DATE_INDEX_FIELD, "Entry Date");	
+		addField(TAGENTRYDATE, SEARCH_ENTRY_DATE_INDEX_FIELD, "Entry Date");
+		addField(TAGLANGUAGE, SEARCH_LANGUAGE_INDEX_FIELD, "Language");
+		addField(TAGORGANIZATION, SEARCH_ORGANIZATION_INDEX_FIELD, "Organization");	
 	}
 	
 	private static void addField(String xmlId, String indexId, String displayName)

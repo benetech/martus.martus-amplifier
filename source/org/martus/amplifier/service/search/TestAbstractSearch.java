@@ -525,7 +525,55 @@ public abstract class TestAbstractSearch
 		{
 			searcher.close();
 		}
-	}	
+	}
+	
+	public void testAdvancedSearchCombineEventDateAndBulletineFieldAndLanguage() throws BulletinIndexException,ParseException
+	{
+		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
+		FieldDataPacket fdp1 = generateSampleData(bulletinId1);		
+		UniversalId bulletinId2 = UniversalId.createDummyUniversalId();
+		FieldDataPacket fdp2 = generateSampleFlexiData(bulletinId2);		
+		BulletinIndexer indexer = openBulletinIndexer();
+		try 
+		{
+			indexer.clearIndex();
+			indexer.indexFieldData(bulletinId1, fdp1);
+			indexer.indexFieldData(bulletinId2, fdp2);
+		} 
+		finally 
+		{
+			indexer.close();
+		}
+		
+		BulletinSearcher searcher = openBulletinSearcher();
+		BulletinSearcher.Results results = null;				
+		
+		try 
+		{
+			Date startDate 	= SearchConstants.SEARCH_DATE_FORMAT.parse("2003-08-01");
+			Date endDate 	= SearchConstants.SEARCH_DATE_FORMAT.parse("2003-08-22");
+		
+			SearchFields fields = new SearchFields();
+			fields.add(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, startDate);
+			fields.add(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, endDate);
+			fields.add(SearchResultConstants.RESULT_FIELDS_KEY, BulletinField.SEARCH_TITLE_INDEX_FIELD);
+			fields.add(BulletinField.SEARCH_LANGUAGE_INDEX_FIELD, "Spanish");
+			fields.add(SearchResultConstants.RESULT_ADVANCED_QUERY_KEY, "lunch");
+			
+			results = searcher.search(null, fields);
+			assertEquals("Combine search for eventdate, field, and laguage? ", 1, results.getCount());
+			
+			fields.remove(SEARCH_LANGUAGE_INDEX_FIELD);
+			fields.add(BulletinField.SEARCH_LANGUAGE_INDEX_FIELD, "French");
+			results = searcher.search(null, fields);
+			assertEquals("Combine search for eventdate, bulletin field, and language (not match)? ", 0, results.getCount());			
+						
+		}
+		finally 
+		{
+			searcher.close();
+		}
+	}		
 		
 	protected FieldDataPacket generateSampleData(UniversalId bulletinId)
 	{
@@ -536,6 +584,7 @@ public abstract class TestAbstractSearch
 		String eventdate = "2003-04-10";
 		String entrydate = "2003-05-11";
 		String publicInfo = "menu";
+		String language = "English";
 		String summary = 
 			"Today Paul ate an egg salad sandwich and a root beer " +
 			"for lunch.";
@@ -546,7 +595,7 @@ public abstract class TestAbstractSearch
 		String attachment2LocalId = "att2Id";
 		String attachment2Label = "Recipe.txt";
 		
-		FieldDataPacket fdp = createFieldDataPacket(bulletinId, author, keywords, title, eventdate, entrydate, publicInfo, summary, location, attachment1LocalId, attachment1Label, attachment2LocalId, attachment2Label);
+		FieldDataPacket fdp = createFieldDataPacket(bulletinId, author, keywords, title, eventdate, entrydate, publicInfo, summary, location, attachment1LocalId, attachment1Label, attachment2LocalId, attachment2Label, language);
 		return fdp;
 	}
 
@@ -558,6 +607,7 @@ public abstract class TestAbstractSearch
 		String entrydate= "2003-08-30";
 		String eventdate = "2003-08-20,20030820+3";
 		String publicInfo = "menu3";
+		String language = "Spanish";
 		String summary = 
 			"Today Chuck ate an egg2 salad2 sandwich and a root beer2 " +
 			"for lunch.";
@@ -568,11 +618,11 @@ public abstract class TestAbstractSearch
 		String attachment2LocalId = "att2Id";
 		String attachment2Label = "Recipe.txt";
 		
-		FieldDataPacket fdp = createFieldDataPacket(bulletinId, author, keywords, title, eventdate, entrydate, publicInfo, summary, null, attachment1LocalId, attachment1Label, attachment2LocalId, attachment2Label);
+		FieldDataPacket fdp = createFieldDataPacket(bulletinId, author, keywords, title, eventdate, entrydate, publicInfo, summary, null, attachment1LocalId, attachment1Label, attachment2LocalId, attachment2Label, language);
 		return fdp;
 	}
 	
-	private FieldDataPacket createFieldDataPacket(UniversalId bulletinId, String author, String keywords, String title, String eventdate, String entrydate, String publicInfo, String summary, String location, String attachment1LocalId, String attachment1Label, String attachment2LocalId, String attachment2Label)
+	private FieldDataPacket createFieldDataPacket(UniversalId bulletinId, String author, String keywords, String title, String eventdate, String entrydate, String publicInfo, String summary, String location, String attachment1LocalId, String attachment1Label, String attachment2LocalId, String attachment2Label, String language)
 	{
 		FieldDataPacket fdp = generateFieldDataPacket(
 			bulletinId, new String[] { 
@@ -583,7 +633,8 @@ public abstract class TestAbstractSearch
 				SEARCH_EVENT_DATE_INDEX_FIELD, eventdate,
 				SEARCH_DETAILS_INDEX_FIELD, publicInfo, 
 				SEARCH_SUMMARY_INDEX_FIELD, summary,
-				SEARCH_LOCATION_INDEX_FIELD, location
+				SEARCH_LOCATION_INDEX_FIELD, location,
+				SEARCH_LANGUAGE_INDEX_FIELD, language
 			}, new String[] {
 				attachment1LocalId, attachment1Label, 
 				attachment2LocalId, attachment2Label

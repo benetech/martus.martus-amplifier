@@ -111,14 +111,14 @@ public class LuceneBulletinSearcher
 		return (startDate != null && endDate != null)? getEventDateQuery(field, startDate, endDate):null;				
 	}	
 	
-	private Query handleFindLanguageQuery(String field, String query, SearchFields fields)
+	private Query handleFindLanguageQuery(SearchFields fields)
 			throws BulletinIndexException
 	{
 		Query fieldQuery = null;
-		String fieldString = (String) fields.getValue(SearchResultConstants.RESULT_FIELDS_KEY);
-		
-		if (query != null && query.length()>0)				
-			fieldQuery = queryParser(query, fieldString, "Improperly formed advance find language type in bulletin query: ");
+		String fieldString = (String) fields.getValue(SearchResultConstants.RESULT_LANGUAGE_KEY);
+	
+		if (fieldString != null)				
+			fieldQuery = queryParser(fieldString,SEARCH_LANGUAGE_INDEX_FIELD, "Improperly formed advance find language type in bulletin query: ");
 		
 		return fieldQuery;
 	} 
@@ -163,7 +163,7 @@ public class LuceneBulletinSearcher
 		if (foudBulletinsQuery != null)
 			query.add(foudBulletinsQuery, true, false);
 			
-		Query foudLanguageQuery = handleFindLanguageQuery(field, queryString, fields);
+		Query foudLanguageQuery = handleFindLanguageQuery(fields);
 		if (foudLanguageQuery != null)
 			query.add(foudLanguageQuery, true, false);
 			
