@@ -16,6 +16,11 @@ public class AmplifierNetworkGatewayTest extends AbstractAmplifierDataSynchTest
 	{
 		super();
 	}
+	
+	public AmplifierNetworkGatewayTest(String name)
+	{
+		super(name);
+	}
 	/*
 	public void testGetAllBulletinIds()
 	{

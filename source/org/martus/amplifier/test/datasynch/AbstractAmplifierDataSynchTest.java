@@ -9,5 +9,10 @@ public abstract class AbstractAmplifierDataSynchTest extends TestCase
 	{
 		super();
 	}
+	
+	public AbstractAmplifierDataSynchTest(String name)
+	{
+		super(name);
+	}
 
 }
