@@ -26,11 +26,13 @@ Boston, MA 02111-1307, USA.
 
 package org.martus.amplifier.common;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.martus.amplifier.velocity.AmplifierServletRequest;
 import org.martus.amplifier.velocity.AmplifierServletSession;
+import org.martus.util.MartusFlexidate;
 
 public class RawSearchParameters
 {
@@ -104,6 +106,51 @@ public class RawSearchParameters
 		defaultMap.put(SearchResultConstants.RESULT_END_YEAR_KEY, Today.getYearString());
 				
 		return defaultMap;	
+	}
+	
+	public String getFieldToSearchIn()
+	{
+		return get(SearchResultConstants.RESULT_FIELDS_KEY);
+	}
+	
+	public String getLanguage()
+	{
+		return get(SearchResultConstants.RESULT_LANGUAGE_KEY);
+	}
+	
+	public String getEntryDate()
+	{
+		return get(SearchResultConstants.RESULT_ENTRY_DATE_KEY);
+	}
+	
+	public String getSortBy()
+	{
+		return get(SearchResultConstants.RESULT_SORTBY_KEY);
+	}
+
+	public String getStartDate()
+	{			
+		String yearTag = SearchResultConstants.RESULT_START_YEAR_KEY;
+		String monthTag = SearchResultConstants.RESULT_START_MONTH_KEY;
+		String dayTag = SearchResultConstants.RESULT_START_DAY_KEY;
+		return getDateFromRawParameters(yearTag, monthTag, dayTag);
+	}
+
+	public String getEndDate()
+	{	
+		String yearTag = SearchResultConstants.RESULT_END_YEAR_KEY;
+		String monthTag = SearchResultConstants.RESULT_END_MONTH_KEY;
+		String dayTag = SearchResultConstants.RESULT_END_DAY_KEY;
+		return getDateFromRawParameters(yearTag, monthTag, dayTag);
+	}
+
+	private String getDateFromRawParameters(String yearTag, String monthTag, String dayTag)
+	{
+		int year = Integer.parseInt(get(yearTag));
+		int month = Integer.parseInt(get(monthTag));
+		int day = Integer.parseInt(get(dayTag));
+		Date startDate = SearchParameters.getDate(year, month, day);
+		return MartusFlexidate.toStoredDateFormat(startDate);
 	}
 
 	Map inputParameters;

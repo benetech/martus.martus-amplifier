@@ -42,21 +42,20 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 		inputParameters = rawParameters;
 
 		searchFields = new HashMap();
-		setEventDate();
-		setNormalFields();		
+
 		copyFormattedQueryString(new FormatterForAllWordsSearch());
 		copyFormattedQueryString(new FormatterForExactPhraseSearch());
 		copyFormattedQueryString(new FormatterForAnyWordSearch());
+		copyLanguageChoice();
+		copyFieldsChoice();
+		copyEntryDateChoice();
+		copyEventDateChoice();
+		copySortByChoice();		
 	}
 
 	public Map getSearchFields()
 	{
 		return searchFields;
-	}
-	
-	private void addField(String key, Object value)
-	{
-		searchFields.put(key, value);
 	}
 	
 	private void copyFormattedQueryString(LuceneQueryFormatter formatter)
@@ -65,33 +64,54 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 		searchFields.put(formatter.getTag(), decoratedString);
 	}
 	
-	private void setEventDate()
+	private void copyLanguageChoice()
 	{
-		String startDate	= getStartDate();
-		String endDate	= getEndDate();
+		String languageString = inputParameters.getLanguage();
+		if(languageString == null)
+			return;
+		if(languageString.equals(LANGUAGE_ANYLANGUAGE_LABEL))
+			return;
+
+		String key = RESULT_LANGUAGE_KEY;
+		searchFields.put(key, languageString);
+	}
+
+	private void copyFieldsChoice()
+	{
+		searchFields.put(RESULT_FIELDS_KEY, inputParameters.getFieldToSearchIn());
+	}
+
+	private void copyEntryDateChoice()
+	{
+		String entryDateDayCount = inputParameters.getEntryDate();
+		String entryDate = getEntryDate(entryDateDayCount);
+		searchFields.put(SEARCH_ENTRY_DATE_INDEX_FIELD, entryDate);
+	}
+
+	private void copyEventDateChoice()
+	{
+		String startDate = inputParameters.getStartDate();
+		String endDate = inputParameters.getEndDate();
 
 		if (startDate != null && endDate != null)
-		{			
-			addField(SEARCH_EVENT_START_DATE_INDEX_FIELD, startDate);
-			addField(SEARCH_EVENT_END_DATE_INDEX_FIELD, endDate);
+		{
+			String keyStart = SEARCH_EVENT_START_DATE_INDEX_FIELD;			
+			searchFields.put(keyStart, startDate);
+			String keyEnd = SEARCH_EVENT_END_DATE_INDEX_FIELD;
+			searchFields.put(keyEnd, endDate);
 		}	
 	}
 
-	private void setNormalFields()
+	private void copySortByChoice()
 	{
-		addField(RESULT_FIELDS_KEY, getValue(RESULT_FIELDS_KEY));
-		
-		String languageString = getValue(RESULT_LANGUAGE_KEY);
-		if (languageString != null && !languageString.equals(LANGUAGE_ANYLANGUAGE_LABEL))
-			addField(RESULT_LANGUAGE_KEY, languageString);
-			
-		String entryDate = getEntryDate(getValue(RESULT_ENTRY_DATE_KEY));
-		addField(SEARCH_ENTRY_DATE_INDEX_FIELD, entryDate);
-		
-		String sortByString = getValue(RESULT_SORTBY_KEY);
+		String key = RESULT_SORTBY_KEY;
+		String sortByString = inputParameters.getSortBy();
 		if (sortByString != null)
-			addField(RESULT_SORTBY_KEY, sortByString);	
+			searchFields.put(key, sortByString);
 	}
+
+
+
 
 	public static String getEntryDate(String dayString)
 	{
@@ -109,36 +129,6 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 		return MartusFlexidate.toStoredDateFormat(today.getTime());
 	}
 	
-	public String getValue(String key)
-	{
-		return (String) inputParameters.get(key);
-	}	
-	
-	public String getStartDate()
-	{			
-		String yearTag = RESULT_START_YEAR_KEY;
-		String monthTag = RESULT_START_MONTH_KEY;
-		String dayTag = RESULT_START_DAY_KEY;
-		return getDateFromRequest(yearTag, monthTag, dayTag);
-	}
-	
-	public String getEndDate()
-	{	
-		String yearTag = RESULT_END_YEAR_KEY;
-		String monthTag = RESULT_END_MONTH_KEY;
-		String dayTag = RESULT_END_DAY_KEY;
-		return getDateFromRequest(yearTag, monthTag, dayTag);
-	}
-	
-	String getDateFromRequest(String yearTag, String monthTag, String dayTag)
-	{
-		int year = Integer.parseInt(getValue(yearTag));
-		int month = Integer.parseInt(getValue(monthTag));
-		int day = Integer.parseInt(getValue(dayTag));
-		Date startDate = getDate(year, month, day);
-		return MartusFlexidate.toStoredDateFormat(startDate);
-	}
-		
 	public static Date getDate(int year, int month, int day)
 	{
 		return new GregorianCalendar(year, month, day).getTime();
