@@ -13,6 +13,8 @@ import java.util.GregorianCalendar;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.zip.ZipException;
+import java.util.zip.ZipFile;
 
 
 import org.apache.lucene.document.DateField;
@@ -22,7 +24,14 @@ import org.martus.amplifier.service.attachment.AttachmentManager;
 import org.martus.amplifier.service.attachment.api.*;
 import org.martus.amplifier.service.search.IBulletinConstants;
 import org.martus.amplifier.service.search.ISearchConstants;
+import org.martus.client.Bulletin;
+import org.martus.common.BulletinHeaderPacket;
+import org.martus.common.FieldDataPacket;
+import org.martus.common.MartusCrypto;
+import org.martus.common.MartusSecurity;
 import org.martus.common.UniversalId;
+import org.martus.common.MartusCrypto.CryptoInitializationException;
+import org.martus.common.Packet.SignatureVerificationException;
 import org.martus.common.UniversalId.NotUniversalIdException;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -139,6 +148,67 @@ public class BulletinDocument implements IBulletinConstants, ISearchConstants
 	    return doc;
   }
   
+  public static Document convertToDocumentUsingCommonCode(File file)
+  	throws java.io.FileNotFoundException 
+  	{	 
+	    Document doc = new Document();
+	
+	    // Add the path of the file as a field named "path".  Use a Text field, so
+	    // that the index stores the path, and so that the path is searchable
+	    doc.add(Field.Text("path", file.getPath()));
+	
+	    // Add the last modified date of the file a field named "modified".  Use a
+	    // Keyword field, so that it's searchable, but so that no attempt is made
+	    // to tokenize the field into words.
+	    doc.add(Field.Keyword("modified",
+				  DateField.timeToString(file.lastModified())));
+	    	
+    	try
+    	{
+    		ZipFile zip = new ZipFile(file);
+			MartusCrypto crypto = new MartusSecurity();
+			BulletinHeaderPacket header = BulletinHeaderPacket.loadFromZipFile(zip, crypto);
+			UniversalId universalId = header.createUniversalId(header.getAccountId());
+			String[] fields = BULLETIN_FIELDS;
+			FieldDataPacket packet = new FieldDataPacket(universalId, fields);
+			
+			//packet.loadFromXml();
+			for(int i = 0; i < fields.length; i++)
+			{
+				doc.add(Field.Text(fields[i], packet.get(fields[i])));
+			}
+    	}
+    	catch(ZipException ze)
+    	{}
+    	catch(IOException ioe)
+    	{}
+    	catch(CryptoInitializationException cie)
+    	{}
+    	catch(SignatureVerificationException sve)
+    	{}
+    	
+//	    String eventDateString = convertToDateString(handler.getBulletinEventDate());
+//	    doc.add(Field.Text(EVENT_DATE_FIELD, eventDateString));
+//	    String entryDateString = convertToDateString(handler.getBulletinEntryDate());
+//	    doc.add(Field.Text(ENTRY_DATE_FIELD, entryDateString));
+//	   
+//	   	// store the attachments as well
+//	   	// dan: not sure this is the best place for it
+//	   	List attachmentList = 
+//	   		AttachmentInfoListFactory.createList(packet.getAttachments());
+//	   	try
+//	   	{
+//	   		UniversalId bulletinId = UniversalId.createFromString(handler.getBulletinUniversalId());
+//	   		AttachmentManager.getInstance().putAttachmentInfoList(bulletinId,
+//	   			attachmentList);
+//	   	}
+//	   	catch(NotUniversalIdException nuie)
+//	   	{}
+//	   	logger.info("Document is " + doc.toString() );
+//	    
+//	    // return the document
+	    return doc;
+  }
   
   public static String convertToDateString(String inString)
   {
