@@ -6,15 +6,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.velocity.Template;
 import org.apache.velocity.context.Context;
 
 public class SimpleSearch extends AmplifierServlet
 {
-    public Template handleRequest(HttpServletRequest request,
-								HttpServletResponse response, 
-								Context context)
-    {
+    public String selectTemplate(HttpServletRequest request,
+				HttpServletResponse response, 
+				Context context)
+	{
     	HttpSession session = request.getSession();
     	String sessionId = (String)session.getAttribute("name");
     	if(sessionId == null)
@@ -35,6 +34,6 @@ public class SimpleSearch extends AmplifierServlet
 		
 		context.put("name", request.getParameter("query"));
 		
-		return loadTemplate("SimpleSearch.vm");
+		return "SimpleSearch.vm";
     }
 }

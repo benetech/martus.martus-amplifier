@@ -5,14 +5,17 @@ import java.io.IOException;
 import java.util.Properties;
 
 import javax.servlet.ServletConfig;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.app.Velocity;
+import org.apache.velocity.context.Context;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.servlet.VelocityServlet;
 
-public class AmplifierServlet extends VelocityServlet
+abstract public class AmplifierServlet extends VelocityServlet
 {
 	/**
 	 *   Called by the VelocityServlet
@@ -57,8 +60,15 @@ public class AmplifierServlet extends VelocityServlet
 		return p;
 	}
 
-	protected Template loadTemplate(String templateName)
+	abstract public String selectTemplate(HttpServletRequest request,
+			HttpServletResponse response, Context context);
+			
+			
+	public Template handleRequest(HttpServletRequest request,
+								HttpServletResponse response, 
+								Context context)
 	{
+		String templateName = selectTemplate(request, response, context);
 		try
 		{
 			return getTemplate(templateName);
@@ -77,7 +87,7 @@ public class AmplifierServlet extends VelocityServlet
 		}
 		return null;
 	}
-
+    
 	protected void displayError(String message, Exception e)
 	{
 		System.out.println(getClass().getName() + ": " + message + " " + e);
