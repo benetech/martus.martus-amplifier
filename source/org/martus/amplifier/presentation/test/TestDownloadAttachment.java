@@ -39,6 +39,7 @@ import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinInfo;
 import org.martus.common.crypto.MockMartusSecurity;
 import org.martus.common.packet.UniversalId;
+import org.martus.common.test.UniversalIdForTesting;
 import org.martus.util.StringInputStream;
 import org.martus.util.TestCaseEnhanced;
 
@@ -129,17 +130,17 @@ public class TestDownloadAttachment extends TestCaseEnhanced
 
 	String accountId = "This would be an account id";
 	long unknownSize = -1;
-	final UniversalId uid1 = UniversalId.createFromAccountAndPrefix(accountId, "A");
+	final UniversalId uid1 = UniversalIdForTesting.createFromAccountAndPrefix(accountId, "A");
 	final String label1 = "attachment 1";
 	final String data1 = "this is attachment 1";
 	final AttachmentInfo attachment1 = new AttachmentInfo(uid1, label1, unknownSize);
 
-	final UniversalId uid2 = UniversalId.createFromAccountAndPrefix(accountId, "A");
+	final UniversalId uid2 = UniversalIdForTesting.createFromAccountAndPrefix(accountId, "A");
 	final String label2 = "attachment 2";
 	final String data2 = "this is attachment 2";
 	final AttachmentInfo attachment2 =  new AttachmentInfo(uid2, label2, unknownSize);
 
-	final UniversalId uid3 = UniversalId.createFromAccountAndPrefix(accountId, "A");
+	final UniversalId uid3 = UniversalIdForTesting.createFromAccountAndPrefix(accountId, "A");
 	final String label3 = "attachment 3";
 	final String data3 = "this is attachment 3";
 	final AttachmentInfo attachment3 =  new AttachmentInfo(uid3, label3, unknownSize);

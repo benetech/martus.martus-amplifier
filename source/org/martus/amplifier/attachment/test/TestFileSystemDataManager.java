@@ -40,6 +40,7 @@ import org.martus.common.crypto.MockMartusSecurity;
 import org.martus.common.database.FileDatabase.MissingAccountMapException;
 import org.martus.common.database.FileDatabase.MissingAccountMapSignatureException;
 import org.martus.common.packet.UniversalId;
+import org.martus.common.test.UniversalIdForTesting;
 import org.martus.util.DirectoryUtils;
 import org.martus.util.StringInputStream;
 
@@ -130,7 +131,7 @@ public class TestFileSystemDataManager
 	public void testAccountWithFileSeparators() 
 		throws IOException, AttachmentStorageException
 	{
-		UniversalId id = UniversalId.createFromAccountAndPrefix(
+		UniversalId id = UniversalIdForTesting.createFromAccountAndPrefix(
 			"AnAccount/With/Slashes", "Test");
 		String testString = "AccountWithFileSeparators";
 		InputStream sin = new StringInputStream(testString);
