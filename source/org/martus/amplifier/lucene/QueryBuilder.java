@@ -109,39 +109,30 @@ public class QueryBuilder
 
 	static Query parseAnyWordsQuery(HashMap fields) throws Exception
 	{
-		String fieldString = (String) fields.get(SearchResultConstants.RESULT_FIELDS_KEY);
-		String queryString = (String) fields.get(SearchResultConstants.ANYWORD_TAG);
-
-		return parseEachFieldQuery(queryString, fieldString);
+		return parseStringQuery(fields, SearchResultConstants.ANYWORD_TAG);
 	}
 
 	static Query parseTheseWordsQuery(HashMap fields) throws Exception
 	{
-		String fieldString = (String) fields.get(SearchResultConstants.RESULT_FIELDS_KEY);
-		String queryString = (String) fields.get(SearchResultConstants.THESE_WORD_TAG);
-
-		return parseEachFieldQuery(queryString, fieldString);
+		return parseStringQuery(fields, SearchResultConstants.THESE_WORD_TAG);
 	}
 
 	static Query parseExactPhraseQuery(HashMap fields) throws Exception
 	{
-		String fieldString = (String) fields.get(SearchResultConstants.RESULT_FIELDS_KEY);
-		String queryString = (String) fields.get(SearchResultConstants.EXACTPHRASE_TAG);
-
-		return parseEachFieldQuery(queryString, fieldString);
+		return parseStringQuery(fields, SearchResultConstants.EXACTPHRASE_TAG);
 	}	
 
 	static Query parseWithoutWordsQuery(HashMap fields) throws Exception
 	{
-		String fieldString = (String) fields.get(SearchResultConstants.RESULT_FIELDS_KEY);
-		String queryString = (String) fields.get(SearchResultConstants.WITHOUTWORDS_TAG);
+		return parseStringQuery(fields, SearchResultConstants.WITHOUTWORDS_TAG);
+	}
 
-		return parseEachFieldQuery(queryString, fieldString);
-	}	
-
-	static Query parseEachFieldQuery(String queryString, String fieldString)
+	private static Query parseStringQuery(HashMap fields, String queryTag)
 		throws Exception
 	{
+		String fieldString = (String) fields.get(SearchResultConstants.RESULT_FIELDS_KEY);
+		String queryString = (String) fields.get(queryTag);
+		
 		if (queryString == null || queryString.length() <= 1)
 			return null;
 			
@@ -149,8 +140,8 @@ public class QueryBuilder
 			return parseMultiFieldQuery(queryString, SearchConstants.SEARCH_ALL_TEXT_FIELDS, "Improperly formed advanced find bulletin multiquery: ");
 						
 		return parseSingleFieldQuery(queryString, fieldString, "Improperly formed advanced find bulletin query: ");
-	}				
-	
+	}	
+
 	static Query parseAdvancedQuery(HashMap fields) throws Exception
 	{
 		BooleanQuery query = new BooleanQuery();
