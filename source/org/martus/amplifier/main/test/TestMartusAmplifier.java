@@ -9,6 +9,7 @@ import org.martus.common.LoggerForTesting;
 import org.martus.common.MartusUtilities;
 import org.martus.common.crypto.MockMartusSecurity;
 import org.martus.common.test.TestCaseEnhanced;
+import org.martus.util.UnicodeWriter;
 
 public class TestMartusAmplifier extends TestCaseEnhanced
 {
@@ -51,5 +52,28 @@ public class TestMartusAmplifier extends TestCaseEnhanced
 		assertFalse(dir.getPath() + " still exists?", dir.exists());	
 	}
 	
+	public void testLoadAccountsWeWillNotAmplify() throws Exception
+	{
+		File unamplified = createTempFile();
+		MartusAmplifier amp = new MartusAmplifier(unamplified, new LoggerForTesting());
+		assertNull("List should be null", amp.getListOfAccountsWeWillNotAmplify());
+		
+		amp.loadAccountsWeWillNotAmplify(null);
+		List noAccounts = amp.getListOfAccountsWeWillNotAmplify();
+		assertEquals("should be 0",0, noAccounts.size());
+
+		UnicodeWriter writer = new UnicodeWriter(unamplified);
+		String account1 = "account 1";
+		String account2 = "account 2";
+		writer.writeln(account1);	
+		writer.writeln(account2);	
+		writer.close();
+		amp.loadAccountsWeWillNotAmplify(unamplified);
+		
+		List twoAccounts = amp.getListOfAccountsWeWillNotAmplify(); 
+		assertEquals("List should have 2 entries", 2, twoAccounts.size());
+		assertEquals("No account 1", account1, twoAccounts.get(0));
+		assertEquals("No account 2", account2, twoAccounts.get(1));
+	}
 	BackupServerInfo testInfo;
 }

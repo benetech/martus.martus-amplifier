@@ -102,7 +102,7 @@
 
     <!-- Jar up martus server tools and throw it in the push dir -->
     <jar jarfile="${ampjar-filename}"
-        update="false"
+        update="true"
    		basedir="${servertools-basedir}"
    		includes="${servertools-dir}/**/*.class"/>
 	

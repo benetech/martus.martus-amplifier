@@ -56,6 +56,7 @@ import org.martus.common.crypto.MartusSecurity;
 import org.martus.common.crypto.MartusCrypto.AuthorizationFailedException;
 import org.martus.common.crypto.MartusCrypto.CryptoInitializationException;
 import org.martus.common.crypto.MartusCrypto.InvalidKeyPairFileVersionException;
+import org.martus.util.UnicodeReader;
 import org.martus.util.Base64.InvalidBase64Exception;
 import org.mortbay.http.HttpContext;
 import org.mortbay.http.SunJsseListener;
@@ -111,6 +112,11 @@ public class MartusAmplifier
 		File configDirectory = getStartupConfigDirectory();
 		File backupServersDirectory = new File(configDirectory, "serversWhoWeCall");
 		backupServersList = loadServersWeWillCall(backupServersDirectory, security);
+		
+		File notAmplifiedAccountsFile = new File(configDirectory, ACCOUNTSNOTAMPLIFIED_FILE);
+		loadAccountsWeWillNotAmplify(notAmplifiedAccountsFile);
+		log(notAmplifiedAccountsList.size() + " account(s) will not get amplified");
+
 		
 		//Code.setDebug(true);
 		File indexDir = LuceneBulletinIndexer.getIndexDir(getBasePath());
@@ -431,7 +437,7 @@ public class MartusAmplifier
 			DataSynchManager dataSyncManager = new DataSynchManager(backupServerToCall, logger, getSecurity());
 			indexer = new LuceneBulletinIndexer(getBasePath());
 		
-			dataSyncManager.getAllNewData(dataManager, indexer);
+			dataSyncManager.getAllNewData(dataManager, indexer, getListOfAccountsWeWillNotAmplify());
 		}
 		catch(Exception e)
 		{
@@ -454,7 +460,32 @@ public class MartusAmplifier
 		}
 	}
 
-
+	public void loadAccountsWeWillNotAmplify(File notAmplifiedAccountsFile) throws IOException
+	{
+		if(notAmplifiedAccountsFile == null || !notAmplifiedAccountsFile.exists())
+		{	
+			notAmplifiedAccountsList = new Vector();
+			return;
+		}
+		
+		try
+		{
+			UnicodeReader reader = new UnicodeReader(notAmplifiedAccountsFile);
+			notAmplifiedAccountsList = MartusUtilities.loadListFromFile(reader);
+			reader.close();
+		}
+		catch(Exception e)
+		{
+			log("Error: loadAccountsWeWillNotAmplify" + e);
+			throw new IOException(e.toString());
+		}
+	}
+	
+	public List getListOfAccountsWeWillNotAmplify()
+	{
+		return notAmplifiedAccountsList;
+	}
+	
 	public List loadServersWeWillCall(File directory, MartusCrypto security) throws 
 			IOException, MartusUtilities.InvalidPublicKeyFileException, MartusUtilities.PublicInformationInvalidException, SSLSocketSetupException
 	{
@@ -595,6 +626,7 @@ public class MartusAmplifier
 	boolean isSyncing;
 	
 	List backupServersList;
+	List notAmplifiedAccountsList;
 	
 	LoggerInterface logger;
 
@@ -607,4 +639,5 @@ public class MartusAmplifier
 	private static final int LOW_RESOURCE_PERSIST_TIME_MS = 5000;
 	private static final int MIN_THREADS = 5;
 	private static final int MAX_THREADS = 255;
+	private static final String ACCOUNTSNOTAMPLIFIED_FILE = "accountsNotAmplified.txt";
 }
