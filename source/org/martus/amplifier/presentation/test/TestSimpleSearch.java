@@ -27,7 +27,6 @@ Boston, MA 02111-1307, USA.
 package org.martus.amplifier.presentation.test;
 
 import org.apache.velocity.context.Context;
-import org.martus.amplifier.common.CharacterUtil;
 import org.martus.amplifier.presentation.SimpleSearch;
 import org.martus.common.test.TestCaseEnhanced;
 
@@ -70,26 +69,4 @@ public class TestSimpleSearch extends TestCaseEnhanced
 		assertEquals("The defaultSimpleSearch match.", sampleQuery, context.get("defaultSimpleSearch"));				
 	}
 	
-	public void testRemoveSpecialCharacters()
-	{
-		String test1 = "[test]";
-		String test2 = "(test)";
-		String test3 = "test:test";
-		String test4 = "\"test\" 'test'";
-		String test5 = "http:\\test@testagain.com";
-		String test6 = "<html> test* test?";		
-		
-		String outStr = CharacterUtil.removeRestrictCharacters(test1);
-		assertEquals("removed []", " test ", outStr);
-		outStr = CharacterUtil.removeRestrictCharacters(test2);
-		assertEquals("removed ()", " test ", outStr);
-		outStr = CharacterUtil.removeRestrictCharacters(test3);
-		assertEquals("removed :", "test test", outStr);
-		outStr = CharacterUtil.removeRestrictCharacters(test4);
-		assertEquals("removed \"", "\"test\" 'test'", outStr);
-		outStr = CharacterUtil.removeRestrictCharacters(test5);
-		assertEquals("removed :\"@.", "http  test testagain com", outStr);
-		outStr = CharacterUtil.removeRestrictCharacters(test6);
-		assertEquals("removed <>)", " html  test  test ", outStr);		
-	}		
 }

@@ -30,15 +30,24 @@ public class CharacterUtil
 {	
 	public static String removeRestrictCharacters(String str)
 	{
-		String newString = str;
+		String newString = str;		
 		for (int j=0; j<str.length();j++)
 		{
 			char ch = str.charAt(j);
 			if (!validChar(ch))
 				newString = replaceChar(ch, newString); 				  
 		}
-																
+																			
 		return newString;
+	}
+	
+	public static boolean isWildcardOnly(String str)
+	{
+		if (str.length() > 1)
+			return false;
+			
+		char ch = str.charAt(0);
+		return (ch == '*' || ch == '?')? true:false;
 	}
 
 	private static String replaceChar(char oldChar, String text)

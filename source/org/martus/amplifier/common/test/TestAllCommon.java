@@ -27,6 +27,7 @@ public class TestAllCommon extends TestSuite
 
 			suite.addTest(new TestSuite(TestAmplifierConfiguration.class));
 			suite.addTest(new TestSuite(TestSearchParameters.class));
+			suite.addTest(new TestSuite(TestCharacterUtil.class));
 
 			return suite;
 		}
