@@ -48,7 +48,7 @@ public class TestSearchResults extends TestCaseEnhanced
 		assertEquals(uid1, info.getBulletinId());
 		assertEquals("Total bulletin count incorrect?", new Integer(expectedFoundCount), context.get("totalBulletins"));
 
-		request.putParameter("query", null); 
+		request.putParameter("query", ""); 
 		templateName = sr.selectTemplate(request, response, context);
 		assertEquals("NoSearchResults.vm", templateName);
 
@@ -100,6 +100,8 @@ public class TestSearchResults extends TestCaseEnhanced
 		public List getSearchResults(AmplifierServletRequest request)
 			throws Exception, BulletinIndexException
 		{
+			if(request.getParameter("query")=="")
+				return new Vector();
 			if(request.getParameter("query")==null)
 				throw new Exception("malformed query");
 			Vector infos = new Vector();

@@ -79,6 +79,8 @@ public class SearchResults extends AmplifierServlet implements SearchResultConst
 	 
 		if (queryString != null)
 		{
+			if (queryString.equals(""))
+				return new ArrayList();
 			searcher.put(RESULT_BASIC_QUERY_KEY, queryString);
 			return getResults(searcher);
 		}
