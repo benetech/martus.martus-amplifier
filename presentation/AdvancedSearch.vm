@@ -86,7 +86,7 @@
                 </tr>
                 <tr>
                     <td align="right">
-                            <a href="servlet/SimpleSearch">Basic search</a>
+                            <a href="SimpleSearch">Basic search</a>
                     </td>
                 </tr>
             </table>
