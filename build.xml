@@ -51,7 +51,7 @@
     <!-- tstamp task initializes ${DSTAMP} etc -->
     <tstamp/>
     <buildnumber/>
-	<property name="ampjar-filename"  value="${push-jars}/martus-amplifier-${DSTAMP}.jar"/>
+	<property name="ampjar-filename"  value="${push-jars}/martus-amplifier-${DSTAMP}.${build.number}.jar"/>
   </target>
 
 <!-- ================================================================== -->
