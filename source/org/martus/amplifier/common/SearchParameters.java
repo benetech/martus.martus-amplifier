@@ -98,7 +98,7 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 		addField(SEARCH_ENTRY_DATE_INDEX_FIELD, entryDate);	
 	}
 
-	private Date getEntryDate(String dayString)
+	public static Date getEntryDate(String dayString)
 	{
 		if (dayString.equals(ENTRY_ANYTIME_LABEL))
 			return getDate(1970, 1,1);

@@ -11,6 +11,7 @@ import java.util.List;
 
 import junit.framework.Assert;
 
+import org.martus.amplifier.common.SearchParameters;
 import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.search.AttachmentInfo;
 import org.martus.amplifier.search.BulletinField;
@@ -206,8 +207,8 @@ public abstract class AbstractSearchTestCase
 	
 	public void testSearchResultsAfterClose() throws BulletinIndexException
 	{
-		UniversalId bulletinId = UniversalId.createDummyUniversalId();
-		FieldDataPacket fdp = generateSampleData(bulletinId);		
+		UniversalId bulletinId 	= UniversalId.createDummyUniversalId();
+		FieldDataPacket fdp 	= generateSampleData(bulletinId);		
 		BulletinIndexer indexer = openBulletinIndexer();
 		try {
 			indexer.clearIndex();
@@ -236,8 +237,8 @@ public abstract class AbstractSearchTestCase
 	
 	public void testSearchAllFields() throws BulletinIndexException
 	{
-		UniversalId bulletinId = UniversalId.createDummyUniversalId();
-		FieldDataPacket fdp = generateSampleData(bulletinId);		
+		UniversalId bulletinId 	= UniversalId.createDummyUniversalId();
+		FieldDataPacket fdp 	= generateSampleData(bulletinId);		
 		BulletinIndexer indexer = openBulletinIndexer();
 		try 
 		{
@@ -311,8 +312,8 @@ public abstract class AbstractSearchTestCase
 
 	public void testSearchForStopWords() throws BulletinIndexException
 	{
-		UniversalId bulletinId = UniversalId.createDummyUniversalId();
-		FieldDataPacket fdp = generateSampleData(bulletinId);		
+		UniversalId bulletinId 	= UniversalId.createDummyUniversalId();
+		FieldDataPacket fdp 	= generateSampleData(bulletinId);		
 		BulletinIndexer indexer = openBulletinIndexer();
 		try 
 		{
@@ -350,9 +351,9 @@ public abstract class AbstractSearchTestCase
 	public void testSearchForWildCards() throws BulletinIndexException
 	{
 		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
-		FieldDataPacket fdp1 = generateSampleData(bulletinId1);		
+		FieldDataPacket fdp1 	= generateSampleData(bulletinId1);		
 		UniversalId bulletinId2 = UniversalId.createDummyUniversalId();
-		FieldDataPacket fdp2 = generateSampleFlexiData(bulletinId2);		
+		FieldDataPacket fdp2 	= generateSampleFlexiData(bulletinId2);		
 		BulletinIndexer indexer = openBulletinIndexer();
 		try 
 		{
@@ -411,8 +412,8 @@ public abstract class AbstractSearchTestCase
 
 	public void testSearchEmptyField() throws BulletinIndexException
 	{
-		UniversalId bulletinId = UniversalId.createDummyUniversalId();
-		FieldDataPacket fdp = generateSampleFlexiData(bulletinId);		
+		UniversalId bulletinId 	= UniversalId.createDummyUniversalId();
+		FieldDataPacket fdp 	= generateSampleFlexiData(bulletinId);		
 		BulletinIndexer indexer = openBulletinIndexer();
 		try 
 		{
@@ -458,9 +459,9 @@ public abstract class AbstractSearchTestCase
 	public void testAdvancedSearchEventDateOnly() throws BulletinIndexException,ParseException
 	{
 		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
-		FieldDataPacket fdp1 = generateSampleData(bulletinId1);		
+		FieldDataPacket fdp1 	= generateSampleData(bulletinId1);		
 		UniversalId bulletinId2 = UniversalId.createDummyUniversalId();
-		FieldDataPacket fdp2 = generateSampleFlexiData(bulletinId2);		
+		FieldDataPacket fdp2 	= generateSampleFlexiData(bulletinId2);		
 		BulletinIndexer indexer = openBulletinIndexer();
 		try 
 		{
@@ -538,9 +539,9 @@ public abstract class AbstractSearchTestCase
 	public void testAdvancedSearchCombineEventDateAndEntryDate() throws BulletinIndexException,ParseException
 	{
 		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
-		FieldDataPacket fdp1 = generateSampleData(bulletinId1);		
+		FieldDataPacket fdp1 	= generateSampleData(bulletinId1);		
 		UniversalId bulletinId2 = UniversalId.createDummyUniversalId();
-		FieldDataPacket fdp2 = generateSampleFlexiData(bulletinId2);		
+		FieldDataPacket fdp2 	= generateSampleFlexiData(bulletinId2);		
 		BulletinIndexer indexer = openBulletinIndexer();
 		try 
 		{
@@ -558,11 +559,10 @@ public abstract class AbstractSearchTestCase
 		
 		try 
 		{
-			Date startDate 	= SearchConstants.SEARCH_DATE_FORMAT.parse("2003-08-01");
-			Date endDate 	= SearchConstants.SEARCH_DATE_FORMAT.parse("2003-08-22");
-			Date defaultDate = SearchConstants.SEARCH_DATE_FORMAT.parse("1970-01-01");
-			
-			Date entryStartDate  = SearchConstants.SEARCH_DATE_FORMAT.parse("2003-05-22");		
+			Date startDate		= SearchConstants.SEARCH_DATE_FORMAT.parse("2003-08-01");
+			Date endDate 		= SearchConstants.SEARCH_DATE_FORMAT.parse("2003-08-22");
+			Date defaultDate 	= SearchConstants.SEARCH_DATE_FORMAT.parse("1970-01-01");			
+			Date entryStartDate = SearchConstants.SEARCH_DATE_FORMAT.parse("2003-05-22");		
 		
 			HashMap fields = new HashMap();
 			fields.put(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, defaultDate);
@@ -589,6 +589,64 @@ public abstract class AbstractSearchTestCase
 	public void testAdvancedSearchCombineEventDateAndBulletineFieldAndLanguage() throws BulletinIndexException,ParseException
 	{
 		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
+		FieldDataPacket fdp1 	= generateSampleData(bulletinId1);		
+		UniversalId bulletinId2 = UniversalId.createDummyUniversalId();
+		FieldDataPacket fdp2 	= generateSampleFlexiData(bulletinId2);		
+		BulletinIndexer indexer = openBulletinIndexer();
+		try 
+		{
+			indexer.clearIndex();
+			indexer.indexFieldData(bulletinId1, fdp1);
+			indexer.indexFieldData(bulletinId2, fdp2);
+		} 
+		finally 
+		{
+			indexer.close();
+		}
+		
+		BulletinSearcher searcher = openBulletinSearcher();
+		BulletinSearcher.Results results = null;				
+		
+		try 
+		{
+			Date startDate 			= SearchConstants.SEARCH_DATE_FORMAT.parse("2003-08-01");
+			Date endDate 			= SearchConstants.SEARCH_DATE_FORMAT.parse("2003-08-22");			
+			Date defaultStartDate	= SearchConstants.SEARCH_DATE_FORMAT.parse("1970-01-01");
+			Date defaultEndDate		= SearchConstants.SEARCH_DATE_FORMAT.parse("2003-09-24");
+				
+			HashMap fields = new HashMap();
+			fields.put(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, defaultStartDate);
+			fields.put(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, defaultEndDate);		
+		
+			fields.put(BulletinField.SEARCH_LANGUAGE_INDEX_FIELD, "es");		
+			results = searcher.search(null, fields);			
+			assertEquals("search laguage with default event date? ", 1, results.getCount());
+				
+			fields = new HashMap();			
+			fields.put(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, startDate);
+			fields.put(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, endDate);
+			fields.put(SearchResultConstants.RESULT_FIELDS_KEY, BulletinField.SEARCH_TITLE_INDEX_FIELD);
+			fields.put(BulletinField.SEARCH_LANGUAGE_INDEX_FIELD, "en");
+			fields.put(SearchResultConstants.RESULT_ADVANCED_QUERY_KEY, "lunch");
+			
+			results = searcher.search(null, fields);
+			assertEquals("Combine search for eventdate, field, and laguage? ", 0, results.getCount());
+			
+			fields.remove(SEARCH_LANGUAGE_INDEX_FIELD);
+			fields.put(BulletinField.SEARCH_LANGUAGE_INDEX_FIELD, "fr");
+			results = searcher.search(null, fields);
+			assertEquals("Combine search for eventdate, bulletin field, and language (not match)? ", 0, results.getCount());			
+						
+		}
+		finally 
+		{
+			searcher.close();
+		}
+	}
+	
+	public void testAdvancedSearchCombineEventDateAndBulletineFieldAndLanguageAndEntryDate() throws BulletinIndexException,ParseException
+	{
+		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
 		FieldDataPacket fdp1 = generateSampleData(bulletinId1);		
 		UniversalId bulletinId2 = UniversalId.createDummyUniversalId();
 		FieldDataPacket fdp2 = generateSampleFlexiData(bulletinId2);		
@@ -604,45 +662,69 @@ public abstract class AbstractSearchTestCase
 			indexer.close();
 		}
 		
-//		BulletinSearcher searcher = openBulletinSearcher();
-//		BulletinSearcher.Results results = null;				
-//		
-//		try 
-//		{
-//			Date startDate 	= SearchConstants.SEARCH_DATE_FORMAT.parse("2003-08-01");
-//			Date endDate 	= SearchConstants.SEARCH_DATE_FORMAT.parse("2003-08-22");
-//			Date defaultStartDate = SearchConstants.SEARCH_DATE_FORMAT.parse("1970-01-01");
-//			Date defaultEndDate = new GregorianCalendar().getTime();
-//				
-//			HashMap fields = new HashMap();
-//			fields.put(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, defaultStartDate);
-//			fields.put(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, defaultEndDate);		
-//			
-//			fields.put(BulletinField.SEARCH_LANGUAGE_INDEX_FIELD, "es");		
-//			results = searcher.search(null, fields);
-////			assertEquals("search laguage with default event date? ", 1, results.getCount());
-//						
-//			fields = new HashMap();			
-//			fields.put(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, startDate);
-//			fields.put(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, endDate);
-//			fields.put(SearchResultConstants.RESULT_FIELDS_KEY, BulletinField.SEARCH_TITLE_INDEX_FIELD);
-//			fields.put(BulletinField.SEARCH_LANGUAGE_INDEX_FIELD, "en");
-//			fields.put(SearchResultConstants.RESULT_ADVANCED_QUERY_KEY, "lunch");
-//			
-//			results = searcher.search(null, fields);
-////			assertEquals("Combine search for eventdate, field, and laguage? ", 1, results.getCount());
-//			
-//			fields.remove(SEARCH_LANGUAGE_INDEX_FIELD);
-//			fields.put(BulletinField.SEARCH_LANGUAGE_INDEX_FIELD, "fr");
-//			results = searcher.search(null, fields);
-////			assertEquals("Combine search for eventdate, bulletin field, and language (not match)? ", 0, results.getCount());			
-//						
-//		}
-//		finally 
-//		{
-//			searcher.close();
-//		}
-	}		
+		BulletinSearcher searcher = openBulletinSearcher();
+		BulletinSearcher.Results results = null;				
+		
+		try 
+		{
+			Date startDate 			= SearchConstants.SEARCH_DATE_FORMAT.parse("2003-08-01");
+			Date endDate 			= SearchConstants.SEARCH_DATE_FORMAT.parse("2003-08-22");			
+			Date defaultStartDate 	= SearchConstants.SEARCH_DATE_FORMAT.parse("1970-01-01");		
+			Date todayDate 			= SearchConstants.SEARCH_DATE_FORMAT.parse("2003-09-24");
+			
+			Date pastWeek 	= SearchParameters.getEntryDate(ENTRY_PAST_WEEK_DAYS_LABEL);
+			Date pastMonth 	= SearchParameters.getEntryDate(ENTRY_PAST_MONTH_DAYS_LABEL);
+			Date past3Month = SearchParameters.getEntryDate(ENTRY_PAST_3_MONTH_DAYS_LABEL);
+			Date past6Month = SearchParameters.getEntryDate(ENTRY_PAST_6_MONTH_DAYS_LABEL);
+			Date pastYear 	= SearchParameters.getEntryDate(ENTRY_PAST_YEAR_DAYS_LABEL);
+		
+			HashMap fields = new HashMap();
+			fields.put(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, defaultStartDate);
+			fields.put(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, todayDate);		
+			
+			//2003-05-11 and 2003-08-30
+			fields.put(BulletinField.SEARCH_ENTRY_DATE_INDEX_FIELD, pastWeek);		
+			results = searcher.search(null, fields);			
+			assertEquals("search past 1 week from today? ", 0, results.getCount());
+						
+			fields.remove(SEARCH_ENTRY_DATE_INDEX_FIELD);
+			fields.put(SEARCH_ENTRY_DATE_INDEX_FIELD, pastMonth);
+			results = searcher.search(null, fields);			
+			assertEquals("search past 1 month from today? ", 1, results.getCount());
+			
+			fields.remove(SEARCH_ENTRY_DATE_INDEX_FIELD);
+			fields.put(SEARCH_ENTRY_DATE_INDEX_FIELD, past3Month);
+			results = searcher.search(null, fields);			
+			assertEquals("search past 3 month from today? ", 1, results.getCount());
+			
+			fields.remove(SEARCH_ENTRY_DATE_INDEX_FIELD);
+			fields.put(SEARCH_ENTRY_DATE_INDEX_FIELD, past6Month);
+			results = searcher.search(null, fields);			
+			assertEquals("search past 6 month from today? ", 2, results.getCount());
+			
+			fields.remove(SEARCH_ENTRY_DATE_INDEX_FIELD);
+			fields.put(SEARCH_ENTRY_DATE_INDEX_FIELD, pastYear);
+			results = searcher.search(null, fields);			
+			assertEquals("search past 1 year from today? ", 2, results.getCount());
+			
+									
+			fields = new HashMap();			
+			fields.put(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, startDate);
+			fields.put(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, endDate);
+			fields.put(SearchResultConstants.RESULT_FIELDS_KEY, BulletinField.SEARCH_TITLE_INDEX_FIELD);			
+			fields.put(BulletinField.SEARCH_LANGUAGE_INDEX_FIELD, "es");
+			fields.put(SEARCH_ENTRY_DATE_INDEX_FIELD, past3Month);
+			fields.put(SearchResultConstants.RESULT_ADVANCED_QUERY_KEY, "lunch");
+			
+			results = searcher.search(null, fields);
+			assertEquals("Combine search for eventdate, field, and laguage? ", 1, results.getCount());
+								
+		}
+		finally 
+		{
+			searcher.close();
+		}
+	}				
 		
 	protected FieldDataPacket generateSampleData(UniversalId bulletinId)
 	{
@@ -653,7 +735,7 @@ public abstract class AbstractSearchTestCase
 		String eventdate = "2003-04-10";
 		String entrydate = "2003-05-11";
 		String publicInfo = "menu";
-		String language = "English";
+		String language = "en";
 		String organization = "test sample";
 		String summary = 
 			"Today Paul ate an egg salad sandwich and a root beer " +
@@ -677,7 +759,7 @@ public abstract class AbstractSearchTestCase
 		String entrydate= "2003-08-30";
 		String eventdate = "2003-08-20,20030820+3";
 		String publicInfo = "menu3";
-		String language = "Spanish";
+		String language = "es";
 		String organization = "test complex";
 		String summary = 
 			"Today Chuck ate an egg2 salad2 sandwich and a root beer2 " +
