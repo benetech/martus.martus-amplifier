@@ -111,20 +111,30 @@ public class LuceneBulletinSearcher
 		return (startDate != null && endDate != null)? getEventDateQuery(field, startDate, endDate):null;				
 	}	
 	
-	private Query handleFindBulletinsQuery(String field, SearchFields fields)
+	private Query handleFindLanguageQuery(String field, String query, SearchFields fields)
+			throws BulletinIndexException
+	{
+		Query fieldQuery = null;
+		String fieldString = (String) fields.getValue(SearchResultConstants.RESULT_FIELDS_KEY);
+		
+		if (query != null && query.length()>0)				
+			fieldQuery = queryParser(query, fieldString, "Improperly formed advance find language type in bulletin query: ");
+		
+		return fieldQuery;
+	} 
+	
+	private Query handleFindBulletinsQuery(String field, String query, SearchFields fields)
 			throws BulletinIndexException 
 	{		
 		Query fieldQuery = null;
-
-		String queryString = (String) fields.getValue(SearchResultConstants.RESULT_ADVANCED_QUERY_KEY);
 		String fieldString = (String) fields.getValue(SearchResultConstants.RESULT_FIELDS_KEY);
-		
-		if (queryString != null && queryString.length()>0)
+	
+		if (query != null && query.length()>0)
 		{
 			if (fieldString.equals(SearchResultConstants.IN_ALL_FIELDS))
-				fieldQuery = multiFieldQueryParser(queryString, SEARCH_ALL_TEXT_FIELDS, "Improperly formed advanced find bulletin multiquery: ");
+				fieldQuery = multiFieldQueryParser(query, SEARCH_ALL_TEXT_FIELDS, "Improperly formed advanced find bulletin multiquery: ");
 			
-			fieldQuery = queryParser(queryString, fieldString, "Improperly formed advance find bulletin query: ");
+			fieldQuery = queryParser(query, fieldString, "Improperly formed advance find bulletin query: ");
 		}
 		
 		return fieldQuery;
@@ -134,32 +144,31 @@ public class LuceneBulletinSearcher
 		throws BulletinIndexException 
 	{	
 		String queryString = (String) fields.getValue(SearchResultConstants.RESULT_BASIC_QUERY_KEY);
-		
+						
 		if (queryString != null)
-		{	
-			Query query = null;
-			if (field != null)
-			{			
-			  query = queryParser(queryString, field, "Improperly formed query: ");
-			  return getLuceneResults(query, field);
-			}
+			return search(field, queryString);	
 			
-			query = multiFieldQueryParser(queryString, SEARCH_ALL_TEXT_FIELDS, "Improperly formed multiquery: ");
-			return getLuceneResults(query, null);
-		}	
-			
-		queryString = (String) fields.getValue(SearchResultConstants.RESULT_ADVANCED_QUERY_KEY);				
-				
-		BooleanQuery query = new BooleanQuery();
-		Query eventDateQuery = handleEventDateQuery(field, fields);					
-		query.add(eventDateQuery, true, false);
-
-		Query findBulletinsQuery = handleFindBulletinsQuery(field, fields);
-		if (findBulletinsQuery != null)
-			query.add(findBulletinsQuery, true, false);
-							
-		return getLuceneResults(query, null);
+		queryString = (String) fields.getValue(SearchResultConstants.RESULT_ADVANCED_QUERY_KEY);												
+		return getLuceneResults(complexSearch(field, queryString, fields), null);
 	}	
+	
+	private Query complexSearch(String field, String queryString, SearchFields fields)
+			throws BulletinIndexException 
+	{
+		BooleanQuery query = new BooleanQuery();
+		Query foundEventDateQuery = handleEventDateQuery(field, fields);					
+		query.add(foundEventDateQuery, true, false);
+
+		Query foudBulletinsQuery = handleFindBulletinsQuery(field, queryString, fields);
+		if (foudBulletinsQuery != null)
+			query.add(foudBulletinsQuery, true, false);
+			
+		Query foudLanguageQuery = handleFindLanguageQuery(field, queryString, fields);
+		if (foudLanguageQuery != null)
+			query.add(foudLanguageQuery, true, false);
+			
+		return query;	
+	}
 			
 	private Query queryParser(String query, String field, String msg)
 			throws BulletinIndexException 

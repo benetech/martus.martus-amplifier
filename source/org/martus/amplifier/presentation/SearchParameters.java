@@ -40,10 +40,10 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 	{
 		searchRequest = request;
 		searchFields  = fields;
-		loadSearchResults();		
+		loadFromRequest();		
 	}
 	
-	private void loadSearchResults()
+	private void loadFromRequest()
 	{
 		for(int i=0; i< ADVANCED_KEYS.length; i++)
 		{

@@ -16,6 +16,7 @@ public interface SearchConstants
 	final String SEARCH_SUMMARY_INDEX_FIELD = BulletinConstants.TAGSUMMARY;
 	final String SEARCH_LOCATION_INDEX_FIELD = BulletinConstants.TAGLOCATION;
 	final String SEARCH_ENTRY_DATE_INDEX_FIELD = BulletinConstants.TAGENTRYDATE;
+	final String SEARCH_LANGUAGE_INDEX_FIELD = BulletinConstants.TAGLANGUAGE;
 	final String SEARCH_EVENT_START_DATE_INDEX_FIELD = "eventStartDate";
 	final String SEARCH_EVENT_END_DATE_INDEX_FIELD = "eventEndDate";
 	
