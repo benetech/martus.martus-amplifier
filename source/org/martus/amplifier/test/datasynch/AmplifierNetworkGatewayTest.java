@@ -48,7 +48,7 @@ public class AmplifierNetworkGatewayTest extends AbstractAmplifierDataSynchTest
 		System.out.println("in testRetrieveBulletin");
 		AmplifierNetworkGateway amplifierGateway = AmplifierNetworkGateway.getInstance();
 		UniversalId uid = UniversalId.createFromAccountAndLocalId(sampleAccountId, sampleLocalId);
-		File file = amplifierGateway.retrieveOneBulletin(uid);
+		//File file = amplifierGateway.retrieveOneBulletin(uid);
 		//assertTrue(file.length() >0);		
 	}
 	

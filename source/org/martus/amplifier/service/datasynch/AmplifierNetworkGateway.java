@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 import java.util.Vector;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipEntry;
@@ -48,6 +49,18 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
 	protected AmplifierNetworkGateway()
 	{
 		super();
+		
+		Properties pathProperties = new Properties();
+		try
+		{
+			pathProperties.load(getClass().getResourceAsStream(PATH_PROPERTIES));
+		}
+		catch(IOException ioe)
+		{
+			logger.severe("Unable to load path.properties configuration file.");
+		}
+		bulletinWorkingDirectory = pathProperties.getProperty(BULLETINWORKINGDIRECTORY);
+		attachmentWorkingDirectory = pathProperties.getProperty(ATTACHMENTWORKINGDIRECTORY);
 		
 		serverInfoList = BackupServerManager.getInstance().getBackupServersList();
 		gateway = getCurrentNetworkInterfaceGateway();
@@ -122,28 +135,51 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
 		Vector result = new Vector();
 		File tempFile = null;
 		File bulletinZippedFile = null;
+		String tempFileName = "";
+		String bulletinPrefix = "F-";
+		String attachmentPrefix = "A-";
 			  
 		// 1) retrieve Bulletin in Chunks and get the Zip file
 		//bulletinZippedFile = retrieveOneBulletin(uid);
-		bulletinZippedFile = new File("c:/srilatha/martus_data/Firebombing of NGO O13806.mbf");
+		bulletinZippedFile = new File("testdata/Firebombing of NGO O13806.mbf");
 		
 		// 2) Unzip the file and retrieve the bulletin and attachments
 		if(bulletinZippedFile != null)
 		{
 			result = AmplifierUtilities.unZip(bulletinZippedFile);
-			for(int i=0; i<result.size(); i++)
-			{
-				tempFile = (File)result.get(i);
-				System.out.println("FileName is "+ tempFile.getName());
-			}	
 		}
 		else
 		{
-			logger.severe("BulletinZippedFile is empty" );
+			logger.severe("AmplifierNetworkGateway.getBulletin(uid):BulletinZippedFile is empty" );
 		}
-		//TODO:
-		//3.Put attachments in Bulletin Folder and and attachments folder 
-		//Decryption of attachments and indexing in taken care of Attachment manager
+		
+		//3.Put files in Bulletin Folder and attachments folder 
+		if( result!=null)
+		{
+			for(int i= 0; i< result.size(); i++)
+			{
+				tempFile = (File)result.get(i);	
+				System.out.println("FileName is "+ tempFile.getName());
+				tempFileName = tempFile.getName();
+				if( tempFileName.startsWith(bulletinPrefix) )
+				{
+					//save to Bulletin folder
+				}
+				else
+				{
+					if( tempFileName.startsWith(attachmentPrefix) )
+					{
+						//save to attachment folder	
+					}
+					
+				}
+			
+			}
+		}	
+		else
+		{
+			logger.severe("AmplifierNetworkGateway.getBulletin(uid): Unzipping of bulletinZippedFile is not sucessful");	
+		}	
 			
 		return result;		
 	}
@@ -236,6 +272,13 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
 	private static MartusCrypto security;
 	private static Logger logger = Logger.getLogger(DATASYNC_LOGGER);
 	private static List serverInfoList = null;
+	private static String bulletinWorkingDirectory = "";
+	private static String attachmentWorkingDirectory ="";
+	
+	private static final String BULLETINWORKINGDIRECTORY = "BULLETIN_WORKING_DIRECTORY";
+	private static final String ATTACHMENTWORKINGDIRECTORY = "ATTACHMENT_WORKING_DIRECTORY";
+	
+
 	
 	private AmplifierNetworkInterface currentNetworkInterfaceHandler = null;
 	private AmplifierClientSideNetworkGateway currentNetworkInterfaceGateway = null;
