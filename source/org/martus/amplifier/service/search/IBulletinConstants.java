@@ -10,10 +10,8 @@ package org.martus.amplifier.service.search;
 public interface IBulletinConstants
 {
 
-	public static final String WORKSPACE_ROOT = 
-		"C:\\Development\\eclipse\\workspace\\";
 	public static final String DEFAULT_FILES_LOCATION = 
-		WORKSPACE_ROOT + "martus-amplifier\\amplifierdata";
+		"amplifierdata";
 	public static final String DEFAULT_INDEX_LOCATION = 
 		"C:\\amplifierindex";
 		
