@@ -28,12 +28,14 @@ package org.martus.amplifier.presentation;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.velocity.context.Context;
 import org.martus.amplifier.presentation.search.SearchBean;
+import org.martus.amplifier.service.search.BulletinIndexException;
 import org.martus.amplifier.service.search.BulletinInfo;
 
 
@@ -80,15 +82,7 @@ public class SearchResults extends AmplifierServlet
 					throws Exception
 	{
 
-		SearchBean searcher = new SearchBean();
-		String queryString = request.getParameter("query");
-		searcher.setQuery(queryString);
-//		String fieldString = request.getParameter("field");
-searcher.setField("author");
-
-		handleAdvancedSearchParams(request, searcher);	
-
-		SearchBean.SearchResultsBean results = searcher.getResults();
+		List results = getSearchResults(request);
 		int resultCount = results.size();
 
 		String templateName = "NoSearchResults.vm";
@@ -104,5 +98,20 @@ searcher.setField("author");
 			context.put("foundBulletins", bulletins);
 		}
 		return templateName;
+	}
+
+	public List getSearchResults(AmplifierServletRequest request)
+		throws Exception, BulletinIndexException
+	{
+				SearchBean searcher = new SearchBean();
+				String queryString = request.getParameter("query");
+				searcher.setQuery(queryString);
+		//		String fieldString = request.getParameter("field");
+		searcher.setField("author");
+		
+				handleAdvancedSearchParams(request, searcher);	
+		
+				SearchBean.SearchResultsBean results = searcher.getResults();
+		return results;
 	}
 }
