@@ -29,7 +29,9 @@ package org.martus.amplifier.lucene;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Vector;
 
+import org.apache.lucene.document.Document;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.IndexSearcher;
@@ -112,7 +114,13 @@ public class LuceneBulletinSearcher implements BulletinSearcher
 	private Results getResults(Query query) throws IOException
 	{
 		Hits hits = searcher.search(query);
-		return new LuceneResults(hits);
+		Vector docs = new Vector();
+		for(int i=0; i < hits.length(); ++i)
+		{
+			Document doc = hits.doc(i);
+			docs.add(doc);
+		}
+		return new LuceneResults(docs);
 	}
 
 	private IndexSearcher searcher;	

@@ -30,7 +30,6 @@ import java.io.IOException;
 import java.util.Vector;
 
 import org.apache.lucene.document.Document;
-import org.apache.lucene.search.Hits;
 import org.martus.amplifier.common.DateUtilities;
 import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.amplifier.search.AttachmentInfo;
@@ -45,14 +44,9 @@ import org.martus.common.packet.UniversalId.NotUniversalIdException;
 
 public class LuceneResults implements Results, LuceneSearchConstants, SearchConstants
 {
-	public LuceneResults(Hits hits) throws IOException
+	public LuceneResults(Vector docsToUse) throws IOException
 	{
-		docs = new Vector();
-		for(int i=0; i < hits.length(); ++i)
-		{
-			Document doc = hits.doc(i);
-			docs.add(doc);
-		}
+		docs = docsToUse;
 	}
 		
 	public int getCount()
