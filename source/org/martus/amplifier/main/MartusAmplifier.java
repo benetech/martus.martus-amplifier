@@ -28,7 +28,6 @@ public class MartusAmplifier
 		File configDirectory = new File(AmplifierConfiguration.getInstance().getBasePath());
 		File backupServersDirectory = new File(configDirectory, "serversWhoWeCall");
 		backupServersList = BackupServerManager.loadServersWeWillCall(backupServersDirectory, security);
-		timer.scheduleAtFixedRate(timedTask, IMMEDIATELY, dataSynchIntervalMillis);
 
 		SocketListener listener = new SocketListener();
 		listener.setPort(8080); 
@@ -37,6 +36,7 @@ public class MartusAmplifier
 		server.addListener(listener);
 		server.addWebApplication("/","presentation/");
 		server.start();
+		timer.scheduleAtFixedRate(timedTask, IMMEDIATELY, dataSynchIntervalMillis);
 
 		while(! isShutdownRequested() )
 		{
