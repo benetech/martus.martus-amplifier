@@ -22,10 +22,6 @@
   <property name="hrvdobj-dir"   value="org/hrvd/util/object"/>
   <property name="hrvdres-dir"   value="org/hrvd/util/res"/>
 
-  <property name="amplifier-dir" value="classes"/>
-  <property name="amplifier-classes-dir" value="classes"/>
-	
-
   <property name="presentation-dir" value="presentation"/>
   
   <property name="push-dir" value="pushToAmp"/>
@@ -35,7 +31,7 @@
 <!-- ================================================================== -->
 <!-- I N I T                                                            -->
 <!-- ================================================================== -->  
-  <target name="init">
+  <target name="init"  depends="clean">
     <!-- tstamp task initializes ${DSTAMP} etc -->
     <tstamp/>
   </target>
@@ -55,13 +51,17 @@
         <fileset dir="${push-dir}" includes="*.*"/>
     </delete>
 
+    <!-- Remove all files from push presentation dir. -->
+    <delete verbose="true">
+        <fileset dir="${push-presentation}" includes="*.*"/>
+    </delete>
   </target>
 
 <!-- ================================================================== -->
 <!-- B U I L D                                                          -->
 <!-- ================================================================== -->
   <target name="build" depends="init">
-    
+     
     <!-- Create web lib dir, if necessary. -->
     <mkdir dir="${push-lib}"/>
     
@@ -82,8 +82,8 @@
 
     <!-- Jar up amplifier and throw it in the push dir -->
     <jar jarfile="${push-lib}/amplifier.jar"
-  		basedir="."
-   		includes="${amplifier-dir}/*.properties,${amplifier-classes-dir}/**/*.class"/>
+  		basedir=".\classes"
+   		includes="*.properties,**/*.class"/>
 
 
     <!-- Copy all presentation -->
@@ -99,7 +99,7 @@
     <!-- Copy jettyConfiguration.xml -->
 	<copy todir="${push-dir}" file="jettyConfiguration.xml"/>
        
-    <!-- Copy keystore -->
+    <!-- Copy keystore ssl certificate -->
 	<copy todir="${push-dir}" file="keystore"/>
 
   </target>
