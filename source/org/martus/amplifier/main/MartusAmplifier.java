@@ -80,7 +80,7 @@ public class MartusAmplifier
 		}
 		String passphrase = insecurePassword;
 		if(passphrase == null)
-			passphrase = getPassphraseFromConsole(amp);
+			passphrase = getPassphraseFromConsole();
 		amp.loadAccount(passphrase);
 		amp.displayStatistics();
 		amp.start(passphrase);
@@ -245,7 +245,7 @@ public class MartusAmplifier
 		return runningFile;
 	}
 
-	public File getShutdownFile()
+	static public File getShutdownFile()
 	{
 		return new File(getTriggerDirectory(), "exit");
 	}
@@ -260,7 +260,7 @@ public class MartusAmplifier
 		secureMode = true;
 	}
 	
-	File getTriggerDirectory()
+	static File getTriggerDirectory()
 	{
 		return new File(getBasePath(), ADMINTRIGGERDIRECTORY);
 		
@@ -309,12 +309,12 @@ public class MartusAmplifier
 		context.addHandler(handler);
 	}
 	
-	private static String getPassphraseFromConsole(MartusAmplifier amp)
+	private static String getPassphraseFromConsole()
 	{
 		System.out.print("Enter passphrase: ");
 		System.out.flush();
 		
-		File waitingFile = new File(amp.getTriggerDirectory(), "waiting");
+		File waitingFile = new File(getTriggerDirectory(), "waiting");
 		waitingFile.delete();
 		writeSyncFile(waitingFile);
 		
@@ -349,16 +349,21 @@ public class MartusAmplifier
 		security.readKeyPair(in, passphrase);
 	}
 	
+	static public boolean doesShutdownFileExist()
+	{
+		return getShutdownFile().exists();
+	}
+	
 	boolean isShutdownRequested()
 	{
+		if(!doesShutdownFileExist())
+			return false;
+		if(isAmplifierSyncing())
+			return false;
+		
 		File shutdownFile = getShutdownFile();
-		boolean doShutdown = false;
-		if(shutdownFile.exists() && ! isAmplifierSyncing() )
-		{
-			shutdownFile.delete();
-			doShutdown = true;
-		}
-		return doShutdown;
+		shutdownFile.delete();
+		return true;
 	}
 	
 	MartusSecurity getSecurity()
@@ -385,6 +390,8 @@ public class MartusAmplifier
 	{
 		for(int i=0; i < backupServersList.size(); ++i)
 		{
+			if(doesShutdownFileExist())
+				return;
 			BackupServerInfo backupServerToCall = (BackupServerInfo)backupServersList.get(i);
 			pullNewDataFromOneServer(backupServerToCall);
 		}

@@ -37,6 +37,8 @@ public class DataSynchManager
 		
 		for(int index=0; index <accountList.size();index++)
 		{
+			if(MartusAmplifier.doesShutdownFileExist())
+				return;
 			String accountId = (String) accountList.get(index);
 			pullContactInfoForAccount(accountId);
 			pullNewBulletinsForAccount(accountId, bulletinExtractor);
@@ -65,6 +67,8 @@ public class DataSynchManager
 		Vector response = amplifierGateway.getAccountPublicBulletinLocalIds(accountId);
 		for(int i = 0; i < response.size(); i++)
 		{
+			if(MartusAmplifier.doesShutdownFileExist())
+				return;
 			UniversalId uid = null;
 			try
 			{
