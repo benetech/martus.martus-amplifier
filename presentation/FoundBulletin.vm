@@ -2,7 +2,6 @@
 	#set ($pageTitle="Searched for: $searchedFor")
     <head>
    		#parse("Meta.vm")
-    	<title>Martus Amplifier Search Query</title>
     	<!--Account Public Code = $accountPublicCode -->
     	<!--Bulletin Local Id = $bulletinLocalId -->
     </head>
