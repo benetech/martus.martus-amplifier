@@ -165,7 +165,7 @@ public class TestFileSystemDataManager
 		assertEquals("Uids not the same?",publicData.getUniversalId(), publicDataPacketRetrieved.getUniversalId());
 		
 		UiBasicLocalization localization = new UiBasicLocalization(createTempDirectory(), new String[]{});
-		BulletinHtmlGenerator htmlGenerator = new BulletinHtmlGenerator(80, localization);
+		BulletinHtmlGenerator htmlGenerator = new BulletinHtmlGenerator(localization);
 		assertEquals("HTML representation not the same?", htmlGenerator.getSectionHtmlString(publicData), htmlGenerator.getSectionHtmlString(publicDataPacketRetrieved));
 	}
 	

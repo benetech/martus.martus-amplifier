@@ -42,6 +42,9 @@ import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinIndexer;
 import org.martus.common.MartusUtilities;
 import org.martus.common.Version;
+import org.martus.common.analyzerhelper.EnglishStrings;
+import org.martus.common.clientside.Localization;
+import org.martus.common.clientside.UiBasicLocalization;
 import org.martus.common.crypto.MartusCrypto;
 import org.martus.common.crypto.MartusCrypto.CryptoInitializationException;
 import org.martus.common.network.MartusXmlrpcClient.SSLSocketSetupException;
@@ -56,11 +59,22 @@ import org.mortbay.util.MultiException;
 public class MartusAmplifier
 {
 
-	public MartusAmplifier(ServerCallbackInterface serverToUse) throws CryptoInitializationException
+	public MartusAmplifier(ServerCallbackInterface serverToUse) throws CryptoInitializationException, IOException
 	{
 		coreServer = serverToUse;
 		setStaticSecurity(coreServer.getSecurity());
+		localization = new UiBasicLocalization(getDefaultAmpDirectory(), EnglishStrings.strings);
+		localization.setCurrentLanguageCode(AMP_DEFAULT_LANGUAGE);
+		localization.setCurrentDateFormatCode(Localization.getDefaultDateFormatForLanguage(AMP_DEFAULT_LANGUAGE));
 		
+	}
+
+	private File getDefaultAmpDirectory() throws IOException
+	{
+		//TODO remove this entirely once we switch to miniLocalization
+		File tempDirectory = File.createTempFile("$$$Martus_Amplifier","dir");
+		tempDirectory.deleteOnExit();
+		return tempDirectory;
 	}
 
 	public void initalizeAmplifier(char[] password) throws Exception
@@ -522,12 +536,16 @@ public class MartusAmplifier
 	private static final int MAX_IDLE_TIME_MS = 30000;
 	private static final int MIN_THREADS = 5;
 	private static final int MAX_THREADS = 255;
+	private static final String AMP_DEFAULT_LANGUAGE = "en";
+
 
 	// NOTE: The following members *MUST* be static because they are 
 	// used by servlets that do not have access to an amplifier object! 
 	// USE THEM CAREFULLY!
 	public static DataManager dataManager;
 	public static File staticAmplifierDirectory;
+	public static UiBasicLocalization localization;
+
 	private static MartusCrypto staticSecurity;
 	private static String webAuthorizedUser;
 	private static String webAuthorizedPassword;

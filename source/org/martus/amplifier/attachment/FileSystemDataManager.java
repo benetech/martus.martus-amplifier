@@ -188,7 +188,8 @@ public class FileSystemDataManager implements DataManager
 		}
 		finally
 		{
-			in.close();
+			if(in != null)
+				in.close();
 		}
 		return fdp;
 	}

@@ -27,28 +27,96 @@ Boston, MA 02111-1307, USA.
 package org.martus.amplifier.presentation.test;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Vector;
-
+import java.util.zip.ZipException;
+import java.util.zip.ZipFile;
 import org.apache.velocity.context.Context;
+import org.martus.amplifier.attachment.FileSystemDataManager;
 import org.martus.amplifier.common.SearchResultConstants;
+import org.martus.amplifier.datasynch.BulletinExtractor;
+import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.amplifier.presentation.DoSearch;
 import org.martus.amplifier.presentation.FoundBulletin;
 import org.martus.amplifier.presentation.SimpleSearch;
+import org.martus.amplifier.search.BulletinField;
 import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinInfo;
+import org.martus.amplifier.test.AbstractAmplifierTestCase;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
+import org.martus.common.bulletin.Bulletin;
+import org.martus.common.bulletin.BulletinForTesting;
+import org.martus.common.bulletin.BulletinHtmlGenerator;
+import org.martus.common.clientside.UiBasicLocalization;
 import org.martus.common.crypto.MartusCrypto;
-import org.martus.common.packet.UniversalId;
-import org.martus.util.TestCaseEnhanced;
+import org.martus.common.crypto.MockMartusSecurity;
+import org.martus.common.crypto.MartusCrypto.CryptoException;
+import org.martus.common.database.Database.RecordHiddenException;
+import org.martus.common.packet.FieldDataPacket;
+import org.martus.util.DirectoryUtils;
+import org.martus.util.inputstreamwithseek.ZipEntryInputStreamWithSeek;
 
-public class TestFoundBulletin extends TestCaseEnhanced
+public class TestFoundBulletin extends AbstractAmplifierTestCase
 {
 	public TestFoundBulletin(String name)
 	{
 		super(name);
 	}
+	
+	public void setUp() throws Exception
+	{
+		super.setUp();
+		if(security == null)
+		{
+			security = new MockMartusSecurity();
+			security.createKeyPair();
+			MartusAmplifier.setStaticSecurity(security);
+			MartusAmplifier.dataManager = new FileSystemDataManager(getTestBasePath(), security);
+			MartusAmplifier.localization = new UiBasicLocalization(createTempDirectory(),new String[]{});
+		}
+		if(b1 == null)
+		{
+			b1 = createTmpBulletin(1);
+			b2 = createTmpBulletin(2);
+			b3 = createTmpBulletin(3);
+		}		
+		addToDatabase(b1);
+		addToDatabase(b2);
+		addToDatabase(b3);
+	}
 
+	public void tearDown() throws Exception
+	{
+		super.tearDown();
+		MartusAmplifier.dataManager.clearAllAttachments();
+		DirectoryUtils.deleteEntireDirectoryTree(new File(basePath));
+	}
+
+	private Bulletin createTmpBulletin(int bulletinNumber) throws IOException, CryptoException, ZipException, RecordHiddenException
+	{
+		Bulletin b = new Bulletin(security);
+		b.set(BulletinField.TAGAUTHOR, "paul"+bulletinNumber);
+		b.set(BulletinField.TAGKEYWORDS, "testing"+bulletinNumber);
+		b.set(BulletinField.TAGENTRYDATE, "2003-04-30");
+		b.setAllPrivate(false);
+		b.setSealed();
+		b.getFieldDataPacket().setEncrypted(false);
+		return b;
+	}
+
+	private void addToDatabase(Bulletin b) throws IOException, CryptoException, ZipException, RecordHiddenException
+	{
+		File tempFile = createTempFileFromName("$$$AMP_TestFoundBulletin");
+		BulletinForTesting.saveToFile(((FileSystemDataManager)(MartusAmplifier.dataManager)).getDatabase(), b, tempFile, security);
+		FieldDataPacket publicData = b.getFieldDataPacket();
+		ZipFile bulletinZipFile = new ZipFile(tempFile);
+		ZipEntryInputStreamWithSeek zipEntryPointForFieldDataPacket = BulletinExtractor.getZipEntryPointForFieldDataPacket(b.getBulletinHeaderPacket(),bulletinZipFile);
+		MartusAmplifier.dataManager.putFieldDataPacket(publicData.getUniversalId(),zipEntryPointForFieldDataPacket);
+		zipEntryPointForFieldDataPacket.close();
+		bulletinZipFile.close();
+	}
+	
 	public void testBasics() throws Exception
 	{
 		MockAmplifierRequest request = new MockAmplifierRequest();
@@ -75,8 +143,11 @@ public class TestFoundBulletin extends TestCaseEnhanced
 		assertEquals("nextBulletin not 2?", new Integer(2), context.get("nextBulletin"));		
 
 		BulletinInfo bulletinInfo = (BulletinInfo)context.get("bulletin");
-		assertEquals("Bulletin 1's ID didn't match", uid1, bulletinInfo.getBulletinId());
+		assertEquals("Bulletin 1's ID didn't match", b1.getUniversalId(), bulletinInfo.getBulletinId());
 		assertEquals("Bulletin 1's title didn't match", bulletin1Title, bulletinInfo.get("title"));
+		assertEquals("Bulletin 1's fdp Uid didn't match", b1.getFieldDataPacket().getUniversalId(), bulletinInfo.getFieldDataPacketUId());
+		BulletinHtmlGenerator generator = new BulletinHtmlGenerator(MartusAmplifier.localization);
+		assertEquals("Bulletin 1's HTML didn't match",generator.getSectionHtmlString(b1.getFieldDataPacket()), context.get("htmlRepresntation"));
 		assertEquals("Total bulletin count incorrect?", new Integer(3), context.get("totalBulletins"));
 		
 		request.parameters.put("index","2");
@@ -85,16 +156,20 @@ public class TestFoundBulletin extends TestCaseEnhanced
 		assertEquals("nextBulletin not 3?", new Integer(3), context.get("nextBulletin"));
 		BulletinInfo bulletinInfo2 = (BulletinInfo)context.get("bulletin");
 		assertNotEquals("both bulletin id's equal?",bulletinInfo.getBulletinId(), bulletinInfo2.getBulletinId());
-		assertEquals("Bulletin 2's ID didn't match", uid2, bulletinInfo2.getBulletinId());
+		assertEquals("Bulletin 2's ID didn't match", b2.getUniversalId(), bulletinInfo2.getBulletinId());
 		assertEquals("Bulletin 2's title didn't match", bulletin2Title, bulletinInfo2.get("title"));
+		assertEquals("Bulletin 2's fdp Uid didn't match", b2.getFieldDataPacket().getUniversalId(), bulletinInfo2.getFieldDataPacketUId());
+		assertEquals("Bulletin 2's HTML didn't match",generator.getSectionHtmlString(b2.getFieldDataPacket()), context.get("htmlRepresntation"));
 
 		request.parameters.put("index","3");
 		servlet.selectTemplate(request, response, context);
 		assertEquals("previousBulletin not 2?", new Integer(2), context.get("previousBulletin"));
 		assertEquals("nextBulletin not -1?", new Integer(-1), context.get("nextBulletin"));
 		BulletinInfo bulletinInfo3 = (BulletinInfo)context.get("bulletin");
-		assertEquals("Bulletin 3's ID didn't match", uid3, bulletinInfo3.getBulletinId());
+		assertEquals("Bulletin 3's ID didn't match", b3.getUniversalId(), bulletinInfo3.getBulletinId());
 		assertEquals("Bulletin 3's title didn't match", bulletin3Title, bulletinInfo3.get("title"));
+		assertEquals("Bulletin 3's fdp Uid didn't match", b3.getFieldDataPacket().getUniversalId(), bulletinInfo3.getFieldDataPacketUId());
+		assertEquals("Bulletin 3's HTML didn't match",generator.getSectionHtmlString(b3.getFieldDataPacket()), context.get("htmlRepresntation"));
 	}
 
 	public void testSearchedFor() throws Exception
@@ -157,7 +232,7 @@ public class TestFoundBulletin extends TestCaseEnhanced
 		FoundBulletin servlet = new FoundBulletin();
 		servlet.selectTemplate(request, response, context);
 		BulletinInfo bulletinInfo = (BulletinInfo)context.get("bulletin");
-		assertEquals("Bulletin 1's ID didn't match", uid1, bulletinInfo.getBulletinId());
+		assertEquals("Bulletin 1's ID didn't match", b1.getUniversalId(), bulletinInfo.getBulletinId());
 
 		assertFalse("Bulletin 1 should not have any contact info", bulletinInfo.hasContactInfo());
 		String noContactInfo = (String)context.get("contactInfo");
@@ -168,7 +243,7 @@ public class TestFoundBulletin extends TestCaseEnhanced
 		servlet = new FoundBulletin();
 		servlet.selectTemplate(request, response, context);
 		BulletinInfo bulletinInfo2 = (BulletinInfo)context.get("bulletin");
-		assertEquals("Bulletin 2's ID didn't match", uid2, bulletinInfo2.getBulletinId());
+		assertEquals("Bulletin 2's ID didn't match", b2.getUniversalId(), bulletinInfo2.getBulletinId());
 
 		assertTrue("Bulletin 2 should have contact info", bulletinInfo2.hasContactInfo());
 		String contactInfo = (String)context.get("contactInfo");
@@ -209,14 +284,15 @@ public class TestFoundBulletin extends TestCaseEnhanced
 		clearContextSetBySearchResults(context);
 		return context;
 	}
-
-	final UniversalId uid1 = UniversalId.createDummyUniversalId();
-	final UniversalId uid2 = UniversalId.createDummyUniversalId();
-	final UniversalId uid3 = UniversalId.createDummyUniversalId();
+	static MockMartusSecurity security;
+	static Bulletin b1 = null;
+	static Bulletin b2 = null;
+	static Bulletin b3 = null;
+	
 	final String bulletin1Title = "title 1";
 	final String bulletin2Title = "title 2";
 	final String bulletin3Title = "title 3";
-
+	
 
 	class SearchResultsForTesting extends DoSearch
 	{
@@ -227,19 +303,22 @@ public class TestFoundBulletin extends TestCaseEnhanced
 				throw new Exception("malformed query");
 			
 			Vector infos = new Vector();
-			bulletinInfo1 = new BulletinInfo(uid1);
+			bulletinInfo1 = new BulletinInfo(b1.getUniversalId());
 			bulletinInfo1.set("title", bulletin1Title);
+			bulletinInfo1.setFieldDataPacketUId(b1.getFieldDataPacket().getUniversalId().getLocalId());
 			infos.add(bulletinInfo1);
 			
-			BulletinInfo bulletinInfo2 = new BulletinInfo(uid2);
+			BulletinInfo bulletinInfo2 = new BulletinInfo(b2.getUniversalId());
 			bulletinInfo2.set("title", bulletin2Title);
+			bulletinInfo2.setFieldDataPacketUId(b2.getFieldDataPacket().getUniversalId().getLocalId());
 			File info2ContactInfo = createTempFile();
 			info2ContactInfo.createNewFile();
 			bulletinInfo2.setContactInfoFile(info2ContactInfo);
 			infos.add(bulletinInfo2);
 			
-			BulletinInfo bulletinInfo3 = new BulletinInfo(uid3);
+			BulletinInfo bulletinInfo3 = new BulletinInfo(b3.getUniversalId());
 			bulletinInfo3.set("title", bulletin3Title);
+			bulletinInfo3.setFieldDataPacketUId(b3.getFieldDataPacket().getUniversalId().getLocalId());
 			infos.add(bulletinInfo3);
 			return infos;
 		}
