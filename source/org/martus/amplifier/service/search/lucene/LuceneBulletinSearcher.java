@@ -50,7 +50,7 @@ public class LuceneBulletinSearcher
 		}
 	}
 	
-	private Results results(Query query, String field)
+	private Results getLuceneResults(Query query, String field)
 		throws BulletinIndexException 
 	{
 		try {
@@ -67,10 +67,10 @@ public class LuceneBulletinSearcher
 		throws BulletinIndexException 
 	{
 		Query query = queryParser(queryString, field, "Improperly formed query: ");
-		return results(query, field);
+		return getLuceneResults(query, field);
 	}
 	
-	public Results searchFlexiDateRange(String field, String startQuery, String endQuery)
+	private Results searchEntryDate(String field, String startQuery, String endQuery)
 		throws BulletinIndexException 
 	{		
 			
@@ -83,9 +83,8 @@ public class LuceneBulletinSearcher
 		query = queryParser(endQuery, SearchConstants.EVENT_END_DATE_INDEX_FIELD, 
 						"Improperly formed end query: ");		
 		booleanQuery.add(query, true, false);	
-		//System.out.println(booleanQuery.toString());
 				
-		return results(booleanQuery, field);
+		return getLuceneResults(booleanQuery, field);
 	}	
 	
 	private Query queryParser(String query, String field, String msg)
@@ -107,16 +106,16 @@ public class LuceneBulletinSearcher
 			String endDateString   = ((endDate == null) ?  "?": DateField.dateToString(endDate));
 					
 			if (field.equals(SearchConstants.ENTRY_DATE_INDEX_FIELD))		
-				return search(field, setQuery(startDateString, endDateString));				
+				return search(field, setRangeQuery(startDateString, endDateString));				
 			
-			return searchFlexiDateRange(field, setQuery("*", endDateString),
-						setQuery(startDateString, "?"));
+			return searchEntryDate(field, setRangeQuery("*", endDateString),
+						setRangeQuery(startDateString, "?"));
 														
 	}
 	
-	private String setQuery(String startDateString, String endDateString)
+	private String setRangeQuery(String from, String to)
 	{
-		return "[ " + startDateString + " TO " + endDateString + " ]";
+		return "[ " + from + " TO " + to + " ]";
 	}
 
 	public BulletinInfo lookup(UniversalId bulletinId)
