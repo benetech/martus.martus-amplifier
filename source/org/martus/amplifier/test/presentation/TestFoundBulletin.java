@@ -46,6 +46,7 @@ public class TestFoundBulletin extends TestCaseEnhanced
 		assertEquals("nextBulletin not 2?", new Integer(2), context.get("nextBulletin"));
 		BulletinInfo bulletinInfo1 = (BulletinInfo)context.get("bulletin");
 		assertEquals("Bulletin 1's ID didn't match", uid1, bulletinInfo1.getBulletinId());
+		assertEquals("Bulletin 1's title didn't match", bulletin1Title, bulletinInfo1.get("title"));
 		
 		request.parameters.put("index","2");
 		servlet.selectTemplate(request, response, context);
@@ -54,6 +55,7 @@ public class TestFoundBulletin extends TestCaseEnhanced
 		BulletinInfo bulletinInfo2 = (BulletinInfo)context.get("bulletin");
 		assertNotEquals("both bulletin id's equal?",bulletinInfo1.getBulletinId(), bulletinInfo2.getBulletinId());
 		assertEquals("Bulletin 2's ID didn't match", uid2, bulletinInfo2.getBulletinId());
+		assertEquals("Bulletin 2's title didn't match", bulletin2Title, bulletinInfo2.get("title"));
 
 		request.parameters.put("index","3");
 		servlet.selectTemplate(request, response, context);
@@ -61,6 +63,7 @@ public class TestFoundBulletin extends TestCaseEnhanced
 		assertEquals("nextBulletin not -1?", new Integer(-1), context.get("nextBulletin"));
 		BulletinInfo bulletinInfo3 = (BulletinInfo)context.get("bulletin");
 		assertEquals("Bulletin 3's ID didn't match", uid3, bulletinInfo3.getBulletinId());
+		assertEquals("Bulletin 3's title didn't match", bulletin3Title, bulletinInfo3.get("title"));
 	}
 
 	private Context createSampleSearchResults(MockAmplifierRequest request, HttpServletResponse response) throws Exception
@@ -76,6 +79,11 @@ public class TestFoundBulletin extends TestCaseEnhanced
 	final UniversalId uid1 = UniversalId.createDummyUniversalId();
 	final UniversalId uid2 = UniversalId.createDummyUniversalId();
 	final UniversalId uid3 = UniversalId.createDummyUniversalId();
+	final String bulletin1Title = "title 1";
+	final String bulletin2Title = "title 2";
+	final String bulletin3Title = "title 3";
+
+
 	class SearchResultsForTesting extends SearchResults
 	{
 		public List getSearchResults(AmplifierServletRequest request)
@@ -84,9 +92,17 @@ public class TestFoundBulletin extends TestCaseEnhanced
 			if(request.getParameter("query")==null)
 				throw new Exception("malformed query");
 			Vector infos = new Vector();
-			infos.add(new BulletinInfo(uid1));
-			infos.add(new BulletinInfo(uid2));
-			infos.add(new BulletinInfo(uid3));
+			BulletinInfo bulletinInfo1 = new BulletinInfo(uid1);
+			bulletinInfo1.set("title", bulletin1Title);
+			infos.add(bulletinInfo1);
+			
+			BulletinInfo bulletinInfo2 = new BulletinInfo(uid2);
+			bulletinInfo2.set("title", bulletin2Title);
+			infos.add(bulletinInfo2);
+			
+			BulletinInfo bulletinInfo3 = new BulletinInfo(uid3);
+			bulletinInfo3.set("title", bulletin3Title);
+			infos.add(bulletinInfo3);
 			return infos;
 		}
 	}
