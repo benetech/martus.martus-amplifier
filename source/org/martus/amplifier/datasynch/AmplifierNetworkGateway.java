@@ -114,7 +114,7 @@ public class AmplifierNetworkGateway
 	{
 		try
 		{
-			log("getContactInfo:" + MartusCrypto.formatPublicCode(MartusCrypto.computePublicCode(accountId)));
+			//log("getContactInfo:" + MartusCrypto.formatPublicCode(MartusCrypto.computePublicCode(accountId)));
 			NetworkResponse response = gateway.getContactInfo(accountId, security);
 			String resultCode = response.getResultCode();
 			if(!resultCode.equals(NetworkInterfaceConstants.OK))
@@ -135,7 +135,7 @@ public class AmplifierNetworkGateway
 		Vector result = new Vector();
 		try
 		{
-			log("getAccountPublicBulletinLocalIds: " + MartusSecurity.getFormattedPublicCode(accountId));
+			//log("getAccountPublicBulletinLocalIds: " + MartusSecurity.getFormattedPublicCode(accountId));
 			NetworkResponse response = gateway.getPublicBulletinLocalIds(security, accountId);
 			String resultCode = response.getResultCode();
 			if( !resultCode.equals(NetworkInterfaceConstants.OK) )	

@@ -164,8 +164,8 @@
 	        <fileset dir="${push-dir}" includes="*.tar"/>
 	    </delete>
         <tar destfile="${tar-filename}" basedir="${push-dir}"/>
-
-  </target>
+        <checksum file="${tar-filename}"/>
+    </target>
     
 <!-- ================================================================== -->
 <!-- C H E C K  V A R S                                                  -->
