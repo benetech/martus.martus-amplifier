@@ -1,12 +1,12 @@
 #if ($previousBulletin >= 0)
-	<a href='FoundBulletin?index=$previousBulletin&searchedFor=$searchedFor'><img src="../images/left_arrow.gif" alt="Previous Bulletin"/ border='0'></a>
+	<a href='FoundBulletin?index=$previousBulletin&searchedFor=$searchedFor'><img src="../images/left_arrow.gif" alt=""/ border='0'>Previous</a>
 #else
-	<img src="../images/left_arrow_end.gif" alt="No Previous Bulletin"/ border='0'>
+	<img src="../images/left_arrow_end.gif" alt=""/ border='0'>Previous
 #end
 	&nbsp;&nbsp;&nbsp;
 #if ($nextBulletin >= 0)
-	<a href='FoundBulletin?index=$nextBulletin&searchedFor=$searchedFor'><img src="../images/right_arrow.gif" alt="Next Bulletin"/ border='0'></a>
+	<a href='FoundBulletin?index=$nextBulletin&searchedFor=$searchedFor'>Next<img src="../images/right_arrow.gif" alt=""/ border='0'></a>
 #else
-<img src="../images/right_arrow_end.gif" alt="No Next Bulletin"/ border='0'>
+Next<img src="../images/right_arrow_end.gif" alt=""/ border='0'>
 #end
 <br/>	
