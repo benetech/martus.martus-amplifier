@@ -152,9 +152,8 @@ public class LuceneBulletinSearcher
 					if (field.isDateField()) 														
 					 	value = DATE_FORMAT.format(DateField.stringToDate(value));
 					 	
-// Flexidate date range ...
-//					if (field.isDateRangeField())																																						
-//						value = convertDateRange(value);
+					if (field.isDateRangeField())																																						
+						value = convertDateRange(value);
 																									
 					info.set(field.getIndexId(), value);
 				}
