@@ -27,6 +27,7 @@ public class TestSearchResults extends TestCaseEnhanced
 		Context context = new MockContext();
 		
 		SearchResults sr = new SearchResults();
+		request.putParameter("query", "owiefijweofiejoifoiwjefoiwef");
 		String templateName = sr.selectTemplate(request, response, context);
 		assertEquals("NoSearchResults.vm", templateName);
 	}
