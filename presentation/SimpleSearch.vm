@@ -1,3 +1,5 @@
+#set ($barColor = "#5588ee")
+#set ($noSearchForm = "1")
 <html>
     <head>
    		#include("Meta.vm")
@@ -5,37 +7,32 @@
     </head>
     
     <body>
+    	#set ($pageTitle="Quick Search")
+    	#set ($pageInfo="")
+		#parse ("ResultHeader.vm")
+		<br/><br/>
 		<center>
-			<a href="SimpleSearch">
-				<img src="../images/MartusLogo.gif" alt="Martus Amplifier"/ border='0'>
-			</a>
-			<br/>
-			<font size='-1'>
-				<a href='http://martus.org'>Learn More</a>
-				&nbsp;-&nbsp;
-				<a href='http://martus.org'>Search Tips</a>
-				&nbsp;-&nbsp;
-				<a href='http://martus.org'>Report Technical Problems</a>
-			</font>
-			<br/>
-			#include ("MiniSearchForm.vm")
-	        <br/><br/><br/>
 			<table>
-			        <tr>
-		        	<td>
-		        		<table cellspacing = '10'>
-		        			<tr>
-				            	<td><font size='-1'><a href='http://benetech.org'>About Benetech</a></font></td>
-				        		&nbsp;&nbsp;
-				            	<td><font size='-1'><a href='http://benetech.org'>Partners</a></font></td>
-				        		&nbsp;&nbsp;
-				            	<td><font size='-1'><a href='http://benetech.org'>News &amp; Press</a></font></td>
-				            </tr>
-				        </table>
+				<tr>
+					<td align='center' width='500'>
+						<strong>Welcome to the Martus Search Engine.</strong>
+						<br/><br/>
+						This Quick Search page allows you to enter a list of 
+						words, and see all the bulletins that contain all 
+						of those words. For other search options, try the 
+						Advanced Search.
 					</td>
-		        </tr>
-	        </table>
-		#include("Copyright.vm")
+				</tr>
+				<tr>
+					<td align='center'>
+						<br/><br/>
+						Enter your search here:
+						#include ("MiniSearchForm.vm")
+					</td>
+				</tr>
+			</table>
         </center>
+		<br/><br/>
+        #parse ("ResultFooter.vm")
     </body>
 </html>
