@@ -3,18 +3,7 @@
 <head>
         <title>Martus Amplifier Search Query</title>
         <link rel="stylesheet" href="stylesheets/style.css" type="text/css">
-        <script language="Javascript">
-                function validateSubmission(submittedForm)
-                {
-                        if(submittedForm.query.value == null || submittedForm.query.value == "")
-                        {
-                                alert('Please enter a query.');
-                                return false;
-                        }
-                        else
-                                return true;
-                }
-        </script>
+        <script language="Javascript" src="scripts/validation.js"></script>
 </head>
 <%
 //clear cached hits
