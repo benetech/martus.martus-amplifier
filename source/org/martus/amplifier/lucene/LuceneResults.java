@@ -52,158 +52,164 @@ public class LuceneResults implements Results, LuceneSearchConstants, SearchCons
 		this.hits = hits;
 	}
 		
-		public int getCount() throws BulletinIndexException
-		{
-			return hits.length();
-		}
+	public int getCount() throws BulletinIndexException
+	{
+		return hits.length();
+	}
 
-		public BulletinInfo getBulletinInfo(int n)
-			throws BulletinIndexException 
+	public BulletinInfo getBulletinInfo(int n)
+		throws BulletinIndexException 
+	{
+		Document doc;
+		try
 		{
-			Document doc;
-			try {
-				doc = hits.doc(n);
-			} catch (IOException ioe) {
-				throw new BulletinIndexException(
-					"Unable to retrieve FieldDataPacket " + n, ioe);
-			}
-			BulletinInfo info = new BulletinInfo(getBulletinId(doc));
+			doc = hits.doc(n);
+		}
+		catch (IOException ioe)
+		{
+			throw new BulletinIndexException(
+				"Unable to retrieve FieldDataPacket " + n,
+				ioe);
+		}
+		BulletinInfo info = new BulletinInfo(getBulletinId(doc));
+		
+		addAllEmptyFields(info);
+		addFields(info, doc);
+		addAttachments(info, doc);
+		return info;
+	}
+	
+	private static BulletinField getField(String fieldId) throws BulletinIndexException
+	{
+		BulletinField field = BulletinField.getFieldByXmlId(fieldId);
+		if (field == null) 
+		{
+			throw new BulletinIndexException(
+				"Unknown field " + fieldId);
+		}
+		return field;
+	}
+	
+	private static void addAllEmptyFields(BulletinInfo info)
+		throws BulletinIndexException
+	{
+		String[] fieldIds = BulletinField.getSearchableXmlIds();
+		for (int i = 0; i < fieldIds.length; i++) 
+		{
+			BulletinField field = getField(fieldIds[i]);
+			info.set(field.getIndexId(), "");
+		}
+	}			
+	
+	private static void addFields(BulletinInfo info, Document doc) 
+		throws BulletinIndexException
+	{
+		String[] fieldIds = BulletinField.getSearchableXmlIds();
+		for (int i = 0; i < fieldIds.length; i++) 
+		{
+			BulletinField field = getField(fieldIds[i]);
 			
-			addAllEmptyFields(info);
-			addFields(info, doc);
-			addAttachments(info, doc);
-			return info;
-		}
-		
-		private static BulletinField getField(String fieldId) throws BulletinIndexException
-		{
-			BulletinField field = BulletinField.getFieldByXmlId(fieldId);
-			if (field == null) 
+			String value = doc.get(field.getIndexId());
+			if (value != null) 
 			{
-				throw new BulletinIndexException(
-					"Unknown field " + fieldId);
-			}
-			return field;
-		}
-		
-		private static void addAllEmptyFields(BulletinInfo info)
-			throws BulletinIndexException
-		{
-			String[] fieldIds = BulletinField.getSearchableXmlIds();
-			for (int i = 0; i < fieldIds.length; i++) 
-			{
-				BulletinField field = getField(fieldIds[i]);
-				info.set(field.getIndexId(), "");
-			}
-		}			
-		
-		private static void addFields(BulletinInfo info, Document doc) 
-			throws BulletinIndexException
-		{
-			String[] fieldIds = BulletinField.getSearchableXmlIds();
-			for (int i = 0; i < fieldIds.length; i++) 
-			{
-				BulletinField field = getField(fieldIds[i]);
-				
-				String value = doc.get(field.getIndexId());
-				if (value != null) 
+				if (field.isDateField()) 														
+					value = SEARCH_DATE_FORMAT.format(DateField.stringToDate(value));
+			 	
+				if (field.isDateRangeField())
 				{
-					if (field.isDateField()) 														
-						value = SEARCH_DATE_FORMAT.format(DateField.stringToDate(value));
-				 	
-					if (field.isDateRangeField())
-					{
-						String startDate = LuceneBulletinSearcher.getStartDateRange(value);
-						info.set(field.getIndexId()+"-start", startDate);
-						String endDate = LuceneBulletinSearcher.getEndDateRange(value);
-						if(endDate != null)
-							info.set(field.getIndexId()+"-end", endDate);
-						continue;
-					}
-  						
-					info.set(field.getIndexId(), value);
+					String startDate = LuceneBulletinSearcher.getStartDateRange(value);
+					info.set(field.getIndexId()+"-start", startDate);
+					String endDate = LuceneBulletinSearcher.getEndDateRange(value);
+					if(endDate != null)
+						info.set(field.getIndexId()+"-end", endDate);
+					continue;
 				}
-			}
-		}
-		
-
-		private static void addAttachments(BulletinInfo bulletinInfo, Document doc) 
-			throws BulletinIndexException
-		{
-			String attachmentsString = doc.get(ATTACHMENT_LIST_INDEX_FIELD);
-			if (attachmentsString != null) 
-			{
-				String[] attachmentsAssocList = 
-					attachmentsString.split(ATTACHMENT_LIST_SEPARATOR);
-				if ((attachmentsAssocList.length % 2) != 0) 
-				{
-					throw new BulletinIndexException(
-						"Invalid attachments string found: " + 
-						attachmentsString);
-				}
-				for (int i = 0; i < attachmentsAssocList.length; i += 2) 
-				{
-					String accountId = bulletinInfo.getAccountId();
-					String localId = attachmentsAssocList[i];
-					UniversalId uId = UniversalId.createFromAccountAndLocalId(accountId, localId);
-					long size = getAttachmentSizeInKb(uId);
 					
-					String attachmentLabel = attachmentsAssocList[i + 1];
-					AttachmentInfo attachmentInfo = new AttachmentInfo(uId, attachmentLabel, size);
-					bulletinInfo.addAttachment(attachmentInfo);
-				}
+				info.set(field.getIndexId(), value);
 			}
 		}
-		
-		private static long getAttachmentSizeInKb(UniversalId uId)
+	}
+	
+
+	private static void addAttachments(BulletinInfo bulletinInfo, Document doc) 
+		throws BulletinIndexException
+	{
+		String attachmentsString = doc.get(ATTACHMENT_LIST_INDEX_FIELD);
+		if (attachmentsString != null) 
 		{
-			AttachmentManager manager = MartusAmplifier.attachmentManager;
-			
-			//MartusAmplifier.attachmentManager is set in tests but live code since
-			//Two different classloaders construct the MartusAmplifier && DownloadAttachment
-			//requesting the static member results in null 
-			if(manager == null) 
+			String[] attachmentsAssocList = 
+				attachmentsString.split(ATTACHMENT_LIST_SEPARATOR);
+			if ((attachmentsAssocList.length % 2) != 0) 
 			{
-				String basePath = AmplifierConfiguration.getInstance().getBasePath();
-				try
-				{
-					manager = new FileSystemAttachmentManager(basePath);
-				}
-				catch (AttachmentStorageException e)
-				{
-					e.printStackTrace();
-				}
+				throw new BulletinIndexException(
+					"Invalid attachments string found: " + 
+					attachmentsString);
 			}
-			long size = -1;
+			for (int i = 0; i < attachmentsAssocList.length; i += 2) 
+			{
+				String accountId = bulletinInfo.getAccountId();
+				String localId = attachmentsAssocList[i];
+				UniversalId uId = UniversalId.createFromAccountAndLocalId(accountId, localId);
+				long size = getAttachmentSizeInKb(uId);
+				
+				String attachmentLabel = attachmentsAssocList[i + 1];
+				AttachmentInfo attachmentInfo = new AttachmentInfo(uId, attachmentLabel, size);
+				bulletinInfo.addAttachment(attachmentInfo);
+			}
+		}
+	}
+	
+	private static long getAttachmentSizeInKb(UniversalId uId)
+	{
+		AttachmentManager manager = MartusAmplifier.attachmentManager;
+		
+		//MartusAmplifier.attachmentManager is set in tests but live code since
+		//Two different classloaders construct the MartusAmplifier && DownloadAttachment
+		//requesting the static member results in null 
+		if(manager == null) 
+		{
+			String basePath = AmplifierConfiguration.getInstance().getBasePath();
 			try
 			{
-				size = manager.getAttachmentSizeInKb(uId);
+				manager = new FileSystemAttachmentManager(basePath);
 			}
-			catch (Exception e)
+			catch (AttachmentStorageException e)
 			{
 				e.printStackTrace();
 			}
-			return size;
+		}
+		long size = -1;
+		try
+		{
+			size = manager.getAttachmentSizeInKb(uId);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		return size;
+	}
+
+	private static UniversalId getBulletinId(Document doc) 
+		throws BulletinIndexException
+	{
+		String bulletinIdString = doc.get(BULLETIN_UNIVERSAL_ID_INDEX_FIELD);
+		if (bulletinIdString == null)
+		{
+			throw new BulletinIndexException("Did not find bulletin universal id");
 		}
 
-		private static UniversalId getBulletinId(Document doc) 
-			throws BulletinIndexException
+		try
 		{
-			String bulletinIdString = doc.get(
-				BULLETIN_UNIVERSAL_ID_INDEX_FIELD);
-			if (bulletinIdString == null) {
-				throw new BulletinIndexException(
-					"Did not find bulletin universal id");
-			}
-			
-			try {
-				return UniversalId.createFromString(bulletinIdString);
-			} catch (NotUniversalIdException e) {
-				throw new BulletinIndexException(
-					"Invalid bulletin universal id found", e);
-			}
+			return UniversalId.createFromString(bulletinIdString);
 		}
-		
-		private Hits hits;		
+		catch (NotUniversalIdException e)
+		{
+			throw new BulletinIndexException(
+				"Invalid bulletin universal id found",
+				e);
+		}
 	}
+	private Hits hits;		
+}
 	
