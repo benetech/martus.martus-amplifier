@@ -82,8 +82,7 @@
 				</tr>
 			#end
 		</table>
-
-		<br/><br/>
+		<br/>
 
 		#parse("PreviousNextBulletin.vm")
 		#set ($showSearchForm = true)
