@@ -161,10 +161,10 @@ public class LuceneResults implements Results, LuceneSearchConstants, SearchCons
 		String accountId = info.getAccountId();
 		try
 		{
-			File contactInfo = MartusAmplifier.dataManager.getContactInfoFile(accountId);
-			if(!contactInfo.exists())
+			File contactInfoFile = MartusAmplifier.dataManager.getContactInfoFile(accountId);
+			if(!contactInfoFile.exists())
 				return;
-			info.putContactInfo(contactInfo);
+			info.setContactInfoFile(contactInfoFile);
 		}
 		catch (IOException e)
 		{

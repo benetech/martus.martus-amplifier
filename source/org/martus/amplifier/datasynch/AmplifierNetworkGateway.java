@@ -39,7 +39,7 @@ import org.martus.amplifier.network.AmplifierClientSideXmlrpcHandler;
 import org.martus.amplifier.network.AmplifierNetworkInterface;
 import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinIndexer;
-import org.martus.common.ContactInfo;
+import org.martus.common.ConfigInfo;
 import org.martus.common.LoggerInterface;
 import org.martus.common.MartusUtilities.ServerErrorException;
 import org.martus.common.bulletin.BulletinZipUtilities;
@@ -119,7 +119,7 @@ public class AmplifierNetworkGateway
 			if(!resultCode.equals(NetworkInterfaceConstants.OK))
 				return null;
 			Vector encodedContactInfoResult = response.getResultVector();
-			Vector decodedContactInfoResult = ContactInfo.decodeContactInfoVectorIfNecessary(encodedContactInfoResult);
+			Vector decodedContactInfoResult = ConfigInfo.decodeContactInfoVectorIfNecessary(encodedContactInfoResult);
 			if(security.verifySignatureOfVectorOfStrings(decodedContactInfoResult, accountId))
 				return decodedContactInfoResult;
 		}

@@ -139,7 +139,7 @@ public class TestContactInfo extends TestCaseEnhanced
 			
 			BulletinInfo bulletinInfo2 = new BulletinInfo(uid2);
 			bulletinInfo2.set("title", bulletin2Title);
-			bulletinInfo2.putContactInfo(contactInfo2);
+			bulletinInfo2.setContactInfoFile(contactInfo2);
 			infos.add(bulletinInfo2);
 			
 			BulletinInfo bulletinInfo3 = new BulletinInfo(uid3);

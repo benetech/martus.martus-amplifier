@@ -173,7 +173,7 @@ public class TestFoundBulletin extends TestCaseEnhanced
 		assertTrue("Bulletin 2 should have contact info", bulletinInfo2.hasContactInfo());
 		String contactInfo = (String)context.get("contactInfo");
 		assertEquals("ContactInfo should not be set", "true", contactInfo);
-		assertTrue("Actual File should exist", bulletinInfo2.getContactInfo().exists());
+		assertTrue("Actual File should exist", bulletinInfo2.getContactInfoFile().exists());
 	}
 
 
@@ -235,7 +235,7 @@ public class TestFoundBulletin extends TestCaseEnhanced
 			bulletinInfo2.set("title", bulletin2Title);
 			File info2ContactInfo = createTempFile();
 			info2ContactInfo.createNewFile();
-			bulletinInfo2.putContactInfo(info2ContactInfo);
+			bulletinInfo2.setContactInfoFile(info2ContactInfo);
 			infos.add(bulletinInfo2);
 			
 			BulletinInfo bulletinInfo3 = new BulletinInfo(uid3);

@@ -41,7 +41,7 @@ public class BulletinInfo implements Serializable
 		fields = new HashMap();
 		attachments = new ArrayList();
 		bulletinId = bulletinIdToUse;
-		contactInfo = null;
+		contactInfoFile = null;
 	}
 	
 	public void set(String field, String value)
@@ -87,24 +87,24 @@ public class BulletinInfo implements Serializable
 		return bulletinId.getLocalId();
 	}
 	
-	public void putContactInfo(File infoFile)
+	public void setContactInfoFile(File infoFile)
 	{
-		contactInfo = infoFile;
+		contactInfoFile = infoFile;
 	}
 	
-	public File getContactInfo()
+	public File getContactInfoFile()
 	{
-		return contactInfo;
+		return contactInfoFile;
 	}
 	
 	public boolean hasContactInfo()
 	{
-		return(contactInfo != null && contactInfo.exists());
+		return(contactInfoFile != null && contactInfoFile.exists());
 	}
 
 	private Map fields;
 	private List attachments;
 	private UniversalId bulletinId;
-	private File contactInfo;
+	private File contactInfoFile;
 
 }

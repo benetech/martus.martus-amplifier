@@ -148,7 +148,7 @@ public class TestPrintFoundBulletin extends TestCaseEnhanced
 			bulletinInfo2.set("title", bulletin2Title);
 			File info2ContactInfo = createTempFile();
 			info2ContactInfo.createNewFile();
-			bulletinInfo2.putContactInfo(info2ContactInfo);
+			bulletinInfo2.setContactInfoFile(info2ContactInfo);
 			infos.add(bulletinInfo2);
 			
 			BulletinInfo bulletinInfo3 = new BulletinInfo(uid3);
