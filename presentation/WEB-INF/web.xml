@@ -20,6 +20,16 @@
       -->
     </servlet>
 
+     <servlet>
+      <servlet-name> AdvancedSearch </servlet-name>
+      <servlet-class> org.martus.amplifier.presentation.AdvancedSearch </servlet-class>
+<!--      <init-param>
+         <param-name> properties </param-name>
+         <param-value> velocity.properties </param-value>
+      </init-param>
+      -->
+    </servlet>
+
     <taglib>
         <taglib-uri>amplifiertaglib</taglib-uri>
         <taglib-location>/WEB-INF/amp.tld</taglib-location>

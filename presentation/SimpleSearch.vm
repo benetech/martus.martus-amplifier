@@ -4,16 +4,9 @@
     </head>
     
     <body>
+#include ("header.vm")
         <center>
-        	Session: $session
-        	Previous query: $name
-        	
             <table border="0" cellspacing="0" cellpadding="0">
-            <tr>
-            <td align="center">
-                <img src="../images/big_logo.gif" 
-                	width="184" height="126" alt="Martus Amplifier"/>
-            </tr>
             <tr>
             <td> 
                 <form name="search" action="SimpleSearch" method="post">
@@ -43,13 +36,15 @@
                 </tr>
                 <tr>
                 <td align="center">
-	                <a href="../bugreports.html">Bug Reports</a>&nbsp;|&nbsp;
-	                <a href="../faq.html">FAQ</a>&nbsp;|&nbsp;
-	                <a href="searchbydate.jsp">Search by Date</a>
+	                <a href="../bugreports.html">Bug Reports</a>
+	                &nbsp;|&nbsp;
+	                <a href="../faq.html">FAQ</a>
+	                &nbsp;|&nbsp;
+	                <a href="AdvancedSearch">Search by Date</a>
                 </td>
                 </tr>
                 </table>
         </center>
-<!--        <jsp:include page="footer.jsp"/>  -->
+#include ("footer.vm")
     </body>
 </html>

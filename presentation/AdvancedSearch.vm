@@ -1,0 +1,78 @@
+<html>
+    <head>
+            <title>Martus Amplifier Date Search</title>
+            <link rel="stylesheet" href="../stylesheets/style.css" type="text/css">
+    </head>
+    
+    <body>
+#include ("header.vm")
+            
+        <center>
+            <table border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <td> 
+                    <form name="search" action="ValidateDates" method="get">
+                        <p>
+                            The 
+                            <select name="field">
+<!--                                <c:forEach items="${search.dateSearchFields}" var="field">
+                                    <option value="<c:out value="${field.indexId}"/>">
+                                        <c:out value="${field.displayName}"/>
+                                    </option>
+                                </c:forEach>
+    -->                        </select>
+                            is 
+			</p>		
+			<p> &nbsp;&nbsp;&nbsp;&nbsp;between 
+                            <select name="startMonth">
+                            </select>
+                            <select name="startDay">
+<!--                                <c:forEach begin="1" end="31" var="i">
+                                    <option><c:out value="${i}"/></option>
+                                </c:forEach>
+-->                            </select>
+			    <select name = "startYear">
+<!--				<c:forEach begin="1900" end="2003" var="i">
+                                    <option><c:out value="${i}"/></option>
+                                </c:forEach>
+    -->                        </select>
+                            
+                        </p>				
+                        <p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and 
+                        &nbsp;&nbsp;&nbsp&nbsp;&nbsp
+                            <select name="endMonth">
+	                        </select>
+                            <select name="endDay">
+<!--                                <c:forEach begin="1" end="31" var="i">
+                                    <option><c:out value="${i}"/></option>
+                                </c:forEach>
+    -->                        </select>
+			    <select name = "endYear">
+<!--				<c:forEach begin="1900" end="2003" var="i">
+                                    <option><c:out value="${i}"/></option>
+                                </c:forEach>
+    -->                        </select>
+                            
+                            <input type="submit" value="Search"/>
+                        </p><p>&nbsp;</p>	
+                        <p>
+			     <select name="requltsPerPage">
+<!--                                <c:forEach begin="20" end="100" var="i">
+                                    <option><c:out value="${i}"/></option>
+                                </c:forEach>
+    -->                        </select> &nbsp;Results Per Page&nbsp;                           
+                        </p>
+                        </form>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">
+                            <a href="servlet/SimpleSearch">Basic search</a>
+                    </td>
+                </tr>
+            </table>
+        </center>
+#include ("footer.vm")
+    </body>
+</html>
+
