@@ -45,42 +45,27 @@ public class InsecureHomePage extends HttpServlet
 			throws ServletException, IOException
 	{
 		Writer responseWriter = response.getWriter();
-		loadDefaultPage(responseWriter, request.getRequestURL().toString());				
+		System.out.println("name <" + request.getServerName() + ">");
+		loadDefaultPage(responseWriter, request.getServerName());				
 		response.flushBuffer();
 	}
 
-	void loadDefaultPage(Writer writer, String url)
+	void loadDefaultPage(Writer writer, String serverName)
 	{
-		String localHost = url.replaceFirst("http", "https");
-		String replaceHost = "<a href=\""+localHost;
 		InputStream indexHtmlStream = InsecureHomePage.class.getResourceAsStream("index.html");		
 		try
 		{
 			UnicodeReader reader = new UnicodeReader(indexHtmlStream);
-			while(true)
-			{
-				
-				String currentLine = reader.readLine();
-				if(currentLine == null)
-				{
-					reader.close();
-					break;
-				}
-				int index = currentLine.indexOf(REDIRECT_LINK);
-				if (index > 0)
-				{						
-					int nextKeywordPos = currentLine.indexOf("servlet/SimpleSearch");
-					String oldLink = currentLine.substring(index, nextKeywordPos);				
-					currentLine = currentLine.replaceFirst(oldLink,replaceHost);												
-				}						
-				writer.write(currentLine);
-			}			
+			String entirePage = reader.readAll();
+			entirePage = entirePage.replaceAll(NAME_TO_REPLACE, serverName);												
+			writer.write(entirePage);
+			reader.close();
 		}
 		catch(IOException e)
 		{
-			System.out.println("InsecureHomePage: loadIndexPage failed "+e.getMessage());
+			e.printStackTrace();
 		}
 	}
 
-	private static String REDIRECT_LINK = "<a href=\"https://";	
+	private static final String NAME_TO_REPLACE = "SERVERNAME";	
 }
