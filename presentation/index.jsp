@@ -1,4 +1,4 @@
-<%@ page import = "java.util.List, java.util.Iterator, org.martus.amplifier.presentation.search.SearchQueryBean" %>
+<%@ page import = "java.util.Collection, java.util.Iterator, org.martus.amplifier.presentation.search.SearchQueryBean, org.martus.amplifier.service.search.BulletinField" %>
 <jsp:useBean id="searchQueryBean" class="org.martus.amplifier.presentation.search.SearchQueryBean" />
 <head>
         <title>Martus Amplifier Search Query</title>
@@ -26,16 +26,16 @@
 				&nbsp;Field:&nbsp;
 				<select name="field" value="title">
 				<%
-					List searchFields = searchQueryBean.getSearchFields();
+					Collection searchFields = searchQueryBean.getSearchFields();
 					if(searchFields != null)
 					{
 						Iterator searchFieldsIterator = searchFields.iterator();
-						String fieldName = null;
+						BulletinField field = null;
 						while(searchFieldsIterator.hasNext())
 						{
-							fieldName = (String) searchFieldsIterator.next();
+							field = (BulletinField) searchFieldsIterator.next();
 				%>
-					<option><%=fieldName%></option>			 
+					<option value=<%=field.getIndexId()%> ><%=field.getDisplayName()%></option>			 
 				<% 		}
                                         }
 				%>

@@ -20,6 +20,7 @@ import org.martus.common.UniversalId;
 import org.martus.common.UniversalId.NotUniversalIdException;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
@@ -77,7 +78,7 @@ public class BulletinDocument implements IBulletinConstants, ISearchConstants
 			logger.severe("Unable to create XML reader: " + se.getMessage());
 		}
 		
-		BulletinContentHandler handler = new BulletinContentHandler();
+		BulletinContentHandler handler = new BulletinContentHandler(doc);
 		xmlReader.setContentHandler(handler);
 		//xr.setErrorHandler(handler);		
 		
@@ -89,47 +90,26 @@ public class BulletinDocument implements IBulletinConstants, ISearchConstants
 		{
 	    	xmlReader.parse(new InputSource(reader));
 		}
+		catch (SAXParseException spe)
+		{
+			logger.severe(
+				"Unable to parse XML file: SAXParseException: " +
+				spe.getMessage() + "; line = " + spe.getLineNumber() +
+				"; col = " + spe.getColumnNumber() + "; cause: " +
+				spe.getException());
+		}
 		catch(SAXException se)
 		{
-			logger.severe("Unable to parse XML file: " + se.getMessage());
+			logger.severe(
+				"Unable to parse XML file: SAXException: " + 
+				se.getMessage() + "; cause: " + 
+				se.getException());
 		}
 		catch(IOException ioe)
 		{
-			logger.severe("Unable to parse XML file: " + ioe.getMessage());
+			logger.severe("Unable to parse XML file: IOException: " + ioe.getMessage());
 		}
 		
-		String currentFieldname, currentField;
-		for(int i = 0; i < BULLETIN_FIELDS.length; i++)
-		{
-			currentFieldname = BULLETIN_FIELDS[i];
-			currentField = handler.getBulletinField(currentFieldname);
-			if(currentField != null)
-			{
-				if(currentFieldname == UNIVERSAL_ID_FIELD)
-				{
-					doc.add(Field.Keyword(currentFieldname, currentField));
-				}
-				else
-				{
-					doc.add(Field.Text(currentFieldname, currentField));
-				}
-			}
-		}
-	   
-	   	// store the attachments as well
-	   	// dan: not sure this is the best place for it
-	   	List attachmentList = 
-	   		AttachmentInfoListFactory.createList(handler.getBulletinAttachmentIds(), 
-	   			handler.getBulletinAttachmentSessionKeys(),
-	   			handler.getBulletinAttachmentLabels());
-	   	try
-	   	{
-	   		UniversalId bulletinId = UniversalId.createFromString(handler.getBulletinUniversalId());
-	   		AttachmentManager.getInstance().putAttachmentInfoList(bulletinId,
-	   			attachmentList);
-	   	}
-	   	catch(NotUniversalIdException nuie)
-	   	{}
 	   	logger.info("Document is " + doc.toString() );
 	    
 	    // return the document

@@ -41,15 +41,15 @@ public class BulletinSearcherTest extends AbstractAmplifierSearchTest
 	{
 		BulletinSearcher bulletinSearch = BulletinSearcher.getInstance();
 		
-		Hits hits = bulletinSearch.searchField(AUTHOR_FIELD, "Sri Lanka Peace Institute");
+		Hits hits = bulletinSearch.searchField(AUTHOR_INDEX_FIELD, "Sri Lanka Peace Institute");
 		System.out.println(hits.length());
 		Assert.assertEquals("Found author?", 1, hits.length());
 
-		hits = bulletinSearch.searchField(KEYWORDS_FIELD, "explosion");
+		hits = bulletinSearch.searchField(KEYWORDS_INDEX_FIELD, "explosion");
 		System.out.println(hits.length());
 		Assert.assertEquals("Found keyword?", 1, hits.length());
 
-		hits = bulletinSearch.searchField(TITLE_FIELD, "NGO Office");
+		hits = bulletinSearch.searchField(TITLE_INDEX_FIELD, "NGO Office");
 		System.out.println(hits.length());
 		Assert.assertEquals("Found title?", 1, hits.length());
 		
@@ -59,19 +59,19 @@ public class BulletinSearcherTest extends AbstractAmplifierSearchTest
         Calendar eDate = new GregorianCalendar(2001, Calendar.FEBRUARY, 03);
         Date endDate = eDate.getTime();
         
-      	hits = bulletinSearch.searchDateRange(EVENT_DATE_FIELD, startDate, endDate);
+      	hits = bulletinSearch.searchDateRange(EVENT_DATE_INDEX_FIELD, startDate, endDate);
 		System.out.println(hits.length());
 		Assert.assertEquals("Found event date?", 1, hits.length());
 
-		hits = bulletinSearch.searchField(PUBLIC_INFO_FIELD, "staff members were");
+		hits = bulletinSearch.searchField(PUBLIC_INFO_INDEX_FIELD, "staff members were");
 		System.out.println(hits.length());
 		Assert.assertEquals("Found public info?", 1, hits.length());
 
-		hits = bulletinSearch.searchField(SUMMARY_FIELD, "attacked by men");
+		hits = bulletinSearch.searchField(SUMMARY_INDEX_FIELD, "attacked by men");
 		System.out.println(hits.length());
 		Assert.assertEquals("Found summary?", 1, hits.length());
 
-		hits = bulletinSearch.searchField(LOCATION_FIELD, "Colombo");
+		hits = bulletinSearch.searchField(LOCATION_INDEX_FIELD, "Colombo");
 		System.out.println(hits.length());
 		Assert.assertEquals("Found location?", 1, hits.length());
 

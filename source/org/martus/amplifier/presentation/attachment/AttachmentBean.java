@@ -3,9 +3,10 @@ package org.martus.amplifier.presentation.attachment;
 import org.apache.lucene.document.Document;
 import org.martus.amplifier.service.attachment.AttachmentManager;
 import org.martus.amplifier.service.search.IBulletinConstants;
+import org.martus.amplifier.service.search.ISearchConstants;
 import org.martus.common.UniversalId;
 
-public class AttachmentBean implements IBulletinConstants
+public class AttachmentBean implements IBulletinConstants, ISearchConstants
 {
 
 	public AttachmentBean()
@@ -24,7 +25,7 @@ public class AttachmentBean implements IBulletinConstants
 		boolean bulletinHasAttachments = true;
 		try
 		{
-			String universalIdString = doc.get(UNIVERSAL_ID_FIELD);
+			String universalIdString = doc.get(UNIVERSAL_ID_INDEX_FIELD);
 			UniversalId universalId = UniversalId.createFromString(universalIdString);
 			bulletinHasAttachments = 
 				AttachmentManager.getInstance().hasAttachments(universalId);

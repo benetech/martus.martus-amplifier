@@ -1,21 +1,29 @@
 package org.martus.amplifier.common.bulletin;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Logger;
+import java.util.Map;
 
 import org.apache.lucene.document.DateField;
-import org.martus.amplifier.exception.MartusAmplifierRuntimeException;
-import org.martus.amplifier.service.search.IBulletinConstants;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
+import org.martus.amplifier.service.attachment.AttachmentManager;
+import org.martus.amplifier.service.attachment.api.AttachmentInfo;
+import org.martus.amplifier.service.attachment.api.AttachmentInfo.InvalidAttachmentInfoException;
+import org.martus.amplifier.service.search.BulletinField;
 import org.martus.amplifier.service.search.ISearchConstants;
+import org.martus.common.Bulletin;
+import org.martus.common.MartusXml;
 import org.martus.common.UniversalId;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 /**
  * BulletinContentHandler
@@ -35,26 +43,49 @@ public class BulletinContentHandler implements ContentHandler
 	 */
 	public BulletinContentHandler()
 	{
-		super();
+		this(null);
+	}
+	
+	public BulletinContentHandler(Document doc)
+	{
+		setIndexDocument(doc);
+	}
+	
+	public void setIndexDocument(Document doc)
+	{
+		this.doc = doc;
 	}
 
 	/**
 	 * @see org.xml.sax.ContentHandler#setDocumentLocator(Locator)
 	 */
-	public void setDocumentLocator(Locator arg0)
-	{}
+	public void setDocumentLocator(Locator locator)
+	{
+		this.locator = locator;
+	}
 
 	/**
 	 * @see org.xml.sax.ContentHandler#startDocument()
 	 */
 	public void startDocument() throws SAXException
-	{}
+	{
+		fieldValues = new HashMap();
+		attachments = new ArrayList();
+		inAttachment = false;
+		curElementName = null;
+		account = null;
+		packetId = null;
+		id = null;
+	}
 
 	/**
 	 * @see org.xml.sax.ContentHandler#endDocument()
 	 */
 	public void endDocument() throws SAXException
-	{}
+	{
+		addFieldsToDocument();
+		//storeAttachments();	
+	}
 
 	/**
 	 * @see org.xml.sax.ContentHandler#startPrefixMapping(String, String)
@@ -73,127 +104,56 @@ public class BulletinContentHandler implements ContentHandler
 	 * @see org.xml.sax.ContentHandler#startElement(String, String, String, Attributes)
 	 */
 	public void startElement(
-		String uri,
-		String name,
+		String namespaceURI,
+		String localName,
 		String qName,
 		Attributes attributes)
 		throws SAXException
 	{
-		if(name.equals("Field-author"))
-		{
-			currentFieldType = AUTHOR_FIELD_TYPE;
-		}
-		else if (name.equals("Field-keywords"))
-		{
-			currentFieldType = KEYWORDS_FIELD_TYPE;
-		}
-		else if (name.equals("Field-title"))
-		{
-			currentFieldType = TITLE_FIELD_TYPE;
-		}
-		else if (name.equals("Field-eventdate"))
-		{
-			currentFieldType = EVENT_DATE_FIELD_TYPE;
-		}
-		else if (name.equals("Field-publicinfo"))
-		{
-			currentFieldType = PUBLIC_INFO_FIELD_TYPE;
-		}
-		else if (name.equals("Field-summary"))
-		{
-			currentFieldType = SUMMARY_FIELD_TYPE;
-		}
-		else if (name.equals("Field-location"))
-		{
-			currentFieldType = LOCATION_FIELD_TYPE;
-		}
-		else if (name.equals("Field-entrydate"))
-		{
-			currentFieldType = ENTRY_DATE_FIELD_TYPE;
-		}
-		else if (name.equals("Account"))
-		{
-			currentFieldType = ACCOUNT_ID_FIELD_TYPE;
-		}
-		else if (name.equals("PacketId"))
-		{
-			currentFieldType = PACKET_ID_FIELD_TYPE;
-		}
-		else if (name.equals("AttachmentLocalId"))
-		{
-			currentFieldType = ATTACHMENT_ID;
-		}
-		else if (name.equals("AttachmentSessionKey"))
-		{
-			currentFieldType = ATTACHMENT_KEY;
-		}
-		else if (name.equals("AttachmentLabel"))
-		{
-			currentFieldType = ATTACHMENT_LABEL;
+		curElementName = localName;
+		if (curElementName.equals(MartusXml.AttachmentElementName)) {
+			startAttachment();
 		}
 	}
 
 	/**
 	 * @see org.xml.sax.ContentHandler#endElement(String, String, String)
 	 */
-	public void endElement(String arg0, String arg1, String arg2)
+	public void endElement(String namespaceURI, String localName, String qName)
 		throws SAXException
 	{
-		currentFieldType = EMPTY_FIELD_TYPE;
+		curElementName = null;
+		if (localName.equals(MartusXml.AttachmentElementName)) {
+			try {
+				endAttachment();
+			} catch (InvalidAttachmentInfoException e) {
+				throw new SAXParseException(
+					"Found invalid attachment info", locator, e);
+			}
+		}
 	}
 
+	
+	
 	/**
 	 * @see org.xml.sax.ContentHandler#characters(char[], int, int)
 	 */
 	public void characters(char[] ch, int start, int length) throws SAXException
 	{
-		switch(currentFieldType)
-		{
-			case AUTHOR_FIELD_TYPE:
-				bulletinAuthor = new String(ch, start, length);
-				break;
-			case EMPTY_FIELD_TYPE:
-				break;
-			case ENTRY_DATE_FIELD_TYPE: 
-				bulletinEntryDate = new String(ch, start, length);
-				break;
-			case EVENT_DATE_FIELD_TYPE: 
-				bulletinEventDate = new String(ch, start, length);
-				break;
-			case KEYWORDS_FIELD_TYPE: 
-				bulletinKeywords = new String(ch, start, length);
-				break;
-			case LOCATION_FIELD_TYPE: 
-				bulletinLocation = new String(ch, start, length);
-				break;
-			case PUBLIC_INFO_FIELD_TYPE: 
-				bulletinPublicInfo = new String(ch, start, length);
-				break;
-			case SUMMARY_FIELD_TYPE: 
-				bulletinSummary = new String(ch, start, length);
-				break;
-			case TITLE_FIELD_TYPE: 
-				bulletinTitle = new String(ch, start, length);
-				break;
-			case ACCOUNT_ID_FIELD_TYPE: 
-				bulletinAccountId = new String(ch, start, length);
-				break;
-			case PACKET_ID_FIELD_TYPE: 
-				bulletinPacketId = new String(ch, start, length);
-				break;
-			case ATTACHMENT_ID: 
-				addBulletinAttachmentId(new String(ch, start, length));
-				break;
-			case ATTACHMENT_KEY: 
-				addBulletinAttachmentSessionKey(new String(ch, start, length));
-				break;
-			case ATTACHMENT_LABEL: 
-				addBulletinAttachmentLabel(new String(ch, start, length));
-				break;
-			default:
-				throw new MartusAmplifierRuntimeException("Invalid bulletin field type.");
+		if (curElementName != null) {
+			if (inAttachment) {
+				processAttachmentField(ch, start, length);
+			} else if (curElementName.startsWith(MartusXml.FieldElementPrefix)) {
+				processBulletinField(ch, start, length);
+			} else if (curElementName.equals(MartusXml.AccountElementName)) {
+				account = new String(ch, start, length);
+			} else if (curElementName.equals(MartusXml.PacketIdElementName)) {
+				packetId = new String(ch, start, length);
+			}
 		}
 	}
+	
+	
 
 	/**
 	 * @see org.xml.sax.ContentHandler#ignorableWhitespace(char[], int, int)
@@ -215,193 +175,114 @@ public class BulletinContentHandler implements ContentHandler
 	public void skippedEntity(String arg0) throws SAXException
 	{}
 	
-	public String getBulletinField(String fieldname)
+	private void startAttachment() 
 	{
-		if(fieldname == IBulletinConstants.AUTHOR_FIELD)
-		{
-			return getBulletinAuthor();
-		}
-		else if(fieldname == IBulletinConstants.KEYWORDS_FIELD)
-		{
-			return getBulletinKeywords();
-		}
-		else if(fieldname == IBulletinConstants.TITLE_FIELD)
-		{
-			return getBulletinTitle();
-		}
-		else if(fieldname == IBulletinConstants.PUBLIC_INFO_FIELD)
-		{
-			return getBulletinPublicInfo();
-		}
-		else if(fieldname == IBulletinConstants.SUMMARY_FIELD)
-		{
-			return getBulletinSummary();
-		}
-		else if(fieldname == IBulletinConstants.LOCATION_FIELD)
-		{
-			return getBulletinLocation();
-		}
-		else if(fieldname == IBulletinConstants.UNIVERSAL_ID_FIELD)
-		{
-			return getBulletinUniversalId();
-		}
-		else if(fieldname == IBulletinConstants.EVENT_DATE_FIELD)
-		{
-			return convertToDateString(getBulletinEventDate());
-		}
-		else if(fieldname == IBulletinConstants.ENTRY_DATE_FIELD)
-		{
-			return convertToDateString(getBulletinEntryDate());
-		}
-		else
-		{
-			return null;
-		}
+		inAttachment = true;
+		attachmentId = null;
+		attachmentKey = null;
+		attachmentLabel = null;
 	}
 
-	public String getBulletinAuthor()
+	private void endAttachment() throws InvalidAttachmentInfoException
 	{
-		return bulletinAuthor;
+		inAttachment = false;
+		attachments.add(new AttachmentInfo(
+			attachmentId, attachmentKey, attachmentLabel));
 	}
 	
-	public String getBulletinEntryDate()
+	private void processAttachmentField(char[] ch, int start, int length)
 	{
-		return bulletinEntryDate;
-	}
-
-	public String getBulletinEventDate()
-	{
-		return bulletinEventDate;
-	}
-
-	public String getBulletinKeywords()
-	{
-		return bulletinKeywords;
-	}
-
-	public String getBulletinLocation()
-	{
-		return bulletinLocation;
-	}
-
-	public String getBulletinPublicInfo()
-	{
-		return bulletinPublicInfo;
-	}
-
-	public String getBulletinSummary()
-	{
-		return bulletinSummary;
-	}
-
-	public String getBulletinTitle()
-	{
-		return bulletinTitle;
+		if (curElementName.equals(
+			MartusXml.AttachmentLocalIdElementName))
+		{
+			attachmentId = new String(ch, start, length);
+		}
+		else if (curElementName.equals(
+			MartusXml.AttachmentKeyElementName))
+		{
+			attachmentKey = new String(ch, start, length);
+		}
+		else if (curElementName.equals(
+			MartusXml.AttachmentLabelElementName))
+		{
+			attachmentLabel = new String(ch, start, length);
+		}
 	}
 	
-	public String getBulletinUniversalId()
+	private void processBulletinField(char[] ch, int start, int length) 
+		throws SAXException
 	{
-		UniversalId universalId = UniversalId.createFromAccountAndLocalId(bulletinAccountId, bulletinPacketId);
-
-		return universalId.toString();
+		String fieldName = curElementName.substring(
+			MartusXml.FieldElementPrefix.length());
+		BulletinField field = BulletinField.getFieldByXmlId(fieldName);
+		if (field != null) {
+			String value = new String(ch, start, length);
+			if (field.isDateField()) {
+				try {
+					value = convertDateToSearchableString(value);
+				} catch (ParseException e) {
+					throw new SAXParseException(
+						"Found invalid " + fieldName, locator, e);
+				}
+			}
+			fieldValues.put(field.getIndexId(), value);
+		}
 	}
 	
-	private void addBulletinAttachmentId(String attachmentId)
+	private void addFieldsToDocument()
 	{
-		addGenericAttachmentAttribute(bulletinAttachmentIds, attachmentId);
-	}
-	
-	private void addBulletinAttachmentSessionKey(String attachmentSessionKey)
-	{
-		addGenericAttachmentAttribute(bulletinAttachmentSessionKeys, attachmentSessionKey);	
-	}
-
-	private void addBulletinAttachmentLabel(String attachmentLabel)
-	{
-		addGenericAttachmentAttribute(bulletinAttachmentLabels, attachmentLabel);	
-	}
-	
-	private void addGenericAttachmentAttribute(List attributeList, String attributeValue)
-	{
-		if(attributeList == null)
-			attributeList = new ArrayList();
-		attributeList.add(attributeValue);
-	}
-
-	public List getBulletinAttachmentIds()
-	{
-		return bulletinAttachmentIds;
-	}
-
-	public List getBulletinAttachmentLabels()
-	{
-		return bulletinAttachmentLabels;
-	}
-
-	public List getBulletinAttachmentSessionKeys()
-	{
-		return bulletinAttachmentSessionKeys;
-	}
-	
-	public static String convertToDateString(String inString)
-	{
-		if(inString == null ) return inString;
+		for (Iterator iter = fieldValues.entrySet().iterator(); 
+			iter.hasNext();) 
+		{
+			Map.Entry entry = (Map.Entry) iter.next();
+			String key = (String) entry.getKey();
+			String value = (String) entry.getValue();
+			doc.add(Field.Text(key, value));
+		}
 		
-		Logger logger = Logger.getLogger(ISearchConstants.SEARCH_LOGGER);
-		//String inString is of the format YYYY-MM-DD indexed as 0123-56-89
-		Date date = new Date();
-		int iYear, iMonth, iDate;
-		String dateString="";
-			
-		String yearStr  = inString.substring(0,4);
-		String monthStr = inString.substring(5,7);
-		String dateStr  = inString.substring(8);
-		try
-		{
-			iYear = Integer.parseInt(yearStr);
-			iMonth= Integer.parseInt(monthStr);
-			iDate = Integer.parseInt(dateStr);
-			//note: Month value is 0-based. e.g., 0 for January.	
-			Calendar calendar = new GregorianCalendar(iYear, iMonth-1, iDate);
-			date = calendar.getTime();
-			dateString = DateField.dateToString(date);	    	
-		}
-		catch (NumberFormatException e)
-		{
-			logger.severe("BulletinDocument.convertToDocument(): " + e.getMessage());
-		}
-		return dateString;
-  	
+		UniversalId id = getUniversalId();
+		doc.add(Field.Keyword(ISearchConstants.UNIVERSAL_ID_INDEX_FIELD, id.toString()));
 	}
-
-	private String bulletinAuthor = null;
-	private String bulletinEntryDate = null;
-	private String bulletinEventDate = null;
-	private String bulletinKeywords = null;
-	private String bulletinLocation = null;
-	private String bulletinPublicInfo = null;
-	private String bulletinSummary = null;	
-	private String bulletinTitle = null;
-	private String bulletinAccountId = null;
-	private String bulletinPacketId = null;
-	private List bulletinAttachmentIds = null;
-	private List bulletinAttachmentSessionKeys = null;
-	private List bulletinAttachmentLabels = null;
 	
-	private int currentFieldType = 0;
+	private void storeAttachments()
+	{
+		AttachmentManager.getInstance().putAttachmentInfoList(
+			getUniversalId(), attachments);
+	}
 	
-	private static final int AUTHOR_FIELD_TYPE = 0;
-	private static final int EMPTY_FIELD_TYPE = 1;
-	private static final int ENTRY_DATE_FIELD_TYPE = 2;
-	private static final int EVENT_DATE_FIELD_TYPE = 3;
-	private static final int KEYWORDS_FIELD_TYPE = 4;
-	private static final int LOCATION_FIELD_TYPE = 5;
-	private static final int PUBLIC_INFO_FIELD_TYPE = 6;
-	private static final int SUMMARY_FIELD_TYPE = 7;
-	private static final int TITLE_FIELD_TYPE = 8;
-	private static final int ACCOUNT_ID_FIELD_TYPE = 9;
-	private static final int PACKET_ID_FIELD_TYPE = 10;
-	private static final int ATTACHMENT_ID = 11;
-	private static final int ATTACHMENT_KEY = 12;
-	private static final int ATTACHMENT_LABEL = 13;
+	private UniversalId getUniversalId()
+	{
+		if (id == null) {
+			id = UniversalId.createFromAccountAndLocalId(
+				account, packetId);
+		}
+		return id;
+	}
+	
+	private static String convertDateToSearchableString(String dateString) 
+		throws ParseException
+	{
+		// NOTE pdalbora 07-Apr-2003 -- Is this an appropriate
+		// use of this method? The current code appears to create
+		// a new SimpleDateFormat on each call, so maybe store this
+		// in a static variable?
+		DateFormat df = Bulletin.getStoredDateFormat();
+		
+		return DateField.dateToString(df.parse(dateString));
+	}
+	
+	private Document doc;
+	private Map fieldValues;
+	private List attachments;
+	private boolean inAttachment;
+	private UniversalId id;
+	private String curElementName;
+	private String attachmentId;
+	private String attachmentLabel;
+	private String attachmentKey;
+	private String account;
+	private String packetId;
+	
+	private Locator locator;
+		
 }

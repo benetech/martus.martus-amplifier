@@ -1,8 +1,8 @@
 package org.martus.amplifier.presentation.search;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.Collection;
 
+import org.martus.amplifier.service.search.BulletinField;
 import org.martus.amplifier.service.search.IBulletinConstants;
 
 public class SearchQueryBean implements IBulletinConstants
@@ -13,10 +13,9 @@ public class SearchQueryBean implements IBulletinConstants
 		super();
 	}
 
-	public List getSearchFields()
+	public Collection getSearchFields()
 	{
-		List searchFields = Arrays.asList(BULLETIN_FIELDS);
-		return searchFields;
+		return BulletinField.getSearchableFields();
 	}
 	
 }
