@@ -49,12 +49,12 @@ public class FindBulletinsFields implements SearchConstants, SearchResultConstan
 	public static Vector getLanguageFieldDisplayNames()
 	{
 		Vector fields = new Vector();
-		fields.add(new ChoiceEntry(LANGUAGE_ENGLISH_KEY, LANGUAGE_ENGLISH_KEY));
-		fields.add(new ChoiceEntry(LANGUAGE_FRENCH_KEY, LANGUAGE_FRENCH_KEY));
-		fields.add(new ChoiceEntry(LANGUAGE_GERMAN_KEY, LANGUAGE_GERMAN_KEY));
-		fields.add(new ChoiceEntry(LANGUAGE_INDONESIAN_KEY,LANGUAGE_INDONESIAN_KEY ));
-		fields.add(new ChoiceEntry(LANGUAGE_RUSSIAN_KEY, LANGUAGE_RUSSIAN_KEY));
-		fields.add(new ChoiceEntry(LANGUAGE_SPANISH_KEY, LANGUAGE_SPANISH_KEY ));		
+		fields.add(new ChoiceEntry(LANGUAGE_ENGLISH_KEY, "en"));
+		fields.add(new ChoiceEntry(LANGUAGE_FRENCH_KEY, "fr"));
+		fields.add(new ChoiceEntry(LANGUAGE_GERMAN_KEY, "de"));
+		fields.add(new ChoiceEntry(LANGUAGE_INDONESIAN_KEY, "id" ));
+		fields.add(new ChoiceEntry(LANGUAGE_RUSSIAN_KEY, "ru"));
+		fields.add(new ChoiceEntry(LANGUAGE_SPANISH_KEY, "es" ));		
 		
 		return fields;
 	}
