@@ -18,7 +18,7 @@ onSubmit()
         request.getSession().setAttribute("CACHED_HITS", null);
 %>
 <center>
-	<table border="0" cellspacing="0" cellpadding="0">
+	<table border="1" cellspacing="0" cellpadding="0">
 	<tr>
 	<td align="center">
 		<img src="images/big_logo.gif" width="184" height="126" alt="Martus Amplifier"/>
@@ -57,8 +57,8 @@ onSubmit()
         </td>
         </tr>
         <tr>
-        <td align="right">
-        <a href="searchbydate.jsp">Search by Date</a>
+        <td align="center">
+        <a href="bugreports.html">Bug Reports</a>&nbsp;|&nbsp;<a href="faq.html">FAQ</a>&nbsp;|&nbsp;<a href="searchbydate.jsp">Search by Date</a>
         </td>
         </tr>
         </table>
