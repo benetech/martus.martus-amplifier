@@ -46,6 +46,7 @@ public class TestSearchResults extends TestCaseEnhanced
 		assertEquals(expectedFoundCount, foundBulletins.size());
 		BulletinInfo info = (BulletinInfo)foundBulletins.get(0);
 		assertEquals(uid1, info.getBulletinId());
+		assertEquals("Total bulletin count incorrect?", new Integer(expectedFoundCount), context.get("totalBulletins"));
 
 		request.putParameter("query", null); 
 		templateName = sr.selectTemplate(request, response, context);

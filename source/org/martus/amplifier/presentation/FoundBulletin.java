@@ -52,6 +52,7 @@ public class FoundBulletin extends AmplifierServlet
 		context.put("previousBulletin", new Integer(previousIndex));
 		context.put("nextBulletin", new Integer(nextIndex));
 		context.put("currentBulletin", new Integer(index));
+		context.put("totalBulletins", new Integer(bulletins.size()));
 		return "FoundBulletin.vm";
 	}
 

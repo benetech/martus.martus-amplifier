@@ -45,6 +45,7 @@ public class TestFoundBulletin extends TestCaseEnhanced
 		BulletinInfo bulletinInfo1 = (BulletinInfo)context.get("bulletin");
 		assertEquals("Bulletin 1's ID didn't match", uid1, bulletinInfo1.getBulletinId());
 		assertEquals("Bulletin 1's title didn't match", bulletin1Title, bulletinInfo1.get("title"));
+		assertEquals("Total bulletin count incorrect?", new Integer(3), context.get("totalBulletins"));
 		
 		request.parameters.put("index","2");
 		servlet.selectTemplate(request, response, context);
