@@ -37,7 +37,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.martus.amplifier.attachment.AttachmentManager;
 import org.martus.amplifier.attachment.AttachmentStorageException;
-import org.martus.amplifier.attachment.FileSystemAttachmentManager;
 import org.martus.amplifier.common.AmplifierConfiguration;
 import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.amplifier.search.AttachmentInfo;
@@ -96,12 +95,6 @@ public class DownloadAttachment extends HttpServlet
 
 		UniversalId uId = UniversalId.createFromAccountAndLocalId(info.getAccountId(), info.getLocalId());
 		AttachmentManager manager = MartusAmplifier.attachmentManager;
-		
-		//MartusAmplifier.attachmentManager is set in tests but live code since
-		//Two different classloaders construct the MartusAmplifier && DownloadAttachment
-		//requesting the static member results in null 
-		if(manager == null) 
-			manager = new FileSystemAttachmentManager(basePath);
 		
 		response.addHeader( "Content-Type", "application/octet-stream" );
 		response.addHeader( "Content-Disposition","attatchment; filename="+info.getLabel());

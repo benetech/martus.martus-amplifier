@@ -31,10 +31,6 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
-import org.martus.amplifier.attachment.AttachmentManager;
-import org.martus.amplifier.attachment.AttachmentStorageException;
-import org.martus.amplifier.attachment.FileSystemAttachmentManager;
-import org.martus.amplifier.common.AmplifierConfiguration;
 import org.martus.amplifier.common.DateUtilities;
 import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.amplifier.search.AttachmentInfo;
@@ -160,27 +156,10 @@ public class LuceneResults implements Results, LuceneSearchConstants, SearchCons
 	
 	private static long getAttachmentSizeInKb(UniversalId uId)
 	{
-		AttachmentManager manager = MartusAmplifier.attachmentManager;
-		
-		//MartusAmplifier.attachmentManager is set in tests but live code since
-		//Two different classloaders construct the MartusAmplifier && DownloadAttachment
-		//requesting the static member results in null 
-		if(manager == null) 
-		{
-			String basePath = AmplifierConfiguration.getInstance().getBasePath();
-			try
-			{
-				manager = new FileSystemAttachmentManager(basePath);
-			}
-			catch (AttachmentStorageException e)
-			{
-				e.printStackTrace();
-			}
-		}
 		long size = -1;
 		try
 		{
-			size = manager.getAttachmentSizeInKb(uId);
+			size = MartusAmplifier.attachmentManager.getAttachmentSizeInKb(uId);
 		}
 		catch (Exception e)
 		{

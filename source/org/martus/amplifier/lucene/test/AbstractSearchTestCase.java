@@ -38,7 +38,6 @@ import java.util.List;
 import junit.framework.Assert;
 
 import org.martus.amplifier.attachment.FileSystemAttachmentManager;
-import org.martus.amplifier.common.AmplifierConfiguration;
 import org.martus.amplifier.common.DateUtilities;
 import org.martus.amplifier.common.SearchParameters;
 import org.martus.amplifier.common.SearchResultConstants;
@@ -55,6 +54,7 @@ import org.martus.amplifier.search.SearchConstants;
 import org.martus.amplifier.test.AbstractAmplifierTestCase;
 import org.martus.common.FieldSpec;
 import org.martus.common.bulletin.AttachmentProxy;
+import org.martus.common.crypto.MockMartusSecurity;
 import org.martus.common.packet.FieldDataPacket;
 import org.martus.common.packet.UniversalId;
 import org.martus.util.DirectoryTreeRemover;
@@ -63,16 +63,23 @@ import org.martus.util.MartusFlexidate;
 public abstract class AbstractSearchTestCase 
 	extends AbstractAmplifierTestCase implements SearchConstants, SearchResultConstants
 {
+	protected AbstractSearchTestCase(String name) 
+	{
+		super(name);
+	}
+
 	public void setUp() throws Exception
 	{
-		String basePath = AmplifierConfiguration.getInstance().getBasePath() + "/testing";
-		MartusAmplifier.attachmentManager = new FileSystemAttachmentManager(basePath);
+		super.setUp();
+		MartusAmplifier.security = new MockMartusSecurity();
+		MartusAmplifier.security.createKeyPair();
+		MartusAmplifier.attachmentManager = new FileSystemAttachmentManager(getTestBasePath());
 	}
 	
 	public void tearDown() throws Exception
 	{
+		super.tearDown();
 		MartusAmplifier.attachmentManager.clearAllAttachments();
-		String basePath = AmplifierConfiguration.getInstance().getBasePath() + "/testing";
 		DirectoryTreeRemover.deleteEntireDirectoryTree(new File(basePath));
 	}
 	
@@ -1223,14 +1230,7 @@ public abstract class AbstractSearchTestCase
 		return fdp;
 	}
 	
-	
-	protected AbstractSearchTestCase(String name) 
-	{
-		super(name);
-	}
-	
 	protected abstract BulletinIndexer openBulletinIndexer()
 		throws BulletinIndexException;
 	protected abstract BulletinSearcher openBulletinSearcher() throws Exception;
-
 }

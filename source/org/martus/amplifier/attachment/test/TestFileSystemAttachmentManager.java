@@ -9,6 +9,7 @@ import junit.framework.Assert;
 import org.martus.amplifier.attachment.AttachmentManager;
 import org.martus.amplifier.attachment.AttachmentStorageException;
 import org.martus.amplifier.attachment.FileSystemAttachmentManager;
+import org.martus.common.crypto.MockMartusSecurity;
 import org.martus.common.packet.UniversalId;
 import org.martus.util.StringInputStream;
 
@@ -24,8 +25,10 @@ public class TestFileSystemAttachmentManager
 	protected void setUp() throws Exception
 	{
 		super.setUp();
+		MockMartusSecurity security = new MockMartusSecurity();
+		security.createKeyPair();
 		attachmentManager = 
-			new FileSystemAttachmentManager(getTestBasePath());
+			new FileSystemAttachmentManager(getTestBasePath(), security);
 	}
 
 	public void testFileSystemClearAllAttachments() 
@@ -42,8 +45,7 @@ public class TestFileSystemAttachmentManager
 		
 		attachmentManager.clearAllAttachments();
 		File attachmentDir = new File(
-			getTestBasePath(), 
-			FileSystemAttachmentManager.ATTACHMENTS_DIR_NAME);
+			getTestBasePath());
 		Assert.assertEquals(
 			"attachments directory not empty", 
 			0, attachmentDir.listFiles().length);

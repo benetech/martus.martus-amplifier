@@ -9,7 +9,6 @@ import junit.framework.Assert;
 import org.martus.amplifier.attachment.AttachmentManager;
 import org.martus.amplifier.attachment.AttachmentNotFoundException;
 import org.martus.amplifier.attachment.AttachmentStorageException;
-import org.martus.amplifier.common.AmplifierConfiguration;
 import org.martus.amplifier.test.AbstractAmplifierTestCase;
 import org.martus.common.packet.UniversalId;
 import org.martus.util.DirectoryTreeRemover;
@@ -25,7 +24,6 @@ public abstract class TestAbstractAttachmentManager
 
 	protected void tearDown() throws Exception 
 	{
-		String basePath = AmplifierConfiguration.getInstance().getBasePath() + "/test";
 		DirectoryTreeRemover.deleteEntireDirectoryTree(new File(basePath));
 	}
 

@@ -5,8 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.martus.amplifier.common.AmplifierConfiguration;
 import org.martus.common.test.TestCaseEnhanced;
+import org.martus.util.DirectoryTreeRemover;
 import org.martus.util.StreamCopier;
 
 public abstract class AbstractAmplifierTestCase extends TestCaseEnhanced
@@ -18,8 +18,13 @@ public abstract class AbstractAmplifierTestCase extends TestCaseEnhanced
 	
 	protected void setUp() throws Exception
 	{
+		basePath = createTempDirectory().getAbsolutePath();
 		super.setUp();
-		basePath = AmplifierConfiguration.getInstance().buildAmplifierBasePath("test");
+	}
+	
+	protected void teardown() throws Exception
+	{
+		DirectoryTreeRemover.deleteEntireDirectoryTree(new File(basePath));
 	}
 	
 	protected String getTestBasePath()
@@ -40,5 +45,5 @@ public abstract class AbstractAmplifierTestCase extends TestCaseEnhanced
 		return out.toString("UTF-8");
 	}
 	
-	private String basePath;
+	protected String basePath;
 }

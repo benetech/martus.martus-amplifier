@@ -38,7 +38,6 @@ public class MartusAmplifier
 {
 	public static void main(String[] args) throws Exception
 	{
-		StaticData.testValue = 66;
 		displayVersion();
 		MartusAmplifier amp = new MartusAmplifier(new LoggerToConsole());
 		
@@ -69,8 +68,9 @@ public class MartusAmplifier
 	{
 		deleteLuceneLockFile();
 		String basePath = AmplifierConfiguration.getInstance().getBasePath();
+		String packetsDirectory = AmplifierConfiguration.getInstance().getPacketsDirectory();
 
-		attachmentManager = new FileSystemAttachmentManager(basePath);
+		attachmentManager = new FileSystemAttachmentManager(packetsDirectory, security);
 		
 		File configDirectory = new File(basePath);
 		File backupServersDirectory = new File(configDirectory, "serversWhoWeCall");
@@ -406,7 +406,7 @@ public class MartusAmplifier
 	boolean secureMode;
 	static String insecurePassword;
 
-	MartusSecurity security;
+	public static MartusSecurity security;
 	static final long IMMEDIATELY = 0;
 	static final long dataSynchIntervalMillis = 100000;
 

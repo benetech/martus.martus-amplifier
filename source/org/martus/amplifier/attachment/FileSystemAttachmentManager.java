@@ -1,215 +1,138 @@
+/*
+
+The Martus(tm) free, social justice documentation and
+monitoring software. Copyright (C) 2001-2003, Beneficent
+Technology, Inc. (Benetech).
+
+Martus is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either
+version 2 of the License, or (at your option) any later
+version with the additions and exceptions described in the
+accompanying Martus license file entitled "license.txt".
+
+It is distributed WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, including warranties of fitness of purpose or
+merchantability.  See the accompanying Martus License and
+GPL license for more details on the required license terms
+for this software.
+
+You should have received a copy of the GNU General Public
+License along with this program; if not, write to the Free
+Software Foundation, Inc., 59 Temple Place - Suite 330,
+Boston, MA 02111-1307, USA.
+
+*/
 package org.martus.amplifier.attachment;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Iterator;
-import java.util.Properties;
 
+import org.martus.amplifier.main.MartusAmplifier;
+import org.martus.common.MartusUtilities.FileVerificationException;
+import org.martus.common.crypto.MartusCrypto;
+import org.martus.common.database.DatabaseKey;
+import org.martus.common.database.ServerFileDatabase;
+import org.martus.common.database.FileDatabase.MissingAccountMapException;
+import org.martus.common.database.FileDatabase.MissingAccountMapSignatureException;
 import org.martus.common.packet.UniversalId;
-import org.martus.util.StreamCopier;
+
 
 public class FileSystemAttachmentManager implements AttachmentManager
 {
-	public FileSystemAttachmentManager(String baseDirName) 
-		throws AttachmentStorageException
+	public FileSystemAttachmentManager(String baseDir)
 	{
-		baseDir = new File(baseDirName, ATTACHMENTS_DIR_NAME);
-		if (!baseDir.exists() && !baseDir.mkdirs()) {
-			throw new AttachmentStorageException(
-				"Unable to create path: " + baseDir);
-		}
-		accountMapFile = new File(baseDir, ACCOUNT_MAP_FILE_NAME);
-		loadAccountMap();
+		this(baseDir, MartusAmplifier.security);
 	}
 	
-	public InputStream getAttachment(UniversalId attachmentId) 
-		throws AttachmentStorageException
+	public FileSystemAttachmentManager(String baseDir, MartusCrypto crypto)
 	{
-		try {
-			return new FileInputStream(getAttachmentFile(attachmentId));
-		} catch (FileNotFoundException e) {
-			throw new AttachmentNotFoundException(
-				"Unable to get attachment " + attachmentId, e);
+		db = new ServerFileDatabase(new File(baseDir), crypto);
+		try
+		{
+			db.initialize();
+		}
+		catch (FileVerificationException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (MissingAccountMapException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (MissingAccountMapSignatureException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
-	
-	public void putAttachment(UniversalId attachmentId, InputStream data)
-		throws AttachmentStorageException
+	public InputStream getAttachment(UniversalId attachmentId) throws AttachmentStorageException
 	{
-		InputStream in = data;
-		OutputStream out = null;
-		try {
-			out = new FileOutputStream(getAttachmentFile(attachmentId));
-			new StreamCopier().copyStream(in, out);
-		} catch (IOException e) {
-			throw new AttachmentStorageException(
-				"Unable to store attachment " + attachmentId, e);	
-		} finally {
-			if (out != null) {
-				try {
-					out.close();
-					save();					
-				} catch (IOException ioe) {
-					throw new AttachmentStorageException(
-						"Unable to store attachment " + attachmentId, 
-						ioe);
-				}
-			}
+		try
+		{
+			return db.openInputStream(new DatabaseKey(attachmentId), db.security);
+		}
+		catch (Exception e)
+		{
+			throw new AttachmentStorageException(e);
+		}
+	}
+
+	public long getAttachmentSizeInKb(UniversalId attachmentId) throws AttachmentStorageException
+	{
+		try
+		{
+			int sizeInBytes = db.getRecordSize(new DatabaseKey(attachmentId));
+			int sizeInKb = sizeInBytes / Kbytes;
+			if(sizeInKb == 0)
+				sizeInKb = 1;
+			return sizeInKb;
+		}
+		catch (Exception e)
+		{
+			throw new AttachmentStorageException(e);
+		}
+	}
+
+	public long getAttachmentSizeInBytes(UniversalId attachmentId) throws AttachmentStorageException
+	{
+		try
+		{
+			return db.getRecordSize(new DatabaseKey(attachmentId));
+		}
+		catch (Exception e)
+		{
+			throw new AttachmentStorageException(e);
+		}
+	}
+
+	public void putAttachment(UniversalId attachmentId, InputStream data) throws AttachmentStorageException
+	{
+		try
+		{
+			db.writeRecord(new DatabaseKey(attachmentId), data);
+		}
+		catch (Exception e)
+		{
+			throw new AttachmentStorageException(e);
+		}
+	}
+
+	public void clearAllAttachments() throws AttachmentStorageException
+	{
+		try
+		{
+			db.deleteAllData();
+		}
+		catch (Exception e)
+		{
+			throw new AttachmentStorageException(e);
 		}		
 	}
 	
-	public void clearAllAttachments() throws AttachmentStorageException
-	{
-		for (Iterator iter = accountMap.values().iterator(); 
-			iter.hasNext();) 
-		{
-			String dir = (String) iter.next();
-			deleteAccountDir(dir);
-		}
-		accountMap.clear();
-		accountMapFile.delete();
-		File[] children = baseDir.listFiles();
-		if ((children == null) || (children.length > 0)) {
-			throw new AttachmentStorageException(
-				"Failed to clear attachments directory " + baseDir);
-		}
-	}
+	private ServerFileDatabase db;
+	public static final int Kbytes = 1024;
 	
-	private void save() throws AttachmentStorageException
-	{
-		saveAccountMap();
-	}
-	
-	/* package */
-	public static final String ATTACHMENTS_DIR_NAME = "attachments";
-	
-	private void deleteAccountDir(String dirName) 
-		throws AttachmentStorageException
-	{
-		File accountDir = new File(baseDir, dirName);
-		File[] attachments = accountDir.listFiles();
-		if (attachments == null) {
-			throw new AttachmentStorageException(
-				"Unable to list files in directory " + accountDir);
-		}
-		for (int i = 0; i < attachments.length; i++) {
-			if (!attachments[i].isFile()) {
-				throw new AttachmentStorageException(
-					"Unexpected non-file object found: " + attachments[i]);
-			}
-			attachments[i].delete();
-		}
-		accountDir.delete();
-	}
-	
-	public long getAttachmentSizeInBytes(UniversalId attachmentId)
-		throws AttachmentStorageException
-	{
-		return getAttachmentFile(attachmentId).length();
-	}
-
-	public long getAttachmentSizeInKb(UniversalId attachmentId) 
-	throws AttachmentStorageException
-	{
-		long sizeInBytes = getAttachmentSizeInBytes(attachmentId);
-		long sizeInKb = (sizeInBytes + (Kbytes /2)) / Kbytes;
-		if(sizeInKb == 0)
-			sizeInKb = 1;
-		return sizeInKb;
-	}
-	
-	private File getAttachmentFile(UniversalId attachmentId) 
-		throws AttachmentStorageException
-	{
-		File accountDir = getAccountDir(attachmentId.getAccountId());
-		return new File(accountDir, attachmentId.getLocalId());
-	}
-	
-	private File getAccountDir(String accountId)
-		throws AttachmentStorageException
-	{
-		String accountDirName = accountMap.getProperty(accountId);
-		File accountDir;
-		if (accountDirName == null) {
-			accountDirName = ACCOUNT_DIR_PREFIX + accountMap.size();
-			accountDir = new File(baseDir, accountDirName);
-			if (accountDir.exists()) {
-				throw new AttachmentStorageException(
-					"Corrupted attachment directory: Unexpected " +
-					"directory found: " + accountDir);
-			}
-			if (!accountDir.mkdir()) {
-				throw new AttachmentStorageException(
-					"Unable to create new path " + accountDir);
-			}
-			accountMap.setProperty(accountId, accountDirName);
-		} else {
-			accountDir = new File(baseDir, accountDirName);
-			if (!accountDir.exists()) {
-				throw new AttachmentStorageException(
-					"Corrupted attachment directory; " + accountDir +
-						" does not exist but is referenced in " +
-						" account map.");
-			}
-		}
-		return accountDir;
-	}
-	
-	private void loadAccountMap() throws AttachmentStorageException
-	{
-		accountMap = new Properties();
-		if (accountMapFile.exists()) {
-			InputStream in = null;
-			try {
-				in = new FileInputStream(accountMapFile);
-				accountMap.load(in);
-			} catch (IOException e) {
-				throw new AttachmentStorageException(
-					"Unable to load account map", e);
-			} finally {
-				if (in != null) {
-					try {
-						in.close();
-					} catch (IOException e) {
-						throw new AttachmentStorageException(
-							"Unable to close account map file", e);
-					}
-				}
-			}
-		}
-	}
-	
-	private void saveAccountMap() throws AttachmentStorageException
-	{
-		OutputStream out = null;
-		try {
-			out = new FileOutputStream(accountMapFile);
-			accountMap.store(out, "Account Map");
-		} catch (IOException e) {
-			throw new AttachmentStorageException(
-				"Unable to save account map", e);
-		} finally {
-			if (out != null) {
-				try {
-					out.close();
-				} catch (IOException e) {
-					throw new AttachmentStorageException(
-						"Unable to close account map file", e);
-				}
-			}
-		}
-	}
-	
-	private File baseDir;
-	private Properties accountMap;
-	private File accountMapFile;
-	
-	public static final String ACCOUNT_MAP_FILE_NAME = "acctmap.txt";
-	private static final String ACCOUNT_DIR_PREFIX = "acct";
-	public static final long Kbytes = 1024;
 }

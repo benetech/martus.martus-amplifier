@@ -39,53 +39,14 @@ public class AmplifierConfiguration
 		return getGenericProperty(AMPLIFIER_WORKING_PATH);
 	}
 	
-	public String getBulletinPath()
+	public String getPacketsDirectory()
 	{
-		return getGenericProperty(BULLETIN_WORKING_PATH);
+		return getGenericProperty(AMPLIFIER_PACKETS_PATH);
 	}
 	
-	public String getAttachmentPath()
-	{
-		return getGenericProperty(ATTACHMENT_WORKING_PATH);
-	}
-	
-		
 	public String buildAmplifierBasePath(String directoryOrFile)
 	{
 		return buildGenericPath(getBasePath(), directoryOrFile);
-	}
-	
-	public String buildAmplifierBasePath(String folder, String file)
-	{
-		return buildGenericPath(getBasePath(), folder, file);
-	}
-
-	public String buildAmplifierWorkingPath(String directoryOrFile)
-	{
-		return buildGenericPath(getWorkingPath(), directoryOrFile);
-	}
-	
-	public String buildAmplifierWorkingPath(String folder, String file)
-	{
-		return buildGenericPath(getWorkingPath(), folder, file);
-	}
-
-	public String buildBulletinWorkingPath(String directoryOrFile)
-	{
-		return buildGenericPath(getBulletinPath(), directoryOrFile);
-	}
-	
-	public String buildAttachmentWorkingPath(String directoryOrFile)
-	{
-		return buildGenericPath(getAttachmentPath(), directoryOrFile);
-	}
-		
-	private String buildGenericPath(String basePath, String folder, String file)
-	{
-		StringBuffer newPath = new StringBuffer(buildGenericPath(basePath, folder));
-		newPath.append(File.separator);
-		newPath.append(file);
-		return newPath.toString();
 	}
 	
 	private String buildGenericPath(String basePath, String directoryOrFile)
@@ -118,8 +79,7 @@ public class AmplifierConfiguration
 	//property keys
 	private static final String AMPLIFIER_BASE_PATH = "AMPLIFIER_BASE_DIRECTORY";
 	private static final String AMPLIFIER_WORKING_PATH = "AMPLIFIER_WORKING_DIRECTORY";
-	private static final String BULLETIN_WORKING_PATH = "BULLETIN_WORKING_DIRECTORY";
-	private static final String ATTACHMENT_WORKING_PATH = "ATTACHMENT_WORKING_DIRECTORY";
+	private static final String AMPLIFIER_PACKETS_PATH = "AMPLIFIER_PACKETS_DIRECTORY";
 	
 	private static final String PATH_PROPERTY_FILE = "/Path.properties";
 	private static AmplifierConfiguration instance = new AmplifierConfiguration();

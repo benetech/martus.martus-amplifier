@@ -10,7 +10,6 @@
 		#set ($showSearchForm = true)
 		#parse ("ResultHeader.vm")
 		<p><font size='-1'><a href='some url'>Printer Friendly Version</a></font></p>
-		<br/>
 		#parse("PreviousNextBulletin.vm")
 		<br/>		
 		<table>

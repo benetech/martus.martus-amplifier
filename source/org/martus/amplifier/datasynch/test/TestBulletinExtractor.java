@@ -15,7 +15,6 @@ import junit.framework.Assert;
 import org.martus.amplifier.attachment.AttachmentManager;
 import org.martus.amplifier.attachment.AttachmentStorageException;
 import org.martus.amplifier.attachment.FileSystemAttachmentManager;
-import org.martus.amplifier.common.AmplifierConfiguration;
 import org.martus.amplifier.common.DateUtilities;
 import org.martus.amplifier.datasynch.BulletinExtractor;
 import org.martus.amplifier.lucene.LuceneBulletinIndexer;
@@ -56,11 +55,11 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 	protected void setUp() throws Exception 
 	{
 		super.setUp();
-		attachmentManager = 
-			new FileSystemAttachmentManager(getTestBasePath());
-		MartusAmplifier.attachmentManager = attachmentManager;
 		security = new MockMartusSecurity();
 		security.createKeyPair();
+		attachmentManager = 
+			new FileSystemAttachmentManager(getTestBasePath(), security);
+		MartusAmplifier.attachmentManager = attachmentManager;
 		db = new MockServerDatabase();
 	}
 
@@ -69,7 +68,6 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 		try 
 		{
 			attachmentManager.clearAllAttachments();
-			String basePath = AmplifierConfiguration.getInstance().getBasePath() + "/test";
 			DirectoryTreeRemover.deleteEntireDirectoryTree(new File(basePath));
 		} 
 		finally 
