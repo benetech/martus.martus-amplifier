@@ -5,8 +5,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -19,7 +17,9 @@ import org.martus.amplifier.attachment.FileSystemAttachmentManager;
 import org.martus.amplifier.common.AmplifierConfiguration;
 import org.martus.amplifier.common.SearchParameters;
 import org.martus.amplifier.common.SearchResultConstants;
+import org.martus.amplifier.lucene.LuceneBulletinSearcher;
 import org.martus.amplifier.main.MartusAmplifier;
+import org.martus.amplifier.presentation.SearchResults;
 import org.martus.amplifier.search.AttachmentInfo;
 import org.martus.amplifier.search.BulletinField;
 import org.martus.amplifier.search.BulletinIndexException;
@@ -1014,7 +1014,7 @@ public abstract class AbstractSearchTestCase
 		}
 	}
 	
-	public void testAdvancedSearchSortBy() throws BulletinIndexException,ParseException
+	public void testAdvancedSearchSortByTitle() throws BulletinIndexException,ParseException
 	{
 		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
 		FieldDataPacket fdp1 	= generateSampleData(bulletinId1);		
@@ -1057,16 +1057,8 @@ public abstract class AbstractSearchTestCase
 				BulletinInfo bulletin = results.getBulletinInfo(i);					
 				list.add(bulletin);
 			}
-			
-			Collections.sort(list, new Comparator()
-			{
-			  public int compare(Object o1, Object o2)
-			  {
-				Object string1 = ((BulletinInfo)o1).get(SEARCH_TITLE_INDEX_FIELD);
-				Object string2 = ((BulletinInfo)o2).get(SEARCH_TITLE_INDEX_FIELD);	  			  		
-				return ((Comparable)string1).compareTo(string2);
-			   }
-			});
+
+			SearchResults.sortBulletins(list, SEARCH_TITLE_INDEX_FIELD);
 			
 			String title1 = ((BulletinInfo)list.get(0)).get(SEARCH_TITLE_INDEX_FIELD);
 			String title2 = ((BulletinInfo)list.get(1)).get(SEARCH_TITLE_INDEX_FIELD);
@@ -1081,6 +1073,66 @@ public abstract class AbstractSearchTestCase
 		}
 	}				
 		
+	public void testAdvancedSearchSortByEventDate() throws BulletinIndexException,ParseException
+	{
+		UniversalId bulletinId1 = UniversalId.createDummyUniversalId();
+		FieldDataPacket fdp1 	= generateSampleData(bulletinId1);		
+		UniversalId bulletinId2 = UniversalId.createDummyUniversalId();
+		FieldDataPacket fdp2 	= generateSampleFlexiData(bulletinId2);		
+		BulletinIndexer indexer = openBulletinIndexer();
+		try 
+		{
+			indexer.clearIndex();
+			indexer.indexFieldData(bulletinId2, fdp2);
+			indexer.indexFieldData(bulletinId1, fdp1);
+		} 
+		finally 
+		{
+			indexer.close();
+		}
+		
+		BulletinSearcher searcher = openBulletinSearcher();
+		Results results = null;				
+		
+		try 
+		{
+			Date defaultDate 	= SearchConstants.SEARCH_DATE_FORMAT.parse("1970-01-01");
+			Date defaultEndDate = SearchConstants.SEARCH_DATE_FORMAT.parse("2004-01-01");
+			
+			HashMap fields = new HashMap();			
+			fields.put(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, defaultDate);
+			fields.put(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, defaultEndDate);
+			fields.put(RESULT_FIELDS_KEY, IN_ALL_FIELDS);
+			fields.put(RESULT_SORTBY_KEY, SEARCH_EVENT_DATE_INDEX_FIELD);			
+			fields.put(RESULT_ADVANCED_QUERY_KEY, "lunch");			
+			
+			results = searcher.search(fields);
+			assertEquals("Should have found 2 matches? ", 2, results.getCount());
+			
+			int count = results.getCount();												
+			ArrayList list = new ArrayList();
+			for (int i = 0; i < count; i++)
+			{
+				BulletinInfo bulletin = results.getBulletinInfo(i);					
+				list.add(bulletin);
+			}
+			
+			SearchResults.sortBulletins(list, SEARCH_EVENT_DATE_INDEX_FIELD);
+		
+			String eventStartDate1 = ((BulletinInfo)list.get(0)).get(SEARCH_EVENT_DATE_INDEX_FIELD+"-start");
+			String eventStartDate2 = ((BulletinInfo)list.get(1)).get(SEARCH_EVENT_DATE_INDEX_FIELD+"-start");
+						
+			assertEquals(fdp1.get(BulletinField.SEARCH_EVENT_DATE_INDEX_FIELD), eventStartDate1);
+			String startDate2 = LuceneBulletinSearcher.getStartDateRange(fdp2.get(BulletinField.SEARCH_EVENT_DATE_INDEX_FIELD));
+			assertEquals(startDate2, eventStartDate2);
+												
+		}
+		finally 
+		{
+			searcher.close();
+		}
+	}				
+
 	protected FieldDataPacket generateSampleData(UniversalId bulletinId)
 	{
 		String author = "Paul";

@@ -164,7 +164,10 @@ public class SearchResults extends AmplifierServlet implements SearchResultConst
 		BulletinSorter(String field)
 		{
 			super();
-			this.field = field;
+			if(field.equals(SearchConstants.SEARCH_EVENT_DATE_INDEX_FIELD))
+				this.field = SearchConstants.SEARCH_EVENT_DATE_INDEX_FIELD +"-start";
+			else
+				this.field = field;
 		}
 		public int compare(Object o1, Object o2)
 		{
