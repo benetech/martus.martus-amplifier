@@ -21,7 +21,6 @@ import org.martus.amplifier.search.BulletinIndexer;
 import org.martus.common.MartusUtilities.ServerErrorException;
 import org.martus.common.bulletin.BulletinZipUtilities;
 import org.martus.common.crypto.MartusCrypto;
-import org.martus.common.crypto.MockMartusSecurity;
 import org.martus.common.crypto.MartusCrypto.DecryptionException;
 import org.martus.common.crypto.MartusCrypto.NoKeyPairException;
 import org.martus.common.network.NetworkInterfaceConstants;
@@ -50,18 +49,7 @@ public class AmplifierNetworkGateway
 		if(gateway == null)
 			gateway = getCurrentNetworkInterfaceGateway();
 			
-		try
-		{
-			security = securityToUse;
-			if(security == null)
-				security = new MockMartusSecurity();
-			security.createKeyPair();
-		}
-		catch(Exception e)
-		{
-			logger.severe("CryptoInitialization Exception " + e.getMessage());		
-		}
-		
+		security = securityToUse;
 	}
 	
 	public Vector getAllAccountIds() //throws ServerErrorException

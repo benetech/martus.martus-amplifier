@@ -41,7 +41,11 @@ public class MartusAmplifier
 
 	void start() throws Exception
 	{
+		deleteLuceneLockFile();
+		
 		security = new MartusSecurity();
+		log("Creating key pair...");
+		security.createKeyPair();
 		
 		File configDirectory = new File(AmplifierConfiguration.getInstance().getBasePath());
 		File backupServersDirectory = new File(configDirectory, "serversWhoWeCall");
@@ -58,6 +62,17 @@ public class MartusAmplifier
 		
 		while(! isShutdownRequested() )
 		{
+		}
+	}
+
+	void deleteLuceneLockFile()
+	{
+		File indexDirectory = new File(AmplifierConfiguration.getInstance().getBasePath(), "index");
+		File lockFile = new File(indexDirectory, "write.lock");
+		if(lockFile.exists())
+		{
+			log("Deleting lucene lock file: " + lockFile.getPath());
+			lockFile.delete();
 		}
 	}
 
