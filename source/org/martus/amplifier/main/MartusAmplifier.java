@@ -21,7 +21,7 @@ public class MartusAmplifier
 	static void execute()
 	{
 		MartusAmplifierDataSynch amplifierDataSynch = new MartusAmplifierDataSynch();
-		amplifierDataSynch.execute();	
+		amplifierDataSynch.execute();
 	}
 	
 	static boolean isShutdownRequested()
@@ -29,7 +29,7 @@ public class MartusAmplifier
 		String ampDir = AmplifierConfiguration.getInstance().getWorkingPath();
 		File shutdownFile = new File(ampDir, "shutdown");
 		boolean doShutdown = false;
-		if(shutdownFile.exists())
+		if(shutdownFile.exists() && ! isAmplifierSyncing() )
 		{
 			shutdownFile.delete();
 			doShutdown = true;
@@ -63,7 +63,7 @@ public class MartusAmplifier
 
 				execute();
 				
-				System.out.println("Scheduled Task finished " + System.currentTimeMillis());
+				System.out.println("Scheduled Task finished " + System.currentTimeMillis() + "\n");
 				endSynch();
 			}
 		}
