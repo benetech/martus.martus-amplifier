@@ -90,7 +90,7 @@ public class AmplifierClientSideNetworkHandlerUsingXMLRPC
 			//TODO throw IOExceptions so caller can decide what to do.
 			//This was added for connection refused: connect (no server connected)
 			//System.out.println("ServerInterfaceXmlRpcHandler:callServer Exception=" + e);
-			throw new IOException();
+			throw e;
 		}
 		catch (Exception e)
 		{
