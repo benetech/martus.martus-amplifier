@@ -27,7 +27,7 @@ Boston, MA 02111-1307, USA.
 package org.martus.amplifier.common.test;
 
 import org.martus.amplifier.common.CharacterUtil;
-import org.martus.common.test.Utf8ConstantsForTests;
+import org.martus.common.test.UnicodeConstants;
 import org.martus.util.TestCaseEnhanced;
 
 public class TestCharacterUtil extends TestCaseEnhanced
@@ -46,7 +46,7 @@ public class TestCharacterUtil extends TestCaseEnhanced
 		String test5 = "http:\\test@testagain.com";
 		String test6 = "<html> test* test?";
 		String test7 = "*";		
-		String test8 = "t"+Utf8ConstantsForTests.ACCENT_E_LOWER+"st";
+		String test8 = "t"+UnicodeConstants.ACCENT_E_LOWER+"st";
 		String test9 = "\"?\"";		
 		String test10 = "*\"*\"*";	
 		String test11 = null;
@@ -71,7 +71,7 @@ public class TestCharacterUtil extends TestCaseEnhanced
 			outStr = CharacterUtil.removeRestrictCharacters(test7);		
 			assertEquals("removed *", "", outStr);
 			outStr = CharacterUtil.removeRestrictCharacters(test8);								
-			assertEquals("Should not removed : ", "t"+Utf8ConstantsForTests.ACCENT_E_LOWER+"st", outStr);
+			assertEquals("Should not removed : ", "t"+UnicodeConstants.ACCENT_E_LOWER+"st", outStr);
 			outStr = CharacterUtil.removeRestrictCharacters(test9);		
 			assertEquals("should not removed ? inside quotes", test9, outStr);
 			outStr = CharacterUtil.removeRestrictCharacters(test10);		
