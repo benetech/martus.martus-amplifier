@@ -100,7 +100,6 @@ public class DoSearch extends AbstractSearchResultsServlet
 			RawSearchParameters.clearAdvancedSearch(session);
 					
 			simpleQueryString = CharacterUtil.removeRestrictCharacters(simpleQueryString);
-	
 			RawSearchParameters raw = new RawSearchParameters(simpleQueryString);
 						
 			if (simpleQueryString.equals(""))
@@ -138,8 +137,11 @@ public class DoSearch extends AbstractSearchResultsServlet
 		raw.saveSearchInSession(session);
 		
 		SearchParameters sp = new SearchParameters(raw);
-		if (sp.getSearchFields().isEmpty())		
-			return new ArrayList();	
+		if (sp.getSearchFields().isEmpty())
+		{
+			RawSearchParameters.clearAdvancedSearch(session);			
+			return new ArrayList();
+		}	
 	
 		Map fields = sp.getSearchFields();
 		return getResults(fields);
