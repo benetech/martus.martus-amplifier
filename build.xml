@@ -81,7 +81,7 @@
 	<!-- Move necessary pre-built jars to web app dir. -->
 	<copy todir="${web-app-lib}">
 		<fileset dir="${built-jars}" 
-			includes="lucene-1.2.jar"/>
+			includes="lucene-1.3-rc1.jar"/>
 	</copy>
 	
 	<!-- Move jstl files (jars, tlds) to web app dir. -->
