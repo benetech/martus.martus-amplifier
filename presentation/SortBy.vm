@@ -1,0 +1,11 @@
+<select name='sortBy'>
+	#foreach ($fieldChoice in $sortByFields)	
+		<option 
+		    #if ($fieldChoice.tag == $currentlySortingBy)             	
+		    	selected
+		    #end	
+			value="$fieldChoice.tag"> 
+            $fieldChoice.label	
+        </option>                              
+	#end							
+</select>

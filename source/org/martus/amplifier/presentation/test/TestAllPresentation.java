@@ -24,11 +24,12 @@ public class TestAllPresentation extends TestSuite
 	{
 		TestSuite suite= new TestSuite("All Martus Amplifier Presentation Tests");
 		
-		suite.addTest(new TestSuite(TestSimpleSearch.class));
 		suite.addTest(new TestSuite(TestAdvancedSearch.class));
-		suite.addTest(new TestSuite(TestSearchResults.class));
-		suite.addTest(new TestSuite(TestFoundBulletin.class));
+		suite.addTest(new TestSuite(TestDoSearch.class));
 		suite.addTest(new TestSuite(TestDownloadAttachment.class));
+		suite.addTest(new TestSuite(TestFoundBulletin.class));
+		suite.addTest(new TestSuite(TestSearchResults.class));
+		suite.addTest(new TestSuite(TestSimpleSearch.class));
 		suite.addTest(new TestSuite(TestUserFeedbackForm.class));
 	
 		return suite;

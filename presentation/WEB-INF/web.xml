@@ -26,6 +26,11 @@
     </servlet>
 
      <servlet>
+      <servlet-name> DoSearch </servlet-name>
+      <servlet-class> org.martus.amplifier.presentation.DoSearch </servlet-class>
+    </servlet>
+
+     <servlet>
       <servlet-name> SearchResults </servlet-name>
       <servlet-class> org.martus.amplifier.presentation.SearchResults </servlet-class>
     </servlet>

@@ -14,7 +14,7 @@
 		#parse ("ResultHeader.vm")
 		<br/>
 		
-		<form name="search" action="SearchResults" method="post">
+		<form name="search" action="DoSearch" method="post">
 			<table bgcolor='#dddddd' color='#000000'>
 			<tr>
 			<td bgcolor='#ffffff' color='#000000'>
@@ -182,13 +182,7 @@
 					<td><strong>Display Bulletins</strong></td>
 					<td>Sort results by</td>
 					<td>
-						<select name='sortBy'>
-							#foreach ($fieldChoice in $sortByFields)	
-									<option value="$fieldChoice.tag"> 
-		                                $fieldChoice.label	
-		                            </option>                              
-							#end							
-						</select>
+						#parse("SortBy.vm")
 					</td>
 					<td></td>
 				</tr>

@@ -5,7 +5,7 @@ import java.util.Vector;
 
 import org.apache.velocity.context.Context;
 import org.martus.amplifier.presentation.FoundBulletin;
-import org.martus.amplifier.presentation.SearchResults;
+import org.martus.amplifier.presentation.DoSearch;
 import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinInfo;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
@@ -96,7 +96,7 @@ public class TestFoundBulletin extends TestCaseEnhanced
 	final String bulletin3Title = "title 3";
 
 
-	class SearchResultsForTesting extends SearchResults
+	class SearchResultsForTesting extends DoSearch
 	{
 		public List getSearchResults(AmplifierServletRequest request)
 			throws Exception, BulletinIndexException

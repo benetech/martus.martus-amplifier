@@ -1,4 +1,4 @@
-<form name="search" action="SearchResults" method="post">
+<form name="search" action="DoSearch" method="post">
     <p>
         <input name="query" size="44"/>&nbsp;
         <input type="submit" value="Search"/>

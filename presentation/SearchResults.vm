@@ -8,10 +8,10 @@
     	#set ($pageInfo="Found $totalBulletins bulletins")
 		#set ($showSearchForm = true)
 		#parse ("ResultHeader.vm")
-		
-		<br/><br/>
-        
+		<br/>
+		#parse ("SortByWithButton.vm")
         <table width="800" border="0" cellpadding="0" cellspacing="0">
+        
 			#foreach ($bulletin in $foundBulletins)
 	            <tr>
 	            	<td valign='top'>
@@ -37,7 +37,8 @@
 			
 			#end
         </table>
-        
+		<br/>
+		#parse ("SortByWithButton.vm")
 		<br/><br/>
 		#set ($showSearchForm = true)
 		#parse ("ResultFooter.vm")

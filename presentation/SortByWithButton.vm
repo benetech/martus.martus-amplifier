@@ -1,0 +1,5 @@
+<form name="search" action="SearchResults" method="post">
+	Sort results by 
+	#parse("SortBy.vm")
+	<input type="submit" value="Sort"/>
+</form>

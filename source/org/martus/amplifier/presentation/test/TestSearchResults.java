@@ -1,13 +1,12 @@
 package org.martus.amplifier.presentation.test;
 
-import java.util.List;
 import java.util.Vector;
 
 import org.apache.velocity.context.Context;
+import org.martus.amplifier.common.FindBulletinsFields;
+import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.presentation.SearchResults;
-import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinInfo;
-import org.martus.amplifier.velocity.AmplifierServletRequest;
 import org.martus.common.packet.UniversalId;
 import org.martus.common.test.TestCaseEnhanced;
 
@@ -18,86 +17,69 @@ public class TestSearchResults extends TestCaseEnhanced
 		super(name);
 	}
 
-	public void testNoResults() throws Exception
+	public void testSorting() throws Exception
 	{
 		MockAmplifierRequest request = new MockAmplifierRequest();
 		MockAmplifierResponse response = null;
 		Context context = new MockContext();
 		
+		BulletinList data = new BulletinList();
+		request.getSession().setAttribute("foundBulletins", data.getList());
+		request.putParameter(SearchResultConstants.RESULT_SORTBY_KEY, "title");
 		SearchResults sr = new SearchResults();
-		request.putParameter("query", "owiefijweofiejoifoiwjefoiwef");
-		String templateName = sr.selectTemplate(request, response, context);
-		assertEquals("NoSearchResults.vm", templateName);
-	}
-
-	public void testYesResults() throws Exception
-	{
-		MockAmplifierRequest request = new MockAmplifierRequest();
-		MockAmplifierResponse response = null;
-		Context context = new MockContext();
-
-		SearchResultsForTesting sr = new SearchResultsForTesting();
-		request.putParameter("query", "owiefijweofiejoifoiwjefoiwef");
+		
 		String templateName = sr.selectTemplate(request, response, context);
 		assertEquals("SearchResults.vm", templateName);
 
-		int expectedFoundCount = 3;
-		Vector foundBulletins = (Vector)context.get("foundBulletins");
-		assertEquals(expectedFoundCount, foundBulletins.size());
-		BulletinInfo info = (BulletinInfo)foundBulletins.get(0);
-		assertEquals(uid1, info.getBulletinId());
-		assertEquals("Total bulletin count incorrect?", new Integer(expectedFoundCount), context.get("totalBulletins"));
+		BulletinInfo item1 = (BulletinInfo)((Vector)context.get("foundBulletins")).get(0);
+		assertEquals("Bulletins not sorted by title in context?", bulletin1Title, item1.get("title"));
 
-		request.putParameter("query", ""); 
-		templateName = sr.selectTemplate(request, response, context);
-		assertEquals("NoSearchResults.vm", templateName);
-
-	}
-
-	public void testLanguageCodeToString() throws Exception
-	{
-		BulletinInfo bulletinInfo1 = new BulletinInfo(uid1);
-		bulletinInfo1.set("language", bulletin1Language);
-		BulletinInfo bulletinInfo2 = new BulletinInfo(uid2);
-		bulletinInfo2.set("language", bulletin2Language);
-		BulletinInfo bulletinInfo3 = new BulletinInfo(uid3);
-		bulletinInfo3.set("language", bulletin3Language);
-
-		SearchResultsForTesting sr = new SearchResultsForTesting();
-
-		sr.convertLanguageCode(bulletinInfo1);
-		assertEquals("English LanguageCode still exists?", "English", bulletinInfo1.get("language"));
-		sr.convertLanguageCode(bulletinInfo2);
-		assertEquals("Spanish LanguageCode still exists?", "Spanish", bulletinInfo2.get("language"));
-		sr.convertLanguageCode(bulletinInfo3);
-		assertEquals("Unknown LanguageCode should be returned unchanged?", bulletin3Language, bulletinInfo3.get("language"));
-		
+		BulletinInfo item1Session = (BulletinInfo)((Vector)request.getSession().getAttribute("foundBulletins")).get(0);
+		assertEquals("Bulletins not sorted by title in session?", bulletin1Title, item1Session.get("title"));
 	}
 
 	public void testSearchedFor() throws Exception
 	{
 		MockAmplifierRequest request = new MockAmplifierRequest();
-		MockAmplifierResponse response = null;
-		Context context = new MockContext();
-		
-		SearchResults sr = new SearchResults();
 		String basicSearchString = "mybasicsearch";
 		request.putParameter("query", basicSearchString);
-		sr.selectTemplate(request, response, context);
-		assertEquals("Didn't get back correct search string", basicSearchString, context.get("searchedFor"));
-	
-	}
-	
-/*	private Context createSampleSearchResults(MockAmplifierRequest request, HttpServletResponse response) throws Exception
-	{
 		Context context = new MockContext();
-		SearchResultsForTesting sr = new SearchResultsForTesting();
-		request.putParameter("query", "test");
-		request.parameters.put("index","1");
-		sr.selectTemplate(request, response, context);
-		return context;
+		
+		SearchResults.setSearchedFor(request, context);
+		assertEquals("Didn't get back correct search string from session", basicSearchString, request.getSession().getAttribute("searchedFor"));
+		assertEquals("Didn't get back correct search string from context", basicSearchString, context.get("searchedFor"));
+		
+		request.putParameter(SearchResultConstants.RESULT_BASIC_QUERY_KEY, null);
+		request.putParameter(SearchResultConstants.RESULT_ADVANCED_QUERY_KEY, null);
+		SearchResults.setSearchedFor(request, context);
+		assertEquals("Session Didn't get back correct search string from the original session", basicSearchString, request.getSession().getAttribute("searchedFor"));
+		assertEquals("Context Didn't get back correct search string from the original session", basicSearchString, context.get("searchedFor"));
+		
 	}
-*/
+
+	public void testSetReturnContext() throws Exception
+	{
+		MockAmplifierRequest request = new MockAmplifierRequest();
+		Context context = new MockContext();
+		String mySearchByTag = "myOwnSearchTag";
+		request.putParameter(SearchResultConstants.RESULT_SORTBY_KEY, mySearchByTag);	
+		Vector fakeBulletins = new Vector();
+		fakeBulletins.add("hello");
+		fakeBulletins.add("there");
+		SearchResults.setReturnContext(request, fakeBulletins, context);
+
+		assertEquals("wrong second bulletin in session?", fakeBulletins.get(1), ((Vector)request.getSession().getAttribute("foundBulletins")).get(1));		
+
+		assertEquals("wrong first bulletin in context?", fakeBulletins.get(0), ((Vector)context.get("foundBulletins")).get(0));		
+
+		assertEquals("wrong # of bulletins in context?", fakeBulletins.size(), ((Integer)context.get("totalBulletins")).intValue());		
+
+		Vector sortByFields = FindBulletinsFields.getSortByFieldDisplayNames();
+		assertEquals("SortingBy Fields not the same #?", sortByFields.size(), ((Vector)context.get("sortByFields")).size());
+
+		assertEquals("SearchTag not the same?", mySearchByTag, context.get("currentlySortingBy"));		
+	}
+
 	final UniversalId uid1 = UniversalId.createDummyUniversalId();
 	final UniversalId uid2 = UniversalId.createDummyUniversalId();
 	final UniversalId uid3 = UniversalId.createDummyUniversalId();
@@ -109,32 +91,27 @@ public class TestSearchResults extends TestCaseEnhanced
 	final String bulletin3Language = "un";
 
 
-	class SearchResultsForTesting extends SearchResults
+	class BulletinList
 	{
-		public List getSearchResults(AmplifierServletRequest request)
-			throws Exception, BulletinIndexException
+		public Vector getList()
 		{
-			if(request.getParameter("query")=="")
-				return new Vector();
-			if(request.getParameter("query")==null)
-				throw new Exception("malformed query");
 			Vector infos = new Vector();
 			BulletinInfo bulletinInfo1 = new BulletinInfo(uid1);
 			bulletinInfo1.set("title", bulletin1Title);
 			bulletinInfo1.set("language", bulletin1Language);
-			infos.add(bulletinInfo1);
 			
 			BulletinInfo bulletinInfo2 = new BulletinInfo(uid2);
 			bulletinInfo2.set("title", bulletin2Title);
 			bulletinInfo2.set("language", bulletin2Language);
-			infos.add(bulletinInfo2);
 			
 			BulletinInfo bulletinInfo3 = new BulletinInfo(uid3);
 			bulletinInfo3.set("title", bulletin3Title);
 			bulletinInfo3.set("language", bulletin3Language);
+
 			infos.add(bulletinInfo3);
+			infos.add(bulletinInfo2);
+			infos.add(bulletinInfo1);
 			return infos;
 		}
 	}
-	
 }
