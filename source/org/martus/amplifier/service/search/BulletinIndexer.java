@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.index.IndexWriter;
+import org.martus.amplifier.common.bulletin.*;
 
 /**
  * @author Daniel Chu
