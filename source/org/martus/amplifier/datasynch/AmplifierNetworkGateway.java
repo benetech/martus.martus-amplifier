@@ -35,9 +35,8 @@ import org.martus.amplifier.attachment.AttachmentStorageException;
 import org.martus.amplifier.attachment.DataManager;
 import org.martus.amplifier.network.AmplifierBulletinRetrieverGatewayInterface;
 import org.martus.amplifier.network.AmplifierClientSideNetworkGateway;
-import org.martus.amplifier.network.AmplifierClientSideNetworkHandlerUsingXMLRPC;
+import org.martus.amplifier.network.AmplifierClientSideXmlrpcHandler;
 import org.martus.amplifier.network.AmplifierNetworkInterface;
-import org.martus.amplifier.network.AmplifierClientSideNetworkHandlerUsingXMLRPC.SSLSocketSetupException;
 import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinIndexer;
 import org.martus.common.LoggerInterface;
@@ -49,6 +48,7 @@ import org.martus.common.crypto.MartusCrypto.DecryptionException;
 import org.martus.common.crypto.MartusCrypto.NoKeyPairException;
 import org.martus.common.network.NetworkInterfaceConstants;
 import org.martus.common.network.NetworkResponse;
+import org.martus.common.network.MartusXmlrpcClient.SSLSocketSetupException;
 import org.martus.common.packet.UniversalId;
 import org.martus.common.packet.Packet.InvalidPacketException;
 import org.martus.common.packet.Packet.SignatureVerificationException;
@@ -247,7 +247,7 @@ public class AmplifierNetworkGateway
 		int ourPort = serverInfo.getPort();
 		try 
 		{
-			AmplifierClientSideNetworkHandlerUsingXMLRPC handler = new AmplifierClientSideNetworkHandlerUsingXMLRPC(ourServer, ourPort);
+			AmplifierClientSideXmlrpcHandler handler = new AmplifierClientSideXmlrpcHandler(ourServer, ourPort);
 		//	handler.getSimpleX509TrustManager().setExpectedPublicKey(getConfigInfo().getServerPublicKey());
 		    handler.getSimpleX509TrustManager().setExpectedPublicKey(serverInfo.getServerPublicKey());
 			return handler;
