@@ -22,6 +22,8 @@ import org.martus.amplifier.service.attachment.AttachmentManager;
 import org.martus.amplifier.service.attachment.api.*;
 import org.martus.amplifier.service.search.IBulletinConstants;
 import org.martus.amplifier.service.search.ISearchConstants;
+import org.martus.common.UniversalId;
+import org.martus.common.UniversalId.NotUniversalIdException;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
@@ -123,8 +125,15 @@ public class BulletinDocument implements IBulletinConstants, ISearchConstants
 	   		AttachmentInfoListFactory.createList(handler.getBulletinAttachmentIds(), 
 	   			handler.getBulletinAttachmentSessionKeys(),
 	   			handler.getBulletinAttachmentLabels());
-	   	
-	    logger.info("Document is " + doc.toString() );
+	   	try
+	   	{
+	   		UniversalId bulletinId = UniversalId.createFromString(handler.getBulletinUniversalId());
+	   		AttachmentManager.getInstance().putAttachmentInfoList(bulletinId,
+	   			attachmentList);
+	   	}
+	   	catch(NotUniversalIdException nuie)
+	   	{}
+	   	logger.info("Document is " + doc.toString() );
 	    
 	    // return the document
 	    return doc;
