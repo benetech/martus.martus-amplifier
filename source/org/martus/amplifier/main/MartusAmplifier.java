@@ -201,7 +201,7 @@ public class MartusAmplifier
 		isSyncing = false;
 	}
 
-	public void pullNewDataFromServers(List backupServersList) 
+	public void pullNewDataFromServers() 
 	{
 		for(int i=0; i < backupServersList.size(); ++i)
 		{
@@ -387,7 +387,7 @@ public class MartusAmplifier
 	}
 
 	boolean isSyncing;
-	public List backupServersList;
+	private List backupServersList;
 	List notAmplifiedAccountsList;
 	ServerCallbackInterface coreServer;
 	private boolean loggedCanExitNoAmpSyncing;
