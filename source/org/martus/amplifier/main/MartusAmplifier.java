@@ -35,7 +35,6 @@ import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.List;
-import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
 
