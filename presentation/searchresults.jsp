@@ -4,14 +4,11 @@
         <title>Martus Amplifier Search Results</title>
         <link rel="stylesheet" href="stylesheets/style.css" type="text/css">
 </head>
-<table border="0" cellspacing="0" cellpadding="0">
+<table width="800" border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td>
-        <img src="images/martus_logo.gif" width="457" height="114" alt="Image: Martus logo">
-        <img src="images/martus_logo_sub.gif" width="151" height="23" alt="">
-</td>
-<td>
-        <h2>Search Results</h2>
+<td width="457">
+        <a href="index.jsp"><img src="images/martus_logo.gif" border="0" width="457" height="114" alt="Image: Martus logo">
+        <img src="images/martus_logo_sub.gif" border="0" width="151" height="23" alt=""></a>
 </td>
 </tr>
 </table>
@@ -23,7 +20,7 @@
         String startVal    = request.getParameter("startat");         
         String maxresults  = request.getParameter("maxresults");
         String field 	= request.getParameter("field");
-        Hits hits = null;         
+        Hits hits = (Hits) request.getSession().getAttribute("CACHED_HITS");         
         int maxpage = 50;
         int startindex = 0;
         
@@ -39,35 +36,54 @@
         if (queryString == null)
                 throw new ServletException("No query specified");
         if(hits == null)
+        {
                 hits= searchResultsBean.getSearchResults(field, queryString);
+                request.getSession().setAttribute("CACHED_HITS", hits);
+        }
         if(hits.length() == 0)
         {
 %>
 <tr>
-<td>No documents matched your search query.</td>
+<td align="center">
+No documents matched your search query.
+Click <a href="index.jsp">here</a> to try a different search query.
+</td>
 </tr>
 <%
         }
         else
         {
+%>
+<tr>
+<td>Author</td>
+<td>Event Date</td>
+<td>Title</td>
+</tr>
+<%
                 int thispage = maxpage;
                 if ((startindex + maxpage) > hits.length()) 
                         thispage = hits.length() - startindex;
                 
                 Document doc = null;
+                String author = null;
+                String title = null;
+                String eventDate = null;
+                String viewBulletinURL = null;
                 for (int i = startindex; i < (thispage + startindex); i++) 
                 {        
 %>
 <tr>
 <%
-                        doc = hits.doc(i);                     
-                        String doctitle = doc.get("title");            
-                        String path = doc.get("path");                   
-                        if ((doctitle == null) || doctitle.equals(""))
-                                doctitle = path;
+                        doc = hits.doc(i);       
+                        author = doc.get("author");
+                        title = doc.get("title");  
+                        eventDate = doc.get("event_date");
+                        
+                        viewBulletinURL = "viewbulletin.jsp?doc=" + i;                   
 %>
-        <td><a href="<%=path%>"><%=doctitle%></a></td>
-        <td><%=doc.get("summary")%></td>
+        <td><%=author%></td>
+        <td><%=eventDate%></td>
+        <td><a href="<%=viewBulletinURL%>"><%=title%></a></td>
 </tr>
 
 <%                
@@ -87,4 +103,4 @@
         }
 %>
  </table>
-
+<jsp:include page="footer.jsp"/>
