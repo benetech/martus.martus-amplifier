@@ -100,45 +100,40 @@
 		                    </select>                                               
 	                        			                                                                            </p>				
 	                &nbsp;and&nbsp;
-	                   <select name="endMonth">                    	
-						    #foreach ($monthChoice in $monthFields)
-						    	#if ($monthChoice.tag == $today.month)
-	                             	<option selected value="$monthChoice.tag">
-	                                	$monthChoice.label	                                
-	                            	</option>	                            
-	                            #else
-		                            <option value= "$monthChoice.tag">
-		                                $monthChoice.label
-		                            </option>
-		                        #end	                          
-						    #end
+	                   <select name="endMonth">       
+	                   	                   		
+						    #foreach ($monthChoice in $monthFields)						    	
+                            	<option 
+				                #if ($monthChoice.tag == $today.month)             	
+				                	selected
+				                #end	
+	                   			value="$monthChoice.tag">
+	                               	$monthChoice.label	                                
+	                            </option>	                            	                                   
+							#end							
 	                    </select>
 	
 	                    <select name="endDay">                    	
 						    #foreach ($day in $days)
+						    	<option
 						    	#if ($day == $today.day)
-	                             	<option selected value="$day">	                            		                            		
-	                                	$day	                                
-	                            	</option>	                            
-	                            #else
-		                            <option value="$day">
-		                                $day
-		                            </option>	                           
-	                            #end
+						    		selected
+						    	#end						    	
+	                            value="$day">	                            		                            		
+	                                $day	                                
+	                            </option>	                            	                           
 						    #end
 	                    </select>    
 	                      
 	                    <select name="endYear">                    	
 						    #foreach ($year in $years)
+						    	<option
 						     	#if ($year == $today.year)
-	                             	<option selected value="$year">	                            		                            		
-	                                	$year	                                
-	                            	</option>	                            
-	                            #else	                            	  
-		                            <option value="$year">	                            		                            		
-		                                $year	                                
-		                            </option>	                                                     
-	                            #end
+	                             	selected                            
+	                            #end	                            	  
+		                        value="$year">	                            		                            		
+		                           $year	                                
+		                        </option>	                           
 						    #end
 						    
 	                    </select>                              
