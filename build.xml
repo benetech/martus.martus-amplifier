@@ -158,10 +158,14 @@
                         alias="ssmtsjar"
                         />
                         
-        <property name="tar-filename"  value="${push-dir}/martus_amp-${DSTAMP}.${build.number}.tar"/>
+        <property name="tar-filename"  value="${push-dir}/martus-amplifier-${DSTAMP}.${build.number}.tar"/>
 	    <!-- Remove all tar files from main push dir. -->
 	    <delete verbose="true">
 	        <fileset dir="${push-dir}" includes="*.tar"/>
+	    </delete>
+	    <!-- Remove all md5 files from main push dir. -->
+	    <delete verbose="true">
+	        <fileset dir="${push-dir}" includes="*.MD5"/>
 	    </delete>
         <tar destfile="${tar-filename}" basedir="${push-dir}"/>
         <checksum file="${tar-filename}"/>
