@@ -105,11 +105,14 @@ public class FeedbackSubmitted extends AmplifierServlet
 			writer.writeln("No Previous search");
 		else
 		{
+			writer.writeln("Searched for:");
 			for(int i = 0; i < searchedFor.size(); ++i)
 			{
-				writer.writeln("Searched for:" + searchedFor.get(i));
+				writer.writeln((String)searchedFor.get(i));
 			}
 		}
+		writer.writeln("");
+		writer.writeln("Message:");
 		writer.writeln(message);
 		writer.close();
 	}

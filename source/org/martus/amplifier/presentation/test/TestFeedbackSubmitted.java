@@ -95,6 +95,8 @@ public class TestFeedbackSubmitted extends TestCaseEnhanced
 
 		UnicodeReader reader = new UnicodeReader(techProblem);
 		String searchedForIn = reader.readLine();
+		reader.readLine();//blank line
+		reader.readLine();//message tag
 		String dataIn = reader.readLine();
 		reader.close();
 		DirectoryTreeRemover.deleteEntireDirectoryTree(tempFeedbackDir);
@@ -124,12 +126,15 @@ public class TestFeedbackSubmitted extends TestCaseEnhanced
 		assertTrue("Filename should contain dissatisfied", dissatisfied.getAbsolutePath().indexOf(FeedbackSubmitted.FEEDBACK_DISSATISFIED_PREFIX) > 0);
 
 		UnicodeReader reader = new UnicodeReader(dissatisfied);
+		reader.readLine(); //searched for tag
 		String searchedForIn = reader.readLine();
+		reader.readLine();//blank line
+		reader.readLine();//message tag
 		String dataIn = reader.readLine();
 		reader.close();
 		DirectoryTreeRemover.deleteEntireDirectoryTree(tempFeedbackDir);
 		
-		assertEquals("Searched For dind't match?", "Searched for:" + searchedFor, searchedForIn);
+		assertEquals("Searched For dind't match?", searchedFor, searchedForIn);
 		assertEquals("data dind't match?", data, dataIn);
 	}
 	
@@ -154,12 +159,15 @@ public class TestFeedbackSubmitted extends TestCaseEnhanced
 		assertTrue("Filename should contain problem", techProblem.getAbsolutePath().indexOf(FeedbackSubmitted.FEEDBACK_TECH_PROBLEM_PREFIX) > 0);
 
 		UnicodeReader reader = new UnicodeReader(techProblem);
+		reader.readLine(); //searched for tag
 		String searchedForIn = reader.readLine();
+		reader.readLine();//blank line
+		reader.readLine();//message tag
 		String dataIn = reader.readLine();
 		reader.close();
 		DirectoryTreeRemover.deleteEntireDirectoryTree(tempFeedbackDir);
 		
-		assertEquals("Searched For dind't match?", "Searched for:" + searchedFor, searchedForIn);
+		assertEquals("Searched For dind't match?", searchedFor, searchedForIn);
 		assertEquals("data dind't match?", data, dataIn);
 	}
 	
@@ -187,11 +195,14 @@ public class TestFeedbackSubmitted extends TestCaseEnhanced
 
 		UnicodeReader reader = new UnicodeReader(techProblem);
 		Vector vectorAdvancedSearch = servlet.getVectorOfAdvancedSearch(advancedSearchedFor);
+		reader.readLine(); //Searched for tag
 		for (int i = 0 ; i < advancedSearchedFor.getFields().size() ; ++i)
 		{	
 			String searchedForIn = reader.readLine();
-			assertEquals("Searched For dind't match?", "Searched for:" + vectorAdvancedSearch.get(i), searchedForIn);
+			assertEquals("Search for data didn't match?", vectorAdvancedSearch.get(i), searchedForIn);
 		}
+		reader.readLine();//blank line
+		reader.readLine();//message tag
 		String dataIn = reader.readLine();
 		reader.close();
 		DirectoryTreeRemover.deleteEntireDirectoryTree(tempFeedbackDir);
