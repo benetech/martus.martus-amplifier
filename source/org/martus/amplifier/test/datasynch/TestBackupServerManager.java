@@ -22,13 +22,13 @@ public class TestBackupServerManager extends TestCaseEnhanced
 	public void testGetBackupServersList()
 	{		
 		String result = testInfo.getAddress();
-		assertEquals(result, "127.0.0.1");
+		assertEquals("127.0.0.1", result);
 		
 		result = testInfo.getName();
-		assertEquals(result, "127.0.0.1");
+		assertEquals("127.0.0.1", result);
 		
 		int intResult = testInfo.getPort();
-		assertEquals(intResult, 985);		
+		assertEquals(985, intResult);		
 	}
 	
 	BackupServerInfo testInfo;
