@@ -1,7 +1,6 @@
 
 package org.martus.amplifier.common;
 
-import java.util.HashMap;
 import java.util.Vector;
 
 import org.martus.amplifier.search.SearchConstants;
@@ -49,40 +48,6 @@ public class FindBulletinsFields implements SearchConstants, SearchResultConstan
 		return fields;
 	}
 	
-	public static Vector getLanguageFieldDisplayNames(Vector languageCodes)
-	{
-		Vector fields = new Vector();
-		for(int i = 0; i < languageCodes.size(); ++i)
-		{
-			String code = (String)languageCodes.get(i);
-			String languageString = getLanguageString(code);
-			if(languageString == null)
-				languageString = code;
-			fields.add(new ChoiceEntry(code, languageString));
-		}
-		return fields;
-	}
-	public static String getLanguageString(String code)
-	{
-		HashMap languages = buildLanguageMap();
-		if(!languages.containsKey(code))
-			return null;
-		return (String)languages.get(code);		
-	}
-	
-	private static HashMap buildLanguageMap()
-	{
-		HashMap languages = new HashMap();
-		languages.put(LANGUAGE_ANYLANGUAGE_KEY, LANGUAGE_ANYLANGUAGE_KEY);
-		languages.put("en", LANGUAGE_ENGLISH_KEY);
-		languages.put("fr", LANGUAGE_FRENCH_KEY);
-		languages.put("de", LANGUAGE_GERMAN_KEY);
-		languages.put("id", LANGUAGE_INDONESIAN_KEY);
-		languages.put("ru", LANGUAGE_RUSSIAN_KEY);
-		languages.put("es", LANGUAGE_SPANISH_KEY);
-		return languages;
-	}
-
 	public static Vector getSortByFieldDisplayNames()
 	{
 		Vector fields = new Vector();

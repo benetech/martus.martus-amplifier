@@ -35,7 +35,7 @@ import java.util.Vector;
 
 import org.apache.velocity.context.Context;
 import org.martus.amplifier.common.AmplifierConfiguration;
-import org.martus.amplifier.common.FindBulletinsFields;
+import org.martus.amplifier.common.AmplifierLocalization;
 import org.martus.amplifier.common.SearchParameters;
 import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.lucene.LuceneBulletinSearcher;
@@ -137,7 +137,7 @@ public class SearchResults extends AmplifierServlet implements SearchResultConst
 		String code = bulletinInfo.get(SearchConstants.SEARCH_LANGUAGE_INDEX_FIELD);
 		if(code == null)
 			return;
-		String languageString = FindBulletinsFields.getLanguageString(code);
+		String languageString = AmplifierLocalization.getLanguageString(code);
 		if(languageString == null)
 			return;				
 		bulletinInfo.set(SearchConstants.SEARCH_LANGUAGE_INDEX_FIELD, languageString);

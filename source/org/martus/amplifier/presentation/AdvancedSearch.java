@@ -28,7 +28,9 @@ package org.martus.amplifier.presentation;
 import java.util.Vector;
 
 import org.apache.velocity.context.Context;
+import org.martus.amplifier.common.ChoiceEntry;
 import org.martus.amplifier.common.FindBulletinsFields;
+import org.martus.amplifier.common.AmplifierLocalization;
 import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.velocity.AmplifierServlet;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
@@ -50,8 +52,7 @@ public class AdvancedSearch extends AmplifierServlet
 		Vector bulletinFields = FindBulletinsFields.getBulletinFieldDisplayNames();
 		context.put("bulletinFields", bulletinFields);	
 		
-		Vector languageCodesToAdd = addLanguageCodesToDisplay();
-		Vector languageFields = FindBulletinsFields.getLanguageFieldDisplayNames(languageCodesToAdd);
+		Vector languageFields = getAvailableLanguageChoices();
 		context.put("languageFields", languageFields);		
 		
 		Vector sortByFields = FindBulletinsFields.getSortByFieldDisplayNames();
@@ -63,7 +64,22 @@ public class AdvancedSearch extends AmplifierServlet
 		return "AdvancedSearch.vm";
 	}
 
-	private Vector addLanguageCodesToDisplay()
+	Vector getAvailableLanguageChoices()
+	{
+		Vector languageCodes = getAvailableLanguageCodes();
+		Vector fields = new Vector();
+		for(int i = 0; i < languageCodes.size(); ++i)
+		{
+			String code = (String)languageCodes.get(i);
+			String languageString = AmplifierLocalization.getLanguageString(code);
+			if(languageString == null)
+				languageString = code;
+			fields.add(new ChoiceEntry(code, languageString));
+		}
+		return fields;
+	}
+
+	Vector getAvailableLanguageCodes()
 	{
 		Vector languageCodesToAdd = new Vector();
 		languageCodesToAdd.add(SearchResultConstants.LANGUAGE_ANYLANGUAGE_KEY);
@@ -75,4 +91,5 @@ public class AdvancedSearch extends AmplifierServlet
 		languageCodesToAdd.add("es");
 		return languageCodesToAdd;
 	}
+
 }
