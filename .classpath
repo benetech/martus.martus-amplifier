@@ -9,5 +9,5 @@
     <classpathentry kind="var" path="Xerces"/>
     <classpathentry kind="var" path="Servlet"/>
     <classpathentry kind="var" path="JasperRuntime"/>
-    <classpathentry kind="output" path="bin"/>
+    <classpathentry kind="output" path="presentation\WEB-INF\classes"/>
 </classpath>
