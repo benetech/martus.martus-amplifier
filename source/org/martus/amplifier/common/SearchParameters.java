@@ -54,17 +54,6 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 				resultList.put(ADVANCED_KEYS[i], value);				
 			}
 		}
-		
-		if (!containsKey(RESULT_START_YEAR_KEY) || 
-			!containsKey(RESULT_START_MONTH_KEY) ||
-			!containsKey(RESULT_START_DAY_KEY) ||
-			!containsKey(RESULT_END_YEAR_KEY) ||
-			!containsKey(RESULT_END_MONTH_KEY) ||
-			!containsKey(RESULT_END_DAY_KEY))
-		{				
-				hasEventFields = false;				
-		}				
-		
 		setEventDate();
 		setFilterKeyWords();
 		setNormalFields();																	
@@ -178,18 +167,10 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 	public HashMap getSearchResultValues()
 	{
 		return resultList;
-	}
-	
-	public boolean hasEventFieldKeys()
-	{
-		return hasEventFields;
-	}
+	}	
 	
 	public String getStartDate()
-	{	
-		if (!hasEventFieldKeys())
-			return null;
-			
+	{			
 		Date startDate = getDate(Integer.parseInt(getValue(RESULT_START_YEAR_KEY)),					
 		               	Integer.parseInt(getValue(RESULT_START_MONTH_KEY)),
 		               	Integer.parseInt(getValue(RESULT_START_DAY_KEY)));
@@ -199,9 +180,6 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 		
 	public String getEndDate()
 	{	
-		if (!hasEventFieldKeys())
-			return null;
-
 		Date endDate = getDate(Integer.parseInt(getValue(RESULT_END_YEAR_KEY)),					
 							Integer.parseInt(getValue(RESULT_END_MONTH_KEY)),
 							Integer.parseInt(getValue(RESULT_END_DAY_KEY)));		
@@ -217,7 +195,6 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 	AmplifierServletRequest searchRequest;
 	HashMap resultList 	= new HashMap();
 	HashMap	searchFields;
-	boolean hasEventFields 		= true;
 	final static String PLUS 	= "+";
 	final static String NOT 	= "-";
 }

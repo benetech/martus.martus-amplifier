@@ -3,6 +3,7 @@
 		<option 
 		    #if ($fieldChoice.tag == $currentlySortingBy)             	
 		    	selected
+		    #elseif ($fieldChoice.tag == $info.fields.sortBy)
 		    #end	
 			value="$fieldChoice.tag"> 
             $fieldChoice.label	

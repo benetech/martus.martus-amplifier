@@ -23,20 +23,21 @@
 				<tr bgcolor='#dddddd' color='#000000'>
 					<td><strong>Find bulletins </strong></td>
 					<td>with <strong>all</strong> of the words</td>
-					<td><input name="allWordsQuery" size="44" value=$info.fields.allWordsQuery></input></td>
+					<td><input name="allWordsQuery" size="44" value="$info.fields.allWordsQuery"></input></td>
 					<td bgcolor='#ffffff' color='#000000'><input type="submit" value="Search"/></td>
 				</tr>
 				<tr bgcolor='#dddddd' color='#000000'>
 					<td></td>
 					<td>with <strong>at least one</strong> of the words</td>
-					<td><input name="anyWordsQuery" size="44" value=$info.fields.anyWordsQuery></input></td>
+					<td><input name="anyWordsQuery" size="44" value="$info.fields.anyWordsQuery"></input></td>
 					<td bgcolor='#ffffff' ></td>
 				</tr>
 				<tr bgcolor='#dddddd' color='#000000'>
 					<td></td>
 					<td>with the <strong>exact phrase</strong></td>
-					<td><input name="exactPhraseQuery" size="44" value=$info.fields.exactPhraseQuery></input></td>
+					<td><input name="exactPhraseQuery" size="44" value="$info.fields.exactPhraseQuery"></input></td>
 					<td bgcolor='#ffffff' ></td>
+					$info.fields.exactPhraseQuery
 				</tr>
 ##			<tr bgcolor='#dddddd' color='#000000'>
 ##					<td></td>
@@ -103,7 +104,7 @@
 									<select name="startDay">                    	
 										#foreach ($day in $days)
 											<option 
-												#if ($day == $info.fields.startDay)
+												#if ("$day" == $info.fields.startDay)
 													selected
 												#end												
 												value="$day">
@@ -115,7 +116,7 @@
 									<select name="startYear">                    	
 										#foreach ($year in $years)
 											<option 
-												#if ($year == $info.fields.startYear)
+												#if ("$year" == $info.fields.startYear)
 													selected
 												#end
 												value="$year">
@@ -131,7 +132,9 @@
 									<select name="endMonth">       
 										#foreach ($monthChoice in $monthFields)						    	
 											<option 
-											    #if ($monthChoice.tag == $today.month)             	
+												#if ($monthChoice.tag == $info.fields.endMonth)
+													selected
+											    #elseif ($monthChoice.tag == $today.month)             	
 											    	selected
 											    #end	
 												value="$monthChoice.tag">
@@ -142,7 +145,9 @@
 									<select name="endDay">                    	
 									    #foreach ($day in $days)
 									    	<option
-									    	#if ($day == $today.day)
+									    	#if ("$day" == $info.fields.endDay)
+									    		selected									    		
+									    	#elseif ($day == $today.day)
 									    		selected
 									    	#end						    	
 									        value="$day">	                            		                            		
@@ -154,7 +159,9 @@
 									<select name="endYear">                    	
 									    #foreach ($year in $years)
 									    	<option
-									     	#if ($year == $today.year)
+									    	#if ("$year" == $info.fields.endYear)
+									    		selected
+									     	#elseif ($year == $today.year)
 									         	selected                            
 									        #end	                            	  
 									        value="$year">	                            		                            		
