@@ -419,29 +419,29 @@ public class MartusAmplifier implements LoggerInterface
 		return new BackupServerInfo(ip, ip, port, publicKey);		
 	}
 	
-	public void log(String message)
+	private String createLogString(String message)
 	{
-		coreServer.log("Amp: " + message);
+		return "Amp: " + message;
 	}
-	
+
 	public void logError(String message)
 	{
-		log("ERROR: " + message);
+		coreServer.logError(createLogString(message));
 	}
 
 	public void logNotice(String message)
 	{
-		log("Notice: " + message);
+		coreServer.logNotice(createLogString(message));
 	}
 
 	public void logInfo(String message)
 	{
-		log("Info: " + message);
+		coreServer.logInfo(createLogString(message));
 	}
 
 	public void logDebug(String message)
 	{
-		log("Debug: " + message);
+		coreServer.logDebug(createLogString(message));
 	}
 
 	public static String getPresentationBasePath()

@@ -66,29 +66,25 @@ public class MockMartusServer implements ServerCallbackInterface
 		return logger;
 	}
 	
-	public void log(String message)
-	{
-		logger.log(message);
-	}
-	
+
 	public void logError(String message)
 	{
-		log(message);
+		logger.logError(message);
 	}
 	
 	public void logInfo(String message)
 	{
-		log(message);
-		
+		logger.logInfo(message);
 	}
+
 	public void logNotice(String message)
 	{
-		log(message);
-		
+		logger.logNotice(message);
 	}
+
 	public void logDebug(String message)
 	{
-		log(message);
+		logger.logDebug(message);
 	}
 
 	public boolean wantsDevelopmentMode()
