@@ -60,7 +60,7 @@ public class LuceneBulletinIndexer
 	{
 		try {
 			writer.close();
-			writer = new IndexWriter(indexDir, new StandardAnalyzer(), true);
+			writer = new IndexWriter(indexDir, ANALYZER, true);
 		} catch (IOException e) {
 			throw new BulletinIndexException("Unable to clear the index", e);
 		}		
@@ -208,7 +208,7 @@ public class LuceneBulletinIndexer
 	
 	private File indexDir;
 	private IndexWriter writer;
-	private final static Analyzer ANALYZER = new StandardAnalyzer();
+	private final static Analyzer ANALYZER = new StandardAnalyzer(new String[]{""});
 	
 	private static final String INDEX_DIR_NAME = "index";
 }
