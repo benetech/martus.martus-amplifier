@@ -4,6 +4,15 @@
         <title>Martus Amplifier Search Query</title>
         <link rel="stylesheet" href="stylesheets/style.css" type="text/css">
 </head>
+<script language="Javascript">
+onSubmit()
+{
+        if(document.search.query = "")
+                alert("Please enter a query hitting the search button.");
+        else
+                search.submit();
+}
+</script>
 <%
 //clear cached hits
         request.getSession().setAttribute("CACHED_HITS", null);
@@ -45,6 +54,11 @@
                                 <input type="checkbox" name="whole_word"/> Whole Word Only
                         </p>
 	        </form>
+        </td>
+        </tr>
+        <tr>
+        <td align="right">
+        <a href="searchbydate.jsp">Search by Date</a>
         </td>
         </tr>
         </table>

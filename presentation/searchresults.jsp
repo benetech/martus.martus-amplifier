@@ -1,4 +1,4 @@
-<%@ page import = "javax.servlet.*, javax.servlet.http.*, java.io.*, org.apache.lucene.search.Hits, org.martus.amplifier.presentation.search.SearchResultsBean, org.apache.lucene.document.Document" %>
+<%@ page import = "org.apache.lucene.search.Hits, org.martus.amplifier.presentation.search.SearchResultsBean, org.apache.lucene.document.Document" %>
 <jsp:useBean id="searchResultsBean" class="org.martus.amplifier.presentation.search.SearchResultsBean" />
 <head>
         <title>Martus Amplifier Search Results</title>
@@ -14,6 +14,14 @@
 </table>
 <hr>
 <table width="800" border="0" cellpadding="0" cellspacing="0">
+<tr>
+<td>
+        <img src="images/spacer.gif" width="20" height="0"/>
+</td>
+<td colspan="3">
+        <img src="images/spacer.gif" width="0" height="30"/>
+</td>
+</tr>
 <%
         // width="211" height="140"
         String queryString = request.getParameter("query");           
@@ -32,14 +40,18 @@
         catch (Exception e) 
         { } 
         //we don't care if something happens we'll just start at 0 or end at 50
-        
-        if (queryString == null)
-                throw new ServletException("No query specified");
+        if(queryString != null)
+        {
+                // if there is a queryString then its a new search, clear out the cache
+                hits = null;
+                request.getSession().setAttribute("CACHED_HITS", null);
+        }
         if(hits == null)
         {
                 hits= searchResultsBean.getSearchResults(field, queryString);
                 request.getSession().setAttribute("CACHED_HITS", hits);
         }
+
         if(hits.length() == 0)
         {
 %>
@@ -55,9 +67,14 @@ Click <a href="index.jsp">here</a> to try a different search query.
         {
 %>
 <tr>
+<td>&nbsp;</td>
 <td>Author</td>
 <td>Event Date</td>
 <td>Title</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td colspan="3"><img src="images/spacer.gif" width="0" height="5"/></td>
 </tr>
 <%
                 int thispage = maxpage;
@@ -81,6 +98,7 @@ Click <a href="index.jsp">here</a> to try a different search query.
                         
                         viewBulletinURL = "viewbulletin.jsp?doc=" + i;                   
 %>
+        <td>&nbsp;</td>
         <td><%=author%></td>
         <td><%=eventDate%></td>
         <td><a href="<%=viewBulletinURL%>"><%=title%></a></td>

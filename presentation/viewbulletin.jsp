@@ -1,4 +1,4 @@
-<%@ page import = "javax.servlet.*, javax.servlet.http.*, java.io.*, org.apache.lucene.search.Hits, org.martus.amplifier.presentation.search.SearchResultsBean, org.apache.lucene.document.Document" %>
+<%@ page import = "org.apache.lucene.search.Hits, org.martus.amplifier.presentation.search.SearchResultsBean, org.apache.lucene.document.Document" %>
 <head>
         <title>Martus Amplifier Bulletin View</title>
         <link rel="stylesheet" href="stylesheets/style.css" type="text/css">
