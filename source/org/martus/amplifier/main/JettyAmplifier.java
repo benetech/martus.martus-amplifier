@@ -1,6 +1,5 @@
 package org.martus.amplifier.main;
 
-import org.mortbay.http.HttpContext;
 import org.mortbay.http.SocketListener;
 import org.mortbay.jetty.Server;
 
@@ -17,10 +16,7 @@ public class JettyAmplifier
 
 		try
 		{
-//			server.addWebApplication("/","c:/programs/jetty/jetty-4.2.12/demo/webapps/jetty/");
-			server.addWebApplication("/","c:/programs/eclipse/workspace/martus-amplifier/presentation/");
-			
-			server.addContext(new HttpContext(server, "/amplifier"));
+			server.addWebApplication("/","c:/work/eclipse/martus-amplifier/presentation/");
 			
 			server.start();
 			while(true)
