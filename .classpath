@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
     <classpathentry kind="src" path="source"/>
-    <classpathentry kind="src" path="configuration"/>
     <classpathentry exported="true" kind="var" path="JRE_LIB" sourcepath="JRE_SRC"/>
     <classpathentry kind="var" path="LuceneEngine"/>
     <classpathentry kind="var" path="jsse"/>
