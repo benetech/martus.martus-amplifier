@@ -56,7 +56,7 @@ import org.martus.common.packet.Packet.SignatureVerificationException;
 import org.martus.common.packet.Packet.WrongPacketTypeException;
 import org.martus.util.Base64.InvalidBase64Exception;
 
-public class AmplifierNetworkGateway
+public class AmplifierNetworkGateway implements LoggerInterface
 {
 	public AmplifierNetworkGateway(BackupServerInfo backupServerToCall, LoggerInterface loggerToUse, MartusCrypto securityToUse)
 	{
@@ -86,7 +86,7 @@ public class AmplifierNetworkGateway
 		Vector result = new Vector();
 		try
 		{
-			log("getAllAccountIds");
+			logNotice("getAllAccountIds");
 			NetworkResponse response = gateway.getAccountIds(security);
 			String resultCode = response.getResultCode();
 			if(!resultCode.equals(NetworkInterfaceConstants.OK))
@@ -95,16 +95,16 @@ public class AmplifierNetworkGateway
 		}
 		catch(IOException e)
 		{
-			log("No server available");
+			logError("getAllAccountIds(): No server available");
 		}
 		catch(NotAuthorizedException e)
 		{
-			log("getAllAccountIds() NOT AUTHORIZED");
+			logError("getAllAccountIds(): NOT AUTHORIZED");
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			log("getAllAccountIds(): ERROR: " + e.getMessage());
+			logError("getAllAccountIds(): " + e.getMessage());
 		}
 		return result;
 	}
@@ -113,7 +113,6 @@ public class AmplifierNetworkGateway
 	{
 		try
 		{
-			//log("getContactInfo:" + MartusCrypto.formatPublicCode(MartusCrypto.computePublicCode(accountId)));
 			NetworkResponse response = gateway.getContactInfo(accountId, security);
 			String resultCode = response.getResultCode();
 			if(!resultCode.equals(NetworkInterfaceConstants.OK))
@@ -125,7 +124,7 @@ public class AmplifierNetworkGateway
 		}
 		catch (Exception e)
 		{
-			log(e.toString());
+			logError(e.toString());
 		}
 		return null;
 	}	
@@ -135,7 +134,6 @@ public class AmplifierNetworkGateway
 		Vector result = new Vector();
 		try
 		{
-			//log("getAccountPublicBulletinLocalIds: " + MartusSecurity.getFormattedPublicCode(accountId));
 			NetworkResponse response = gateway.getPublicBulletinLocalIds(security, accountId);
 			String resultCode = response.getResultCode();
 			if( !resultCode.equals(NetworkInterfaceConstants.OK) )	
@@ -145,7 +143,7 @@ public class AmplifierNetworkGateway
 		catch(Exception e)
 		{
 			String accountInfo = MartusCrypto.formatAccountIdForLog(accountId);
-			log("getAccountBulletinLocalIds(): ERROR " + e.getMessage() + ": " + accountInfo);
+			logError("getAccountBulletinLocalIds(): " + e.getMessage() + ": " + accountInfo);
 		}
 		return result;
 	}
@@ -190,7 +188,7 @@ public class AmplifierNetworkGateway
 		int totalLength =0;
 		try 
 		{
-			log("getBulletin: " + MartusCrypto.getFormattedPublicCode(uid.getAccountId()) + 
+			logInfo("getBulletin: " + MartusCrypto.getFormattedPublicCode(uid.getAccountId()) + 
 								":" + uid.getLocalId());
 			tempFile = File.createTempFile("$$$TempFile", null);
 			tempFile.deleteOnExit();
@@ -202,7 +200,7 @@ public class AmplifierNetworkGateway
 			}
 			catch(Exception e)
 			{
-				log("Unable to retrieve bulletin: " + e.getMessage());
+				logError("Unable to retrieve bulletin: " + e.getMessage());
 			}
 			finally
 			{
@@ -211,13 +209,13 @@ public class AmplifierNetworkGateway
 		}
 		catch(Exception e)
 		{
-			log("ERROR: " + e.getMessage());	
+			logError(e.getMessage());	
 		}
 
 		if(tempFile.length() != totalLength)
 		{
 			System.out.println("file=" + tempFile.length() + ", returned=" + totalLength);
-			log("Error" + new ServerErrorException("totalSize didn't match data length") );
+			logError("totalSize didn't match data length");
 		}
 		return tempFile;
 	}
@@ -270,11 +268,31 @@ public class AmplifierNetworkGateway
 		}
 	}
 	
-	void log(String message)
+	public void log(String message)
 	{
 		String serversPublicCodeWeAreCalling = MartusCrypto.formatAccountIdForLog(serverToPullFrom.getServerPublicKey());
 		String serversIPAddressWeAreCalling = serverToPullFrom.getAddress();
 		logger.log("Amp calling " + serversIPAddressWeAreCalling + ": " + serversPublicCodeWeAreCalling +": " + message);
+	}
+
+	public void logError(String message)
+	{
+		log("ERROR: " + message);
+	}
+
+	public void logNotice(String message)
+	{
+		log("Notice: " + message);
+	}
+
+	public void logInfo(String message)
+	{
+		log("Info: " + message);
+	}
+
+	public void logDebug(String message)
+	{
+		log("Debug: " + message);
 	}
 	
 	private AmplifierBulletinRetrieverGatewayInterface gateway;

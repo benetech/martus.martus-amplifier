@@ -40,6 +40,7 @@ import org.martus.amplifier.lucene.LuceneBulletinIndexer;
 import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinIndexer;
 import org.martus.common.EnglishCommonStrings;
+import org.martus.common.LoggerInterface;
 import org.martus.common.MartusUtilities;
 import org.martus.common.MiniLocalization;
 import org.martus.common.Version;
@@ -55,7 +56,7 @@ import org.mortbay.jetty.servlet.ServletHandler;
 import org.mortbay.util.InetAddrPort;
 import org.mortbay.util.MultiException;
 
-public class MartusAmplifier
+public class MartusAmplifier implements LoggerInterface
 {
 
 	public MartusAmplifier(ServerCallbackInterface serverToUse) throws CryptoInitializationException, IOException
@@ -82,12 +83,12 @@ public class MartusAmplifier
 		catch(Exception e)
 		{
 			isIndexObsolete = true;
-			log(e.getMessage());
+			logError(e.getMessage());
 		}
 		
 		if(isIndexObsolete)
 		{
-			log("ERROR: Index needs to be rebuilt to be compatible with this version of the search engine!");
+			logError("Index needs to be rebuilt to be compatible with this version of the search engine!");
 			throw new Exception();
 		}
 		
@@ -99,12 +100,12 @@ public class MartusAmplifier
 			webAuthorizedUser = (String)webPassword.get(0);
 			webAuthorizedPassword = (String)webPassword.get(1);
 			webPasswordProtected = true;
-			log("password Required Martus Web Search Engine");
+			logNotice("password Required Martus Web Search Engine");
 		}
 		else
 		{
 			webPasswordProtected = false;
-			log("** No password Required for Martus Web Search Engine **");
+			logNotice("** No password Required for Martus Web Search Engine **");
 		}
 
 		dataManager = new FileSystemDataManager(packetsDirectory);
@@ -113,7 +114,7 @@ public class MartusAmplifier
 		backupServersList = loadServersWeWillCall(backupServersDirectory, getSecurity());
 		
 		loadAccountsWeWillNotAmplify(getAccountsNotAmplifiedFile());
-		log(notAmplifiedAccountsList.size() + " account(s) will not get amplified");
+		logNotice(notAmplifiedAccountsList.size() + " account(s) will not get amplified");
 
 		File languagesIndexedFile = new File(indexDir, "languagesIndexed.txt");
 		try
@@ -122,7 +123,7 @@ public class MartusAmplifier
 		}
 		catch (Exception e)
 		{
-			log("Error: LanguagesIndex" + e);
+			logError("LanguagesIndex" + e);
 		}
 
 		File eventDatesIndexedFile = new File(indexDir, "eventDatesIndexed.txt");
@@ -132,7 +133,7 @@ public class MartusAmplifier
 		}
 		catch (Exception e)
 		{
-			log("Error: EventDatesIndex" + e);
+			logError("EventDatesIndex" + e);
 		}
 		
 		//Code.setDebug(true);
@@ -153,7 +154,7 @@ public class MartusAmplifier
 	{
 		try
 		{
-			log("Starting SSL server");
+			logNotice("Starting SSL server");
 			startSSLServer(password);
 		} catch (MultiException multi)
 		{
@@ -162,7 +163,7 @@ public class MartusAmplifier
 
 		try
 		{
-			log("Starting non-SSL server");
+			logNotice("Starting non-SSL server");
 			startNonSSLServer();
 		} catch (MultiException multi)
 		{
@@ -284,13 +285,13 @@ public class MartusAmplifier
 		boolean isAmplifierSyncing = isAmplifierSyncing();
 		if(!isAmplifierSyncing && !loggedCanExitYes)
 		{	
-			log("can exit now.");
+			logNotice("can exit now.");
 			loggedCanExitNoAmpSyncing = false;
 			loggedCanExitYes = true;
 		}
 		else if(isAmplifierSyncing && !loggedCanExitNoAmpSyncing)
 		{	
-			log("Unable to exit, amplifier Syncing.");
+			logNotice("Unable to exit, amplifier Syncing.");
 			loggedCanExitNoAmpSyncing = true;
 			loggedCanExitYes = false;
 		}
@@ -310,7 +311,7 @@ public class MartusAmplifier
 	public void endSynch()
 	{
 		if(coreServer.isShutdownRequested())
-			log("Shutdown requested and amp endSynch called");
+			logNotice("Shutdown requested and amp endSynch called");
 		
 		isSyncing = false;
 	}
@@ -338,7 +339,7 @@ public class MartusAmplifier
 		}
 		catch(Exception e)
 		{
-			log("MartusAmplifierDataSynch.execute(): " + e.getMessage());
+			logError("MartusAmplifierDataSynch.execute(): " + e.getMessage());
 			e.printStackTrace();
 		} 
 		finally
@@ -351,7 +352,7 @@ public class MartusAmplifier
 				} 
 				catch (BulletinIndexException e) 
 				{
-					log("Unable to close the indexer: " + e.getMessage());
+					logError("Unable to close the indexer: " + e.getMessage());
 				}
 			}
 		}
@@ -371,7 +372,7 @@ public class MartusAmplifier
 		}
 		catch(Exception e)
 		{
-			log("Error: loadAccountsWeWillNotAmplify" + e);
+			logError("loadAccountsWeWillNotAmplify" + e);
 			throw new IOException(e.toString());
 		}
 	}
@@ -395,12 +396,12 @@ public class MartusAmplifier
 				if(!toCallFile.isDirectory())
 				{
 					serversWeWillCall.add(getServerToCall(toCallFile, security));
-					log("will call: " + toCallFile.getName());
+					logNotice("will call: " + toCallFile.getName());
 				}
 			}
 		}
 
-		log("Configured to call " + serversWeWillCall.size() + " servers");
+		logNotice("Configured to call " + serversWeWillCall.size() + " servers");
 		return serversWeWillCall;
 	}
 
@@ -418,11 +419,31 @@ public class MartusAmplifier
 		return new BackupServerInfo(ip, ip, port, publicKey);		
 	}
 	
-	void log(String message)
+	public void log(String message)
 	{
 		coreServer.log("Amp: " + message);
 	}
 	
+	public void logError(String message)
+	{
+		log("ERROR: " + message);
+	}
+
+	public void logNotice(String message)
+	{
+		log("Notice: " + message);
+	}
+
+	public void logInfo(String message)
+	{
+		log("Info: " + message);
+	}
+
+	public void logDebug(String message)
+	{
+		log("Debug: " + message);
+	}
+
 	public static String getPresentationBasePath()
 	{
 		String presentationBasePath = null;
@@ -488,7 +509,7 @@ public class MartusAmplifier
 		File lockFile = new File(indexDirectory, "write.lock");
 		if(lockFile.exists())
 		{
-			log("Deleting lucene lock file: " + lockFile.getPath());
+			logNotice("Deleting lucene lock file: " + lockFile.getPath());
 			lockFile.delete();
 		}
 	}

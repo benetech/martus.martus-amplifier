@@ -71,7 +71,7 @@ public class MockMartusServer implements ServerCallbackInterface
 		logger.log(message);
 	}
 	
-	public void logERROR(String message)
+	public void logError(String message)
 	{
 		log(message);
 	}
@@ -86,7 +86,7 @@ public class MockMartusServer implements ServerCallbackInterface
 		log(message);
 		
 	}
-	public void logVerbose(String message)
+	public void logDebug(String message)
 	{
 		log(message);
 	}

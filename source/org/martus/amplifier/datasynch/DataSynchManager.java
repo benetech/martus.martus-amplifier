@@ -31,8 +31,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-import java.util.logging.Logger;
-
 import org.martus.amplifier.attachment.DataManager;
 import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.amplifier.search.BulletinCatalog;
@@ -43,11 +41,6 @@ import org.martus.common.packet.UniversalId;
 
 public class DataSynchManager
 {
-
-	private AmplifierNetworkGateway amplifierGateway = null;
-	private static Logger logger = Logger.getLogger("DATASYNC_LOGGER");
-	boolean isIndexingNeeded;
-
 	public DataSynchManager(MartusAmplifier ampToUse, BackupServerInfo backupServerToCall, LoggerInterface loggerToUse, MartusCrypto securityToUse)
 	{
 		super();
@@ -60,7 +53,7 @@ public class DataSynchManager
 		List accountsListAll = new ArrayList(amplifierGateway.getAllAccountIds());
 		
 		List accountsToBeAmplified = removeAccountsFromList(accountsListAll, accountsNotAmplified);
-		amplifierGateway.log("returned " + accountsToBeAmplified.size() + " accounts to be amplified.");
+		amplifierGateway.logDebug("returned " + accountsToBeAmplified.size() + " accounts to be amplified.");
 		
 		BulletinExtractor bulletinExtractor = 
 			amplifierGateway.createBulletinExtractor(
@@ -71,7 +64,6 @@ public class DataSynchManager
 			if(amp.isShutdownRequested())
 				return;
 			String accountId = (String) accountsToBeAmplified.get(index);
-			amplifierGateway.log("account: " + MartusCrypto.formatAccountIdForLog(accountId));
 			pullContactInfoForAccount(accountId);
 			pullNewBulletinsForAccount(accountId, bulletinExtractor);
 		}
@@ -97,12 +89,12 @@ public class DataSynchManager
 		Vector response = amplifierGateway.getContactInfo(accountId);
 		if(response == null)
 		{
-			amplifierGateway.log("no Contact Info");
+			amplifierGateway.logInfo("no contact info");
 			return;
 		}
 		try
 		{
-			amplifierGateway.log("contact Info saved");
+			amplifierGateway.logInfo("contact info saved");
 			MartusAmplifier.dataManager.writeContactInfoToFile(accountId, response);
 		}
 		catch (IOException e)
@@ -128,28 +120,36 @@ public class DataSynchManager
 			}
 			catch (Exception e)
 			{
-				logger.severe("Unable to check if indexed: " + uid + ": " + e.getMessage());
+				amplifierGateway.logError("Unable to check if indexed: " + uid + ": " + e.getMessage());
 				e.printStackTrace();
 			}
 		}
-		amplifierGateway.log(response.size() +" public bulletin Ids returned. ("+newBulletinIds.size()+") new.");
-		for(int j = 0; j < newBulletinIds.size(); ++j)
+		int newBulletinCount = newBulletinIds.size();
+		String logMessage = response.size() +" public bulletin Ids for " + MartusCrypto.formatAccountIdForLog(accountId) + ", "+newBulletinCount+" new";
+		if(newBulletinCount>0)
+			amplifierGateway.logNotice(logMessage);
+		else
+			amplifierGateway.logInfo(logMessage);
+		
+		for(int j = 0; j < newBulletinCount; ++j)
 		{
 			UniversalId uid = (UniversalId) newBulletinIds.get(j);
 			try
 			{
-				//logger.info("DataSynchManager.checkAndRetrieveBulletinsForUIDs():before calling  amplifierGateway.retrieveAndManageBulletin on UID = "+ uid.toString());
 				if(amp.isShutdownRequested())
 					return;
 				amplifierGateway.retrieveAndManageBulletin(uid, bulletinExtractor, amp);
 			}
 			catch (Exception e)
 			{
-				logger.severe("Unable to process " + uid + ": " + e.getMessage());
+				amplifierGateway.logError("Unable to process " + uid + ": " + e.getMessage());
 				e.printStackTrace();
 			}
 		}
 	}
 	
 	MartusAmplifier amp;
+	private AmplifierNetworkGateway amplifierGateway = null;
+	boolean isIndexingNeeded;
+
 }
