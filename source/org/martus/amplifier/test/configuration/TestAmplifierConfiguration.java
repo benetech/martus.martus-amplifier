@@ -1,10 +1,9 @@
 package org.martus.amplifier.test.configuration;
 
-import junit.framework.TestCase;
-
 import org.martus.amplifier.common.configuration.AmplifierConfiguration;
+import org.martus.common.test.TestCaseEnhanced;
 
-public class TestAmplifierConfiguration extends TestCase
+public class TestAmplifierConfiguration extends TestCaseEnhanced
 {
 	public TestAmplifierConfiguration(String name)
 	{
