@@ -31,12 +31,11 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
-import junit.framework.TestCase;
-
 import org.martus.amplifier.common.SearchParameters;
 import org.martus.amplifier.common.SearchResultConstants;
+import org.martus.common.test.TestCaseEnhanced;
 
-public class TestSearchParameters extends TestCase
+public class TestSearchParameters extends TestCaseEnhanced
 {
 
 	public TestSearchParameters(String name)

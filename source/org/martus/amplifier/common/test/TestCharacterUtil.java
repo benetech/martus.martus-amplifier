@@ -26,11 +26,10 @@ Boston, MA 02111-1307, USA.
 
 package org.martus.amplifier.common.test;
 
-import junit.framework.TestCase;
-
 import org.martus.amplifier.common.CharacterUtil;
+import org.martus.common.test.TestCaseEnhanced;
 
-public class TestCharacterUtil extends TestCase
+public class TestCharacterUtil extends TestCaseEnhanced
 {
 	public TestCharacterUtil(String name)
 	{
