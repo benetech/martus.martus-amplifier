@@ -39,8 +39,8 @@ import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinInfo;
 import org.martus.common.crypto.MockMartusSecurity;
 import org.martus.common.packet.UniversalId;
-import org.martus.common.test.TestCaseEnhanced;
 import org.martus.util.StringInputStream;
+import org.martus.util.TestCaseEnhanced;
 
 
 public class TestDownloadAttachment extends TestCaseEnhanced

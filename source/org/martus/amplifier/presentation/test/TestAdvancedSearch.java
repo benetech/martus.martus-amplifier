@@ -34,7 +34,7 @@ import org.martus.amplifier.common.AdvancedSearchInfo;
 import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.main.LanguagesIndexedList;
 import org.martus.amplifier.presentation.AdvancedSearch;
-import org.martus.common.test.TestCaseEnhanced;
+import org.martus.util.TestCaseEnhanced;
 
 public class TestAdvancedSearch extends TestCaseEnhanced
 {

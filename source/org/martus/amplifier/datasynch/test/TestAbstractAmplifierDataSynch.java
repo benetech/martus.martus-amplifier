@@ -25,7 +25,7 @@ Boston, MA 02111-1307, USA.
 */
 package org.martus.amplifier.datasynch.test;
 
-import org.martus.common.test.TestCaseEnhanced;
+import org.martus.util.TestCaseEnhanced;
 
 public abstract class TestAbstractAmplifierDataSynch extends TestCaseEnhanced
 {	

@@ -40,7 +40,7 @@ import org.martus.amplifier.presentation.SimpleSearch;
 import org.martus.amplifier.search.BulletinInfo;
 import org.martus.amplifier.velocity.AmplifierServletSession;
 import org.martus.common.packet.UniversalId;
-import org.martus.common.test.TestCaseEnhanced;
+import org.martus.util.TestCaseEnhanced;
 
 public class TestSearchResults extends TestCaseEnhanced
 {

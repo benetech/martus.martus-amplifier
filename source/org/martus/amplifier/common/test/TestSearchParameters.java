@@ -33,7 +33,7 @@ import java.util.Map;
 
 import org.martus.amplifier.common.SearchParameters;
 import org.martus.amplifier.common.SearchResultConstants;
-import org.martus.common.test.TestCaseEnhanced;
+import org.martus.util.TestCaseEnhanced;
 
 public class TestSearchParameters extends TestCaseEnhanced
 {

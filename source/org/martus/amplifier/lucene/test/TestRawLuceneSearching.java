@@ -41,8 +41,8 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
 import org.martus.amplifier.lucene.LuceneBulletinIndexer;
-import org.martus.common.test.TestCaseEnhanced;
 import org.martus.util.DirectoryUtils;
+import org.martus.util.TestCaseEnhanced;
 
 public class TestRawLuceneSearching extends TestCaseEnhanced
 {

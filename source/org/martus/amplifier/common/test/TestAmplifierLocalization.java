@@ -32,7 +32,7 @@ import java.util.HashMap;
 
 import org.martus.amplifier.common.AmplifierLocalization;
 import org.martus.amplifier.common.SearchResultConstants;
-import org.martus.common.test.TestCaseEnhanced;
+import org.martus.util.TestCaseEnhanced;
 import org.martus.util.UnicodeWriter;
 
 

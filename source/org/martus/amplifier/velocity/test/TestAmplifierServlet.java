@@ -30,7 +30,7 @@ import java.util.Map;
 import java.util.Vector;
 
 import org.martus.amplifier.velocity.AmplifierServlet;
-import org.martus.common.test.TestCaseEnhanced;
+import org.martus.util.TestCaseEnhanced;
 
 
 public class TestAmplifierServlet extends TestCaseEnhanced

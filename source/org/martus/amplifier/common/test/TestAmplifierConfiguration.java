@@ -25,7 +25,7 @@ Boston, MA 02111-1307, USA.
 */
 package org.martus.amplifier.common.test;
 
-import org.martus.common.test.TestCaseEnhanced;
+import org.martus.util.TestCaseEnhanced;
 
 public class TestAmplifierConfiguration extends TestCaseEnhanced
 {

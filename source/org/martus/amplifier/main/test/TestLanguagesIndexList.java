@@ -32,8 +32,8 @@ import java.util.Vector;
 import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.main.LanguagesIndexedList;
 import org.martus.common.MartusUtilities;
-import org.martus.common.test.TestCaseEnhanced;
 import org.martus.util.DirectoryUtils;
+import org.martus.util.TestCaseEnhanced;
 
 
 public class TestLanguagesIndexList extends TestCaseEnhanced

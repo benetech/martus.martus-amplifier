@@ -28,7 +28,7 @@ package org.martus.amplifier.presentation.test;
 
 import org.apache.velocity.context.Context;
 import org.martus.amplifier.presentation.SimpleSearch;
-import org.martus.common.test.TestCaseEnhanced;
+import org.martus.util.TestCaseEnhanced;
 
 public class TestSimpleSearch extends TestCaseEnhanced
 {

@@ -33,8 +33,8 @@ import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.common.LoggerForTesting;
 import org.martus.common.MartusUtilities;
 import org.martus.common.crypto.MockMartusSecurity;
-import org.martus.common.test.TestCaseEnhanced;
 import org.martus.util.DirectoryUtils;
+import org.martus.util.TestCaseEnhanced;
 import org.martus.util.UnicodeWriter;
 
 public class TestMartusAmplifier extends TestCaseEnhanced

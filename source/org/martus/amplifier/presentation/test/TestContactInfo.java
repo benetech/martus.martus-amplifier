@@ -40,8 +40,8 @@ import org.martus.amplifier.search.BulletinInfo;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
 import org.martus.common.crypto.MockMartusSecurity;
 import org.martus.common.packet.UniversalId;
-import org.martus.common.test.TestCaseEnhanced;
 import org.martus.util.DirectoryUtils;
+import org.martus.util.TestCaseEnhanced;
 
 
 public class TestContactInfo extends TestCaseEnhanced

@@ -40,7 +40,7 @@ import org.martus.amplifier.search.BulletinInfo;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
 import org.martus.common.crypto.MartusCrypto;
 import org.martus.common.packet.UniversalId;
-import org.martus.common.test.TestCaseEnhanced;
+import org.martus.util.TestCaseEnhanced;
 
 public class TestFoundBulletin extends TestCaseEnhanced
 {

@@ -36,8 +36,8 @@ import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.presentation.DoSearch;
 import org.martus.amplifier.presentation.FeedbackSubmitted;
 import org.martus.amplifier.velocity.AmplifierServletSession;
-import org.martus.common.test.TestCaseEnhanced;
 import org.martus.util.DirectoryUtils;
+import org.martus.util.TestCaseEnhanced;
 import org.martus.util.UnicodeReader;
 
 
