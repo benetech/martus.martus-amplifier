@@ -12,6 +12,7 @@ import javax.net.ssl.TrustManager;
 
 import org.apache.xmlrpc.XmlRpcClient;
 import org.martus.common.network.NetworkInterfaceConstants;
+import org.martus.common.network.SimpleX509TrustManager;
 /**
  * @author skoneru
  *
@@ -100,7 +101,7 @@ public class AmplifierClientSideNetworkHandlerUsingXMLRPC
 	
 	SSLSocketFactory createSocketFactory() throws Exception
 	{
-		tm = new AmplifierSimpleX509TrustManager();
+		tm = new SimpleX509TrustManager();
 		TrustManager []tma = {tm};
 		SSLContext sslContext = SSLContext.getInstance( "TLS" );
 		SecureRandom secureRandom = new SecureRandom();
@@ -110,7 +111,7 @@ public class AmplifierClientSideNetworkHandlerUsingXMLRPC
 
 	}
 	
-	public AmplifierSimpleX509TrustManager getSimpleX509TrustManager() 
+	public SimpleX509TrustManager getSimpleX509TrustManager() 
 	{
 		return tm;
 	}
@@ -122,7 +123,7 @@ public class AmplifierClientSideNetworkHandlerUsingXMLRPC
 	}
 
 	
-	AmplifierSimpleX509TrustManager tm;
+	SimpleX509TrustManager tm;
 	String server;
 	int port;
 }
