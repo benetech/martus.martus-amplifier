@@ -49,14 +49,14 @@ public class BulletinSearcherTest extends AbstractAmplifierSearchTest {
 		Assert.assertEquals("Found title?", 1, hits.length());
 		
 		//To test Dates
-		Calendar sDate = new GregorianCalendar(2000, Calendar.FEBRUARY, 03);
+		Calendar sDate = new GregorianCalendar(2001, Calendar.FEBRUARY, 01);
         Date startDate = sDate.getTime();
-        Calendar eDate = new GregorianCalendar(2003, Calendar.FEBRUARY, 03);
+        Calendar eDate = new GregorianCalendar(2001, Calendar.FEBRUARY, 03);
         Date endDate = eDate.getTime();
         
       	hits = bulletinSearch.searchDateRange(EVENT_DATE_FIELD, startDate, endDate);
 		System.out.println(hits.length());
-		Assert.assertEquals("Found event date?", 2, hits.length());
+		Assert.assertEquals("Found event date?", 1, hits.length());
 
 		hits = bulletinSearch.searchField(PUBLIC_INFO_FIELD, "staff members were");
 		System.out.println(hits.length());

@@ -2,11 +2,11 @@
 <FieldDataPacket><PacketId>F-40984b-eeeb80ef32--7fab</PacketId>
 <Account>MIIBIDANBgkqhkiG9w0BAQEFAAOCAQ0AMIIBCAKCAQEArXoQOMDeCb7PqZE6ksDaPN5DUddfkJ6J7gOKy/j8kEnlIqArCxOIKxS1zae9ssw++INGobVQ2bJPbZINfD4jczL1Y7TEiS1B+J7zpoZVqZVnrn1Ypum83PnigP5bObnOseuLQAu8/EUQKRwzc2mg6mOnK2UlqCVZy9POOtC7dhFlYB13AqNOLz6E+4WLAFnyizx3Ig3SyoOcv4+mBsR/NasvsJJeMWD3rrqMSFUqx/0ma/owUjjAj16ikRal1EOtKubYhvAVlGBizZsLyz2mqZblx5yido6JJPtyh+2+jQpwZLXQzPz8C8pp4VD68UKzQBHCoTPJPwpME+Pgcsj5BQIBEQ==</Account>
 <Field-author>Lewis</Field-author>
-<Field-keywords></Field-keywords>
+<Field-keywords>test, attachments</Field-keywords>
 <Field-language>en</Field-language>
 <Field-title>This is a sample Account and the data can be deleted test 3 With attachments</Field-title>
 <Field-eventdate>2002-01-01</Field-eventdate>
-<Field-publicinfo></Field-publicinfo>
+<Field-publicinfo>We need to get attachments working.</Field-publicinfo>
 <Field-summary>this is a test</Field-summary>
 <Field-location>This is a sample Account and the data can be deleted test 3 With attachments</Field-location>
 <Field-entrydate>2002-07-08</Field-entrydate>
