@@ -68,7 +68,7 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
 	}
 	
 	
-	public Vector getAllAccountIds() throws ServerErrorException
+	public Vector getAllAccountIds() //throws ServerErrorException
 	{
 		Vector result = new Vector();
 		try
@@ -87,7 +87,7 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
 	}
 	
 	
-	public Vector getAccountUniversalIds(String accountId) throws ServerErrorException
+	public Vector getAccountUniversalIds(String accountId) //throws ServerErrorException
 	{
 		Vector result = new Vector();
 		try
@@ -116,8 +116,8 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
 		String dir = "";
  
 		// 1) retrieve Bulletin in Chunks and get the Zip file
-		//bulletinZippedFile = getBulletin(uid);
-		bulletinZippedFile = new File("testdata/Firebombing of NGO O13806.mbf");
+		bulletinZippedFile = getBulletin(uid);
+		//bulletinZippedFile = new File("testdata/Firebombing of NGO O13806.mbf");
 		
 		// 2) Unzip the file and retrieve the bulletin and attachments into a Vector
 		if(bulletinZippedFile != null)

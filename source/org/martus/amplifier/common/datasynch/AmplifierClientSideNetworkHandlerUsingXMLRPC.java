@@ -50,6 +50,7 @@ public class AmplifierClientSideNetworkHandlerUsingXMLRPC
 		
 	public Vector getAccountIds(String myAccountId, Vector parameters, String signature)
 	{
+		System.out.println("in AmplifierClientSideNetworkHandlerUsingXMLRPC.getAccountIds()");
 		Vector params = new Vector();
 		params.add(myAccountId);
 		params.add(parameters);
@@ -79,8 +80,9 @@ public class AmplifierClientSideNetworkHandlerUsingXMLRPC
 	
 	public Object callServer(String serverName, String method, Vector params)
 	{
+		
 		final String serverUrl = "https://" + serverName + ":" + port + "/RPC2";
-		//System.out.println("ServerInterfaceXmlRpcHandler:callServer serverUrl=" + serverUrl);
+		System.out.println("ServerInterfaceXmlRpcHandler:callServer serverUrl=" + serverUrl);
 		Object result = null;
 		try
 		{
@@ -91,8 +93,8 @@ public class AmplifierClientSideNetworkHandlerUsingXMLRPC
 		{
 			//TODO throw IOExceptions so caller can decide what to do.
 			//This was added for connection refused: connect (no server connected)
-			//System.out.println("ServerInterfaceXmlRpcHandler:callServer Exception=" + e);
-			//e.printStackTrace();
+			System.out.println("ServerInterfaceXmlRpcHandler:callServer Exception=" + e);
+			e.printStackTrace();
 		}
 		catch (Exception e)
 		{

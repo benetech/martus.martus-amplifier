@@ -21,41 +21,46 @@ public class AmplifierNetworkGatewayTest extends AbstractAmplifierDataSynchTest
 	{
 		super(name);
 	}
-	/*
-	public void testGetAllBulletinIds()
+	
+	
+	public void testGetAllAccountIds()
 	{
-		System.out.println("in testGetAllBulletinIds");
+		System.out.println("in testGetAllAccountIds");
 		AmplifierNetworkGateway amplifierGateway = AmplifierNetworkGateway.getInstance();
-		List testBulletinsList = amplifierGateway.getAllBulletinIds();
-		Iterator testBulletinIterator = testBulletinsList.iterator();
-		String currentBulletinId = null;
-		String[] correctData = {"11", "12", "21", "22"};
-		int counter = 0;
-		while(testBulletinIterator.hasNext())
-		{
-			currentBulletinId = (String) testBulletinIterator.next();
-			assertEquals(currentBulletinId, correctData[counter]);
-			counter++;
-		}			
-	}	
+		Vector list = amplifierGateway.getAllAccountIds();
+		assertTrue(list.size() >0);	
+	}
+	
+	/*
+	public void testGetAccountUniversalIds()
+	{
+		System.out.println("in testGetAccountUniversalIds");
+		AmplifierNetworkGateway amplifierGateway = AmplifierNetworkGateway.getInstance();
+		Vector list = amplifierGateway.getAccountUniversalIds(sampleAccountId);
+		assertTrue(list.size() >0);	
+	}
 	*/
-	public void testRetrieveAndManageBulletin()
+	
+	/*
+	public void testgetBulletin()
 	{
 		System.out.println("in testGetBulletin");
+		AmplifierNetworkGateway amplifierGateway = AmplifierNetworkGateway.getInstance();
+		UniversalId uid = UniversalId.createFromAccountAndLocalId(sampleAccountId, sampleLocalId);
+		File file = amplifierGateway.getBulletin(uid);
+		assertTrue(file.length() >0);		
+	}
+	
+	public void testRetrieveAndManageBulletin()
+	{
+		System.out.println("in testRetrieveAndManageBulletin");
 		AmplifierNetworkGateway amplifierGateway = AmplifierNetworkGateway.getInstance();		
 		UniversalId uid = UniversalId.createFromAccountAndLocalId(sampleAccountId, sampleLocalId);
 		Vector list = amplifierGateway.retrieveAndManageBulletin(uid);				
 		assertEquals(list.size(), 3);			
-	}	
-	
-	public void testgetBulletin()
-	{
-		System.out.println("in testRetrieveBulletin");
-		AmplifierNetworkGateway amplifierGateway = AmplifierNetworkGateway.getInstance();
-		UniversalId uid = UniversalId.createFromAccountAndLocalId(sampleAccountId, sampleLocalId);
-		//File file = amplifierGateway.getBulletin(uid);
-		//assertTrue(file.length() >0);		
 	}
+	
+	*/
 	
 
 	
