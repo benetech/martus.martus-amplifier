@@ -4,7 +4,7 @@
             <title>Martus Amplifier Search Results</title>
     </head>
     <body>
-    	#set ($pageTitle="Searched Martus for: test")
+    	#set ($pageTitle="Searched Martus for: $searchedFor")
     	#set ($pageInfo="Found $totalBulletins bulletins")
 		#set ($showSearchForm = true)
 		#parse ("ResultHeader.vm")
@@ -18,7 +18,7 @@
 	            		$velocityCount. 
 	            	</td>
 	                <td>
-	                	<strong>Title</strong>: <a href="FoundBulletin?index=$velocityCount">$bulletin.fields.title</a><br/>
+	                	<strong>Title</strong>: <a href="FoundBulletin?index=$velocityCount&searchedFor=$searchedFor">$bulletin.fields.title</a><br/>
 						#if($bulletin.fields.author != "")
 		        	        <strong>Author</strong>: $bulletin.fields.author<br/>
 						#end

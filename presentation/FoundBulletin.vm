@@ -5,7 +5,7 @@
     </head>
     
     <body>
-    	#set ($pageTitle="Searched Martus for: test")
+    	#set ($pageTitle="Searched Martus for: $searchedFor")
     	#set ($pageInfo="Bulletin $currentBulletin of $totalBulletins")
 		#set ($showSearchForm = true)
 		#parse ("ResultHeader.vm")

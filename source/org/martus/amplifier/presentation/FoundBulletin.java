@@ -49,6 +49,7 @@ public class FoundBulletin extends AmplifierServlet
 			previousIndex = -1;
 		if(nextIndex > bulletins.size())
 			nextIndex = -1;
+		context.put("searchedFor", request.getParameter("searchedFor"));
 		context.put("previousBulletin", new Integer(previousIndex));
 		context.put("nextBulletin", new Integer(nextIndex));
 		context.put("currentBulletin", new Integer(index));

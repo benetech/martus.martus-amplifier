@@ -65,12 +65,25 @@ public class TestFoundBulletin extends TestCaseEnhanced
 		assertEquals("Bulletin 3's title didn't match", bulletin3Title, bulletinInfo3.get("title"));
 	}
 
+	public void testSearchedFor() throws Exception
+	{
+		MockAmplifierRequest request = new MockAmplifierRequest();
+		MockAmplifierResponse response = null;
+		Context context = createSampleSearchResults(request, response);
+	
+	
+		FoundBulletin servlet = new FoundBulletin();
+		servlet.selectTemplate(request, response, context);
+		assertEquals("Didn't get searchedFor correct", "title", context.get("searchedFor"));
+	}
+
 	private Context createSampleSearchResults(MockAmplifierRequest request, MockAmplifierResponse response) throws Exception
 	{
 		Context context = new MockContext();
 		SearchResultsForTesting sr = new SearchResultsForTesting();
-		request.putParameter("query", "test");
+		request.putParameter("query", "title");
 		request.parameters.put("index","1");
+		request.parameters.put("searchedFor","title");
 		sr.selectTemplate(request, response, context);
 		return context;
 	}
@@ -90,6 +103,7 @@ public class TestFoundBulletin extends TestCaseEnhanced
 		{
 			if(request.getParameter("query")==null)
 				throw new Exception("malformed query");
+			
 			Vector infos = new Vector();
 			BulletinInfo bulletinInfo1 = new BulletinInfo(uid1);
 			bulletinInfo1.set("title", bulletin1Title);
