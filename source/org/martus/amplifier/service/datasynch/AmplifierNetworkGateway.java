@@ -129,7 +129,14 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
 		}
 		
 		//3.Put files in Bulletin Folder and attachments folder 
-		//Call the attachment wrapper after figuring out how to retrieve the sessionkey
+		/*
+		split the attachment xml files into certain a certain folder
+		and then the field data packets into another folder
+		then we initiate the indexing on the field data packet folder
+		for each packet that has an associated attachment
+		it will know that from the xml file and find it and index it
+		-Initiaiting the indexing is done through BulletinIndexer
+		*/
 		if( result!=null)
 		{
 			for(int i= 0; i< result.size(); i++)
