@@ -18,6 +18,7 @@ import org.martus.amplifier.service.datasynch.BackupServerManager;
 
 import org.martus.amplifier.common.datasynch.AmplifierBulletinRetrieverGatewayInterface;
 import org.martus.amplifier.common.datasynch.AmplifierClientSideNetworkGateway;
+//import org.martus.amplifier.common.datasynch.AmplifierMartusUtilities;
 import org.martus.amplifier.common.datasynch.AmplifierNetworkInterface;
 import org.martus.amplifier.common.datasynch.AmplifierClientSideNetworkHandlerUsingXMLRPC;
 import org.martus.amplifier.common.datasynch.AmplifierClientSideNetworkHandlerUsingXMLRPC.SSLSocketSetupException;
@@ -54,7 +55,7 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
 	protected AmplifierNetworkGateway()
 	{
 		super();
-		//have to initialize gateway and security
+		//TODO:have to initialize security
 		gateway = getCurrentNetworkInterfaceGateway();
 //		security
 		serverInfoList = BackupServerManager.getInstance().getBackupServersList();
@@ -132,7 +133,9 @@ public class AmplifierNetworkGateway implements IDataSynchConstants
 			tempFile = (File)result.get(i);
 			System.out.println("FileName is "+ tempFile.getName());
 		}	
-		//TODO: 3) Decrypt attachments and handle attachments
+		//TODO:
+		//3.Put attachments in Bulletin Folder and and attachments folder 
+		//Decryption of attachments and indexing in taken care of Attachment manager
 			
 		return result;		
 	}

@@ -1,6 +1,7 @@
 package org.martus.amplifier.service.datasynch;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import org.martus.common.UniversalId;
@@ -10,7 +11,6 @@ import org.martus.amplifier.service.datasynch.AmplifierNetworkGateway;
 public class DataSynchManager implements IDataSynchConstants
 {
 
-	private List newUIDList = null;
 	private AmplifierNetworkGateway amplifierGateway = null;
 	private static Logger logger = Logger.getLogger(DATASYNC_LOGGER);
 
@@ -27,7 +27,8 @@ public class DataSynchManager implements IDataSynchConstants
 	 * 
 	 */
 	public List getNewUniversalIds()
-	{		
+	{	
+		List newUIDList = new ArrayList();	
 		return newUIDList;
 	}
 	
@@ -36,7 +37,7 @@ public class DataSynchManager implements IDataSynchConstants
 	 * This methods retrieves new bulletins and attachments 
 	 * and saves them into temporary folders
 	 */
-	public void getALLNewBulletinObjects()
+	public void getALLNewBulletinObjects(List newUIDList)
 	{ 
 		int index=0;
 		int size = newUIDList.size();
