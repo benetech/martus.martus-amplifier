@@ -23,16 +23,22 @@ Boston, MA 02111-1307, USA.
 
 *#
 <html>
-	#set ($pageTitle="Search Error")
+	#set ($pageTitle="Search Error ")
     <head>
      	#parse("Meta.vm")       
     </head>
     
     <body>    	
-    	#set ($pageInfo="An internal error occured.")
-		#set ($showSearchForm = false)
+	    #set ($pageTitle="Search Error: $searchedFor")
+    	#set ($pageInfo="Invalid character(s) in search string")
+		#set ($showSearchForm = true)
 		#parse ("ResultHeader.vm")
+		#set ($errorMessage = $errorMsg)				
 		
+		<br/><br/><br/>
+		<b>$errorTitle </b><br/><br/>
+		$errorMessage
+
 		<br/><br/><br/>
         Please see <a href='SearchTips'>search tips</a> for help and try again.
 		<br/><br/><br/>

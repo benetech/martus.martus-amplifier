@@ -51,7 +51,7 @@ public abstract class AbstractSearchResultsServlet extends AmplifierServlet
 		
 		configureSessionFromRequest(request);
 
-		List bulletins = getBulletinsToDisplay(request);
+		List bulletins = getBulletinsToDisplay(request);		
 		String sortField = getFieldToSortBy(request);
 		
 		AmplifierServletSession session = request.getSession();
@@ -93,6 +93,13 @@ public abstract class AbstractSearchResultsServlet extends AmplifierServlet
 		context.put("searchedFor", searchedForString);
 		String basicQueryString = (String)session.getAttribute("defaultSimpleSearch");
 		context.put("defaultSimpleSearch", basicQueryString);
+	}
+	
+	public static void setInternalErrorContext(String errorTitle, String msg,AmplifierServletSession session, Context context)
+	{
+		setSearchedForInContext(session, context);
+		context.put("errorTitle", errorTitle);
+		context.put("errorMsg", msg);
 	}
 
 	public static void sortBulletins(List bulletinList, final String sortByFieldTag)
