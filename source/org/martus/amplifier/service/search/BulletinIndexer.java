@@ -23,7 +23,7 @@ public class BulletinIndexer implements IBulletinConstants, ISearchConstants
 
 	protected BulletinIndexer()
 	{
-		theIndexLastModified = 0L;
+		;
 	}
 	
 	public static BulletinIndexer getInstance() 
@@ -36,11 +36,14 @@ public class BulletinIndexer implements IBulletinConstants, ISearchConstants
 		IndexWriter writer = null;
 		try
 		{
-			long lastModified = 0L;
-			lastModified = IndexReader.lastModified(DEFAULT_INDEX_LOCATION);
-			boolean isLocked = IndexReader.isLocked(DEFAULT_INDEX_LOCATION);
-			if ( (lastModified != theIndexLastModified) && ! isLocked )
+			if(IndexReader.isLocked(DEFAULT_INDEX_LOCATION))
 			{
+				logger.info("Cannot indexing bulletins, database locked...");
+			}
+			else
+			{
+				logger.info("Indexing bulletins...");
+				
 				writer = new IndexWriter(DEFAULT_INDEX_LOCATION, new StandardAnalyzer(), true);
 				indexDocs(writer, new File(DEFAULT_FILES_LOCATION));
 				writer.optimize();
@@ -89,10 +92,10 @@ public class BulletinIndexer implements IBulletinConstants, ISearchConstants
       		{
 				indexDocs(writer, new File(file, files[i]));
       		}
-    	} 
+    	}
     	else 
     	{
-      		logger.info("adding " + file);
+      		logger.info("adding bulletin " + file.getName());
       		writer.addDocument(BulletinDocument.convertToDocument(file));
     	}
   	}
