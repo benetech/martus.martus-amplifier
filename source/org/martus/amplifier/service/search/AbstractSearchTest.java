@@ -111,8 +111,8 @@ public abstract class AbstractSearchTest
 				searcher.search(
 					KEYWORDS_INDEX_FIELD, 
 					fdp.get(BulletinField.TAGKEYWORDS)).getCount());
-			Date startDate = searcher.DATE_FORMAT.parse("2003-05-01");
-			Date endDate = searcher.DATE_FORMAT.parse("2003-05-20");
+			Date startDate = SearchConstants.DATE_FORMAT.parse("2003-05-01");
+			Date endDate = SearchConstants.DATE_FORMAT.parse("2003-05-20");
 			Assert.assertEquals(
 				1,
 				searcher.searchDateRange(
@@ -257,14 +257,14 @@ public abstract class AbstractSearchTest
 		BulletinSearcher searcher = openBulletinSearcher();
 		BulletinSearcher.Results results = null;
 		try {
-			Date startDate = searcher.DATE_FORMAT.parse("2003-04-10");
-			Date endDate = searcher.DATE_FORMAT.parse("2003-04-11");
+			Date startDate = SearchConstants.DATE_FORMAT.parse("2003-04-10");
+			Date endDate = SearchConstants.DATE_FORMAT.parse("2003-04-11");
 			results = searcher.searchDateRange(
 				EVENT_DATE_INDEX_FIELD, startDate, endDate);
 			Assert.assertEquals(1, results.getCount());
 			
-			startDate = searcher.DATE_FORMAT.parse("2003-05-10");
-			endDate = searcher.DATE_FORMAT.parse("2003-05-11");
+			startDate = SearchConstants.DATE_FORMAT.parse("2003-05-10");
+			endDate = SearchConstants.DATE_FORMAT.parse("2003-05-11");
 			results = searcher.searchDateRange(
 				ENTRY_DATE_INDEX_FIELD, startDate, endDate);
 			Assert.assertEquals(1, results.getCount());
@@ -289,22 +289,22 @@ public abstract class AbstractSearchTest
 		BulletinSearcher searcher = openBulletinSearcher();
 		BulletinSearcher.Results results = null;
 		try {
-			Date startDate = searcher.DATE_FORMAT.parse("2003-04-01");
+			Date startDate = SearchConstants.DATE_FORMAT.parse("2003-04-01");
 			results = searcher.searchDateRange(
 				EVENT_DATE_INDEX_FIELD, startDate, null);
 			Assert.assertEquals(1, results.getCount());
 			
-			startDate = searcher.DATE_FORMAT.parse("2003-04-11");
+			startDate = SearchConstants.DATE_FORMAT.parse("2003-04-11");
 			results = searcher.searchDateRange(
 				EVENT_DATE_INDEX_FIELD, startDate, null);
 			Assert.assertEquals(0, results.getCount());
 			
-			Date endDate = searcher.DATE_FORMAT.parse("2003-05-20");
+			Date endDate = SearchConstants.DATE_FORMAT.parse("2003-05-20");
 			results = searcher.searchDateRange(
 				ENTRY_DATE_INDEX_FIELD, null, endDate);
 			Assert.assertEquals(1, results.getCount());
 			
-			endDate = searcher.DATE_FORMAT.parse("2003-04-30");
+			endDate = SearchConstants.DATE_FORMAT.parse("2003-04-30");
 			results = searcher.searchDateRange(
 				ENTRY_DATE_INDEX_FIELD, null, endDate);
 			Assert.assertEquals(0, results.getCount());
