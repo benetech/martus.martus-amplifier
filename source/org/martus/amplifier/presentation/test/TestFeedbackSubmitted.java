@@ -116,11 +116,13 @@ public class TestFeedbackSubmitted extends TestCaseEnhanced
 		
 		FeedbackSubmitted servlet = new FeedbackSubmitted(tempFeedbackDir.getAbsolutePath());
 		String data = "my message";
+		String basicQueryString = "?test";
 		String searchedFor = "test";
 		request.putParameter("userFeedbackDissatisfied",data);
 		AmplifierServletSession session = request.getSession();
 		session.setAttribute("typeOfSearch", "quick");
 		session.setAttribute("searchedFor", searchedFor);
+		session.setAttribute("simpleQuery", basicQueryString);
 		String templateName = servlet.selectTemplate(request, response, context);
 		assertEquals("dissatisfied set should get back feedbacksubmitted", "FeedbackSubmitted.vm", templateName);
 
@@ -130,6 +132,9 @@ public class TestFeedbackSubmitted extends TestCaseEnhanced
 		assertTrue("Filename should contain dissatisfied", dissatisfied.getAbsolutePath().indexOf(FeedbackSubmitted.FEEDBACK_DISSATISFIED_PREFIX) > 0);
 
 		UnicodeReader reader = new UnicodeReader(dissatisfied);
+		reader.readLine(); //basic query tag
+		String basicQueryIn = reader.readLine();
+		reader.readLine();//blank line
 		reader.readLine(); //searched for tag
 		String searchedForIn = reader.readLine();
 		reader.readLine();//blank line
@@ -137,7 +142,7 @@ public class TestFeedbackSubmitted extends TestCaseEnhanced
 		String dataIn = reader.readLine();
 		reader.close();
 		DirectoryTreeRemover.deleteEntireDirectoryTree(tempFeedbackDir);
-		
+		assertEquals("Basic query didn't match?", basicQueryString, basicQueryIn);
 		assertEquals("Searched For dind't match?", searchedFor, searchedForIn);
 		assertEquals("data dind't match?", data, dataIn);
 	}
@@ -151,9 +156,11 @@ public class TestFeedbackSubmitted extends TestCaseEnhanced
 		
 		FeedbackSubmitted servlet = new FeedbackSubmitted(tempFeedbackDir.getAbsolutePath());
 		String data = "my message";
+		String basicQueryString = "*test";
 		String searchedFor = "test";
 		request.putParameter("userFeedbackProblem",data);
 		AmplifierServletSession session = request.getSession();
+		session.setAttribute("simpleQuery", basicQueryString);
 		session.setAttribute("searchedFor", searchedFor);
 		session.setAttribute("typeOfSearch", "quick");
 		String templateName = servlet.selectTemplate(request, response, context);
@@ -165,6 +172,9 @@ public class TestFeedbackSubmitted extends TestCaseEnhanced
 		assertTrue("Filename should contain problem", techProblem.getAbsolutePath().indexOf(FeedbackSubmitted.FEEDBACK_TECH_PROBLEM_PREFIX) > 0);
 
 		UnicodeReader reader = new UnicodeReader(techProblem);
+		reader.readLine(); //basic query tag
+		String basicQueryIn = reader.readLine();
+		reader.readLine();//blank line
 		reader.readLine(); //searched for tag
 		String searchedForIn = reader.readLine();
 		reader.readLine();//blank line
@@ -173,6 +183,7 @@ public class TestFeedbackSubmitted extends TestCaseEnhanced
 		reader.close();
 		DirectoryTreeRemover.deleteEntireDirectoryTree(tempFeedbackDir);
 		
+		assertEquals("Basic query didn't match?", basicQueryString, basicQueryIn);
 		assertEquals("Searched For dind't match?", searchedFor, searchedForIn);
 		assertEquals("data dind't match?", data, dataIn);
 	}

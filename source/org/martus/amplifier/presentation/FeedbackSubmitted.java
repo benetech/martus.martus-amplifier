@@ -63,13 +63,17 @@ public class FeedbackSubmitted extends AmplifierServlet
 		String feedbackProblem = request.getParameter("userFeedbackProblem");
 		Vector searchedFor = new Vector(); 
 		AmplifierServletSession session = request.getSession();
+		String simpleQuery = null;
 
 		String type = (String)session.getAttribute("typeOfSearch");
 		if(type == null || type.equals("quick"))
 		{
 			String simple = (String)session.getAttribute("searchedFor");
 			if(simple!=null)
+			{
+				simpleQuery = (String)session.getAttribute("simpleQuery");
 				searchedFor.add(simple);
+			}
 		}
 		else
 		{
@@ -78,9 +82,9 @@ public class FeedbackSubmitted extends AmplifierServlet
 		}
 		
 		if(feedbackDissatisfied != null)
-			writeFeedback(FEEDBACK_DISSATISFIED_PREFIX, searchedFor, feedbackDissatisfied);
+			writeFeedback(FEEDBACK_DISSATISFIED_PREFIX, simpleQuery, searchedFor, feedbackDissatisfied);
 		else if(feedbackProblem != null)
-			writeFeedback(FEEDBACK_TECH_PROBLEM_PREFIX, searchedFor, feedbackProblem);
+			writeFeedback(FEEDBACK_TECH_PROBLEM_PREFIX, simpleQuery, searchedFor, feedbackProblem);
 		else
 			return "InternalError.vm";
 
@@ -101,7 +105,7 @@ public class FeedbackSubmitted extends AmplifierServlet
 	}
 	
 
-	private void writeFeedback(String fileName, Vector searchedFor, String message) throws IOException
+	private void writeFeedback(String fileName, String simpleQuery, Vector searchedFor, String message) throws IOException
 	{
 		File feedbackDirectoryFile = new File(feedbackDirectory);
 		feedbackDirectoryFile.mkdirs();
@@ -111,6 +115,13 @@ public class FeedbackSubmitted extends AmplifierServlet
 			writer.writeln("No Previous search");
 		else
 		{
+			if(simpleQuery != null)
+			{
+				writer.writeln("Simple Query:");
+				writer.writeln(simpleQuery);
+				writer.writeln("");
+			}
+
 			writer.writeln("Searched for:");
 			for(int i = 0; i < searchedFor.size(); ++i)
 			{
