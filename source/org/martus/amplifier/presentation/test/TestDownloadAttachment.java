@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Vector;
 
 import org.martus.amplifier.attachment.AttachmentStorageException;
-import org.martus.amplifier.attachment.FileSystemAttachmentManager;
+import org.martus.amplifier.attachment.FileSystemDataManager;
 import org.martus.amplifier.common.AmplifierConfiguration;
 import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.amplifier.presentation.DownloadAttachment;
@@ -57,12 +57,12 @@ public class TestDownloadAttachment extends TestCaseEnhanced
 		File testBasePath = createTempDirectory();
 		MartusAmplifier.security = new MockMartusSecurity();
 		MartusAmplifier.security.createKeyPair();
-		MartusAmplifier.attachmentManager = new FileSystemAttachmentManager(testBasePath.getAbsolutePath());
+		MartusAmplifier.dataManager = new FileSystemDataManager(testBasePath.getAbsolutePath());
 	}
 	
 	public void tearDown() throws Exception
 	{
-		MartusAmplifier.attachmentManager.clearAllAttachments();
+		MartusAmplifier.dataManager.clearAllAttachments();
 		String basePath = AmplifierConfiguration.getInstance().getBasePath() + "/testing";
 		DirectoryTreeRemover.deleteEntireDirectoryTree(new File(basePath));
 	}
@@ -169,7 +169,7 @@ public class TestDownloadAttachment extends TestCaseEnhanced
 	{
 		AttachmentInfo attachInfo = (AttachmentInfo)bulletinInfo1.getAttachments().get(index);
 		UniversalId uid1 = UniversalId.createFromAccountAndLocalId(attachInfo.getAccountId(), attachInfo.getLocalId());
-		MartusAmplifier.attachmentManager.putAttachment(uid1, new StringInputStream(data));
+		MartusAmplifier.dataManager.putAttachment(uid1, new StringInputStream(data));
 	}
 	
 	final String basePath = AmplifierConfiguration.getInstance().getBasePath() + "/testing";

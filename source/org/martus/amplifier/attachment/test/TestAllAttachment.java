@@ -27,7 +27,7 @@ public class TestAllAttachment extends TestSuite
 		TestSuite suite =
 			new TestSuite("All Martus Amplifier Attachment Tests");
 		
-		suite.addTest(new TestSuite(TestFileSystemAttachmentManager.class));
+		suite.addTest(new TestSuite(TestFileSystemDataManager.class));
 		
 		return suite;
 	}

@@ -1,0 +1,26 @@
+<html>
+    <head>
+   		#parse("Meta.vm")
+        <title>Martus Amplifier Contact Info</title>
+    </head>
+    
+    <body>
+    	#set ($pageTitle="Contact Info")
+    	#set ($pageInfo="")
+		#set ($noSearchForm = "1")
+		#parse ("ResultHeader.vm")
+		<br/>
+			<table>
+				#foreach ($item in $contactInfo)
+		            <tr>
+		            	<td>
+							$item
+		            	</td>
+		            </tr>
+		        #end
+			</table>
+		<br/>
+        #set ($noSearchForm = "1")
+        #parse ("ResultFooter.vm")
+    </body>
+</html>

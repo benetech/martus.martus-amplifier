@@ -6,7 +6,7 @@ import java.io.InputStream;
 
 import junit.framework.Assert;
 
-import org.martus.amplifier.attachment.AttachmentManager;
+import org.martus.amplifier.attachment.DataManager;
 import org.martus.amplifier.attachment.AttachmentNotFoundException;
 import org.martus.amplifier.attachment.AttachmentStorageException;
 import org.martus.amplifier.test.AbstractAmplifierTestCase;
@@ -14,10 +14,10 @@ import org.martus.common.packet.UniversalId;
 import org.martus.util.DirectoryTreeRemover;
 import org.martus.util.StringInputStream;
 
-public abstract class TestAbstractAttachmentManager 
+public abstract class TestAbstractDataManager 
 	extends AbstractAmplifierTestCase
 {
-	protected TestAbstractAttachmentManager(String name)
+	protected TestAbstractDataManager(String name)
 	{
 		super(name);
 	}
@@ -30,7 +30,7 @@ public abstract class TestAbstractAttachmentManager
 	public void testClearAllAttachments() 
 		throws AttachmentStorageException, IOException
 	{
-		AttachmentManager attachmentManager = getAttachmentManager();
+		DataManager attachmentManager = getAttachmentManager();
 		UniversalId id = UniversalId.createDummyUniversalId();
 		String testString = "ClearAll";
 		InputStream sin = new StringInputStream(testString);
@@ -66,7 +66,7 @@ public abstract class TestAbstractAttachmentManager
 	public void testSimplePutAndGetAttachment() 
 		throws AttachmentStorageException, IOException
 	{
-		AttachmentManager attachmentManager = getAttachmentManager();
+		DataManager attachmentManager = getAttachmentManager();
 		attachmentManager.clearAllAttachments();
 		UniversalId id = UniversalId.createDummyUniversalId();
 		String testString = "SimplePutAndGet";
@@ -90,7 +90,7 @@ public abstract class TestAbstractAttachmentManager
 	public void testPutAndGetTwoSameAccount() 
 		throws AttachmentStorageException, IOException
 	{
-		AttachmentManager attachmentManager = getAttachmentManager();
+		DataManager attachmentManager = getAttachmentManager();
 		attachmentManager.clearAllAttachments();
 		UniversalId id = UniversalId.createDummyUniversalId();
 		String testString = "PutAndGetTwoSameAccount";
@@ -132,7 +132,7 @@ public abstract class TestAbstractAttachmentManager
 	public void testPutAndGetTwoDifferentAccounts() 
 		throws AttachmentStorageException, IOException
 	{
-		AttachmentManager attachmentManager = getAttachmentManager();
+		DataManager attachmentManager = getAttachmentManager();
 		attachmentManager.clearAllAttachments();
 		UniversalId id = 
 			UniversalId.createFromAccountAndLocalId("Account1", "Test");
@@ -176,7 +176,7 @@ public abstract class TestAbstractAttachmentManager
 	public void testSizeOfFile() 
 		throws AttachmentStorageException, IOException
 	{
-		AttachmentManager attachmentManager = getAttachmentManager();
+		DataManager attachmentManager = getAttachmentManager();
 		attachmentManager.clearAllAttachments();
 		UniversalId id = 
 			UniversalId.createFromAccountAndLocalId("Account1", "Test");
@@ -197,7 +197,7 @@ public abstract class TestAbstractAttachmentManager
 	public void testOverwriteExistingAttachment() 
 		throws AttachmentStorageException, IOException
 	{
-		AttachmentManager attachmentManager = getAttachmentManager();
+		DataManager attachmentManager = getAttachmentManager();
 		attachmentManager.clearAllAttachments();
 		UniversalId id = UniversalId.createDummyUniversalId();
 		String testString = "OverwriteExisting";
@@ -235,5 +235,5 @@ public abstract class TestAbstractAttachmentManager
 		}
 	}
 	
-	protected abstract AttachmentManager getAttachmentManager();
+	protected abstract DataManager getAttachmentManager();
 }

@@ -12,8 +12,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
 
-import org.martus.amplifier.attachment.AttachmentManager;
-import org.martus.amplifier.attachment.FileSystemAttachmentManager;
+import org.martus.amplifier.attachment.DataManager;
+import org.martus.amplifier.attachment.FileSystemDataManager;
 import org.martus.amplifier.common.AmplifierConfiguration;
 import org.martus.amplifier.common.AmplifierConstants;
 import org.martus.amplifier.datasynch.BackupServerInfo;
@@ -70,7 +70,7 @@ public class MartusAmplifier
 		String basePath = AmplifierConfiguration.getInstance().getBasePath();
 		String packetsDirectory = AmplifierConfiguration.getInstance().getPacketsDirectory();
 
-		attachmentManager = new FileSystemAttachmentManager(packetsDirectory);
+		dataManager = new FileSystemDataManager(packetsDirectory);
 		
 		File configDirectory = new File(basePath);
 		File backupServersDirectory = new File(configDirectory, "serversWhoWeCall");
@@ -292,13 +292,13 @@ public class MartusAmplifier
 		BulletinIndexer indexer = null;
 		try
 		{
-			DataSynchManager dataManager = new DataSynchManager(backupServerToCall, logger, getSecurity());
+			DataSynchManager dataSyncManager = new DataSynchManager(backupServerToCall, logger, getSecurity());
 			AmplifierConfiguration config = 
 				AmplifierConfiguration.getInstance();
 			indexer = new LuceneBulletinIndexer(
 				config.getBasePath());
 		
-			dataManager.getAllNewData(attachmentManager, indexer);
+			dataSyncManager.getAllNewData(dataManager, indexer);
 		}
 		catch(Exception e)
 		{
@@ -418,7 +418,7 @@ public class MartusAmplifier
 	
 	LoggerInterface logger;
 
-	public static AttachmentManager attachmentManager;
+	public static DataManager dataManager;
 	private static final String KEYPAIRFILENAME = "keypair.dat";
 	private static final String ADMINTRIGGERDIRECTORY = "adminTriggers";
 	private static final String ADMINSTARTUPCONFIGDIRECTORY = "deleteOnStartup";

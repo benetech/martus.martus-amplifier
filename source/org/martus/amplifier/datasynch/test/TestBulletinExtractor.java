@@ -12,9 +12,9 @@ import java.util.List;
 
 import junit.framework.Assert;
 
-import org.martus.amplifier.attachment.AttachmentManager;
+import org.martus.amplifier.attachment.DataManager;
 import org.martus.amplifier.attachment.AttachmentStorageException;
-import org.martus.amplifier.attachment.FileSystemAttachmentManager;
+import org.martus.amplifier.attachment.FileSystemDataManager;
 import org.martus.amplifier.common.DateUtilities;
 import org.martus.amplifier.datasynch.BulletinExtractor;
 import org.martus.amplifier.lucene.LuceneBulletinIndexer;
@@ -58,8 +58,8 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 		security = new MockMartusSecurity();
 		security.createKeyPair();
 		attachmentManager = 
-			new FileSystemAttachmentManager(getTestBasePath(), security);
-		MartusAmplifier.attachmentManager = attachmentManager;
+			new FileSystemDataManager(getTestBasePath(), security);
+		MartusAmplifier.dataManager = attachmentManager;
 		db = new MockServerDatabase();
 	}
 
@@ -365,7 +365,7 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 		return new LuceneBulletinSearcher(getTestBasePath());
 	}
 	
-	private AttachmentManager attachmentManager;
+	private DataManager attachmentManager;
 	private MartusCrypto security;
 	private Database db;
 }

@@ -25,12 +25,14 @@
 			</tr>
 			<tr>
 				<td valign='top'>Author:</td>
-				<td valign='top'>$bulletin.fields.author</td>
+    			#set ($text=$bulletin.fields.author)
+ 				#parse ("DisplayContactInfoLink.vm")
 				<td></td>
 			</tr>
 			<tr>
 				<td valign='top'>Organization:</td>
-				<td valign='top'>$bulletin.fields.organization</td>
+    			#set ($text=$bulletin.fields.organization)
+ 				#parse ("DisplayContactInfoLink.vm")
 				<td></td>
 			</tr>
 			<tr>

@@ -3,6 +3,7 @@ package org.martus.amplifier.attachment;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Vector;
 
 import org.martus.common.packet.UniversalId;
 
@@ -12,7 +13,7 @@ import org.martus.common.packet.UniversalId;
  * 
  * @author PDAlbora
  */
-public interface AttachmentManager 
+public interface DataManager 
 {
 	InputStream getAttachment(UniversalId attachmentId) 
 		throws AttachmentStorageException;
@@ -29,5 +30,6 @@ public interface AttachmentManager
 	void clearAllAttachments() throws AttachmentStorageException;
 	
 	public File getContactInfoFile(String accountId) throws IOException;
-	
+	public void writeContactInfoToFile(String accountId, Vector contactInfo) throws IOException;
+	public Vector getContactInfo(String accountId) throws IOException;
 }

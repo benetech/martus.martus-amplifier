@@ -37,7 +37,7 @@ import java.util.List;
 
 import junit.framework.Assert;
 
-import org.martus.amplifier.attachment.FileSystemAttachmentManager;
+import org.martus.amplifier.attachment.FileSystemDataManager;
 import org.martus.amplifier.common.DateUtilities;
 import org.martus.amplifier.common.SearchParameters;
 import org.martus.amplifier.common.SearchResultConstants;
@@ -73,13 +73,13 @@ public abstract class AbstractSearchTestCase
 		super.setUp();
 		MartusAmplifier.security = new MockMartusSecurity();
 		MartusAmplifier.security.createKeyPair();
-		MartusAmplifier.attachmentManager = new FileSystemAttachmentManager(getTestBasePath());
+		MartusAmplifier.dataManager = new FileSystemDataManager(getTestBasePath());
 	}
 	
 	public void tearDown() throws Exception
 	{
 		super.tearDown();
-		MartusAmplifier.attachmentManager.clearAllAttachments();
+		MartusAmplifier.dataManager.clearAllAttachments();
 		DirectoryTreeRemover.deleteEntireDirectoryTree(new File(basePath));
 	}
 	

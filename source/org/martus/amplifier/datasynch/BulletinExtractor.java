@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.martus.amplifier.attachment.AttachmentManager;
+import org.martus.amplifier.attachment.DataManager;
 import org.martus.amplifier.attachment.AttachmentStorageException;
 import org.martus.amplifier.search.BulletinField;
 import org.martus.amplifier.search.BulletinIndexException;
@@ -37,7 +37,7 @@ import org.martus.util.Base64.InvalidBase64Exception;
 public class BulletinExtractor
 {
 	public BulletinExtractor(
-		AttachmentManager attachmentManager, 
+		DataManager attachmentManager, 
 		BulletinIndexer bulletinIndexer,
 		MartusCrypto verifier)
 	{
@@ -128,7 +128,7 @@ public class BulletinExtractor
 		}
 	}
 	
-	private AttachmentManager attachmentManager;
+	private DataManager attachmentManager;
 	private BulletinIndexer bulletinIndexer;
 	private MartusCrypto verifier;
 }

@@ -28,6 +28,7 @@ package org.martus.amplifier.attachment;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Vector;
 
 import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.common.MartusUtilities.FileVerificationException;
@@ -37,16 +38,17 @@ import org.martus.common.database.ServerFileDatabase;
 import org.martus.common.database.FileDatabase.MissingAccountMapException;
 import org.martus.common.database.FileDatabase.MissingAccountMapSignatureException;
 import org.martus.common.packet.UniversalId;
+import org.martus.common.utilities.MartusServerUtilities;
 
 
-public class FileSystemAttachmentManager implements AttachmentManager
+public class FileSystemDataManager implements DataManager
 {
-	public FileSystemAttachmentManager(String baseDir) throws FileVerificationException, MissingAccountMapException, MissingAccountMapSignatureException
+	public FileSystemDataManager(String baseDir) throws FileVerificationException, MissingAccountMapException, MissingAccountMapSignatureException
 	{
 		this(baseDir, MartusAmplifier.security);
 	}
 	
-	public FileSystemAttachmentManager(String baseDir, MartusCrypto crypto) throws FileVerificationException, MissingAccountMapException, MissingAccountMapSignatureException
+	public FileSystemDataManager(String baseDir, MartusCrypto crypto) throws FileVerificationException, MissingAccountMapException, MissingAccountMapSignatureException
 	{
 		db = new ServerFileDatabase(new File(baseDir), crypto);
 		db.initialize();
@@ -120,7 +122,45 @@ public class FileSystemAttachmentManager implements AttachmentManager
 		return db.getContactInfoFile(accountId);	
 	}
 	
+	public void writeContactInfoToFile(String accountId, Vector contactInfo) throws IOException
+	{
+		MartusServerUtilities.writeContatctInfo(accountId, contactInfo, db.getContactInfoFile(accountId));
+	}
+
+	
+	public Vector getContactInfo(String accountId) throws IOException
+	{
+		File contactFile = getContactInfoFile(accountId);
+		if(!contactFile.exists())
+			return null;
+		
+		Vector info = MartusServerUtilities.getContactInfo(contactFile);
+		if(!MartusAmplifier.security.verifySignatureOfVectorOfStrings(info, accountId))
+			return null;
+		removeContactInfoNonDataElements(info);		
+		info = removeContactInfoBlankDataElements(info);
+		
+		return info;
+	}
+
+	private Vector removeContactInfoBlankDataElements(Vector info)
+	{
+		Vector stripped = new Vector();
+		for(int i = 0; i < info.size(); ++i)
+		{
+			if(((String)info.get(i)).length() != 0)
+				stripped.add(info.get(i));
+		}
+		return stripped;
+	}
+
+	private void removeContactInfoNonDataElements(Vector info)
+	{
+		info.remove(0);//Account ID
+		info.remove(0);//# of data elements
+		info.remove(info.size() - 1);//Signature
+	}
+
 	private ServerFileDatabase db;
 	public static final int Kbytes = 1024;
-	
 }

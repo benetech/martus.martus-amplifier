@@ -5,7 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Vector;
 
-import org.martus.amplifier.attachment.AttachmentManager;
+import org.martus.amplifier.attachment.DataManager;
 import org.martus.amplifier.attachment.AttachmentStorageException;
 import org.martus.amplifier.network.AmplifierBulletinRetrieverGatewayInterface;
 import org.martus.amplifier.network.AmplifierClientSideNetworkGateway;
@@ -186,7 +186,7 @@ public class AmplifierNetworkGateway
 	}
 	
 	public BulletinExtractor createBulletinExtractor(
-		AttachmentManager attachmentManager, BulletinIndexer indexer)
+		DataManager attachmentManager, BulletinIndexer indexer)
 	{
 		return new BulletinExtractor(attachmentManager, indexer, security);
 	}

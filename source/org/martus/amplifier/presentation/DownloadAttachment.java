@@ -35,7 +35,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.martus.amplifier.attachment.AttachmentManager;
+import org.martus.amplifier.attachment.DataManager;
 import org.martus.amplifier.attachment.AttachmentStorageException;
 import org.martus.amplifier.common.AmplifierConfiguration;
 import org.martus.amplifier.main.MartusAmplifier;
@@ -94,7 +94,7 @@ public class DownloadAttachment extends HttpServlet
 			basePath =	AmplifierConfiguration.getInstance().getBasePath();
 
 		UniversalId uId = UniversalId.createFromAccountAndLocalId(info.getAccountId(), info.getLocalId());
-		AttachmentManager manager = MartusAmplifier.attachmentManager;
+		DataManager manager = MartusAmplifier.dataManager;
 		
 		response.addHeader( "Content-Type", "application/octet-stream" );
 		response.addHeader( "Content-Disposition","attatchment; filename="+info.getLabel());

@@ -1,0 +1,5 @@
+#if ($contactInfo)
+	<td valign='top'><a href="ContactInfo?index=$currentBulletin">$text</a></td>
+#else
+	<td valign='top'>$text</td>
+#end

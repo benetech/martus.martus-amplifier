@@ -161,7 +161,7 @@ public class LuceneResults implements Results, LuceneSearchConstants, SearchCons
 		String accountId = info.getAccountId();
 		try
 		{
-			File contactInfo = MartusAmplifier.attachmentManager.getContactInfoFile(accountId);
+			File contactInfo = MartusAmplifier.dataManager.getContactInfoFile(accountId);
 			if(!contactInfo.exists())
 				return;
 			info.putContactInfo(contactInfo);
@@ -177,7 +177,7 @@ public class LuceneResults implements Results, LuceneSearchConstants, SearchCons
 		long size = -1;
 		try
 		{
-			size = MartusAmplifier.attachmentManager.getAttachmentSizeInKb(uId);
+			size = MartusAmplifier.dataManager.getAttachmentSizeInKb(uId);
 		}
 		catch (Exception e)
 		{
