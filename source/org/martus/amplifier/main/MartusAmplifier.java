@@ -53,6 +53,7 @@ import org.mortbay.util.MultiException;
 
 public class MartusAmplifier
 {
+
 	public MartusAmplifier(ServerCallbackInterface serverToUse) throws CryptoInitializationException
 	{
 		coreServer = serverToUse;
@@ -144,56 +145,32 @@ public class MartusAmplifier
 		staticSecurity = staticSecurityToUse;
 	}
 
+	public Vector getDeleteOnStartupFiles()
+	{
+		Vector startupFiles = new Vector();
+		startupFiles.add(getKeystoreFile());
+		startupFiles.add(getAccountsNotAmplifiedFile());
+		startupFiles.add(getJettyConfigurationFile());
+		return startupFiles;
+	}
+	
 	public void deleteAmplifierStartupFiles()
 	{
-		if(!getKeystoreFile().delete())
-		{
-			System.out.println("Unable to delete keystore");
-			System.exit(6);
-		}
-
+		MartusUtilities.deleteAllFiles(getDeleteOnStartupFiles());
+		
 		File serversWhoWeCallDir = getServersWhoWeCallDirectory();
-		if(serversWhoWeCallDir.exists())
+		if(!serversWhoWeCallDir.exists())
+			return;
+		File[] toDeleteFile = serversWhoWeCallDir.listFiles();
+		if(toDeleteFile != null)
 		{
-			File[] toDeleteFile = serversWhoWeCallDir.listFiles();
-			if(toDeleteFile != null)
+			for (int i = 0; i < toDeleteFile.length; i++)
 			{
-				for (int i = 0; i < toDeleteFile.length; i++)
-				{
-					File toCallFile = toDeleteFile[i];
-					if(!toCallFile.delete())
-					{
-						System.out.println("Unable to delete file: " + toCallFile.getAbsolutePath());
-						System.exit(7);
-					}
-				}
-			}
-			if(!serversWhoWeCallDir.delete())
-			{
-				System.out.println("Unable to delete Dir: " + serversWhoWeCallDir.getAbsolutePath());
-				System.exit(7);
+				File toCallFile = toDeleteFile[i];
+				toCallFile.delete();
 			}
 		}
-
-		File notAmplifiedAccountsFile = getAccountsNotAmplifiedFile();
-		if(notAmplifiedAccountsFile.exists())
-		{	
-			if(!notAmplifiedAccountsFile.delete())
-			{
-				System.out.println("Unable to delete File: " + notAmplifiedAccountsFile.getAbsolutePath());
-				System.exit(8);
-			}
-		}
-
-		File jettyconfig = new File(coreServer.getStartupConfigDirectory(), "jettyConfiguration.xml");
-		if(jettyconfig.exists())
-		{	
-			if(!jettyconfig.delete())
-			{
-				System.out.println("Unable to delete File: " + jettyconfig.getAbsolutePath());
-				System.exit(9);
-			}
-		}
+		serversWhoWeCallDir.delete();
 	}
 
 	public boolean isAmplifierSyncing()
@@ -358,9 +335,14 @@ public class MartusAmplifier
 		return new File(coreServer.getStartupConfigDirectory(), ACCOUNTS_NOT_AMPLIFIED_FILE);
 	}
 
+	private File getJettyConfigurationFile()
+	{
+		return new File(coreServer.getStartupConfigDirectory(), JETTY_CONFIGURATION_FILE);
+	}
+	
 	private File getKeystoreFile()
 	{
-		return new File(coreServer.getStartupConfigDirectory(), "keystore");
+		return new File(coreServer.getStartupConfigDirectory(), KEYSTORE_FILE);
 	}
 
 	private InetAddress getAmpIpAddress() throws UnknownHostException
@@ -391,18 +373,19 @@ public class MartusAmplifier
 		return staticAmplifierDirectory.getPath();
 	}
 
-
-
 	boolean isSyncing;
 	public List backupServersList;
 	List notAmplifiedAccountsList;
 	ServerCallbackInterface coreServer;
 
+	private static final String SERVERS_WHO_WE_CALL_DIRIRECTORY = "serversWhoWeCall";
+	private static final String ACCOUNTS_NOT_AMPLIFIED_FILE = "accountsNotAmplified.txt";
+	private static final String JETTY_CONFIGURATION_FILE = "jettyConfiguration.xml";
+	private static final String KEYSTORE_FILE = "keystore";
+	
 	static final long IMMEDIATELY = 0;
 	public static final long DEFAULT_HOURS_TO_SYNC = 24;
 	
-	private static final String SERVERS_WHO_WE_CALL_DIRIRECTORY = "serversWhoWeCall";
-	private static final String ACCOUNTS_NOT_AMPLIFIED_FILE = "accountsNotAmplified.txt";
 	private static final int LOW_RESOURCE_PERSIST_TIME_MS = 5000;
 
 	private static final int MAX_IDLE_TIME_MS = 30000;
