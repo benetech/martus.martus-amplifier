@@ -77,6 +77,9 @@ public class AdvancedSearch extends AmplifierServlet
 		for(int i = 0; i < languageCodes.size(); ++i)
 		{
 			String code = (String)languageCodes.get(i);
+			//TODO remove this once we figure out the Other Language ? issue with lucene.
+			if(code.equals("?"))
+				continue;
 			String languageString = AmplifierLocalization.getLanguageString(code);
 			if(languageString == null)
 				languageString = code;
