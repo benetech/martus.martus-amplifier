@@ -31,7 +31,6 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Vector;
-
 import org.martus.amplifier.ServerCallbackInterface;
 import org.martus.amplifier.attachment.DataManager;
 import org.martus.amplifier.attachment.FileSystemDataManager;
@@ -49,6 +48,7 @@ import org.martus.util.DirectoryUtils;
 import org.mortbay.http.HttpContext;
 import org.mortbay.http.SunJsseListener;
 import org.mortbay.jetty.Server;
+import org.mortbay.jetty.servlet.ServletHandler;
 import org.mortbay.util.InetAddrPort;
 import org.mortbay.util.MultiException;
 
@@ -105,10 +105,17 @@ public class MartusAmplifier
 	private void startNonSSLServer() throws IOException, MultiException
 	{
 		Server nonsslServer = new Server();
-		nonsslServer.addWebApplication("", getPresentationBasePath() + "presentationNonSSL");
 		InetAddrPort nonssllistener = new InetAddrPort(80);
 		nonssllistener.setInetAddress(getAmpIpAddress());
 		nonsslServer.addListener(nonssllistener);
+		
+		HttpContext context = new HttpContext();
+	    context.setContextPath("/");
+	    nonsslServer.addContext(context);
+	    
+	    ServletHandler servlets = new ServletHandler();
+	    context.addHandler(servlets);
+	    servlets.addServlet("Insecure", "/", "org.martus.amplifier.presentation.InsecureHomePage");
 		
 		nonsslServer.start();
 	}
