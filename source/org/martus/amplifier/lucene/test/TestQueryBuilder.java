@@ -23,42 +23,20 @@ Software Foundation, Inc., 59 Temple Place - Suite 330,
 Boston, MA 02111-1307, USA.
 
 */
+
 package org.martus.amplifier.lucene.test;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import junit.framework.TestCase;
+
+import org.martus.amplifier.lucene.QueryBuilder;
 
 
-public class TestAllLucene extends TestSuite
+public class TestQueryBuilder extends TestCase
 {
-
-	public TestAllLucene()
+	public void testBuildEntryDateSearchString() throws Exception
 	{
-		super();
+		String sampleStartDate = "1970-04-21";
+		String result = QueryBuilder.buildEntryDateSearchString(sampleStartDate);
+		assertEquals("[ 1970-04-21 TO 9999-99-99 ]", result);
 	}
-
-	public static void main(String[] args)
-	{
-		runTests();
-	}
-
-	public static void runTests()
-	{
-		junit.textui.TestRunner.run(suite());
-	}
-
-	public static Test suite()
-	{
-		TestSuite suite =
-			new TestSuite("All Martus Amplifier Lucene Tests");
-		
-		suite.addTest(new TestSuite(TestAlphanumericTokenizer.class));
-		suite.addTest(new TestSuite(TestLuceneSearcher.class));
-		suite.addTest(new TestSuite(TestLuceneBulletinIndexer.class));
-		suite.addTest(new TestSuite(TestRawLuceneSearching.class));
-		suite.addTest(new TestSuite(TestQueryBuilder.class));
-		
-		return suite;
-	}
-
 }

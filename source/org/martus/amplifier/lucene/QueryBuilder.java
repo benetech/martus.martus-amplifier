@@ -33,7 +33,6 @@ import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Query;
-import org.martus.amplifier.common.SearchParameters;
 import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.search.SearchConstants;
 
@@ -83,12 +82,16 @@ public class QueryBuilder
 
 		if (startDate == null)				
 			return null;
-	
-		String endDate = SearchParameters.daysAgo(0);
-						
-		return parseSingleFieldQuery(setRangeQuery(startDate, endDate), SearchConstants.SEARCH_ENTRY_DATE_INDEX_FIELD,
+
+		return parseSingleFieldQuery(buildEntryDateSearchString(startDate), SearchConstants.SEARCH_ENTRY_DATE_INDEX_FIELD,
 			"Improperly formed advanced find entry date type in bulletin query: ");		
-	}	
+	}
+	
+	static public String buildEntryDateSearchString(String startDate)
+	{
+		String endDate = "9999-99-99";
+		return setRangeQuery(startDate, endDate);
+	}
 	
 	static Query parseAnyWordsQuery(Map fields) throws Exception
 	{
