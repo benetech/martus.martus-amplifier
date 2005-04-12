@@ -123,7 +123,7 @@ public class MartusAmplifier implements LoggerInterface
 		}
 		catch (Exception e)
 		{
-			logError("LanguagesIndex" + e);
+			logWarning("LanguagesIndex" + e);
 		}
 
 		File eventDatesIndexedFile = new File(indexDir, "eventDatesIndexed.txt");
@@ -133,7 +133,7 @@ public class MartusAmplifier implements LoggerInterface
 		}
 		catch (Exception e)
 		{
-			logError("EventDatesIndex" + e);
+			logWarning("EventDatesIndex" + e);
 		}
 		
 		//Code.setDebug(true);
