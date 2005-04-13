@@ -62,14 +62,14 @@ public class QueryBuilder
 	static Query parseEventDateQuery(Map fields)
 			throws Exception 
 	{
-		String startDate	= (String) fields.get(SearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD);
-		String endDate 	= (String) fields.get(SearchConstants.SEARCH_EVENT_END_DATE_INDEX_FIELD);
+		String startDate	= (String) fields.get(LuceneSearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD);
+		String endDate 	= (String) fields.get(LuceneSearchConstants.SEARCH_EVENT_END_DATE_INDEX_FIELD);
 
 		String startDateString = setRangeQuery("*", endDate);
 		String endDateString   = setRangeQuery(startDate, "?");
 
-		String queryString = getFieldQuery(SearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD, startDateString);
-		queryString += AND+ getFieldQuery(SearchConstants.SEARCH_EVENT_END_DATE_INDEX_FIELD,endDateString);
+		String queryString = getFieldQuery(LuceneSearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD, startDateString);
+		queryString += AND+ getFieldQuery(LuceneSearchConstants.SEARCH_EVENT_END_DATE_INDEX_FIELD,endDateString);
 		
 		return parseSingleFieldQuery(queryString,SearchConstants.SEARCH_EVENT_DATE_INDEX_FIELD, ERROR_PARSING_QUERY);
 	

@@ -32,4 +32,8 @@ public interface LuceneSearchConstants
 	String ATTACHMENT_LIST_INDEX_FIELD = "attachments";
 	String ATTACHMENT_LIST_SEPARATOR = "\n";	
 	String FIELD_DATA_PACKET_LOCAL_ID_INDEX_FIELD = "field_data_packet_local_id";
+	public static final String EARLIEST_POSSIBLE_DATE = "0000-00-00";
+	public static final String LATEST_POSSIBLE_DATE = "9999-99-99";
+	final String SEARCH_EVENT_START_DATE_INDEX_FIELD = "$$$eventStartDate";
+	final String SEARCH_EVENT_END_DATE_INDEX_FIELD = "$$$eventEndDate";
 }

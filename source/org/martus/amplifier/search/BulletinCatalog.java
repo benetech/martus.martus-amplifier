@@ -25,7 +25,6 @@ Boston, MA 02111-1307, USA.
 */
 package org.martus.amplifier.search;
 
-import org.martus.amplifier.lucene.LuceneBulletinSearcher;
 import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.common.packet.UniversalId;
 
@@ -49,8 +48,7 @@ public class BulletinCatalog
    
 	public boolean bulletinHasBeenIndexed(UniversalId universalId) throws Exception
 	{
-		BulletinSearcher searcher = null;
-		searcher = new LuceneBulletinSearcher(MartusAmplifier.getStaticAmplifierDataPath());
+		BulletinSearcher searcher = MartusAmplifier.openBulletinSearcher();
 		try
 		{
 			return (searcher.lookup(universalId) != null);

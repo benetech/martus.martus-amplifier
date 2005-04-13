@@ -46,6 +46,7 @@ import org.martus.amplifier.search.BulletinSearcher;
 import org.martus.amplifier.search.SearchConstants;
 import org.martus.amplifier.test.AbstractAmplifierTestCase;
 import org.martus.common.FieldSpec;
+import org.martus.common.LoggerToNull;
 import org.martus.common.bulletin.AttachmentProxy;
 import org.martus.common.crypto.MockMartusSecurity;
 import org.martus.common.packet.FieldDataPacket;
@@ -262,7 +263,7 @@ public abstract class CommonSearchTest
 
 	protected BulletinSearcher openBulletinSearcher() throws Exception 
 	{
-		return new LuceneBulletinSearcher(getTestBasePath());
+		return new LuceneBulletinSearcher(getTestBasePath(), new LoggerToNull());
 	}
 	
 	public static final String SAMPLE_CUSTOM_TAG = "CustomField1";

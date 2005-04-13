@@ -39,6 +39,7 @@ import junit.framework.Assert;
 import org.martus.amplifier.common.SearchParameters;
 import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.lucene.LuceneBulletinSearcher;
+import org.martus.amplifier.lucene.LuceneSearchConstants;
 import org.martus.amplifier.presentation.SearchResults;
 import org.martus.amplifier.search.AttachmentInfo;
 import org.martus.amplifier.search.BulletinField;
@@ -47,6 +48,7 @@ import org.martus.amplifier.search.BulletinIndexer;
 import org.martus.amplifier.search.BulletinInfo;
 import org.martus.amplifier.search.BulletinSearcher;
 import org.martus.amplifier.search.Results;
+import org.martus.amplifier.search.SearchConstants;
 import org.martus.common.bulletin.AttachmentProxy;
 import org.martus.common.packet.BulletinHistory;
 import org.martus.common.packet.FieldDataPacket;
@@ -78,6 +80,14 @@ public class TestLuceneSearcher extends CommonSearchTest
 		
 		indexer = openBulletinIndexer();
 		indexer.clearIndex();
+	}
+	
+	public void testGetDefaultSearchValues() throws Exception
+	{
+		HashMap values = LuceneBulletinSearcher.getDefaultSearchValues();
+		assertEquals("Entry date start year too restrictive?", LuceneSearchConstants.EARLIEST_POSSIBLE_DATE, values.get(SearchConstants.SEARCH_ENTRY_DATE_INDEX_FIELD));
+		assertEquals("Event date start year too restrictive?", LuceneSearchConstants.EARLIEST_POSSIBLE_DATE, values.get(LuceneSearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD));
+		assertEquals("Event date end year too restrictive?", LuceneSearchConstants.LATEST_POSSIBLE_DATE, values.get(LuceneSearchConstants.SEARCH_EVENT_END_DATE_INDEX_FIELD));
 	}
 	
 	public void testExtractLeafDocuments() throws Exception
@@ -539,8 +549,8 @@ public class TestLuceneSearcher extends CommonSearchTest
 			String endDate 	= "2003-08-25";
 		
 			HashMap fields = new HashMap();
-			fields.put(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, startDate);
-			fields.put(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, endDate);
+			fields.put(LuceneSearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD, startDate);
+			fields.put(LuceneSearchConstants.SEARCH_EVENT_END_DATE_INDEX_FIELD, endDate);
 			
 			results = searcher.search(fields);
 			assertEquals("Should have found 1 match? ", 1, results.getCount());			
@@ -563,8 +573,8 @@ public class TestLuceneSearcher extends CommonSearchTest
 			String endDate 	= "2003-08-22";
 		
 			HashMap fields = new HashMap();
-			fields.put(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, startDate);
-			fields.put(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, endDate);
+			fields.put(LuceneSearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD, startDate);
+			fields.put(LuceneSearchConstants.SEARCH_EVENT_END_DATE_INDEX_FIELD, endDate);
 			fields.put(SearchResultConstants.RESULT_FIELDS_KEY, BulletinField.SEARCH_TITLE_INDEX_FIELD);
 			fields.put(ANYWORD_TAG, "lunch");
 			
@@ -592,17 +602,17 @@ public class TestLuceneSearcher extends CommonSearchTest
 			String nearToday = "2003-10-03";		
 		
 			HashMap fields = new HashMap();
-			fields.put(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, defaultDate);
-			fields.put(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, nearToday);
+			fields.put(LuceneSearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD, defaultDate);
+			fields.put(LuceneSearchConstants.SEARCH_EVENT_END_DATE_INDEX_FIELD, nearToday);
 			fields.put(BulletinField.SEARCH_ENTRY_DATE_INDEX_FIELD, entryStartDate);
 			
 			results = searcher.search(fields);
 			assertEquals("search for entry date only? ", 1, results.getCount());
 			
-			fields.remove(SEARCH_EVENT_START_DATE_INDEX_FIELD);
-			fields.remove(SEARCH_EVENT_END_DATE_INDEX_FIELD);
-			fields.put(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, startDate);
-			fields.put(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, endDate);			
+			fields.remove(LuceneSearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD);
+			fields.remove(LuceneSearchConstants.SEARCH_EVENT_END_DATE_INDEX_FIELD);
+			fields.put(LuceneSearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD, startDate);
+			fields.put(LuceneSearchConstants.SEARCH_EVENT_END_DATE_INDEX_FIELD, endDate);			
 			
 			results = searcher.search(fields);
 			assertEquals("Combine search for eventdate and entry date? ", 1, results.getCount());
@@ -627,16 +637,16 @@ public class TestLuceneSearcher extends CommonSearchTest
 			String defaultEndDate		= "2003-09-24";
 				
 			HashMap fields = new HashMap();
-			fields.put(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, defaultStartDate);
-			fields.put(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, defaultEndDate);		
+			fields.put(LuceneSearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD, defaultStartDate);
+			fields.put(LuceneSearchConstants.SEARCH_EVENT_END_DATE_INDEX_FIELD, defaultEndDate);		
 		
 			fields.put(BulletinField.SEARCH_LANGUAGE_INDEX_FIELD, "es");		
 			results = searcher.search(fields);			
 			assertEquals("search laguage with default event date? ", 1, results.getCount());
 				
 			fields = new HashMap();			
-			fields.put(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, startDate);
-			fields.put(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, endDate);
+			fields.put(LuceneSearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD, startDate);
+			fields.put(LuceneSearchConstants.SEARCH_EVENT_END_DATE_INDEX_FIELD, endDate);
 			fields.put(SearchResultConstants.RESULT_FIELDS_KEY, BulletinField.SEARCH_TITLE_INDEX_FIELD);
 			fields.put(BulletinField.SEARCH_LANGUAGE_INDEX_FIELD, "en");
 			fields.put(ANYWORD_TAG, "lunch");
@@ -681,7 +691,7 @@ public class TestLuceneSearcher extends CommonSearchTest
 			String pastYear = SearchParameters.getEntryDate(ENTRY_PAST_YEAR_DAYS_TAG);
 		
 			HashMap fields = new HashMap();
-			fields.put(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, defaultStartDate);
+			fields.put(LuceneSearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD, defaultStartDate);
 			
 			//2003-05-11 and 2003-08-30
 			fields.put(BulletinField.SEARCH_ENTRY_DATE_INDEX_FIELD, pastWeek);		
@@ -710,8 +720,8 @@ public class TestLuceneSearcher extends CommonSearchTest
 			
 									
 			fields = new HashMap();			
-			fields.put(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, startDate);
-			fields.put(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, endDate);
+			fields.put(LuceneSearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD, startDate);
+			fields.put(LuceneSearchConstants.SEARCH_EVENT_END_DATE_INDEX_FIELD, endDate);
 			fields.put(SearchResultConstants.RESULT_FIELDS_KEY, BulletinField.SEARCH_TITLE_INDEX_FIELD);			
 			fields.put(BulletinField.SEARCH_LANGUAGE_INDEX_FIELD, "es");
 			fields.put(SEARCH_ENTRY_DATE_INDEX_FIELD, past3Month);
@@ -739,8 +749,8 @@ public class TestLuceneSearcher extends CommonSearchTest
 			String defaultEndDate = "2004-01-01";			
 		
 			HashMap fields = new HashMap();
-			fields.put(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, defaultDate);
-			fields.put(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, defaultEndDate);
+			fields.put(LuceneSearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD, defaultDate);
+			fields.put(LuceneSearchConstants.SEARCH_EVENT_END_DATE_INDEX_FIELD, defaultEndDate);
 			fields.put(RESULT_FIELDS_KEY, IN_ALL_FIELDS);
 			
 			SearchParameters.FormatterForAllWordsSearch d = 
@@ -790,8 +800,8 @@ public class TestLuceneSearcher extends CommonSearchTest
 			String defaultEndDate = "2004-01-01";			
 		
 			HashMap fields = new HashMap();
-			fields.put(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, defaultDate);
-			fields.put(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, defaultEndDate);
+			fields.put(LuceneSearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD, defaultDate);
+			fields.put(LuceneSearchConstants.SEARCH_EVENT_END_DATE_INDEX_FIELD, defaultEndDate);
 			fields.put(RESULT_FIELDS_KEY, IN_ALL_FIELDS);
 			
 			SearchParameters.FormatterForAllWordsSearch d = 
@@ -847,8 +857,8 @@ public class TestLuceneSearcher extends CommonSearchTest
 			String defaultEndDate = "2004-01-01";			
 			
 			HashMap fields = new HashMap();
-			fields.put(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, defaultDate);
-			fields.put(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, defaultEndDate);
+			fields.put(LuceneSearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD, defaultDate);
+			fields.put(LuceneSearchConstants.SEARCH_EVENT_END_DATE_INDEX_FIELD, defaultEndDate);
 			fields.put(RESULT_FIELDS_KEY, IN_ALL_FIELDS);
 			
 			SearchParameters.FormatterForAllWordsSearch d = 
@@ -896,8 +906,8 @@ public class TestLuceneSearcher extends CommonSearchTest
 			String defaultEndDate = "2004-01-01";
 			
 			HashMap fields = new HashMap();			
-			fields.put(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, defaultDate);
-			fields.put(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, defaultEndDate);
+			fields.put(LuceneSearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD, defaultDate);
+			fields.put(LuceneSearchConstants.SEARCH_EVENT_END_DATE_INDEX_FIELD, defaultEndDate);
 			fields.put(RESULT_FIELDS_KEY, IN_ALL_FIELDS);
 			fields.put(RESULT_SORTBY_KEY, SEARCH_TITLE_INDEX_FIELD);			
 			fields.put(ANYWORD_TAG, "lunch");			
@@ -940,8 +950,8 @@ public class TestLuceneSearcher extends CommonSearchTest
 			String defaultEndDate = "2004-01-01";
 			
 			HashMap fields = new HashMap();			
-			fields.put(BulletinField.SEARCH_EVENT_START_DATE_INDEX_FIELD, defaultDate);
-			fields.put(BulletinField.SEARCH_EVENT_END_DATE_INDEX_FIELD, defaultEndDate);
+			fields.put(LuceneSearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD, defaultDate);
+			fields.put(LuceneSearchConstants.SEARCH_EVENT_END_DATE_INDEX_FIELD, defaultEndDate);
 			fields.put(RESULT_FIELDS_KEY, IN_ALL_FIELDS);
 			fields.put(RESULT_SORTBY_KEY, SEARCH_EVENT_DATE_INDEX_FIELD);			
 			fields.put(ANYWORD_TAG, "lunch");			

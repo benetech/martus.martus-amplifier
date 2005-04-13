@@ -39,19 +39,21 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
 import org.martus.amplifier.common.SearchResultConstants;
-import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.amplifier.search.BulletinCatalog;
 import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinInfo;
 import org.martus.amplifier.search.BulletinSearcher;
 import org.martus.amplifier.search.Results;
+import org.martus.common.LoggerInterface;
 import org.martus.common.packet.BulletinHistory;
 import org.martus.common.packet.UniversalId;
 
 public class LuceneBulletinSearcher implements BulletinSearcher
 {
-	public LuceneBulletinSearcher(String baseDirName) throws Exception
+	public LuceneBulletinSearcher(String baseDirName, LoggerInterface loggerToUse) throws Exception
 	{
+		logger = loggerToUse;
+		
 		File indexDir = LuceneBulletinIndexer.getIndexDir(baseDirName);
 		LuceneBulletinIndexer.createIndexIfNecessary(indexDir);
 		searcher = new IndexSearcher(indexDir.getPath());
@@ -123,16 +125,22 @@ public class LuceneBulletinSearcher implements BulletinSearcher
 	
 	private Query buildAllBulletinsQuery() throws Exception
 	{
+		HashMap fields = getDefaultSearchValues();
+		return new QueryBuilder(fields).getQuery();
+	}
+
+	static public HashMap getDefaultSearchValues()
+	{
 		HashMap fields = new HashMap();
 		fields.put("anyWordsQuery", "");
 		fields.put("sortBy", "entrydate");
 		fields.put("exactPhraseQuery", "");
 		fields.put("allWordsQuery", "");
-		fields.put("$$$eventStartDate", "1900-01-01");
+		fields.put(LuceneSearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD, LuceneSearchConstants.EARLIEST_POSSIBLE_DATE);
 		fields.put("fields", "all");
-		fields.put("$$$eventEndDate", "5000-12-31");
-		fields.put("entrydate", "1900-01-01");
-		return new QueryBuilder(fields).getQuery();
+		fields.put(LuceneSearchConstants.SEARCH_EVENT_END_DATE_INDEX_FIELD, LuceneSearchConstants.LATEST_POSSIBLE_DATE);
+		fields.put("entrydate", LuceneSearchConstants.EARLIEST_POSSIBLE_DATE);
+		return fields;
 	}
 
 	private Results getResults(Query query) throws Exception
@@ -167,8 +175,8 @@ public class LuceneBulletinSearcher implements BulletinSearcher
 				results.add(doc);
 		}
 		
-		MartusAmplifier.getLogger().logDebug("Final Version Bulletins = " + leafs.size());
-		MartusAmplifier.getLogger().logDebug("All Bulletins = " + docs.size());
+		logger.logDebug("Final Version Bulletins = " + leafs.size());
+		logger.logDebug("All Bulletins = " + docs.size());
 		
 		return results;
 	}
@@ -211,5 +219,6 @@ public class LuceneBulletinSearcher implements BulletinSearcher
 		return leafs;
 	}
 
-	private IndexSearcher searcher;	
+	private IndexSearcher searcher;
+	private LoggerInterface logger;
 }

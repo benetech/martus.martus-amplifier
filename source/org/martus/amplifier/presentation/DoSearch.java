@@ -34,7 +34,6 @@ import org.martus.amplifier.common.CharacterUtil;
 import org.martus.amplifier.common.RawSearchParameters;
 import org.martus.amplifier.common.SearchParameters;
 import org.martus.amplifier.common.SearchResultConstants;
-import org.martus.amplifier.lucene.LuceneBulletinSearcher;
 import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.amplifier.search.BulletinInfo;
 import org.martus.amplifier.search.BulletinSearcher;
@@ -143,7 +142,7 @@ public class DoSearch extends AbstractSearchResultsServlet
 
 	public List getResults(Map fields) throws Exception
 	{
-		BulletinSearcher searcher = openBulletinSearcher();
+		BulletinSearcher searcher = MartusAmplifier.openBulletinSearcher();
 		
 		try
 		{
@@ -163,13 +162,6 @@ public class DoSearch extends AbstractSearchResultsServlet
 		{
 			searcher.close();
 		}
-	}
-	
-	BulletinSearcher openBulletinSearcher() throws Exception
-	{
-		String indexPath = MartusAmplifier.getStaticAmplifierDataPath();
-
-		return new LuceneBulletinSearcher(indexPath);
 	}
 	
 	public void convertLanguageCode(BulletinInfo bulletinInfo)

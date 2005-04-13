@@ -44,9 +44,6 @@ public interface SearchConstants
 	final String SEARCH_ENTRY_DATE_INDEX_FIELD = BulletinConstants.TAGENTRYDATE;
 	final String SEARCH_LANGUAGE_INDEX_FIELD = BulletinConstants.TAGLANGUAGE;
 	final String SEARCH_ORGANIZATION_INDEX_FIELD = BulletinConstants.TAGORGANIZATION;
-	final String SEARCH_EVENT_START_DATE_INDEX_FIELD = "$$$eventStartDate";
-	final String SEARCH_EVENT_END_DATE_INDEX_FIELD = "$$$eventEndDate";
-	
 	final String SEARCH_DATE_FORMAT_PATTERN = "yyyy-MM-dd";
 	final DateFormat SEARCH_DATE_FORMAT = new SimpleDateFormat(SEARCH_DATE_FORMAT_PATTERN);
 

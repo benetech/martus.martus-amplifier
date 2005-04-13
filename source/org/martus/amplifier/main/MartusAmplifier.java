@@ -37,8 +37,10 @@ import org.martus.amplifier.attachment.FileSystemDataManager;
 import org.martus.amplifier.datasynch.BackupServerInfo;
 import org.martus.amplifier.datasynch.DataSynchManager;
 import org.martus.amplifier.lucene.LuceneBulletinIndexer;
+import org.martus.amplifier.lucene.LuceneBulletinSearcher;
 import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinIndexer;
+import org.martus.amplifier.search.BulletinSearcher;
 import org.martus.common.EnglishCommonStrings;
 import org.martus.common.LoggerInterface;
 import org.martus.common.MartusUtilities;
@@ -424,7 +426,7 @@ public class MartusAmplifier implements LoggerInterface
 		return "Amp: " + message;
 	}
 	
-	public static LoggerInterface getLogger()
+	public LoggerInterface getLogger()
 	{
 		return coreServer.getLogger();
 	}
@@ -534,6 +536,12 @@ public class MartusAmplifier implements LoggerInterface
 	public static String getStaticAmplifierDataPath()
 	{
 		return staticAmplifierDirectory.getPath();
+	}
+
+	public static BulletinSearcher openBulletinSearcher() throws Exception
+	{
+		String indexPath = getStaticAmplifierDataPath();
+		return new LuceneBulletinSearcher(indexPath, coreServer.getLogger());
 	}
 
 	boolean isSyncing;

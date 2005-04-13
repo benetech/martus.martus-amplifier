@@ -36,7 +36,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
+
 import junit.framework.Assert;
+
 import org.martus.amplifier.attachment.AttachmentStorageException;
 import org.martus.amplifier.attachment.DataManager;
 import org.martus.amplifier.attachment.FileSystemDataManager;
@@ -58,6 +60,7 @@ import org.martus.amplifier.search.SearchConstants;
 import org.martus.amplifier.test.AbstractAmplifierTestCase;
 import org.martus.common.BulletinStore;
 import org.martus.common.FieldSpec;
+import org.martus.common.LoggerToNull;
 import org.martus.common.bulletin.AttachmentProxy;
 import org.martus.common.bulletin.Bulletin;
 import org.martus.common.bulletin.BulletinForTesting;
@@ -440,7 +443,7 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 	
 	private BulletinSearcher getBulletinSearcher() throws Exception
 	{
-		return new LuceneBulletinSearcher(getTestBasePath());
+		return new LuceneBulletinSearcher(getTestBasePath(), new LoggerToNull());
 	}
 	
 	private ReadableDatabase getDatabase()

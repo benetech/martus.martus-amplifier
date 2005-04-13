@@ -32,6 +32,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.martus.amplifier.lucene.LuceneSearchConstants;
 import org.martus.amplifier.search.SearchConstants;
 import org.martus.common.utilities.MartusFlexidate;
 
@@ -100,9 +101,9 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 
 		if (startDate != null && endDate != null)
 		{
-			String keyStart = SEARCH_EVENT_START_DATE_INDEX_FIELD;			
+			String keyStart = LuceneSearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD;			
 			searchFields.put(keyStart, startDate);
-			String keyEnd = SEARCH_EVENT_END_DATE_INDEX_FIELD;
+			String keyEnd = LuceneSearchConstants.SEARCH_EVENT_END_DATE_INDEX_FIELD;
 			searchFields.put(keyEnd, endDate);
 		}	
 	}
@@ -121,7 +122,7 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 	public static String getEntryDate(String dayString)
 	{
 		if (dayString.equals(ENTRY_ANYTIME_TAG))
-			return "1900-01-01";
+			return LuceneSearchConstants.EARLIEST_POSSIBLE_DATE;
 			
 		int days = Integer.parseInt(dayString);	
 		return daysAgo(days);

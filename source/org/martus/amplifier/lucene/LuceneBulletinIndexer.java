@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.Collection;
 import java.util.Iterator;
+
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.document.Document;
@@ -40,7 +41,6 @@ import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.search.BulletinField;
 import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinIndexer;
-import org.martus.amplifier.search.SearchConstants;
 import org.martus.common.FieldSpec;
 import org.martus.common.bulletin.AttachmentProxy;
 import org.martus.common.packet.BulletinHistory;
@@ -274,8 +274,8 @@ public class LuceneBulletinIndexer
 		String beginDate = MartusFlexidate.toStoredDateFormat(mfd.getBeginDate());
 		String endDate = MartusFlexidate.toStoredDateFormat(mfd.getEndDate());							
 	
-		doc.add(Field.Keyword(SearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD, beginDate)); 			
-		doc.add(Field.Keyword(SearchConstants.SEARCH_EVENT_END_DATE_INDEX_FIELD, endDate));
+		doc.add(Field.Keyword(LuceneSearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD, beginDate)); 			
+		doc.add(Field.Keyword(LuceneSearchConstants.SEARCH_EVENT_END_DATE_INDEX_FIELD, endDate));
 					
 		doc.add(Field.Text(field.getIndexId(), value));				
 	}
