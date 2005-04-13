@@ -40,8 +40,8 @@ Boston, MA 02111-1307, USA.
 		Note: The current release of the Martus Search Engine ignores 
 		punctuation in search strings, and cannot perform a search using an 
 		alphabet that does not separate words with spaces (e.g. Thai.)  This 
-		release also does not display bulletins entered in years before 1900 
-		or after 2005.        
+		release also does not display bulletins entered before February, 1900, 
+		or after year 2005.
 		<br/><br/><br/>
 
 		#set ($showSearchForm = true)
