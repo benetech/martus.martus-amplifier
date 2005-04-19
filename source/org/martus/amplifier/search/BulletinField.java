@@ -29,9 +29,9 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.martus.common.FieldSpec;
-import org.martus.common.StandardFieldSpecs;
 import org.martus.common.bulletin.BulletinConstants;
+import org.martus.common.fieldspec.FieldSpec;
+import org.martus.common.fieldspec.StandardFieldSpecs;
 
 public class BulletinField implements BulletinConstants, SearchConstants
 {
