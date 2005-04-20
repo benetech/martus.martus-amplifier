@@ -26,18 +26,23 @@ Boston, MA 02111-1307, USA.
 
 package org.martus.amplifier.presentation.test;
 
+import java.io.File;
 import java.util.List;
 import java.util.Vector;
 
 import org.apache.velocity.context.Context;
 import org.martus.amplifier.common.SearchResultConstants;
+import org.martus.amplifier.main.EventDatesIndexedList;
+import org.martus.amplifier.main.LanguagesIndexedList;
 import org.martus.amplifier.main.MartusAmplifier;
+import org.martus.amplifier.main.test.MockMartusServer;
 import org.martus.amplifier.presentation.DoSearch;
 import org.martus.amplifier.presentation.SimpleSearch;
 import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinInfo;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
 import org.martus.amplifier.velocity.AmplifierServletSession;
+import org.martus.common.LoggerToNull;
 import org.martus.common.packet.UniversalId;
 import org.martus.util.DirectoryUtils;
 import org.martus.util.TestCaseEnhanced;
@@ -52,7 +57,13 @@ public class TestDoSearch extends TestCaseEnhanced
 	public void setUp() throws Exception
 	{
 		super.setUp();
+		File empty = createTempFileWithData("");
+		File emptyDates = createTempFile();
+		LanguagesIndexedList.initialize(empty);
+		EventDatesIndexedList.initialize(emptyDates);
 		MartusAmplifier.staticAmplifierDirectory = createTempDirectory();
+		MockMartusServer server = new MockMartusServer(MartusAmplifier.staticAmplifierDirectory, new LoggerToNull(), null);
+		new MartusAmplifier(server); 
 	}
 	
 	public void tearDown() throws Exception
