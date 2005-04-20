@@ -90,7 +90,7 @@ public interface SearchResultConstants
 	final static String SORT_BY_LOCATION_TAG		= "location";
 	final static String SORT_BY_EVENTDATE_TAG		= "event date";
 	final static String SORT_BY_ORGANIZATION_TAG	= "organization";
-	final static String SORT_BY_ENTRYDATE_TAG		= "entry date";
+	final static String SORT_BY_ENTRYDATE_TAG		= "date created";
 		
 	
 	final String[] ADVANCED_KEYS = new String[] {

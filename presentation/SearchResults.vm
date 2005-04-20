@@ -69,9 +69,9 @@ Boston, MA 02111-1307, USA.
 						#end
 						
 						#if($bulletin.fields.entrydate != "")
-			                <strong>Entry Date</strong>: $bulletin.fields.entrydate<br/>
+			                <strong>Date Created</strong>: $bulletin.fields.entrydate<br/>
 			            #else
-			            	<strong>Entry Date</strong>: <br/>  
+			            	<strong>Date Created</strong>: <br/>  
 						#end
 						
 		                <strong>Event Date</strong>: 
