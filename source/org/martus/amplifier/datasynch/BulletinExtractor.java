@@ -135,7 +135,7 @@ public class BulletinExtractor
 	
 	public void indexEventDate(String flexidateString) throws IOException
 	{
-		EventDatesIndexedList.eventDatesIndexedSingleton.addValue(flexidateString);
+		EventDatesIndexedList.getEventDatesIndexedList().addValue(flexidateString);
 	}
 	
 	private void storeFieldDataPacket(UniversalId uId, ZipEntryInputStreamWithSeek data) throws IOException, RecordHiddenException, CryptoException

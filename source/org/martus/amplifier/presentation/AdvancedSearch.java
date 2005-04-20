@@ -60,7 +60,7 @@ public class AdvancedSearch extends AmplifierServlet
 		Vector sortByFields = FindBulletinsFields.getSortByFieldDisplayNames();
 		context.put("sortByFields", sortByFields);
 		
-		EventDatesIndexedList eventDates = EventDatesIndexedList.eventDatesIndexedSingleton;
+		EventDatesIndexedList eventDates = EventDatesIndexedList.getEventDatesIndexedList();
 		Vector years = new Vector();
 		int earliestIndexedYear = eventDates.getEarliestYear();
 		for(int y = eventDates.getLatestYear(); y >= earliestIndexedYear; --y)

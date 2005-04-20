@@ -31,6 +31,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Vector;
+
 import org.martus.amplifier.ServerCallbackInterface;
 import org.martus.amplifier.attachment.DataManager;
 import org.martus.amplifier.attachment.FileSystemDataManager;
@@ -43,6 +44,7 @@ import org.martus.amplifier.search.BulletinIndexer;
 import org.martus.amplifier.search.BulletinSearcher;
 import org.martus.common.EnglishCommonStrings;
 import org.martus.common.LoggerInterface;
+import org.martus.common.LoggerToNull;
 import org.martus.common.MartusUtilities;
 import org.martus.common.MiniLocalization;
 import org.martus.common.Version;
@@ -541,9 +543,13 @@ public class MartusAmplifier implements LoggerInterface
 	public static BulletinSearcher openBulletinSearcher() throws Exception
 	{
 		String indexPath = getStaticAmplifierDataPath();
-		return new LuceneBulletinSearcher(indexPath, coreServer.getLogger());
+		LoggerInterface logger = new LoggerToNull(); 
+		if(coreServer != null)
+			logger = coreServer.getLogger();
+		
+		return new LuceneBulletinSearcher(indexPath, logger);
 	}
-
+	
 	boolean isSyncing;
 	private List backupServersList;
 	List notAmplifiedAccountsList;

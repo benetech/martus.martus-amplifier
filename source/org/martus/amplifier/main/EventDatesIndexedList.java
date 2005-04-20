@@ -92,7 +92,18 @@ public class EventDatesIndexedList extends IndexedValuesList
 		EventDatesIndexedList.eventDatesIndexedSingleton = new EventDatesIndexedList(datesIndexedFile);
 		EventDatesIndexedList.eventDatesIndexedSingleton.loadFromFile();
 	}
+	
+	// NOTE: calling this without first calling initialize() will 
+	// automatically create an empty but valid object 
+	public static EventDatesIndexedList getEventDatesIndexedList()
+	{
+		if(eventDatesIndexedSingleton == null)
+		{
+			eventDatesIndexedSingleton = new EventDatesIndexedList(null);
+		}
+		return eventDatesIndexedSingleton;
+	}
 		
-	public static EventDatesIndexedList eventDatesIndexedSingleton;
+	private static EventDatesIndexedList eventDatesIndexedSingleton;
 	
 }

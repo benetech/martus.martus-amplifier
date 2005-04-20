@@ -123,7 +123,7 @@ public class RawSearchParameters
 		defaultMap.put(SearchResultConstants.RESULT_LANGUAGE_KEY, SearchResultConstants.LANGUAGE_ANYLANGUAGE_LABEL);
 		defaultMap.put(SearchResultConstants.RESULT_SORTBY_KEY, SearchConstants.SEARCH_ENTRY_DATE_INDEX_FIELD);
 
-		EventDatesIndexedList eventDatesIndexedList = EventDatesIndexedList.eventDatesIndexedSingleton;
+		EventDatesIndexedList eventDatesIndexedList = EventDatesIndexedList.getEventDatesIndexedList();
 
 		defaultMap.put(SearchResultConstants.RESULT_START_DAY_KEY, "1");
 		defaultMap.put(SearchResultConstants.RESULT_START_MONTH_KEY, "0");

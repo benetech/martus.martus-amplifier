@@ -96,7 +96,7 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 		MartusAmplifier.dataManager = attachmentManager;
 		store = new MockBulletinStore(this);
 		LanguagesIndexedList.languagesIndexedSingleton = new LanguagesIndexedList(new File(getTestBasePath(),"langIndex"));
-		EventDatesIndexedList.eventDatesIndexedSingleton = new EventDatesIndexedList(new File(getTestBasePath(), "dateIndex"));
+		EventDatesIndexedList.initialize(createTempFile());
 	}
 
 	protected void tearDown() throws Exception 

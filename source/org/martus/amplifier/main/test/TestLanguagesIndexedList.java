@@ -47,7 +47,7 @@ public class TestLanguagesIndexedList extends TestCaseEnhanced
 		languageListFile.delete();
 		
 		LanguagesIndexedList list = new LanguagesIndexedList(languageListFile);
-		assertNull("before load or add not null?", list.getIndexedValues());
+		assertEquals("before load or add not empty?", 0, list.getIndexedValues().size());
 		
 		try
 		{

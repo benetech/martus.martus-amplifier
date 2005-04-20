@@ -50,7 +50,8 @@ public class TestIndexedValuesList extends TestCaseEnhanced
 		listFile.deleteOnExit();
 		IndexedValuesList list = new IndexedValuesList(listFile);
 		assertFalse("file should not exist", listFile.exists());
-		assertNull("list should be null", list.getIndexedValues());
+		assertNotNull("list is null?", list.getIndexedValues());
+		assertEquals("list not empty?", 0, list.getIndexedValues().size());
 		
 		try
 		{

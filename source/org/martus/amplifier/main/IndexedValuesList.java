@@ -88,6 +88,9 @@ public class IndexedValuesList
 
 	public Vector getIndexedValues()
 	{
+		if(indexedValues == null)
+			return new Vector();
+		
 		return indexedValues;
 	}
 
