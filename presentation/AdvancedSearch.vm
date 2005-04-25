@@ -193,7 +193,7 @@ Boston, MA 02111-1307, USA.
 				</tr>
 				<tr>
 					<td><strong>Date Created</strong></td>
-					<td>Show bulletins submitted in the past</td>
+					<td>Show bulletins created in the past</td>
 					<td>					
 						<select name='entryDate'>
 							#foreach ($dateChoice in $entryDateFields)	
