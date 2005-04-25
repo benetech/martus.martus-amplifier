@@ -54,6 +54,7 @@ import org.martus.common.packet.UniversalId;
 import org.martus.common.packet.Packet.InvalidPacketException;
 import org.martus.common.packet.Packet.SignatureVerificationException;
 import org.martus.common.packet.Packet.WrongPacketTypeException;
+import org.martus.util.LoggerUtil;
 import org.martus.util.Base64.InvalidBase64Exception;
 
 public class AmplifierNetworkGateway implements LoggerInterface
@@ -279,6 +280,11 @@ public class AmplifierNetworkGateway implements LoggerInterface
 	public void logError(String message)
 	{
 		logger.logError(createLogString(message));
+	}
+
+	public void logError(Exception e)
+	{
+		logError(LoggerUtil.getStackTrace(e));
 	}
 
 	public void logNotice(String message)

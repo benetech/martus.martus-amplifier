@@ -53,6 +53,7 @@ import org.martus.common.crypto.MartusCrypto;
 import org.martus.common.crypto.MartusCrypto.CryptoInitializationException;
 import org.martus.common.network.MartusXmlrpcClient.SSLSocketSetupException;
 import org.martus.util.DirectoryUtils;
+import org.martus.util.LoggerUtil;
 import org.mortbay.http.HttpContext;
 import org.mortbay.http.SunJsseListener;
 import org.mortbay.jetty.Server;
@@ -436,6 +437,11 @@ public class MartusAmplifier implements LoggerInterface
 	public void logError(String message)
 	{
 		getLogger().logError(createLogString(message));
+	}
+	
+	public void logError(Exception e)
+	{
+		logError(LoggerUtil.getStackTrace(e));
 	}
 
 	public void logNotice(String message)

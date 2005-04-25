@@ -30,6 +30,7 @@ import java.io.File;
 import org.martus.amplifier.ServerCallbackInterface;
 import org.martus.common.LoggerInterface;
 import org.martus.common.crypto.MartusCrypto;
+import org.martus.util.LoggerUtil;
 
 
 public class MockMartusServer implements ServerCallbackInterface
@@ -71,6 +72,12 @@ public class MockMartusServer implements ServerCallbackInterface
 	{
 		logger.logError(message);
 	}
+	
+	public void logError(Exception e)
+	{
+		logError(LoggerUtil.getStackTrace(e));
+	}
+	
 	
 	public void logInfo(String message)
 	{
