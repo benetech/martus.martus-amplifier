@@ -444,6 +444,12 @@ public class MartusAmplifier implements LoggerInterface
 		logError(LoggerUtil.getStackTrace(e));
 	}
 
+	public void logError(String message, Exception e)
+	{
+		logError(message);
+		logError(e);
+	}
+
 	public void logNotice(String message)
 	{
 		getLogger().logNotice(createLogString(message));

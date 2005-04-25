@@ -287,6 +287,12 @@ public class AmplifierNetworkGateway implements LoggerInterface
 		logError(LoggerUtil.getStackTrace(e));
 	}
 
+	public void logError(String message, Exception e)
+	{
+		logError(message);
+		logError(e);
+	}
+
 	public void logNotice(String message)
 	{
 		logger.logNotice(createLogString(message));
