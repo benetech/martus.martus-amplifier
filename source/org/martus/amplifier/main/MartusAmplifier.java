@@ -570,7 +570,7 @@ public class MartusAmplifier implements LoggerInterface
 	private boolean webPasswordProtected;
 	
 	private static final String SERVERS_WHO_WE_CALL_DIRIRECTORY = "serversWhoWeCall";
-	private static final String ACCOUNTS_NOT_AMPLIFIED_FILE = "accountsNotAmplified.txt";
+	static public final String ACCOUNTS_NOT_AMPLIFIED_FILE = "accountsNotAmplified.txt";
 	private static final String JETTY_CONFIGURATION_FILE = "jettyConfiguration.xml";
 	private static final String WEB_PASSWORD_CONFIGURATION_FILE = "webauthorized.txt";
 	private static final String KEYSTORE_FILE = "keystore";
