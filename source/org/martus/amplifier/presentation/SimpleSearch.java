@@ -40,4 +40,7 @@ public class SimpleSearch extends AmplifierServlet
 		super.selectTemplate(request, response, context);
 		return "SimpleSearch.vm";
     }
+
+	// This class is NOT intended to be serialized!!!
+	static final long serialVersionUID = 1;
 }

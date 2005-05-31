@@ -139,4 +139,7 @@ public class FeedbackSubmitted extends AmplifierServlet
 	static public String FEEDBACK_TECH_PROBLEM_PREFIX = "technical";	
 	final String FEEDBACK_SUFFIX = ".txt";
 	private String feedbackDirectory;	
+
+	// This class is NOT intended to be serialized!!!
+	static final long serialVersionUID = 1;
 }

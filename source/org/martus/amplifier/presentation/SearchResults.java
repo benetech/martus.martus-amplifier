@@ -47,4 +47,6 @@ public class SearchResults extends AbstractSearchResultsServlet
 		return bulletins;
 	}
 
+	// This class is NOT intended to be serialized!!!
+	static final long serialVersionUID = 1;
 }

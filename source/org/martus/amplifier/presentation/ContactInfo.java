@@ -54,4 +54,7 @@ public class ContactInfo extends AmplifierServlet
 		context.put("contactInfo", contactInfoData);
 		return "ContactInfo.vm";
 	}
+
+	// This class is NOT intended to be serialized!!!
+	static final long serialVersionUID = 1;
 }

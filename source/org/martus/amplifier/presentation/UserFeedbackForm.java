@@ -42,4 +42,7 @@ public class UserFeedbackForm extends AmplifierServlet
 		context.put("runningVersion", VersionBuildDate.getVersionBuildDate());
 		return "UserFeedbackForm.vm";
 	}
+
+	// This class is NOT intended to be serialized!!!
+	static final long serialVersionUID = 1;
 }

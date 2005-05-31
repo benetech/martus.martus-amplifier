@@ -39,4 +39,7 @@ public class PrintFoundBulletin extends AmplifierServlet
 		FoundBulletin.updateFoundBulletinContext(request, context);
 		return "PrintFoundBulletin.vm";
 	}
+
+	// This class is NOT intended to be serialized!!!
+	static final long serialVersionUID = 1;
 }

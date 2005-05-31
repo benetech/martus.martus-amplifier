@@ -174,4 +174,7 @@ public class DoSearch extends AbstractSearchResultsServlet
 			return;				
 		bulletinInfo.set(SearchConstants.SEARCH_LANGUAGE_INDEX_FIELD, languageString);
 	}
+
+	// This class is NOT intended to be serialized!!!
+	static final long serialVersionUID = 1;
 }

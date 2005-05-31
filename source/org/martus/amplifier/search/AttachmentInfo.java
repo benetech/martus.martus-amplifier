@@ -64,4 +64,7 @@ public class AttachmentInfo implements Serializable
 	private String localId;
 	private String label;
 	private long sizeInKb;
+
+	// This class is NOT intended to be serialized!!!
+	static final long serialVersionUID = 1;
 }

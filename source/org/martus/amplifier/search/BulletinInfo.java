@@ -133,4 +133,6 @@ public class BulletinInfo implements Serializable
 	BulletinHistory history;
 	private String fieldDataPacketLocalId;
 
+	// This class is NOT intended to be serialized!!!
+	static final long serialVersionUID = 1;
 }

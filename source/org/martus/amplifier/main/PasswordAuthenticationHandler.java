@@ -81,4 +81,6 @@ public class PasswordAuthenticationHandler extends AbstractHttpHandler
 	}
 
 	final static String REALM = "MartusAmp";
+	// This class is NOT intended to be serialized!!!
+	static final long serialVersionUID = 1;
 }

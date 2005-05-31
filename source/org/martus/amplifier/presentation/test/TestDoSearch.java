@@ -206,5 +206,8 @@ public class TestDoSearch extends TestCaseEnhanced
 			infos.add(bulletinInfo3);
 			return infos;
 		}
+
+		// This class is NOT intended to be serialized!!!
+		static final long serialVersionUID = 1;
 	}
 }

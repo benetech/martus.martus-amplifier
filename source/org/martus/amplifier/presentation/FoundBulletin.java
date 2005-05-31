@@ -95,4 +95,7 @@ public class FoundBulletin extends AmplifierServlet
 	{
 		return (List)request.getSession().getAttribute("foundBulletins");
 	}
+
+	// This class is NOT intended to be serialized!!!
+	static final long serialVersionUID = 1;
 }

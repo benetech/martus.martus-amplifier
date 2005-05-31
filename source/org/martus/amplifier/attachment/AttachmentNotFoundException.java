@@ -59,4 +59,6 @@ public class AttachmentNotFoundException extends AttachmentStorageException
 		super(cause);
 	}
 
+	// This class is NOT intended to be serialized!!!
+	static final long serialVersionUID = 1;
 }

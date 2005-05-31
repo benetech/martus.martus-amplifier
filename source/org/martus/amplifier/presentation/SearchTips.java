@@ -37,4 +37,7 @@ public class SearchTips extends AmplifierServlet
 	{
 		return "SearchTips.vm";
 	}
+
+	// This class is NOT intended to be serialized!!!
+	static final long serialVersionUID = 1;
 }

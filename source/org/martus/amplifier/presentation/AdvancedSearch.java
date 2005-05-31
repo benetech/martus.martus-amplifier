@@ -96,4 +96,7 @@ public class AdvancedSearch extends AmplifierServlet
 		}
 		return fields;
 	}
+
+	// This class is NOT intended to be serialized!!!
+	static final long serialVersionUID = 1;
 }

@@ -109,4 +109,7 @@ public class DownloadAttachment extends HttpServlet
 
 	private String InternalError = "An internal error occured when trying to retrieve this attachment.";
 	private String basePath = null;
+
+	// This class is NOT intended to be serialized!!!
+	static final long serialVersionUID = 1;
 }

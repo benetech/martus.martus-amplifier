@@ -82,7 +82,11 @@ public class AmplifierNetworkGateway implements LoggerInterface
 	
 	public Vector getAllAccountIds()
 	{
-		class NotAuthorizedException extends Exception {}
+		class NotAuthorizedException extends Exception
+		{
+			// This class is NOT intended to be serialized!!!
+			static final long serialVersionUID = 1;
+		}
 		
 		Vector result = new Vector();
 		try

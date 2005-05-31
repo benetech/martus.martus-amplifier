@@ -67,4 +67,7 @@ public class InsecureHomePage extends HttpServlet
 	}
 
 	private static final String NAME_TO_REPLACE = "SERVERNAME";	
+
+	// This class is NOT intended to be serialized!!!
+	static final long serialVersionUID = 1;
 }

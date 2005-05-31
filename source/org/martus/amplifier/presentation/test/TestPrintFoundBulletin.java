@@ -231,6 +231,9 @@ public class TestPrintFoundBulletin extends AbstractAmplifierTestCase
 			infos.add(bulletinInfo3);
 			return infos;
 		}
+
+		// This class is NOT intended to be serialized!!!
+		static final long serialVersionUID = 1;
 	}
 }
 
