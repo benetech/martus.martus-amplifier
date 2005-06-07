@@ -84,8 +84,7 @@ public class AmplifierNetworkGateway implements LoggerInterface
 	{
 		class NotAuthorizedException extends Exception
 		{
-			// This class is NOT intended to be serialized!!!
-			static final long serialVersionUID = 1;
+			private static final long serialVersionUID = 1;
 		}
 		
 		Vector result = new Vector();

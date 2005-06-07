@@ -26,11 +26,9 @@ Boston, MA 02111-1307, USA.
 
 package org.martus.amplifier.search;
 
-import java.io.Serializable;
-
 import org.martus.common.packet.UniversalId;
 
-public class AttachmentInfo implements Serializable
+public class AttachmentInfo
 {
 	public AttachmentInfo(UniversalId uid, String label, long sizeInKb)
 	{
@@ -64,7 +62,4 @@ public class AttachmentInfo implements Serializable
 	private String localId;
 	private String label;
 	private long sizeInKb;
-
-	// This class is NOT intended to be serialized!!!
-	static final long serialVersionUID = 1;
 }

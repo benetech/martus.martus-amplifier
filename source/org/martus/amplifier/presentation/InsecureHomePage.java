@@ -28,6 +28,7 @@ package org.martus.amplifier.presentation;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.NotSerializableException;
 import java.io.Writer;
 
 import javax.servlet.ServletException;
@@ -66,8 +67,13 @@ public class InsecureHomePage extends HttpServlet
 		}
 	}
 
+	// This class is NOT intended to be serialized!!!
+	private static final long serialVersionUID = 1;
+	private void writeObject(java.io.ObjectOutputStream stream) throws IOException
+	{
+		throw new NotSerializableException();
+	}
+
 	private static final String NAME_TO_REPLACE = "SERVERNAME";	
 
-	// This class is NOT intended to be serialized!!!
-	static final long serialVersionUID = 1;
 }

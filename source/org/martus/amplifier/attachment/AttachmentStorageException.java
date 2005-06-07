@@ -66,6 +66,5 @@ public class AttachmentStorageException extends Exception
 		super(cause);
 	}
 
-	// This class is NOT intended to be serialized!!!
-	static final long serialVersionUID = 1;
+	private static final long serialVersionUID = 1;
 }

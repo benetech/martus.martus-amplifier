@@ -26,6 +26,8 @@ Boston, MA 02111-1307, USA.
 package org.martus.amplifier.search;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.NotSerializableException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -126,6 +128,13 @@ public class BulletinInfo implements Serializable
 		return(contactInfoFile != null && contactInfoFile.exists());
 	}
 
+	// This class is NOT intended to be serialized!!!
+	private static final long serialVersionUID = 1;
+	private void writeObject(java.io.ObjectOutputStream stream) throws IOException
+	{
+		throw new NotSerializableException();
+	}
+
 	private Map fields;
 	private List attachments;
 	private UniversalId bulletinId;
@@ -133,6 +142,4 @@ public class BulletinInfo implements Serializable
 	BulletinHistory history;
 	private String fieldDataPacketLocalId;
 
-	// This class is NOT intended to be serialized!!!
-	static final long serialVersionUID = 1;
 }

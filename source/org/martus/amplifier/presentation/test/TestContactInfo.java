@@ -148,9 +148,7 @@ public class TestContactInfo extends TestCaseEnhanced
 			return infos;
 		}
 
-		// This class is NOT intended to be serialized!!!
-		static final long serialVersionUID = 1;
-}
+	}
+	
 	File contactInfo2;
-
 }

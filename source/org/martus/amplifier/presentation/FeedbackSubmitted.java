@@ -27,6 +27,7 @@ package org.martus.amplifier.presentation;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.NotSerializableException;
 import java.util.Map;
 import java.util.Vector;
 
@@ -134,12 +135,16 @@ public class FeedbackSubmitted extends AmplifierServlet
 		writer.close();
 	}
 
+	// This class is NOT intended to be serialized!!!
+	private static final long serialVersionUID = 1;
+	private void writeObject(java.io.ObjectOutputStream stream) throws IOException
+	{
+		throw new NotSerializableException();
+	}
+
 	
 	static public String FEEDBACK_DISSATISFIED_PREFIX = "dissatisfied";	
 	static public String FEEDBACK_TECH_PROBLEM_PREFIX = "technical";	
 	final String FEEDBACK_SUFFIX = ".txt";
 	private String feedbackDirectory;	
-
-	// This class is NOT intended to be serialized!!!
-	static final long serialVersionUID = 1;
 }
