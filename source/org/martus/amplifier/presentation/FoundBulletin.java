@@ -26,8 +26,8 @@ Boston, MA 02111-1307, USA.
 package org.martus.amplifier.presentation;
 
 import java.io.IOException;
-import java.io.NotSerializableException;
 import java.util.List;
+
 import org.apache.velocity.context.Context;
 import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.amplifier.search.BulletinInfo;
@@ -95,13 +95,6 @@ public class FoundBulletin extends AmplifierServlet
 	private static List getFoundBulletins(AmplifierServletRequest request)
 	{
 		return (List)request.getSession().getAttribute("foundBulletins");
-	}
-
-	// This class is NOT intended to be serialized!!!
-	private static final long serialVersionUID = 1;
-	private void writeObject(java.io.ObjectOutputStream stream) throws IOException
-	{
-		throw new NotSerializableException();
 	}
 
 }

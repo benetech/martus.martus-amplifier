@@ -25,8 +25,6 @@ Boston, MA 02111-1307, USA.
 */
 package org.martus.amplifier.presentation;
 
-import java.io.IOException;
-import java.io.NotSerializableException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,13 +45,6 @@ public class SearchResults extends AbstractSearchResultsServlet
 		if(bulletins == null)
 			bulletins = new ArrayList();
 		return bulletins;
-	}
-
-	// This class is NOT intended to be serialized!!!
-	private static final long serialVersionUID = 1;
-	private void writeObject(java.io.ObjectOutputStream stream) throws IOException
-	{
-		throw new NotSerializableException();
 	}
 
 }

@@ -26,9 +26,6 @@ Boston, MA 02111-1307, USA.
 
 package org.martus.amplifier.presentation;
 
-import java.io.IOException;
-import java.io.NotSerializableException;
-
 import org.apache.velocity.context.Context;
 import org.martus.amplifier.velocity.AmplifierServlet;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
@@ -44,13 +41,6 @@ public class UserFeedbackForm extends AmplifierServlet
 		context.put("problemReport", new Boolean(isProblemReport));
 		context.put("runningVersion", VersionBuildDate.getVersionBuildDate());
 		return "UserFeedbackForm.vm";
-	}
-
-	// This class is NOT intended to be serialized!!!
-	private static final long serialVersionUID = 1;
-	private void writeObject(java.io.ObjectOutputStream stream) throws IOException
-	{
-		throw new NotSerializableException();
 	}
 
 }

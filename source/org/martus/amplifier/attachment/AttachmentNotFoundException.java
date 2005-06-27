@@ -59,5 +59,4 @@ public class AttachmentNotFoundException extends AttachmentStorageException
 		super(cause);
 	}
 
-	private static final long serialVersionUID = 1;
 }

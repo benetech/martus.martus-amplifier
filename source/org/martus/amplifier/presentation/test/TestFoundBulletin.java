@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Vector;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
+
 import org.apache.velocity.context.Context;
 import org.martus.amplifier.attachment.FileSystemDataManager;
 import org.martus.amplifier.common.SearchResultConstants;
@@ -323,8 +324,6 @@ public class TestFoundBulletin extends AbstractAmplifierTestCase
 			return infos;
 		}
 	
-		// This class is NOT intended to be serialized!!!
-		static final long serialVersionUID = 1;
 	}
 	BulletinInfo bulletinInfo1;
 }

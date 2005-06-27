@@ -27,7 +27,6 @@ package org.martus.amplifier.presentation;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.NotSerializableException;
 import java.io.OutputStream;
 import java.util.List;
 
@@ -106,13 +105,6 @@ public class DownloadAttachment extends HttpServlet
 		in.close();
 		out.flush();
 		out.close();
-	}
-
-	// This class is NOT intended to be serialized!!!
-	private static final long serialVersionUID = 1;
-	private void writeObject(java.io.ObjectOutputStream stream) throws IOException
-	{
-		throw new NotSerializableException();
 	}
 
 	private String InternalError = "An internal error occured when trying to retrieve this attachment.";

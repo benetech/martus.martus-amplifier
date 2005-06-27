@@ -68,5 +68,4 @@ public class BulletinIndexException extends Exception {
 		super(cause);
 	}
 
-	private static final long serialVersionUID = 1;
 }

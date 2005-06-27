@@ -84,7 +84,6 @@ public class AmplifierNetworkGateway implements LoggerInterface
 	{
 		class NotAuthorizedException extends Exception
 		{
-			private static final long serialVersionUID = 1;
 		}
 		
 		Vector result = new Vector();

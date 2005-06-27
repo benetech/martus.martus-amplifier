@@ -26,7 +26,6 @@ Boston, MA 02111-1307, USA.
 package org.martus.amplifier.main;
 
 import java.io.IOException;
-import java.io.NotSerializableException;
 
 import org.mortbay.http.HttpException;
 import org.mortbay.http.HttpFields;
@@ -79,12 +78,6 @@ public class PasswordAuthenticationHandler extends AbstractHttpHandler
 		response.commit();
 		request.setHandled(true);
 		return;
-	}
-
-	private static final long serialVersionUID = 1;
-	private void writeObject(java.io.ObjectOutputStream stream) throws IOException
-	{
-		throw new NotSerializableException();
 	}
 
 	final static String REALM = "MartusAmp";

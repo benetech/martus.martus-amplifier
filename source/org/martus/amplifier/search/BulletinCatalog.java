@@ -66,7 +66,6 @@ public class BulletinCatalog
 			super(message);
 		}
 	
-		private static final long serialVersionUID = 1;
 	}
 	
 	private static BulletinCatalog instance = new BulletinCatalog();

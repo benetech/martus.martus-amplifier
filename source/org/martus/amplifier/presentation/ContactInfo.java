@@ -25,8 +25,6 @@ Boston, MA 02111-1307, USA.
 */
 package org.martus.amplifier.presentation;
 
-import java.io.IOException;
-import java.io.NotSerializableException;
 import java.util.List;
 import java.util.Vector;
 
@@ -55,13 +53,6 @@ public class ContactInfo extends AmplifierServlet
 		formatDataForHtmlDisplay(contactInfoData);
 		context.put("contactInfo", contactInfoData);
 		return "ContactInfo.vm";
-	}
-
-	// This class is NOT intended to be serialized!!!
-	private static final long serialVersionUID = 1;
-	private void writeObject(java.io.ObjectOutputStream stream) throws IOException
-	{
-		throw new NotSerializableException();
 	}
 
 }
