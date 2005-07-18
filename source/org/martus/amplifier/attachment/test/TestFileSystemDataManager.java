@@ -40,7 +40,7 @@ import org.martus.amplifier.search.BulletinField;
 import org.martus.common.bulletin.Bulletin;
 import org.martus.common.bulletin.BulletinForTesting;
 import org.martus.common.bulletin.BulletinHtmlGenerator;
-import org.martus.common.clientside.UiBasicLocalization;
+import org.martus.common.clientside.UiLocalization;
 import org.martus.common.crypto.MockMartusSecurity;
 import org.martus.common.database.FileDatabase.MissingAccountMapException;
 import org.martus.common.database.FileDatabase.MissingAccountMapSignatureException;
@@ -164,7 +164,7 @@ public class TestFileSystemDataManager
 
 		assertEquals("Uids not the same?",publicData.getUniversalId(), publicDataPacketRetrieved.getUniversalId());
 		
-		UiBasicLocalization localization = new UiBasicLocalization(createTempDirectory(), new String[]{});
+		UiLocalization localization = new UiLocalization(createTempDirectory(), new String[]{});
 		BulletinHtmlGenerator htmlGenerator = new BulletinHtmlGenerator(localization);
 		assertEquals("HTML representation not the same?", htmlGenerator.getSectionHtmlString(publicData), htmlGenerator.getSectionHtmlString(publicDataPacketRetrieved));
 	}

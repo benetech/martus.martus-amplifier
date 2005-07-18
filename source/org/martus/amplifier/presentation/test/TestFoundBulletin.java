@@ -49,7 +49,7 @@ import org.martus.amplifier.velocity.AmplifierServletRequest;
 import org.martus.common.bulletin.Bulletin;
 import org.martus.common.bulletin.BulletinForTesting;
 import org.martus.common.bulletin.BulletinHtmlGenerator;
-import org.martus.common.clientside.UiBasicLocalization;
+import org.martus.common.clientside.UiLocalization;
 import org.martus.common.crypto.MartusCrypto;
 import org.martus.common.crypto.MockMartusSecurity;
 import org.martus.common.crypto.MartusCrypto.CryptoException;
@@ -74,7 +74,7 @@ public class TestFoundBulletin extends AbstractAmplifierTestCase
 			security.createKeyPair();
 			MartusAmplifier.setStaticSecurity(security);
 			MartusAmplifier.dataManager = new FileSystemDataManager(getTestBasePath(), security);
-			MartusAmplifier.localization = new UiBasicLocalization(createTempDirectory(),new String[]{});
+			MartusAmplifier.localization = new UiLocalization(createTempDirectory(),new String[]{});
 		}
 		if(b1 == null)
 		{
