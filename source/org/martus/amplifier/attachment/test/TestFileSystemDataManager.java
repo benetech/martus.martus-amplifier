@@ -30,17 +30,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Vector;
 import java.util.zip.ZipFile;
+
 import junit.framework.Assert;
+
 import org.martus.amplifier.attachment.AttachmentStorageException;
 import org.martus.amplifier.attachment.DataManager;
 import org.martus.amplifier.attachment.FileSystemDataManager;
 import org.martus.amplifier.datasynch.BulletinExtractor;
 import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.amplifier.search.BulletinField;
+import org.martus.common.MiniLocalization;
 import org.martus.common.bulletin.Bulletin;
 import org.martus.common.bulletin.BulletinForTesting;
 import org.martus.common.bulletin.BulletinHtmlGenerator;
-import org.martus.common.clientside.UiLocalization;
 import org.martus.common.crypto.MockMartusSecurity;
 import org.martus.common.database.FileDatabase.MissingAccountMapException;
 import org.martus.common.database.FileDatabase.MissingAccountMapSignatureException;
@@ -164,7 +166,7 @@ public class TestFileSystemDataManager
 
 		assertEquals("Uids not the same?",publicData.getUniversalId(), publicDataPacketRetrieved.getUniversalId());
 		
-		UiLocalization localization = new UiLocalization(createTempDirectory(), new String[]{});
+		MiniLocalization localization = new MiniLocalization();
 		BulletinHtmlGenerator htmlGenerator = new BulletinHtmlGenerator(localization);
 		assertEquals("HTML representation not the same?", htmlGenerator.getSectionHtmlString(publicData), htmlGenerator.getSectionHtmlString(publicDataPacketRetrieved));
 	}

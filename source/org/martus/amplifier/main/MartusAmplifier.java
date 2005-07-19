@@ -48,7 +48,6 @@ import org.martus.common.LoggerToNull;
 import org.martus.common.MartusUtilities;
 import org.martus.common.MiniLocalization;
 import org.martus.common.Version;
-import org.martus.common.clientside.MtfAwareLocalization;
 import org.martus.common.crypto.MartusCrypto;
 import org.martus.common.crypto.MartusCrypto.CryptoInitializationException;
 import org.martus.common.network.MartusXmlrpcClient.SSLSocketSetupException;
@@ -70,7 +69,7 @@ public class MartusAmplifier implements LoggerInterface
 		setStaticSecurity(coreServer.getSecurity());
 		localization = new MiniLocalization(EnglishCommonStrings.strings);
 		localization.setCurrentLanguageCode(AMP_DEFAULT_LANGUAGE);
-		localization.setCurrentDateFormatCode(MtfAwareLocalization.getDefaultDateFormatForLanguage(AMP_DEFAULT_LANGUAGE));
+		localization.setCurrentDateFormatCode(MiniLocalization.getDefaultDateFormatForLanguage(AMP_DEFAULT_LANGUAGE));
 		
 	}
 
