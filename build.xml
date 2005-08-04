@@ -163,12 +163,12 @@
 	    <delete verbose="true">
 	        <fileset dir="${push-dir}" includes="*.tar"/>
 	    </delete>
-	    <!-- Remove all md5 files from main push dir. -->
+	    <!-- Remove all checksum files from main push dir. -->
 	    <delete verbose="true">
-	        <fileset dir="${push-dir}" includes="*.md5"/>
+	        <fileset dir="${push-dir}" includes="*.sha"/>
 	    </delete>
         <tar destfile="${tar-filename}" basedir="${push-dir}"/>
-        <checksum file="${tar-filename}" algorithm="MD5" fileext=".md5"/>
+        <checksum file="${tar-filename}" algorithm="SHA" fileext=".sha"/>
     </target>
     
 <!-- ================================================================== -->
