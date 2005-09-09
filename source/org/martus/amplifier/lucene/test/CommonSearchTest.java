@@ -49,6 +49,7 @@ import org.martus.common.LoggerToNull;
 import org.martus.common.bulletin.AttachmentProxy;
 import org.martus.common.crypto.MockMartusSecurity;
 import org.martus.common.fieldspec.FieldSpec;
+import org.martus.common.fieldspec.FieldTypeNormal;
 import org.martus.common.packet.FieldDataPacket;
 import org.martus.common.packet.UniversalId;
 import org.martus.common.test.UnicodeConstants;
@@ -205,7 +206,7 @@ public abstract class CommonSearchTest
 		
 		FieldSpec[] withCustom = new FieldSpec[normalFieldCount];
 		System.arraycopy(normalFields, 0, withCustom, 0, normalFields.length);
-		withCustom[normalFields.length] = FieldSpec.createCustomField(SAMPLE_CUSTOM_TAG, SAMPLE_CUSTOM_LABEL, FieldSpec.TYPE_NORMAL);
+		withCustom[normalFields.length] = FieldSpec.createCustomField(SAMPLE_CUSTOM_TAG, SAMPLE_CUSTOM_LABEL, new FieldTypeNormal());
 		
 		return withCustom;
 	}

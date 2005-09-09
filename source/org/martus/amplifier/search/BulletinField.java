@@ -31,6 +31,7 @@ import java.util.Map;
 
 import org.martus.common.bulletin.BulletinConstants;
 import org.martus.common.fieldspec.FieldSpec;
+import org.martus.common.fieldspec.FieldType;
 import org.martus.common.fieldspec.StandardFieldSpecs;
 
 public class BulletinField implements BulletinConstants, SearchConstants
@@ -62,12 +63,12 @@ public class BulletinField implements BulletinConstants, SearchConstants
 
 	public boolean isDateField()
 	{
-		return (StandardFieldSpecs.getStandardType(xmlId) == FieldSpec.TYPE_DATE);
+		return (StandardFieldSpecs.getStandardType(xmlId).isDate());
 	}		
 	
 	public boolean isDateRangeField()
 	{
-		return (StandardFieldSpecs.getStandardType(xmlId) == FieldSpec.TYPE_DATERANGE);
+		return (StandardFieldSpecs.getStandardType(xmlId).isDateRange());
 	}	
 		
 	public static BulletinField getFieldByXmlId(String xmlId)
@@ -94,7 +95,7 @@ public class BulletinField implements BulletinConstants, SearchConstants
 		for(int i = 0; i < length; ++i)
 		{
 			String tag = ids[i].toString();
-			int type = StandardFieldSpecs.getStandardType(tag);
+			FieldType type = StandardFieldSpecs.getStandardType(tag);
 			defaultSearchFieldSpecs[i] = FieldSpec.createStandardField(tag, type);
 		}
 		return defaultSearchFieldSpecs;
