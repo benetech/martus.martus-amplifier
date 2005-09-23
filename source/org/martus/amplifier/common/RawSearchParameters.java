@@ -26,7 +26,6 @@ Boston, MA 02111-1307, USA.
 
 package org.martus.amplifier.common;
 
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,6 +34,7 @@ import org.martus.amplifier.search.SearchConstants;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
 import org.martus.amplifier.velocity.AmplifierServletSession;
 import org.martus.common.utilities.MartusFlexidate;
+import org.martus.util.MartusCalendar;
 
 public class RawSearchParameters
 {
@@ -177,7 +177,7 @@ public class RawSearchParameters
 		int year = Integer.parseInt(get(yearTag));
 		int month = Integer.parseInt(get(monthTag));
 		int day = Integer.parseInt(get(dayTag));
-		Calendar startDate = SearchParameters.getDate(year, month, day);
+		MartusCalendar startDate = SearchParameters.getDate(year, month, day);
 		return MartusFlexidate.toStoredDateFormat(startDate);
 	}
 

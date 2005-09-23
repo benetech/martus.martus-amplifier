@@ -28,7 +28,6 @@ package org.martus.amplifier.lucene.test;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -55,6 +54,7 @@ import org.martus.common.packet.FieldDataPacket;
 import org.martus.common.packet.UniversalId;
 import org.martus.common.test.UnicodeConstants;
 import org.martus.common.utilities.DateUtilities;
+import org.martus.util.MartusCalendar;
 
 public class TestLuceneSearcher extends CommonSearchTest
 {
@@ -678,7 +678,7 @@ public class TestLuceneSearcher extends CommonSearchTest
 			String endDate 			= "2003-08-22";			
 			String defaultStartDate = "1970-01-01";		
 			
-			GregorianCalendar today = new GregorianCalendar();
+			MartusCalendar today = new MartusCalendar();
 			today.set(Calendar.YEAR, 2003);
 			today.set(Calendar.MONTH, Calendar.SEPTEMBER);
 			today.set(Calendar.DAY_OF_MONTH, 24);

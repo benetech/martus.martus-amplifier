@@ -29,10 +29,10 @@ package org.martus.amplifier.main;
 import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.Vector;
 
 import org.martus.common.utilities.MartusFlexidate;
+import org.martus.util.MartusCalendar;
 
 
 public class EventDatesIndexedList extends IndexedValuesList
@@ -49,7 +49,7 @@ public class EventDatesIndexedList extends IndexedValuesList
 		for(int i = 0; i < dateStrings.size(); ++i)
 		{
 			MartusFlexidate flex = MartusFlexidate.createFromMartusDateString((String)dateStrings.get(i));
-			Calendar calendar = flex.getBeginDate();
+			MartusCalendar calendar = flex.getBeginDate();
 			int thisYear = calendar.get(Calendar.YEAR);
 			if(thisYear < earliestYear)
 				earliestYear = thisYear;
@@ -65,7 +65,7 @@ public class EventDatesIndexedList extends IndexedValuesList
 		for(int i = 0; i < dateStrings.size(); ++i)
 		{
 			MartusFlexidate flex = MartusFlexidate.createFromMartusDateString((String)dateStrings.get(i));
-			Calendar calendar = flex.getEndDate();
+			MartusCalendar calendar = flex.getEndDate();
 			int thisYear = calendar.get(Calendar.YEAR);
 			if(thisYear > latestYear)
 				latestYear = thisYear;
@@ -79,7 +79,7 @@ public class EventDatesIndexedList extends IndexedValuesList
 
 	private int getThisYear()
 	{
-		return new GregorianCalendar().get(Calendar.YEAR);
+		return new MartusCalendar().get(Calendar.YEAR);
 	}
 
 	

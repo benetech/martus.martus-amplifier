@@ -27,12 +27,12 @@ Boston, MA 02111-1307, USA.
 package org.martus.amplifier.common.test;
 
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.martus.amplifier.common.SearchParameters;
 import org.martus.amplifier.common.SearchResultConstants;
+import org.martus.util.MartusCalendar;
 import org.martus.util.TestCaseEnhanced;
 
 public class TestSearchParameters extends TestCaseEnhanced
@@ -48,10 +48,10 @@ public class TestSearchParameters extends TestCaseEnhanced
 		int year = 2003;
 		int month = 11;
 		int day = 25;
-		Calendar result = SearchParameters.getDate(year, month, day);
-		assertEquals(year, result.get(GregorianCalendar.YEAR));
-		assertEquals(month, result.get(GregorianCalendar.MONTH));
-		assertEquals(day, result.get(GregorianCalendar.DAY_OF_MONTH));
+		MartusCalendar result = SearchParameters.getDate(year, month, day);
+		assertEquals(year, result.get(Calendar.YEAR));
+		assertEquals(month, result.get(Calendar.MONTH));
+		assertEquals(day, result.get(Calendar.DAY_OF_MONTH));
 	}
 	
 	public void testAllWordsFormatter() throws Exception

@@ -27,13 +27,13 @@ Boston, MA 02111-1307, USA.
 package org.martus.amplifier.common;
 
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.martus.amplifier.lucene.LuceneSearchConstants;
 import org.martus.amplifier.search.SearchConstants;
 import org.martus.common.utilities.MartusFlexidate;
+import org.martus.util.MartusCalendar;
 
 public class SearchParameters implements SearchResultConstants, SearchConstants
 {
@@ -129,19 +129,19 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 
 	public static String daysAgo(int days)
 	{
-		GregorianCalendar today = null;
+		MartusCalendar today = null;
 		if(todaysDateUsedForTesting == null)
-			today = new GregorianCalendar();
+			today = new MartusCalendar();
 		else
-			today = (GregorianCalendar) todaysDateUsedForTesting.clone();
+			today = new MartusCalendar(todaysDateUsedForTesting);
 		
 		today.add(Calendar.DATE, -days);
 		return MartusFlexidate.toStoredDateFormat(today);
 	}
 	
-	public static Calendar getDate(int year, int month, int day)
+	public static MartusCalendar getDate(int year, int month, int day)
 	{
-		return new GregorianCalendar(year, month, day);
+		return new MartusCalendar(year, month, day);
 	}	
 	
 	abstract static class LuceneQueryFormatter
@@ -224,5 +224,5 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 	
 	RawSearchParameters inputParameters;
 	HashMap	searchFields;
-	public static GregorianCalendar todaysDateUsedForTesting = null;
+	public static MartusCalendar todaysDateUsedForTesting = null;
 }
