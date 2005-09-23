@@ -27,7 +27,6 @@ Boston, MA 02111-1307, USA.
 package org.martus.amplifier.common;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -137,12 +136,12 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 			today = (GregorianCalendar) todaysDateUsedForTesting.clone();
 		
 		today.add(Calendar.DATE, -days);
-		return MartusFlexidate.toStoredDateFormat(today.getTime());
+		return MartusFlexidate.toStoredDateFormat(today);
 	}
 	
-	public static Date getDate(int year, int month, int day)
+	public static Calendar getDate(int year, int month, int day)
 	{
-		return new GregorianCalendar(year, month, day).getTime();
+		return new GregorianCalendar(year, month, day);
 	}	
 	
 	abstract static class LuceneQueryFormatter
