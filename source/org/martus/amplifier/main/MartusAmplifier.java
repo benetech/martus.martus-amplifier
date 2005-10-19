@@ -575,7 +575,7 @@ public class MartusAmplifier implements LoggerInterface
 	private static final String KEYSTORE_FILE = "keystore";
 	
 	static final long IMMEDIATELY = 0;
-	public static final long DEFAULT_HOURS_TO_SYNC = 24;
+	public static final long DEFAULT_MINUTES_TO_SYNC = 60;
 	
 	private static final int LOW_RESOURCE_PERSIST_TIME_MS = 5000;
 
