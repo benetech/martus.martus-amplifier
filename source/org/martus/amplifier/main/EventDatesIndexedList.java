@@ -48,7 +48,7 @@ public class EventDatesIndexedList extends IndexedValuesList
 		Vector dateStrings = getIndexedValues();
 		for(int i = 0; i < dateStrings.size(); ++i)
 		{
-			MartusFlexidate flex = MartusFlexidate.createFromMartusDateString((String)dateStrings.get(i));
+			MartusFlexidate flex = MartusFlexidate.createFromBulletinFlexidateFormat((String)dateStrings.get(i));
 			MartusCalendar calendar = flex.getBeginDate();
 			int thisYear = calendar.get(Calendar.YEAR);
 			if(thisYear < earliestYear)
@@ -64,7 +64,7 @@ public class EventDatesIndexedList extends IndexedValuesList
 		Vector dateStrings = getIndexedValues();
 		for(int i = 0; i < dateStrings.size(); ++i)
 		{
-			MartusFlexidate flex = MartusFlexidate.createFromMartusDateString((String)dateStrings.get(i));
+			MartusFlexidate flex = MartusFlexidate.createFromBulletinFlexidateFormat((String)dateStrings.get(i));
 			MartusCalendar calendar = flex.getEndDate();
 			int thisYear = calendar.get(Calendar.YEAR);
 			if(thisYear > latestYear)

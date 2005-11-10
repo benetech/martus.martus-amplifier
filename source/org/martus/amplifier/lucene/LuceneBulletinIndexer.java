@@ -269,7 +269,7 @@ public class LuceneBulletinIndexer
 	
 	private static void convertDateRangeToSearchableString(Document doc, BulletinField field, String value) throws BulletinIndexException
 	{
-		MartusFlexidate mfd = MartusFlexidate.createFromMartusDateString(value);
+		MartusFlexidate mfd = MartusFlexidate.createFromBulletinFlexidateFormat(value);
 	
 		String beginDate = MartusFlexidate.toStoredDateFormat(mfd.getBeginDate());
 		String endDate = MartusFlexidate.toStoredDateFormat(mfd.getEndDate());							
