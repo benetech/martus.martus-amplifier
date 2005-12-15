@@ -26,13 +26,17 @@ Boston, MA 02111-1307, USA.
 
 package org.martus.amplifier.lucene.test;
 
-import junit.framework.TestCase;
-
 import org.martus.amplifier.lucene.QueryBuilder;
+import org.martus.util.TestCaseEnhanced;
 
 
-public class TestQueryBuilder extends TestCase
+public class TestQueryBuilder extends TestCaseEnhanced
 {
+	public TestQueryBuilder(String name)
+	{
+		super(name);
+	}
+
 	public void testBuildEntryDateSearchString() throws Exception
 	{
 		String sampleStartDate = "1970-04-21";
