@@ -26,7 +26,6 @@ Boston, MA 02111-1307, USA.
 
 package org.martus.amplifier.common.test;
 
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,9 +48,9 @@ public class TestSearchParameters extends TestCaseEnhanced
 		int month = 11;
 		int day = 25;
 		MartusCalendar result = SearchParameters.getDate(year, month, day);
-		assertEquals(year, result.get(Calendar.YEAR));
-		assertEquals(month, result.get(Calendar.MONTH));
-		assertEquals(day, result.get(Calendar.DAY_OF_MONTH));
+		assertEquals(year, result.getGregorianYear());
+		assertEquals(month, result.getGregorianMonth());
+		assertEquals(day, result.getGregorianDay());
 	}
 	
 	public void testAllWordsFormatter() throws Exception

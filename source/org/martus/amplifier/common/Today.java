@@ -25,8 +25,6 @@ Boston, MA 02111-1307, USA.
 */
 package org.martus.amplifier.common;
 
-import java.util.Calendar;
-
 import org.martus.util.MartusCalendar;
 
 
@@ -34,16 +32,16 @@ public class Today
 {
 	public static String getGregorianMonthString()
 	{	
-		return new Integer(new MartusCalendar().get(Calendar.MONTH)).toString();
+		return new Integer(new MartusCalendar().getGregorianMonth()).toString();
 	}
 	
 	public static String getGregorianYearString()
 	{
-		return new Integer(new MartusCalendar().get(Calendar.YEAR)).toString();
+		return new Integer(new MartusCalendar().getGregorianYear()).toString();
 	}	
 	
 	public static String getGregorianDayString()
 	{
-		return new Integer(new MartusCalendar().get(Calendar.DATE)).toString();
+		return new Integer(new MartusCalendar().getGregorianDay()).toString();
 	}		
 }

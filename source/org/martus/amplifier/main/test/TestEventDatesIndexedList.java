@@ -27,7 +27,6 @@ Boston, MA 02111-1307, USA.
 package org.martus.amplifier.main.test;
 
 import java.io.File;
-import java.util.Calendar;
 
 import org.martus.amplifier.main.EventDatesIndexedList;
 import org.martus.util.MartusCalendar;
@@ -56,7 +55,7 @@ public class TestEventDatesIndexedList extends TestCaseEnhanced
 		EventDatesIndexedList list = new EventDatesIndexedList(file);
 		list.loadFromFile();
 		
-		int thisYear = new MartusCalendar().get(Calendar.YEAR);
+		int thisYear = new MartusCalendar().getGregorianYear();
 		
 		assertEquals("wrong empty earliest?", thisYear, list.getEarliestYear());
 		assertEquals("wrong empty latest?", thisYear, list.getLatestYear());
