@@ -129,8 +129,8 @@ public class RawSearchParameters
 		defaultMap.put(SearchResultConstants.RESULT_START_MONTH_KEY, "0");
 		defaultMap.put(SearchResultConstants.RESULT_START_YEAR_KEY, Integer.toString(eventDatesIndexedList.getEarliestYear()));
 		
-		defaultMap.put(SearchResultConstants.RESULT_END_DAY_KEY, Today.getDayString());
-		defaultMap.put(SearchResultConstants.RESULT_END_MONTH_KEY, Today.getMonth());
+		defaultMap.put(SearchResultConstants.RESULT_END_DAY_KEY, Today.getGregorianDayString());
+		defaultMap.put(SearchResultConstants.RESULT_END_MONTH_KEY, Today.getGregorianMonthString());
 		defaultMap.put(SearchResultConstants.RESULT_END_YEAR_KEY, Integer.toString(eventDatesIndexedList.getLatestYear()));
 				
 		return defaultMap;	

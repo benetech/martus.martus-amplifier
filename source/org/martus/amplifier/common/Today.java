@@ -32,29 +32,18 @@ import org.martus.util.MartusCalendar;
 
 public class Today
 {
-	public static int getYear()
+	public static String getGregorianMonthString()
 	{	
-		return new MartusCalendar().get(Calendar.YEAR);
+		return new Integer(new MartusCalendar().get(Calendar.MONTH)).toString();
 	}
 	
-	public static String getMonth()
-	{	
-		int month = new MartusCalendar().get(Calendar.MONTH);
-		return new Integer(month).toString();
-	}
-	
-	public static int getDay()
+	public static String getGregorianYearString()
 	{
-		return new MartusCalendar().get(Calendar.DATE);
+		return new Integer(new MartusCalendar().get(Calendar.YEAR)).toString();
 	}	
 	
-	public static String getYearString()
+	public static String getGregorianDayString()
 	{
-		return new Integer(getYear()).toString();
-	}	
-	
-	public static String getDayString()
-	{
-		return new Integer(getDay()).toString();
+		return new Integer(new MartusCalendar().get(Calendar.DATE)).toString();
 	}		
 }
