@@ -129,8 +129,8 @@ public class RawSearchParameters
 		defaultMap.put(SearchResultConstants.RESULT_START_MONTH_KEY, "0");
 		defaultMap.put(SearchResultConstants.RESULT_START_YEAR_KEY, Integer.toString(eventDatesIndexedList.getEarliestYear()));
 		
-		defaultMap.put(SearchResultConstants.RESULT_END_DAY_KEY, Today.getGregorianDayString());
-		defaultMap.put(SearchResultConstants.RESULT_END_MONTH_KEY, Today.getGregorianMonthString());
+		defaultMap.put(SearchResultConstants.RESULT_END_DAY_KEY, Integer.toString(new MartusCalendar().getGregorianDay()));
+		defaultMap.put(SearchResultConstants.RESULT_END_MONTH_KEY, Integer.toString((new MartusCalendar().getGregorianMonth() - 1)));
 		defaultMap.put(SearchResultConstants.RESULT_END_YEAR_KEY, Integer.toString(eventDatesIndexedList.getLatestYear()));
 				
 		return defaultMap;	

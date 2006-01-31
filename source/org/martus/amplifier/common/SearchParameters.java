@@ -139,9 +139,9 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 		return MartusFlexidate.toStoredDateFormat(today);
 	}
 	
-	public static MartusCalendar getDate(int year, int month, int day)
+	public static MartusCalendar getDate(int year, int monthIndex, int day)
 	{
-		return MartusCalendar.createMartusCalendarFromGregorian(year, month, day);
+		return MartusCalendar.createMartusCalendarFromGregorian(year, monthIndex + 1, day);
 	}	
 	
 	abstract static class LuceneQueryFormatter

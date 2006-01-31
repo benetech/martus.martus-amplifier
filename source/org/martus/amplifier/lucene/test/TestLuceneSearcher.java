@@ -26,7 +26,6 @@ Boston, MA 02111-1307, USA.
 package org.martus.amplifier.lucene.test;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -678,7 +677,7 @@ public class TestLuceneSearcher extends CommonSearchTest
 			String endDate 			= "2003-08-22";			
 			String defaultStartDate = "1970-01-01";		
 			
-			MartusCalendar today = MartusCalendar.createMartusCalendarFromGregorian(2003, Calendar.SEPTEMBER, 24);
+			MartusCalendar today = MartusCalendar.createMartusCalendarFromGregorian(2003, 9, 24);
 			SearchParameters.todaysDateUsedForTesting = today;
 
 			String pastWeek = SearchParameters.getEntryDate(ENTRY_PAST_WEEK_DAYS_TAG);

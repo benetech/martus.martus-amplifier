@@ -45,9 +45,10 @@ public class TestSearchParameters extends TestCaseEnhanced
 	public void testGetDate()
 	{
 		int year = 2003;
-		int month = 11;
+		int month = 12;
+		int monthIndex = month - 1;
 		int day = 25;
-		MartusCalendar result = SearchParameters.getDate(year, month, day);
+		MartusCalendar result = SearchParameters.getDate(year, monthIndex, day);
 		assertEquals(year, result.getGregorianYear());
 		assertEquals(month, result.getGregorianMonth());
 		assertEquals(day, result.getGregorianDay());
