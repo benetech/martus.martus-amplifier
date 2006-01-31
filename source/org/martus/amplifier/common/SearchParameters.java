@@ -33,7 +33,7 @@ import java.util.Map;
 import org.martus.amplifier.lucene.LuceneSearchConstants;
 import org.martus.amplifier.search.SearchConstants;
 import org.martus.common.utilities.MartusFlexidate;
-import org.martus.util.MartusCalendar;
+import org.martus.util.MultiCalendar;
 
 public class SearchParameters implements SearchResultConstants, SearchConstants
 {
@@ -129,19 +129,19 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 
 	public static String daysAgo(int days)
 	{
-		MartusCalendar today = null;
+		MultiCalendar today = null;
 		if(todaysDateUsedForTesting == null)
-			today = new MartusCalendar();
+			today = new MultiCalendar();
 		else
-			today = new MartusCalendar(todaysDateUsedForTesting);
+			today = new MultiCalendar(todaysDateUsedForTesting);
 		
 		today.add(Calendar.DATE, -days);
 		return MartusFlexidate.toStoredDateFormat(today);
 	}
 	
-	public static MartusCalendar getDate(int year, int monthIndex, int day)
+	public static MultiCalendar getDate(int year, int monthIndex, int day)
 	{
-		return MartusCalendar.createFromGregorianYearMonthDay(year, monthIndex + 1, day);
+		return MultiCalendar.createFromGregorianYearMonthDay(year, monthIndex + 1, day);
 	}	
 	
 	abstract static class LuceneQueryFormatter
@@ -224,5 +224,5 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 	
 	RawSearchParameters inputParameters;
 	HashMap	searchFields;
-	public static MartusCalendar todaysDateUsedForTesting = null;
+	public static MultiCalendar todaysDateUsedForTesting = null;
 }

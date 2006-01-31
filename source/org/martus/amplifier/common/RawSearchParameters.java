@@ -34,7 +34,7 @@ import org.martus.amplifier.search.SearchConstants;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
 import org.martus.amplifier.velocity.AmplifierServletSession;
 import org.martus.common.utilities.MartusFlexidate;
-import org.martus.util.MartusCalendar;
+import org.martus.util.MultiCalendar;
 
 public class RawSearchParameters
 {
@@ -129,8 +129,8 @@ public class RawSearchParameters
 		defaultMap.put(SearchResultConstants.RESULT_START_MONTH_KEY, "0");
 		defaultMap.put(SearchResultConstants.RESULT_START_YEAR_KEY, Integer.toString(eventDatesIndexedList.getEarliestYear()));
 		
-		defaultMap.put(SearchResultConstants.RESULT_END_DAY_KEY, Integer.toString(new MartusCalendar().getGregorianDay()));
-		defaultMap.put(SearchResultConstants.RESULT_END_MONTH_KEY, Integer.toString((new MartusCalendar().getGregorianMonth() - 1)));
+		defaultMap.put(SearchResultConstants.RESULT_END_DAY_KEY, Integer.toString(new MultiCalendar().getGregorianDay()));
+		defaultMap.put(SearchResultConstants.RESULT_END_MONTH_KEY, Integer.toString((new MultiCalendar().getGregorianMonth() - 1)));
 		defaultMap.put(SearchResultConstants.RESULT_END_YEAR_KEY, Integer.toString(eventDatesIndexedList.getLatestYear()));
 				
 		return defaultMap;	
@@ -177,7 +177,7 @@ public class RawSearchParameters
 		int year = Integer.parseInt(get(yearTag));
 		int month = Integer.parseInt(get(monthTag));
 		int day = Integer.parseInt(get(dayTag));
-		MartusCalendar startDate = SearchParameters.getDate(year, month, day);
+		MultiCalendar startDate = SearchParameters.getDate(year, month, day);
 		return MartusFlexidate.toStoredDateFormat(startDate);
 	}
 

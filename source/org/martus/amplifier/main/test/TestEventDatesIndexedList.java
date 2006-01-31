@@ -29,7 +29,7 @@ package org.martus.amplifier.main.test;
 import java.io.File;
 
 import org.martus.amplifier.main.EventDatesIndexedList;
-import org.martus.util.MartusCalendar;
+import org.martus.util.MultiCalendar;
 import org.martus.util.TestCaseEnhanced;
 
 
@@ -55,7 +55,7 @@ public class TestEventDatesIndexedList extends TestCaseEnhanced
 		EventDatesIndexedList list = new EventDatesIndexedList(file);
 		list.loadFromFile();
 		
-		int thisYear = new MartusCalendar().getGregorianYear();
+		int thisYear = new MultiCalendar().getGregorianYear();
 		
 		assertEquals("wrong empty earliest?", thisYear, list.getEarliestYear());
 		assertEquals("wrong empty latest?", thisYear, list.getLatestYear());

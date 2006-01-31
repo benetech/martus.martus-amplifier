@@ -31,7 +31,7 @@ import java.util.Map;
 
 import org.martus.amplifier.common.SearchParameters;
 import org.martus.amplifier.common.SearchResultConstants;
-import org.martus.util.MartusCalendar;
+import org.martus.util.MultiCalendar;
 import org.martus.util.TestCaseEnhanced;
 
 public class TestSearchParameters extends TestCaseEnhanced
@@ -48,7 +48,7 @@ public class TestSearchParameters extends TestCaseEnhanced
 		int month = 12;
 		int monthIndex = month - 1;
 		int day = 25;
-		MartusCalendar result = SearchParameters.getDate(year, monthIndex, day);
+		MultiCalendar result = SearchParameters.getDate(year, monthIndex, day);
 		assertEquals(year, result.getGregorianYear());
 		assertEquals(month, result.getGregorianMonth());
 		assertEquals(day, result.getGregorianDay());

@@ -53,7 +53,7 @@ import org.martus.common.packet.FieldDataPacket;
 import org.martus.common.packet.UniversalId;
 import org.martus.common.test.UnicodeConstants;
 import org.martus.common.utilities.DateUtilities;
-import org.martus.util.MartusCalendar;
+import org.martus.util.MultiCalendar;
 
 public class TestLuceneSearcher extends CommonSearchTest
 {
@@ -677,7 +677,7 @@ public class TestLuceneSearcher extends CommonSearchTest
 			String endDate 			= "2003-08-22";			
 			String defaultStartDate = "1970-01-01";		
 			
-			MartusCalendar today = MartusCalendar.createFromGregorianYearMonthDay(2003, 9, 24);
+			MultiCalendar today = MultiCalendar.createFromGregorianYearMonthDay(2003, 9, 24);
 			SearchParameters.todaysDateUsedForTesting = today;
 
 			String pastWeek = SearchParameters.getEntryDate(ENTRY_PAST_WEEK_DAYS_TAG);
