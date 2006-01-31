@@ -96,11 +96,6 @@ public class FindBulletinsFields implements SearchConstants, SearchResultConstan
 		return fields;
 	}
 	
-	public static Object getToday()
-	{
-		return new Today();
-	}
-	
 	private static final String[] MONTH_NAMES = new String[] {
 		"January", "February", "March", "April", "May", "June",
 		"July", "August", "September", "October", "November", "December"
