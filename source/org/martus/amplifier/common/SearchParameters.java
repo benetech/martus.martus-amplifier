@@ -26,7 +26,6 @@ Boston, MA 02111-1307, USA.
 
 package org.martus.amplifier.common;
 
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -135,7 +134,7 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 		else
 			today = new MultiCalendar(todaysDateUsedForTesting);
 		
-		today.add(Calendar.DATE, -days);
+		today.addDays(-days);
 		return MartusFlexidate.toStoredDateFormat(today);
 	}
 	
