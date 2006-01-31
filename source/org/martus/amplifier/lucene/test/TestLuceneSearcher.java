@@ -677,7 +677,7 @@ public class TestLuceneSearcher extends CommonSearchTest
 			String endDate 			= "2003-08-22";			
 			String defaultStartDate = "1970-01-01";		
 			
-			MartusCalendar today = MartusCalendar.createMartusCalendarFromGregorian(2003, 9, 24);
+			MartusCalendar today = MartusCalendar.createFromGregorianYearMonthDay(2003, 9, 24);
 			SearchParameters.todaysDateUsedForTesting = today;
 
 			String pastWeek = SearchParameters.getEntryDate(ENTRY_PAST_WEEK_DAYS_TAG);
