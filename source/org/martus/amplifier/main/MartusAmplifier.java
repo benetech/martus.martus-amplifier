@@ -69,7 +69,7 @@ public class MartusAmplifier implements LoggerInterface
 		setStaticSecurity(coreServer.getSecurity());
 		localization = new MiniLocalization(EnglishCommonStrings.strings);
 		localization.setCurrentLanguageCode(AMP_DEFAULT_LANGUAGE);
-		localization.setCurrentDateFormatCode(MiniLocalization.getDefaultDateFormatForLanguage(AMP_DEFAULT_LANGUAGE));
+		localization.setDateFormatFromLanguage();
 		
 	}
 
