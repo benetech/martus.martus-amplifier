@@ -59,6 +59,7 @@ import org.martus.amplifier.search.Results;
 import org.martus.amplifier.search.SearchConstants;
 import org.martus.amplifier.test.AbstractAmplifierTestCase;
 import org.martus.common.LoggerToNull;
+import org.martus.common.MiniLocalization;
 import org.martus.common.bulletin.AttachmentProxy;
 import org.martus.common.bulletin.Bulletin;
 import org.martus.common.bulletin.BulletinForTesting;
@@ -305,6 +306,8 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 		Bulletin bulletin, BulletinInfo retrievedData) 
 		throws IOException
 	{
+		MiniLocalization localization = new MiniLocalization();
+		
 		assertEquals(bulletin.getUniversalId(), retrievedData.getBulletinId());
 		assertEquals(bulletin.getFieldDataPacket().getUniversalId(), retrievedData.getFieldDataPacketUId());
 		Collection fields = BulletinField.getSearchableFields();
@@ -316,8 +319,8 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 				String startDateRetrieved = retrievedData.get(field.getIndexId()+"-start");
 				String endDateRetrieved = retrievedData.get(field.getIndexId()+"-end");
 				String dateOfBulletin = bulletin.get(field.getXmlId());
-				String startDate = DateUtilities.getStartDateRange(dateOfBulletin);
-				String endDate = DateUtilities.getEndDateRange(dateOfBulletin);
+				String startDate = DateUtilities.getStartDateRange(dateOfBulletin, localization);
+				String endDate = DateUtilities.getEndDateRange(dateOfBulletin, localization);
 				assertEquals(startDate, startDateRetrieved);
 				assertEquals(endDate, endDateRetrieved);
 				continue;

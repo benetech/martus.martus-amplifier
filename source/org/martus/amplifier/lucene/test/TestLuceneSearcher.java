@@ -47,6 +47,7 @@ import org.martus.amplifier.search.BulletinInfo;
 import org.martus.amplifier.search.BulletinSearcher;
 import org.martus.amplifier.search.Results;
 import org.martus.amplifier.search.SearchConstants;
+import org.martus.common.MiniLocalization;
 import org.martus.common.bulletin.AttachmentProxy;
 import org.martus.common.packet.BulletinHistory;
 import org.martus.common.packet.FieldDataPacket;
@@ -968,8 +969,9 @@ public class TestLuceneSearcher extends CommonSearchTest
 			String eventStartDate1 = ((BulletinInfo)list.get(0)).get(SEARCH_EVENT_DATE_INDEX_FIELD+"-start");
 			String eventStartDate2 = ((BulletinInfo)list.get(1)).get(SEARCH_EVENT_DATE_INDEX_FIELD+"-start");
 						
+			MiniLocalization localization = new MiniLocalization();
 			assertEquals(fdp1.get(BulletinField.SEARCH_EVENT_DATE_INDEX_FIELD), eventStartDate1);
-			String startDate2 = DateUtilities.getStartDateRange(fdp2.get(BulletinField.SEARCH_EVENT_DATE_INDEX_FIELD));
+			String startDate2 = DateUtilities.getStartDateRange(fdp2.get(BulletinField.SEARCH_EVENT_DATE_INDEX_FIELD), localization);
 			assertEquals(startDate2, eventStartDate2);
 												
 		}

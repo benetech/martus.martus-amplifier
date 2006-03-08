@@ -36,6 +36,7 @@ import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinInfo;
 import org.martus.amplifier.search.Results;
 import org.martus.amplifier.search.SearchConstants;
+import org.martus.common.MiniLocalization;
 import org.martus.common.packet.UniversalId;
 import org.martus.common.packet.UniversalId.NotUniversalIdException;
 import org.martus.common.utilities.DateUtilities;
@@ -93,6 +94,8 @@ public class LuceneResults implements Results, LuceneSearchConstants, SearchCons
 	private static void addFields(BulletinInfo info, Document doc) 
 		throws BulletinIndexException
 	{
+		MiniLocalization localization = new MiniLocalization();
+		
 		String[] fieldIds = BulletinField.getSearchableXmlIds();
 		for (int i = 0; i < fieldIds.length; i++) 
 		{
@@ -104,9 +107,9 @@ public class LuceneResults implements Results, LuceneSearchConstants, SearchCons
 			{
 				if (field.isDateRangeField())
 				{
-					String startDate = DateUtilities.getStartDateRange(value);
+					String startDate = DateUtilities.getStartDateRange(value, localization);
 					info.set(field.getIndexId()+"-start", startDate);
-					String endDate = DateUtilities.getEndDateRange(value);
+					String endDate = DateUtilities.getEndDateRange(value, localization);
 					if(endDate != null)
 						info.set(field.getIndexId()+"-end", endDate);
 					continue;

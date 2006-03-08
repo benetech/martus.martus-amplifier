@@ -41,6 +41,7 @@ import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.search.BulletinField;
 import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinIndexer;
+import org.martus.common.MiniLocalization;
 import org.martus.common.bulletin.AttachmentProxy;
 import org.martus.common.fieldspec.FieldSpec;
 import org.martus.common.packet.BulletinHistory;
@@ -269,7 +270,8 @@ public class LuceneBulletinIndexer
 	
 	private static void convertDateRangeToSearchableString(Document doc, BulletinField field, String value) throws BulletinIndexException
 	{
-		MartusFlexidate mfd = MartusFlexidate.createFromBulletinFlexidateFormat(value);
+		MiniLocalization localization = new MiniLocalization();
+		MartusFlexidate mfd = localization.createFlexidateFromStoredData(value);
 	
 		String beginDate = MartusFlexidate.toStoredDateFormat(mfd.getBeginDate());
 		String endDate = MartusFlexidate.toStoredDateFormat(mfd.getEndDate());							

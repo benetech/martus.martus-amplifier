@@ -30,6 +30,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Vector;
 
+import org.martus.common.MiniLocalization;
 import org.martus.common.utilities.MartusFlexidate;
 import org.martus.util.MultiCalendar;
 
@@ -47,7 +48,7 @@ public class EventDatesIndexedList extends IndexedValuesList
 		Vector dateStrings = getIndexedValues();
 		for(int i = 0; i < dateStrings.size(); ++i)
 		{
-			MartusFlexidate flex = MartusFlexidate.createFromBulletinFlexidateFormat((String)dateStrings.get(i));
+			MartusFlexidate flex = createFlexidateFromStoredData((String)dateStrings.get(i));
 			MultiCalendar calendar = flex.getBeginDate();
 			int thisYear = calendar.getGregorianYear();
 			if(thisYear < earliestYear)
@@ -63,7 +64,7 @@ public class EventDatesIndexedList extends IndexedValuesList
 		Vector dateStrings = getIndexedValues();
 		for(int i = 0; i < dateStrings.size(); ++i)
 		{
-			MartusFlexidate flex = MartusFlexidate.createFromBulletinFlexidateFormat((String)dateStrings.get(i));
+			MartusFlexidate flex = createFlexidateFromStoredData((String)dateStrings.get(i));
 			MultiCalendar calendar = flex.getEndDate();
 			int thisYear = calendar.getGregorianYear();
 			if(thisYear > latestYear)
@@ -74,6 +75,12 @@ public class EventDatesIndexedList extends IndexedValuesList
 			latestYear = getThisYear();
 		
 		return latestYear;
+	}
+	
+	private MartusFlexidate createFlexidateFromStoredData(String storedDate)
+	{
+		MiniLocalization localization = new MiniLocalization();
+		return localization.createFlexidateFromStoredData(storedDate);
 	}
 
 	private int getThisYear()
