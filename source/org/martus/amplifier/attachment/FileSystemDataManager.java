@@ -178,7 +178,7 @@ public class FileSystemDataManager implements DataManager
 
 	public FieldDataPacket getFieldDataPacket(UniversalId uid) throws IOException, CryptoException, InvalidPacketException, WrongPacketTypeException, SignatureVerificationException
 	{
-		FieldSpec[] standardPublicFieldSpecs = StandardFieldSpecs.getDefaultPublicFieldSpecs();
+		FieldSpec[] standardPublicFieldSpecs = StandardFieldSpecs.getDefaultTopSectionFieldSpecs();
 		FieldDataPacket fdp = new FieldDataPacket(uid, standardPublicFieldSpecs);
 		InputStreamWithSeek in = null;
 		try
