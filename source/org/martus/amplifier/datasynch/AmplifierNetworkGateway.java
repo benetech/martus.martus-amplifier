@@ -276,7 +276,7 @@ public class AmplifierNetworkGateway implements LoggerInterface
 	{
 		String serversPublicCodeWeAreCalling = MartusCrypto.formatAccountIdForLog(serverToPullFrom.getServerPublicKey());
 		String serversIPAddressWeAreCalling = serverToPullFrom.getAddress();
-		return "Amp calling " + serversIPAddressWeAreCalling + ": " + serversPublicCodeWeAreCalling +": " + message;
+		return "Amp calling " + serversIPAddressWeAreCalling + ":" + serverToPullFrom.getPort() + ": " + serversPublicCodeWeAreCalling +": " + message;
 	}
 	
 	public void logError(String message)
