@@ -417,6 +417,8 @@ public class MartusAmplifier implements LoggerInterface
 	{
 		String ip = MartusUtilities.extractIpFromFileName(publicKeyFile.getName());
 		int port = 985;
+		if(coreServer.wantsDevelopmentMode())
+			port += ServerCallbackInterface.DEVELOPMENT_MODE_PORT_DELTA;
 		Vector publicInfo = MartusUtilities.importServerPublicKeyFromFile(publicKeyFile, security);
 		String publicKey = (String)publicInfo.get(0);
 	
