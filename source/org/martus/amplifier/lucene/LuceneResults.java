@@ -28,6 +28,7 @@ package org.martus.amplifier.lucene;
 import java.io.File;
 import java.io.IOException;
 import java.util.Vector;
+
 import org.apache.lucene.document.Document;
 import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.amplifier.search.AttachmentInfo;
@@ -39,7 +40,7 @@ import org.martus.amplifier.search.SearchConstants;
 import org.martus.common.MiniLocalization;
 import org.martus.common.packet.UniversalId;
 import org.martus.common.packet.UniversalId.NotUniversalIdException;
-import org.martus.common.utilities.DateUtilities;
+import org.martus.common.utilities.MartusFlexidate;
 
 
 public class LuceneResults implements Results, LuceneSearchConstants, SearchConstants
@@ -94,7 +95,7 @@ public class LuceneResults implements Results, LuceneSearchConstants, SearchCons
 	private static void addFields(BulletinInfo info, Document doc) 
 		throws BulletinIndexException
 	{
-		MiniLocalization localization = new MiniLocalization();
+		MiniLocalization localization = MartusAmplifier.localization;
 		
 		String[] fieldIds = BulletinField.getSearchableXmlIds();
 		for (int i = 0; i < fieldIds.length; i++) 
@@ -105,13 +106,21 @@ public class LuceneResults implements Results, LuceneSearchConstants, SearchCons
 			
 			if (value != null) 
 			{
+				if(field.isDateField())
+				{
+					value = localization.convertStoredDateToDisplay(value);
+				}
 				if (field.isDateRangeField())
 				{
-					String startDate = DateUtilities.getStartDateRange(value, localization);
-					info.set(field.getIndexId()+"-start", startDate);
-					String endDate = DateUtilities.getEndDateRange(value, localization);
-					if(endDate != null)
-						info.set(field.getIndexId()+"-end", endDate);
+					MartusFlexidate mfd = localization.createFlexidateFromStoredData(value);
+					String formattedStartDate = localization.convertStoredDateToDisplay(mfd.getBeginDate().toIsoDateString());
+					info.set(field.getIndexId()+"-start", formattedStartDate);
+
+					if(mfd.hasDateRange())
+					{
+						String formattedEndDate = localization.convertStoredDateToDisplay(mfd.getEndDate().toIsoDateString());
+						info.set(field.getIndexId()+"-end", formattedEndDate);
+					}
 					continue;
 				}				
 				info.set(field.getIndexId(), value);
