@@ -76,6 +76,7 @@ import org.martus.common.packet.UniversalId;
 import org.martus.common.test.MockBulletinStore;
 import org.martus.common.utilities.MartusFlexidate;
 import org.martus.util.DirectoryUtils;
+import org.martus.util.MultiCalendar;
 import org.martus.util.StreamCopier;
 import org.martus.util.inputstreamwithseek.StringInputStreamWithSeek;
 
@@ -149,6 +150,8 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 		BulletinIndexer indexer = null;
 		Exception closeException = null;
 		Bulletin b = createSampleBulletin(new File[0]);
+		MultiCalendar today = new MultiCalendar();
+		b.set(Bulletin.TAGEVENTDATE, MartusFlexidate.toBulletinFlexidateFormat(today, today));
 		File f = createBulletinZipFile(b);
 		
 		try {
@@ -253,6 +256,8 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 		attachments[0] = createAttachment("Attachment 1");
 		attachments[1] = createAttachment("Attachment 2");
 		Bulletin b = createSampleBulletin(attachments);
+		MultiCalendar today = new MultiCalendar();
+		b.set(Bulletin.TAGEVENTDATE, MartusFlexidate.toBulletinFlexidateFormat(today, today));
 		store.saveBulletinForTesting(b);
 		File f = createBulletinZipFile(b);
 		

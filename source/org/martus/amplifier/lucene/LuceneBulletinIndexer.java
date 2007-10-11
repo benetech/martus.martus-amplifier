@@ -38,6 +38,7 @@ import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.martus.amplifier.common.SearchResultConstants;
+import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.amplifier.search.BulletinField;
 import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinIndexer;
@@ -231,6 +232,10 @@ public class LuceneBulletinIndexer
 		{
 			doc.add(Field.Keyword(field.getIndexId(), value));
 		}
+		else if (field.isDateField())
+		{
+			convertDateToSearchableString(doc, field, value);
+		}
 		else if (field.isDateRangeField())
 		{
 			convertDateRangeToSearchableString(doc, field, value);
@@ -268,13 +273,21 @@ public class LuceneBulletinIndexer
 		doc.add(Field.UnIndexed(FIELD_DATA_PACKET_LOCAL_ID_INDEX_FIELD, fieldDataPacketLocalId));		
 	}
 	
+	private static void convertDateToSearchableString(Document doc, BulletinField field, String value) throws BulletinIndexException
+	{
+		MiniLocalization localization = MartusAmplifier.localization;
+		String convertedDate = localization.convertStoredDateToDisplay(value);							
+	
+		doc.add(Field.Text(field.getIndexId(), convertedDate));				
+	}
+	
 	private static void convertDateRangeToSearchableString(Document doc, BulletinField field, String value) throws BulletinIndexException
 	{
-		MiniLocalization localization = new MiniLocalization();
+		MiniLocalization localization = MartusAmplifier.localization;
 		MartusFlexidate mfd = localization.createFlexidateFromStoredData(value);
 	
-		String beginDate = MartusFlexidate.toStoredDateFormat(mfd.getBeginDate());
-		String endDate = MartusFlexidate.toStoredDateFormat(mfd.getEndDate());							
+		String beginDate = localization.convertStoredDateToDisplay(mfd.getBeginDate().toIsoDateString());
+		String endDate = localization.convertStoredDateToDisplay(mfd.getEndDate().toIsoDateString());
 	
 		doc.add(Field.Keyword(LuceneSearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD, beginDate)); 			
 		doc.add(Field.Keyword(LuceneSearchConstants.SEARCH_EVENT_END_DATE_INDEX_FIELD, endDate));

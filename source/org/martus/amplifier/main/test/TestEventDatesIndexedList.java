@@ -28,7 +28,9 @@ package org.martus.amplifier.main.test;
 
 import java.io.File;
 
+import org.martus.amplifier.common.AmplifierLocalization;
 import org.martus.amplifier.main.EventDatesIndexedList;
+import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.util.MultiCalendar;
 import org.martus.util.TestCaseEnhanced;
 
@@ -43,6 +45,7 @@ public class TestEventDatesIndexedList extends TestCaseEnhanced
 	public void setUp() throws Exception
 	{
 		file = createTempFile();
+		MartusAmplifier.localization = new AmplifierLocalization();
 	}
 	
 	public void tearDown()
@@ -59,6 +62,11 @@ public class TestEventDatesIndexedList extends TestCaseEnhanced
 		
 		assertEquals("wrong empty earliest?", thisYear, list.getEarliestYear());
 		assertEquals("wrong empty latest?", thisYear, list.getLatestYear());
+
+		list.addValue("0001-01-01");
+		
+		assertEquals("unknown is earlier?", thisYear, list.getEarliestYear());
+		assertEquals("unknown is later?", thisYear, list.getLatestYear());
 		
 		list.addValue("1990-01-01");
 		list.addValue("1999-12-31");
