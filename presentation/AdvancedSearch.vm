@@ -192,6 +192,15 @@ Boston, MA 02111-1307, USA.
 					</td>
 				</tr>
 				<tr>
+				<td></td>
+				<td>Include bulletins with "Unknown" event dates?</td>
+				<td><input type='checkbox' name='includeUnknowns' value='includeUnknowns' 
+				#if ($info.fields.includeUnknowns)
+					checked
+				#end
+				></input></td>
+				</tr>
+				<tr>
 					<td><strong>Date Created</strong></td>
 					<td>Show bulletins created in the past</td>
 					<td>					

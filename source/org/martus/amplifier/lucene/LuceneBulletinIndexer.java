@@ -49,6 +49,7 @@ import org.martus.common.packet.BulletinHistory;
 import org.martus.common.packet.FieldDataPacket;
 import org.martus.common.packet.UniversalId;
 import org.martus.common.utilities.MartusFlexidate;
+import org.martus.util.MultiCalendar;
 import org.martus.util.UnicodeReader;
 import org.martus.util.UnicodeWriter;
 
@@ -286,11 +287,17 @@ public class LuceneBulletinIndexer
 		MiniLocalization localization = MartusAmplifier.localization;
 		MartusFlexidate mfd = localization.createFlexidateFromStoredData(value);
 	
-		String beginDate = localization.convertStoredDateToDisplay(mfd.getBeginDate().toIsoDateString());
-		String endDate = localization.convertStoredDateToDisplay(mfd.getEndDate().toIsoDateString());
-	
-		doc.add(Field.Keyword(LuceneSearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD, beginDate)); 			
-		doc.add(Field.Keyword(LuceneSearchConstants.SEARCH_EVENT_END_DATE_INDEX_FIELD, endDate));
+		MultiCalendar beginDate = mfd.getBeginDate();
+		String isoBeginDate = localization.convertStoredDateToDisplay(beginDate.toIsoDateString());
+		if(beginDate.isUnknown())
+			isoBeginDate = LuceneSearchConstants.UNKNOWN_DATE;
+		doc.add(Field.Keyword(LuceneSearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD, isoBeginDate)); 			
+
+		MultiCalendar endDate = mfd.getEndDate();
+		String isoEndDate = localization.convertStoredDateToDisplay(endDate.toIsoDateString());
+		if(endDate.isUnknown())
+			isoEndDate = LuceneSearchConstants.UNKNOWN_DATE;
+		doc.add(Field.Keyword(LuceneSearchConstants.SEARCH_EVENT_END_DATE_INDEX_FIELD, isoEndDate));
 					
 		doc.add(Field.Text(field.getIndexId(), value));				
 	}

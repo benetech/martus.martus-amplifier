@@ -96,6 +96,8 @@ public class SearchParameters implements SearchResultConstants, SearchConstants
 	{
 		String startDate = inputParameters.getStartDate();
 		String endDate = inputParameters.getEndDate();
+		boolean includeUnknowns = inputParameters.includeUnknowns();
+		searchFields.put(LuceneSearchConstants.SEARCH_UNKNOWN_DATES_FIELD, new Boolean(includeUnknowns));
 
 		if (startDate != null && endDate != null)
 		{

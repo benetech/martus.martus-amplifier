@@ -139,6 +139,7 @@ public class LuceneBulletinSearcher implements BulletinSearcher
 		fields.put(LuceneSearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD, LuceneSearchConstants.EARLIEST_POSSIBLE_DATE);
 		fields.put("fields", "all");
 		fields.put(LuceneSearchConstants.SEARCH_EVENT_END_DATE_INDEX_FIELD, LuceneSearchConstants.LATEST_POSSIBLE_DATE);
+		fields.put(LuceneSearchConstants.SEARCH_UNKNOWN_DATES_FIELD, new Boolean(true));
 		fields.put("entrydate", LuceneSearchConstants.EARLIEST_POSSIBLE_DATE);
 		return fields;
 	}

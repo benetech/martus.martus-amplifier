@@ -36,4 +36,7 @@ public interface LuceneSearchConstants
 	public static final String LATEST_POSSIBLE_DATE = "9999-99-99";
 	final String SEARCH_EVENT_START_DATE_INDEX_FIELD = "$$$eventStartDate";
 	final String SEARCH_EVENT_END_DATE_INDEX_FIELD = "$$$eventEndDate";
+	final String SEARCH_UNKNOWN_DATES_FIELD = "$$$includeUnknowns";
+	
+	public static final String UNKNOWN_DATE = "UNKNOWN";
 }

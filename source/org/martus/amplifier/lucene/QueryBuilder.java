@@ -65,12 +65,29 @@ public class QueryBuilder
 		String startDate	= (String) fields.get(LuceneSearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD);
 		String endDate 	= (String) fields.get(LuceneSearchConstants.SEARCH_EVENT_END_DATE_INDEX_FIELD);
 
+
+		String queryString = "";
+	
+		Boolean searchUnknowns = (Boolean)fields.get(LuceneSearchConstants.SEARCH_UNKNOWN_DATES_FIELD);
+		if(searchUnknowns != null && searchUnknowns.booleanValue())
+		{
+			String unknownRange = setRangeQuery(LuceneSearchConstants.UNKNOWN_DATE, LuceneSearchConstants.UNKNOWN_DATE);
+			queryString += getFieldQuery(LuceneSearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD, unknownRange);
+			queryString += OR;
+			queryString += getFieldQuery(LuceneSearchConstants.SEARCH_EVENT_END_DATE_INDEX_FIELD, unknownRange);
+			queryString += OR;
+		}
+
 		String startDateString = setRangeQuery("*", endDate);
 		String endDateString   = setRangeQuery(startDate, "?");
+		queryString += " ( ";
+		queryString += getFieldQuery(LuceneSearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD, startDateString);
+		queryString += AND;
+		queryString += getFieldQuery(LuceneSearchConstants.SEARCH_EVENT_END_DATE_INDEX_FIELD,endDateString);
+		queryString += " ) ";
 
-		String queryString = getFieldQuery(LuceneSearchConstants.SEARCH_EVENT_START_DATE_INDEX_FIELD, startDateString);
-		queryString += AND+ getFieldQuery(LuceneSearchConstants.SEARCH_EVENT_END_DATE_INDEX_FIELD,endDateString);
-		
+System.out.println(queryString);
+
 		return parseSingleFieldQuery(queryString,SearchConstants.SEARCH_EVENT_DATE_INDEX_FIELD, ERROR_PARSING_QUERY);
 	
 	}
@@ -196,6 +213,7 @@ public class QueryBuilder
 	}
 
 	final static String AND = " AND ";
+	final static String OR = " OR ";
 	private static final String ERROR_PARSING_QUERY = "Improperly formed query: ";
 	private static final String ERROR_PARSING_MULTIQUERY = "Improperly formed multiquery: ";
 

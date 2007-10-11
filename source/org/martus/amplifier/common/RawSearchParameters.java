@@ -120,6 +120,7 @@ public class RawSearchParameters
 		defaultMap.put(SearchResultConstants.WITHOUTWORDS_TAG, "");
 		defaultMap.put(SearchResultConstants.RESULT_FIELDS_KEY, SearchResultConstants.IN_ALL_FIELDS);
 		defaultMap.put(SearchResultConstants.RESULT_ENTRY_DATE_KEY, SearchResultConstants.ENTRY_ANYTIME_TAG);
+		defaultMap.put(SearchResultConstants.RESULT_INCLUDE_UNKNOWNS_KEY, SearchResultConstants.INCLUDE_UNKNOWNS_VALUE);
 		defaultMap.put(SearchResultConstants.RESULT_LANGUAGE_KEY, SearchResultConstants.LANGUAGE_ANYLANGUAGE_LABEL);
 		defaultMap.put(SearchResultConstants.RESULT_SORTBY_KEY, SearchConstants.SEARCH_ENTRY_DATE_INDEX_FIELD);
 
@@ -170,6 +171,11 @@ public class RawSearchParameters
 		String monthTag = SearchResultConstants.RESULT_END_MONTH_KEY;
 		String dayTag = SearchResultConstants.RESULT_END_DAY_KEY;
 		return getDateFromRawParameters(yearTag, monthTag, dayTag);
+	}
+	
+	public boolean includeUnknowns()
+	{
+		return (get(SearchResultConstants.RESULT_INCLUDE_UNKNOWNS_KEY) != null);
 	}
 
 	private String getDateFromRawParameters(String yearTag, String monthTag, String dayTag)
