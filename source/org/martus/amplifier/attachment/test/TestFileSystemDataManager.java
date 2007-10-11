@@ -46,6 +46,7 @@ import org.martus.common.bulletin.BulletinHtmlGenerator;
 import org.martus.common.crypto.MockMartusSecurity;
 import org.martus.common.database.FileDatabase.MissingAccountMapException;
 import org.martus.common.database.FileDatabase.MissingAccountMapSignatureException;
+import org.martus.common.packet.BulletinHeaderPacket;
 import org.martus.common.packet.FieldDataPacket;
 import org.martus.common.packet.UniversalId;
 import org.martus.common.test.UniversalIdForTesting;
@@ -155,9 +156,10 @@ public class TestFileSystemDataManager
 		FieldDataPacket publicData = b.getFieldDataPacket();
 
 		ZipFile bulletinZipFile = new ZipFile(tempFile);
+		BulletinHeaderPacket bhp = b.getBulletinHeaderPacket();
 
-		ZipEntryInputStreamWithSeek zipEntryPointForFieldDataPacket = BulletinExtractor.getZipEntryPointForFieldDataPacket(b.getBulletinHeaderPacket(),bulletinZipFile);
-		dataManager.putFieldDataPacket(publicData.getUniversalId(),zipEntryPointForFieldDataPacket);
+		ZipEntryInputStreamWithSeek zipEntryPointForFieldDataPacket = BulletinExtractor.getInputStreamForZipEntry(bulletinZipFile, bhp.getAccountId(), bhp.getFieldDataPacketId());
+		dataManager.putDataPacket(publicData.getUniversalId(),zipEntryPointForFieldDataPacket);
 		zipEntryPointForFieldDataPacket.close();
 		bulletinZipFile.close();
 

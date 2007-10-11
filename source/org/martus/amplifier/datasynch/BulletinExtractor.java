@@ -80,11 +80,16 @@ public class BulletinExtractor
 		try {
 			BulletinHeaderPacket bhp = 
 				BulletinHeaderPacket.loadFromZipFile(bulletinZipFile, verifier);
+			String accountId = bhp.getAccountId();
+
+			ZipEntryInputStreamWithSeek zipEntryPointForHeaderPacket = getInputStreamForZipEntry(bulletinZipFile, accountId, bhp.getLocalId());
+			storeDataPacket(bhp.getUniversalId(), zipEntryPointForHeaderPacket);
 			
 			FieldDataPacket fdp = indexFieldData(bhp, bulletinZipFile);
 			
-			ZipEntryInputStreamWithSeek zipEntryPointForFieldDataPacket = getZipEntryPointForFieldDataPacket(bhp,bulletinZipFile);
-			storeFieldDataPacket(fdp.getUniversalId(), zipEntryPointForFieldDataPacket);
+			String fieldDataPacketId = bhp.getFieldDataPacketId();
+			ZipEntryInputStreamWithSeek zipEntryPointForFieldDataPacket = getInputStreamForZipEntry(bulletinZipFile, accountId, fieldDataPacketId);
+			storeDataPacket(fdp.getUniversalId(), zipEntryPointForFieldDataPacket);
 			zipEntryPointForFieldDataPacket.close();
 			
 			storeAttachments(fdp.getAttachments(), bulletinZipFile);
@@ -100,13 +105,14 @@ public class BulletinExtractor
 			InvalidPacketException, IOException, BulletinIndexException
 	{
 		String fieldDataPacketId = bhp.getFieldDataPacketId();
+		String accountId = bhp.getAccountId();
 		UniversalId fieldUid = UniversalId.createFromAccountAndLocalId(
-			bhp.getAccountId(), fieldDataPacketId);
+			accountId, fieldDataPacketId);
 			
 		FieldSpec[] fieldSpec = BulletinField.getDefaultSearchFieldSpecs();
 		FieldDataPacket fdp = new FieldDataPacket(fieldUid, fieldSpec);
 		
-		ZipEntryInputStreamWithSeek zipEntryPointForFieldDataPacket = getZipEntryPointForFieldDataPacket(bhp, bulletinZipFile);
+		ZipEntryInputStreamWithSeek zipEntryPointForFieldDataPacket = getInputStreamForZipEntry(bulletinZipFile, accountId, fieldDataPacketId);
 
 		fdp.loadFromXml(zipEntryPointForFieldDataPacket,verifier);
 		bulletinIndexer.indexFieldData(bhp.getUniversalId(), fdp, bhp.getHistory());
@@ -116,14 +122,12 @@ public class BulletinExtractor
 		return fdp;
 	}
 
-	public static ZipEntryInputStreamWithSeek getZipEntryPointForFieldDataPacket(BulletinHeaderPacket bhp, ZipFile bulletinZipFile) throws IOException
+	public static ZipEntryInputStreamWithSeek getInputStreamForZipEntry(ZipFile bulletinZipFile, String accountId, String fieldDataPacketId) throws IOException 
 	{
-		String fieldDataPacketId = bhp.getFieldDataPacketId();
 		ZipEntry fieldDataEntry = bulletinZipFile.getEntry(fieldDataPacketId);
-		if (fieldDataEntry == null) {
-			throw new IOException(
-				"No entry " + fieldDataPacketId + " found for account " + 
-				bhp.getAccountId());
+		if (fieldDataEntry == null) 
+		{
+			throw new IOException("No entry " + fieldDataPacketId + " found for account " + accountId);
 		}
 		return new ZipEntryInputStreamWithSeek(bulletinZipFile, fieldDataEntry);
 	}
@@ -138,9 +142,9 @@ public class BulletinExtractor
 		EventDatesIndexedList.getEventDatesIndexedList().addValue(flexidateString);
 	}
 	
-	private void storeFieldDataPacket(UniversalId uId, ZipEntryInputStreamWithSeek data) throws IOException, RecordHiddenException, CryptoException
+	private void storeDataPacket(UniversalId uId, ZipEntryInputStreamWithSeek data) throws IOException, RecordHiddenException, CryptoException
 	{
-		bulletinDataManager.putFieldDataPacket(uId, data);	
+		bulletinDataManager.putDataPacket(uId, data);	
 	}
 	
 	private void storeAttachments(

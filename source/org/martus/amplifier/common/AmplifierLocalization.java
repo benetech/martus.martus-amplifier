@@ -32,11 +32,22 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
 
+import org.martus.amplifier.main.MartusAmplifier;
+import org.martus.common.EnglishCommonStrings;
 import org.martus.common.MartusUtilities;
+import org.martus.common.MiniLocalization;
+import org.martus.util.DatePreference;
 import org.martus.util.UnicodeReader;
 
-public class AmplifierLocalization
+public class AmplifierLocalization extends MiniLocalization
 {
+	public AmplifierLocalization()
+	{
+		super(EnglishCommonStrings.strings);
+		setCurrentLanguageCode(MartusAmplifier.AMP_DEFAULT_LANGUAGE);
+		setCurrentDateFormatCode(new DatePreference("ymd", '-').getDateTemplate());
+	}
+
 	public static String getLanguageString(String code)
 	{
 		InputStream in = getEnglishLanguageTranslationFile();

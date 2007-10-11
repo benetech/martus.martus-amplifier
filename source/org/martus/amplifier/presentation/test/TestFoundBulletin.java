@@ -54,6 +54,7 @@ import org.martus.common.crypto.MartusCrypto;
 import org.martus.common.crypto.MockMartusSecurity;
 import org.martus.common.crypto.MartusCrypto.CryptoException;
 import org.martus.common.database.Database.RecordHiddenException;
+import org.martus.common.packet.BulletinHeaderPacket;
 import org.martus.common.packet.FieldDataPacket;
 import org.martus.util.DirectoryUtils;
 import org.martus.util.inputstreamwithseek.ZipEntryInputStreamWithSeek;
@@ -112,8 +113,9 @@ public class TestFoundBulletin extends AbstractAmplifierTestCase
 		BulletinForTesting.saveToFile(((FileSystemDataManager)(MartusAmplifier.dataManager)).getDatabase(), b, tempFile, security);
 		FieldDataPacket publicData = b.getFieldDataPacket();
 		ZipFile bulletinZipFile = new ZipFile(tempFile);
-		ZipEntryInputStreamWithSeek zipEntryPointForFieldDataPacket = BulletinExtractor.getZipEntryPointForFieldDataPacket(b.getBulletinHeaderPacket(),bulletinZipFile);
-		MartusAmplifier.dataManager.putFieldDataPacket(publicData.getUniversalId(),zipEntryPointForFieldDataPacket);
+		BulletinHeaderPacket bhp = b.getBulletinHeaderPacket();
+		ZipEntryInputStreamWithSeek zipEntryPointForFieldDataPacket = BulletinExtractor.getInputStreamForZipEntry(bulletinZipFile, bhp.getAccountId(), bhp.getFieldDataPacketId());
+		MartusAmplifier.dataManager.putDataPacket(publicData.getUniversalId(),zipEntryPointForFieldDataPacket);
 		zipEntryPointForFieldDataPacket.close();
 		bulletinZipFile.close();
 	}

@@ -42,6 +42,7 @@ import junit.framework.Assert;
 import org.martus.amplifier.attachment.AttachmentStorageException;
 import org.martus.amplifier.attachment.DataManager;
 import org.martus.amplifier.attachment.FileSystemDataManager;
+import org.martus.amplifier.common.AmplifierLocalization;
 import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.datasynch.BulletinExtractor;
 import org.martus.amplifier.lucene.LuceneBulletinIndexer;
@@ -73,7 +74,7 @@ import org.martus.common.fieldspec.FieldSpec;
 import org.martus.common.packet.FieldDataPacket;
 import org.martus.common.packet.UniversalId;
 import org.martus.common.test.MockBulletinStore;
-import org.martus.common.utilities.DateUtilities;
+import org.martus.common.utilities.MartusFlexidate;
 import org.martus.util.DirectoryUtils;
 import org.martus.util.StreamCopier;
 import org.martus.util.inputstreamwithseek.StringInputStreamWithSeek;
@@ -95,6 +96,7 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 		attachmentManager = 
 			new FileSystemDataManager(getTestBasePath(), security);
 		MartusAmplifier.dataManager = attachmentManager;
+		MartusAmplifier.localization = new AmplifierLocalization();
 		store = new MockBulletinStore(this);
 		LanguagesIndexedList.languagesIndexedSingleton = new LanguagesIndexedList(new File(getTestBasePath(),"langIndex"));
 		EventDatesIndexedList.initialize(createTempFile());
@@ -306,27 +308,36 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 		Bulletin bulletin, BulletinInfo retrievedData) 
 		throws IOException
 	{
-		MiniLocalization localization = new MiniLocalization();
+		MiniLocalization localization = MartusAmplifier.localization;
 		
 		assertEquals(bulletin.getUniversalId(), retrievedData.getBulletinId());
 		assertEquals(bulletin.getFieldDataPacket().getUniversalId(), retrievedData.getFieldDataPacketUId());
 		Collection fields = BulletinField.getSearchableFields();
 		for (Iterator iter = fields.iterator(); iter.hasNext();) {
 			BulletinField field = (BulletinField) iter.next();
-			Object retrievedValue;
 			if(field.isDateRangeField())
 			{
-				String startDateRetrieved = retrievedData.get(field.getIndexId()+"-start");
-				String endDateRetrieved = retrievedData.get(field.getIndexId()+"-end");
 				String dateOfBulletin = bulletin.get(field.getXmlId());
-				String startDate = DateUtilities.getStartDateRange(dateOfBulletin, localization);
-				String endDate = DateUtilities.getEndDateRange(dateOfBulletin, localization);
-				assertEquals(startDate, startDateRetrieved);
-				assertEquals(endDate, endDateRetrieved);
+				MartusFlexidate mfd = localization.createFlexidateFromStoredData(dateOfBulletin);
+
+				String startDate = localization.convertStoredDateToDisplay(mfd.getBeginDate().toIsoDateString());
+				String startDateRetrieved = retrievedData.get(field.getIndexId()+"-start");
+				assertEquals("Wrong start date?", startDate, startDateRetrieved);
+
+				String endDateRetrieved = retrievedData.get(field.getIndexId()+"-end");
+				if(mfd.hasDateRange())
+				{
+					String endDate = localization.convertStoredDateToDisplay(mfd.getEndDate().toIsoDateString());
+					assertEquals("Wrong end date?", endDate, endDateRetrieved);
+				}
+				else
+				{
+					assertEquals("Non-blank end date?", "", endDateRetrieved);
+				}
 				continue;
 			}
 			
-			retrievedValue = retrievedData.get(field.getIndexId());
+			Object retrievedValue = retrievedData.get(field.getIndexId());
 			if (retrievedValue == null ) 
 			{	
 				retrievedValue = "";

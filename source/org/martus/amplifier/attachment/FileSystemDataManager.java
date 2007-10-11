@@ -171,7 +171,7 @@ public class FileSystemDataManager implements DataManager
 		info.remove(info.size() - 1);//Signature
 	}
 
-	public void putFieldDataPacket(UniversalId uid, ZipEntryInputStreamWithSeek data) throws IOException, RecordHiddenException, CryptoException
+	public void putDataPacket(UniversalId uid, ZipEntryInputStreamWithSeek data) throws IOException, RecordHiddenException, CryptoException
 	{
 		db.writeRecord(DatabaseKey.createSealedKey(uid), data);
 	}

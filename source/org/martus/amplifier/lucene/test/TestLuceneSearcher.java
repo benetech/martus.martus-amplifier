@@ -34,10 +34,12 @@ import java.util.Vector;
 
 import junit.framework.Assert;
 
+import org.martus.amplifier.common.AmplifierLocalization;
 import org.martus.amplifier.common.SearchParameters;
 import org.martus.amplifier.common.SearchResultConstants;
 import org.martus.amplifier.lucene.LuceneBulletinSearcher;
 import org.martus.amplifier.lucene.LuceneSearchConstants;
+import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.amplifier.presentation.SearchResults;
 import org.martus.amplifier.search.AttachmentInfo;
 import org.martus.amplifier.search.BulletinField;
@@ -66,6 +68,8 @@ public class TestLuceneSearcher extends CommonSearchTest
 	public void setUp() throws Exception
 	{
 		super.setUp();
+		MartusAmplifier.localization = new AmplifierLocalization();
+		
 		bulletinId1 = UniversalId.createDummyUniversalId();
 		bulletinId2 = UniversalId.createDummyUniversalId();
 		bulletinIdForeign = UniversalId.createDummyUniversalId();

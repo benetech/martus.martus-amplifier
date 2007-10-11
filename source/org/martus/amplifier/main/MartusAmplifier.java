@@ -35,6 +35,7 @@ import java.util.Vector;
 import org.martus.amplifier.ServerCallbackInterface;
 import org.martus.amplifier.attachment.DataManager;
 import org.martus.amplifier.attachment.FileSystemDataManager;
+import org.martus.amplifier.common.AmplifierLocalization;
 import org.martus.amplifier.datasynch.BackupServerInfo;
 import org.martus.amplifier.datasynch.DataSynchManager;
 import org.martus.amplifier.lucene.LuceneBulletinIndexer;
@@ -42,7 +43,6 @@ import org.martus.amplifier.lucene.LuceneBulletinSearcher;
 import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinIndexer;
 import org.martus.amplifier.search.BulletinSearcher;
-import org.martus.common.EnglishCommonStrings;
 import org.martus.common.LoggerInterface;
 import org.martus.common.LoggerToNull;
 import org.martus.common.MartusUtilities;
@@ -67,9 +67,7 @@ public class MartusAmplifier implements LoggerInterface
 	{
 		coreServer = serverToUse;
 		setStaticSecurity(coreServer.getSecurity());
-		localization = new MiniLocalization(EnglishCommonStrings.strings);
-		localization.setCurrentLanguageCode(AMP_DEFAULT_LANGUAGE);
-		localization.setDateFormatFromLanguage();
+		localization = new AmplifierLocalization();
 		
 	}
 
@@ -584,7 +582,7 @@ public class MartusAmplifier implements LoggerInterface
 	private static final int MAX_IDLE_TIME_MS = 30000;
 	private static final int MIN_THREADS = 5;
 	private static final int MAX_THREADS = 255;
-	private static final String AMP_DEFAULT_LANGUAGE = "en";
+	public static final String AMP_DEFAULT_LANGUAGE = "en";
 	static ServerCallbackInterface coreServer;
 
 	// NOTE: The following members *MUST* be static because they are 

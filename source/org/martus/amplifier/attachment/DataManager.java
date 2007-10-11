@@ -64,6 +64,6 @@ public interface DataManager
 	public void writeContactInfoToFile(String accountId, Vector contactInfo) throws IOException;
 	public Vector getContactInfo(String accountId) throws IOException;
 	
-	public void putFieldDataPacket(UniversalId uid, ZipEntryInputStreamWithSeek data) throws IOException, RecordHiddenException, CryptoException;
+	public void putDataPacket(UniversalId uid, ZipEntryInputStreamWithSeek data) throws IOException, RecordHiddenException, CryptoException;
 	public FieldDataPacket getFieldDataPacket(UniversalId uid) throws IOException, CryptoException, InvalidPacketException, WrongPacketTypeException, SignatureVerificationException;
 }
