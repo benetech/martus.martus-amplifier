@@ -86,8 +86,6 @@ public class QueryBuilder
 		queryString += getFieldQuery(LuceneSearchConstants.SEARCH_EVENT_END_DATE_INDEX_FIELD,endDateString);
 		queryString += " ) ";
 
-System.out.println(queryString);
-
 		return parseSingleFieldQuery(queryString,SearchConstants.SEARCH_EVENT_DATE_INDEX_FIELD, ERROR_PARSING_QUERY);
 	
 	}
