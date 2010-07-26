@@ -188,7 +188,7 @@ public class AmplifierNetworkGateway implements LoggerInterface
 	{
 		File tempFile = null;
 		FileOutputStream out = null;
-		int chunkSize = NetworkInterfaceConstants.MAX_CHUNK_SIZE;
+		int chunkSize = AMPLIFIER_MAX_CHUNK_SIZE;
 		int totalLength =0;
 		try 
 		{
@@ -314,6 +314,8 @@ public class AmplifierNetworkGateway implements LoggerInterface
 	{
 		logger.logDebug(createLogString(message));
 	}
+	
+	private static final int AMPLIFIER_MAX_CHUNK_SIZE = 1024 * 1024;
 	
 	private AmplifierBulletinRetrieverGatewayInterface gateway;
 	private MartusCrypto security;
