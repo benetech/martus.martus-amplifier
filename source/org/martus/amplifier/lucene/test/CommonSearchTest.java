@@ -45,6 +45,7 @@ import org.martus.amplifier.search.BulletinIndexer;
 import org.martus.amplifier.search.BulletinSearcher;
 import org.martus.amplifier.search.SearchConstants;
 import org.martus.amplifier.test.AbstractAmplifierTestCase;
+import org.martus.common.FieldSpecCollection;
 import org.martus.common.LoggerToNull;
 import org.martus.common.bulletin.AttachmentProxy;
 import org.martus.common.crypto.MockMartusSecurity;
@@ -199,7 +200,7 @@ public abstract class CommonSearchTest
 		return fdp;
 	}
 	
-	private FieldSpec[] getSampleFieldSpecs()
+	private FieldSpecCollection getSampleFieldSpecs()
 	{
 		FieldSpec[] normalFields = BulletinField.getDefaultSearchFieldSpecs();
 		int normalFieldCount = normalFields.length + 1;
@@ -208,7 +209,7 @@ public abstract class CommonSearchTest
 		System.arraycopy(normalFields, 0, withCustom, 0, normalFields.length);
 		withCustom[normalFields.length] = FieldSpec.createCustomField(SAMPLE_CUSTOM_TAG, SAMPLE_CUSTOM_LABEL, new FieldTypeNormal());
 		
-		return withCustom;
+		return new FieldSpecCollection(withCustom);
 	}
 
 	private void addFields(FieldDataPacket fdp, HashMap fieldPairs)

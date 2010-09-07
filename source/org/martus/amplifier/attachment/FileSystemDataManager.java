@@ -29,8 +29,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Vector;
+
 import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.common.ContactInfo;
+import org.martus.common.FieldSpecCollection;
 import org.martus.common.MartusUtilities.FileVerificationException;
 import org.martus.common.crypto.MartusCrypto;
 import org.martus.common.crypto.MartusCrypto.CryptoException;
@@ -39,7 +41,6 @@ import org.martus.common.database.ServerFileDatabase;
 import org.martus.common.database.Database.RecordHiddenException;
 import org.martus.common.database.FileDatabase.MissingAccountMapException;
 import org.martus.common.database.FileDatabase.MissingAccountMapSignatureException;
-import org.martus.common.fieldspec.FieldSpec;
 import org.martus.common.fieldspec.StandardFieldSpecs;
 import org.martus.common.packet.FieldDataPacket;
 import org.martus.common.packet.UniversalId;
@@ -178,7 +179,7 @@ public class FileSystemDataManager implements DataManager
 
 	public FieldDataPacket getFieldDataPacket(UniversalId uid) throws IOException, CryptoException, InvalidPacketException, WrongPacketTypeException, SignatureVerificationException
 	{
-		FieldSpec[] standardPublicFieldSpecs = StandardFieldSpecs.getDefaultTopSetionFieldSpecs().asArray();
+		FieldSpecCollection standardPublicFieldSpecs = StandardFieldSpecs.getDefaultTopSetionFieldSpecs();
 		FieldDataPacket fdp = new FieldDataPacket(uid, standardPublicFieldSpecs);
 		InputStreamWithSeek in = null;
 		try

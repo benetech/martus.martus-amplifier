@@ -299,7 +299,7 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 
 	private void compareFieldDataPackets(FieldDataPacket original, FieldDataPacket retrievedData)
 	{
-		FieldSpec[] originalSpecs = original.getFieldSpecs();
+		FieldSpec[] originalSpecs = original.getFieldSpecs().asArray();
 		assertEquals(original.getUniversalId(), retrievedData.getUniversalId());
 		for(int i = 0; i < originalSpecs.length; ++i)
 		{

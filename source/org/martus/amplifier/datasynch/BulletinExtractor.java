@@ -40,6 +40,7 @@ import org.martus.amplifier.main.LanguagesIndexedList;
 import org.martus.amplifier.search.BulletinField;
 import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinIndexer;
+import org.martus.common.FieldSpecCollection;
 import org.martus.common.bulletin.AttachmentProxy;
 import org.martus.common.bulletin.BulletinConstants;
 import org.martus.common.crypto.MartusCrypto;
@@ -47,7 +48,6 @@ import org.martus.common.crypto.MartusCrypto.CryptoException;
 import org.martus.common.crypto.MartusCrypto.DecryptionException;
 import org.martus.common.crypto.MartusCrypto.NoKeyPairException;
 import org.martus.common.database.Database.RecordHiddenException;
-import org.martus.common.fieldspec.FieldSpec;
 import org.martus.common.packet.BulletinHeaderPacket;
 import org.martus.common.packet.FieldDataPacket;
 import org.martus.common.packet.UniversalId;
@@ -109,7 +109,7 @@ public class BulletinExtractor
 		UniversalId fieldUid = UniversalId.createFromAccountAndLocalId(
 			accountId, fieldDataPacketId);
 			
-		FieldSpec[] fieldSpec = BulletinField.getDefaultSearchFieldSpecs();
+		FieldSpecCollection fieldSpec = new FieldSpecCollection(BulletinField.getDefaultSearchFieldSpecs());
 		FieldDataPacket fdp = new FieldDataPacket(fieldUid, fieldSpec);
 		
 		ZipEntryInputStreamWithSeek zipEntryPointForFieldDataPacket = getInputStreamForZipEntry(bulletinZipFile, accountId, fieldDataPacketId);

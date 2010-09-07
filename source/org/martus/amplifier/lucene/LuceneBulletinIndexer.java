@@ -207,7 +207,7 @@ public class LuceneBulletinIndexer
 		}
 		
 		StringBuffer allFieldData = new StringBuffer();
-		FieldSpec[] specs = fdp.getFieldSpecs();
+		FieldSpec[] specs = fdp.getFieldSpecs().asArray();
 		for(int i=0; i < specs.length; ++i)
 		{
 			String tag = specs[i].getTag();
