@@ -29,13 +29,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Vector;
+
 import org.martus.common.crypto.MartusCrypto.CryptoException;
 import org.martus.common.database.Database.RecordHiddenException;
 import org.martus.common.packet.FieldDataPacket;
 import org.martus.common.packet.UniversalId;
-import org.martus.common.packet.Packet.InvalidPacketException;
-import org.martus.common.packet.Packet.SignatureVerificationException;
-import org.martus.common.packet.Packet.WrongPacketTypeException;
 import org.martus.util.inputstreamwithseek.ZipEntryInputStreamWithSeek;
 
 /**
@@ -65,5 +63,5 @@ public interface DataManager
 	public Vector getContactInfo(String accountId) throws IOException;
 	
 	public void putDataPacket(UniversalId uid, ZipEntryInputStreamWithSeek data) throws IOException, RecordHiddenException, CryptoException;
-	public FieldDataPacket getFieldDataPacket(UniversalId uid) throws IOException, CryptoException, InvalidPacketException, WrongPacketTypeException, SignatureVerificationException;
+	public FieldDataPacket getFieldDataPacket(UniversalId uid) throws Exception;
 }

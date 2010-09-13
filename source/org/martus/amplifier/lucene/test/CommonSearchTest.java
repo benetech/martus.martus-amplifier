@@ -79,7 +79,7 @@ public abstract class CommonSearchTest
 		DirectoryUtils.deleteEntireDirectoryTree(new File(basePath));
 	}
 	
-	protected FieldDataPacket generateSampleData(UniversalId bulletinId)
+	protected FieldDataPacket generateSampleData(UniversalId bulletinId) throws Exception
 	{
 		String summary = 
 			"Today Paul ate an egg salad sandwich and a root beer for lunch.";
@@ -106,7 +106,7 @@ public abstract class CommonSearchTest
 		return fdp;
 	}
 
-	protected FieldDataPacket generateOtherLanguageData(UniversalId bulletinId)
+	protected FieldDataPacket generateOtherLanguageData(UniversalId bulletinId) throws Exception
 	{
 		String summary = 
 			"Today Paul ate an egg salad sandwich and a root beer for lunch.";
@@ -132,7 +132,7 @@ public abstract class CommonSearchTest
 		return fdp;
 	}
 	
-	protected FieldDataPacket generateSampleFlexiData(UniversalId bulletinId)
+	protected FieldDataPacket generateSampleFlexiData(UniversalId bulletinId) throws Exception
 	{
 		HashMap fieldPairs = new HashMap();
 		fieldPairs.put(SEARCH_AUTHOR_INDEX_FIELD, "Chuck"); 
@@ -150,7 +150,7 @@ public abstract class CommonSearchTest
 		return fdp;
 	}
 
-	protected FieldDataPacket generateSampleForeignCharData(UniversalId bulletinId)
+	protected FieldDataPacket generateSampleForeignCharData(UniversalId bulletinId) throws Exception
 	{
 		HashMap fieldPairs = new HashMap();
 		fieldPairs.put(SEARCH_AUTHOR_INDEX_FIELD, "Charles"); 
@@ -174,12 +174,12 @@ public abstract class CommonSearchTest
 	}
 	
 	
-	protected FieldDataPacket generateEmptyFieldDataPacket(UniversalId bulletinId)
+	protected FieldDataPacket generateEmptyFieldDataPacket(UniversalId bulletinId) throws Exception
 	{
 		return generateFieldDataPacket(bulletinId, new HashMap());
 	}
 	
-	protected FieldDataPacket generateFieldDataPacket(UniversalId bulletinId, HashMap fieldPairs)
+	protected FieldDataPacket generateFieldDataPacket(UniversalId bulletinId, HashMap fieldPairs) throws Exception
 	{
 		return generateFieldDataPacket(bulletinId, fieldPairs, new String[0]);
 	}
@@ -187,7 +187,7 @@ public abstract class CommonSearchTest
 	
 	protected FieldDataPacket generateFieldDataPacket(
 		UniversalId bulletinId, HashMap fieldPairs,
-		String[] attachmentsAssocList)
+		String[] attachmentsAssocList) throws Exception
 	{
 
 		UniversalId fieldUid = UniversalId.createFromAccountAndLocalId(

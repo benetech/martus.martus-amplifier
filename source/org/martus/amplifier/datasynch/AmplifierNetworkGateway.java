@@ -30,32 +30,25 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Vector;
-import org.martus.amplifier.attachment.AttachmentStorageException;
+
 import org.martus.amplifier.attachment.DataManager;
 import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.amplifier.network.AmplifierBulletinRetrieverGatewayInterface;
 import org.martus.amplifier.network.AmplifierClientSideNetworkGateway;
 import org.martus.amplifier.network.AmplifierClientSideXmlrpcHandler;
 import org.martus.amplifier.network.AmplifierNetworkInterface;
-import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinIndexer;
 import org.martus.common.ContactInfo;
 import org.martus.common.LoggerInterface;
 import org.martus.common.MartusUtilities.ServerErrorException;
 import org.martus.common.bulletin.BulletinZipUtilities;
 import org.martus.common.crypto.MartusCrypto;
-import org.martus.common.crypto.MartusCrypto.CryptoException;
 import org.martus.common.crypto.MartusCrypto.DecryptionException;
-import org.martus.common.database.Database.RecordHiddenException;
 import org.martus.common.network.NetworkInterfaceConstants;
 import org.martus.common.network.NetworkResponse;
 import org.martus.common.network.MartusXmlrpcClient.SSLSocketSetupException;
 import org.martus.common.packet.UniversalId;
-import org.martus.common.packet.Packet.InvalidPacketException;
-import org.martus.common.packet.Packet.SignatureVerificationException;
-import org.martus.common.packet.Packet.WrongPacketTypeException;
 import org.martus.util.LoggerUtil;
-import org.martus.util.StreamableBase64.InvalidBase64Exception;
 
 public class AmplifierNetworkGateway implements LoggerInterface
 {
@@ -155,9 +148,7 @@ public class AmplifierNetworkGateway implements LoggerInterface
 
 	public void retrieveAndManageBulletin(
 		UniversalId uid, BulletinExtractor bulletinExtractor, MartusAmplifier amp) 
-		throws WrongPacketTypeException, IOException, InvalidPacketException, BulletinIndexException, 
-			SignatureVerificationException, 
-			AttachmentStorageException, InvalidBase64Exception, RecordHiddenException, CryptoException
+		throws Exception
 	{
 		File bulletinFile = retrieveBulletin(uid);
 		bulletinFile.deleteOnExit();

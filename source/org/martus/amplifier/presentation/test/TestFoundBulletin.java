@@ -95,7 +95,7 @@ public class TestFoundBulletin extends AbstractAmplifierTestCase
 		DirectoryUtils.deleteEntireDirectoryTree(new File(basePath));
 	}
 
-	private Bulletin createTmpBulletin(int bulletinNumber) throws IOException, CryptoException, ZipException, RecordHiddenException
+	private Bulletin createTmpBulletin(int bulletinNumber) throws Exception
 	{
 		Bulletin b = new Bulletin(security);
 		b.set(BulletinField.TAGAUTHOR, "paul"+bulletinNumber);

@@ -25,7 +25,6 @@ Boston, MA 02111-1307, USA.
 */
 package org.martus.amplifier.presentation;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.apache.velocity.context.Context;
@@ -36,12 +35,7 @@ import org.martus.amplifier.velocity.AmplifierServletRequest;
 import org.martus.amplifier.velocity.AmplifierServletResponse;
 import org.martus.common.bulletin.BulletinHtmlGenerator;
 import org.martus.common.crypto.MartusCrypto;
-import org.martus.common.crypto.MartusCrypto.CryptoException;
 import org.martus.common.packet.FieldDataPacket;
-import org.martus.common.packet.Packet.InvalidPacketException;
-import org.martus.common.packet.Packet.SignatureVerificationException;
-import org.martus.common.packet.Packet.WrongPacketTypeException;
-import org.martus.util.StreamableBase64.InvalidBase64Exception;
 
 public class FoundBulletin extends AmplifierServlet
 {
@@ -54,7 +48,7 @@ public class FoundBulletin extends AmplifierServlet
 		return "FoundBulletin.vm";
 	}
 
-	public static void updateFoundBulletinContext(AmplifierServletRequest request, Context context) throws IOException, CryptoException, InvalidPacketException, WrongPacketTypeException, SignatureVerificationException, InvalidBase64Exception
+	public static void updateFoundBulletinContext(AmplifierServletRequest request, Context context) throws Exception
 	{
 		List bulletins = getFoundBulletins(request);
 		int index = getIndex(request);

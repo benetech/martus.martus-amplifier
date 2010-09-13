@@ -68,7 +68,6 @@ import org.martus.common.bulletinstore.BulletinStore;
 import org.martus.common.crypto.MartusCrypto;
 import org.martus.common.crypto.MockMartusSecurity;
 import org.martus.common.crypto.MartusCrypto.CryptoException;
-import org.martus.common.crypto.MartusCrypto.EncryptionException;
 import org.martus.common.database.ReadableDatabase;
 import org.martus.common.fieldspec.FieldSpec;
 import org.martus.common.packet.FieldDataPacket;
@@ -372,7 +371,7 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 	}
 	
 	private Bulletin createSampleBulletin(File[] attachments) 
-		throws EncryptionException, IOException
+		throws Exception
 	{
 		Bulletin b = new Bulletin(security);
 		b.set(BulletinField.TAGAUTHOR, "paul");
@@ -388,7 +387,7 @@ public class TestBulletinExtractor extends AbstractAmplifierTestCase
 	}
 	
 	private Bulletin createSampleBulletin2(File[] attachments) 
-		throws EncryptionException, IOException
+		throws Exception
 	{
 		Bulletin b = new Bulletin(security);
 		b.set(BulletinField.TAGAUTHOR, "flex");

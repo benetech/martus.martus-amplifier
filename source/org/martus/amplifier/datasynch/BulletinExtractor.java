@@ -38,15 +38,12 @@ import org.martus.amplifier.attachment.DataManager;
 import org.martus.amplifier.main.EventDatesIndexedList;
 import org.martus.amplifier.main.LanguagesIndexedList;
 import org.martus.amplifier.search.BulletinField;
-import org.martus.amplifier.search.BulletinIndexException;
 import org.martus.amplifier.search.BulletinIndexer;
 import org.martus.common.FieldSpecCollection;
 import org.martus.common.bulletin.AttachmentProxy;
 import org.martus.common.bulletin.BulletinConstants;
 import org.martus.common.crypto.MartusCrypto;
 import org.martus.common.crypto.MartusCrypto.CryptoException;
-import org.martus.common.crypto.MartusCrypto.DecryptionException;
-import org.martus.common.crypto.MartusCrypto.NoKeyPairException;
 import org.martus.common.database.Database.RecordHiddenException;
 import org.martus.common.packet.BulletinHeaderPacket;
 import org.martus.common.packet.FieldDataPacket;
@@ -72,9 +69,7 @@ public class BulletinExtractor
 	}
 	
 	public void extractAndStoreBulletin(File bulletinFile) 
-		throws IOException, SignatureVerificationException, 
-			BulletinIndexException, InvalidPacketException, WrongPacketTypeException, AttachmentStorageException, 
-			InvalidBase64Exception, RecordHiddenException, CryptoException
+		throws Exception
 	{
 		ZipFile bulletinZipFile = new ZipFile(bulletinFile);
 		try {
@@ -100,9 +95,7 @@ public class BulletinExtractor
 	
 
 	private FieldDataPacket indexFieldData(BulletinHeaderPacket bhp, ZipFile bulletinZipFile) 
-		throws SignatureVerificationException, NoKeyPairException, 
-			WrongPacketTypeException, DecryptionException, 
-			InvalidPacketException, IOException, BulletinIndexException
+		throws Exception
 	{
 		String fieldDataPacketId = bhp.getFieldDataPacketId();
 		String accountId = bhp.getAccountId();

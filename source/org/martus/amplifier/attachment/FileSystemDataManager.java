@@ -44,9 +44,6 @@ import org.martus.common.database.FileDatabase.MissingAccountMapSignatureExcepti
 import org.martus.common.fieldspec.StandardFieldSpecs;
 import org.martus.common.packet.FieldDataPacket;
 import org.martus.common.packet.UniversalId;
-import org.martus.common.packet.Packet.InvalidPacketException;
-import org.martus.common.packet.Packet.SignatureVerificationException;
-import org.martus.common.packet.Packet.WrongPacketTypeException;
 import org.martus.common.utilities.MartusServerUtilities;
 import org.martus.util.inputstreamwithseek.InputStreamWithSeek;
 import org.martus.util.inputstreamwithseek.ZipEntryInputStreamWithSeek;
@@ -177,7 +174,7 @@ public class FileSystemDataManager implements DataManager
 		db.writeRecord(DatabaseKey.createSealedKey(uid), data);
 	}
 
-	public FieldDataPacket getFieldDataPacket(UniversalId uid) throws IOException, CryptoException, InvalidPacketException, WrongPacketTypeException, SignatureVerificationException
+	public FieldDataPacket getFieldDataPacket(UniversalId uid) throws Exception
 	{
 		FieldSpecCollection standardPublicFieldSpecs = StandardFieldSpecs.getDefaultTopSetionFieldSpecs();
 		FieldDataPacket fdp = new FieldDataPacket(uid, standardPublicFieldSpecs);
