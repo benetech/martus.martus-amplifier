@@ -67,6 +67,12 @@ public class MockMartusServer implements ServerCallbackInterface
 		return logger;
 	}
 	
+	@Override
+	public boolean isSecureMode() 
+	{
+		return false;
+	}
+	
 
 	public void logError(String message)
 	{
@@ -104,13 +110,7 @@ public class MockMartusServer implements ServerCallbackInterface
 		logger.logDebug(message);
 	}
 
-	public boolean wantsDevelopmentMode()
-	{
-		return false;
-	}
-
 	MartusCrypto security;
 	LoggerInterface logger;
 	File dataDirectory;
-	
 }

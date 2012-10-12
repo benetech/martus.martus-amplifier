@@ -194,7 +194,7 @@ public class MartusAmplifier implements LoggerInterface
 		Server nonsslServer = new Server();
 		
 		int port = 80;
-		if(coreServer.wantsDevelopmentMode())
+		if(!coreServer.isSecureMode())
 			port += ServerCallbackInterface.DEVELOPMENT_MODE_PORT_DELTA;
 		InetAddrPort nonssllistener = new InetAddrPort(port);
 		nonsslServer.addWebApplication("/images/", getPresentationBasePath() + "presentationNonSSL/images");	
@@ -215,7 +215,7 @@ public class MartusAmplifier implements LoggerInterface
 	private void startSSLServer(char[] password) throws IOException, MultiException
 	{
 		int port = 443;
-		if(coreServer.wantsDevelopmentMode())
+		if(!coreServer.isSecureMode())
 			port += ServerCallbackInterface.DEVELOPMENT_MODE_PORT_DELTA;
 		SunJsseListener sslListener = new SunJsseListener(new InetAddrPort(port));
 		sslListener.setInetAddress(getAmpIpAddress());
@@ -415,7 +415,7 @@ public class MartusAmplifier implements LoggerInterface
 	{
 		String ip = MartusUtilities.extractIpFromFileName(publicKeyFile.getName());
 		int port = 985;
-		if(coreServer.wantsDevelopmentMode())
+		if(!coreServer.isSecureMode())
 			port += ServerCallbackInterface.DEVELOPMENT_MODE_PORT_DELTA;
 		Vector publicInfo = MartusUtilities.importServerPublicKeyFromFile(publicKeyFile, security);
 		String publicKey = (String)publicInfo.get(0);

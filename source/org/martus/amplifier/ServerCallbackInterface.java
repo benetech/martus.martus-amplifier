@@ -37,7 +37,7 @@ public interface ServerCallbackInterface extends LoggerInterface
 	public abstract File getDataDirectory();
 	public abstract String getAmpIpAddress();
 	public abstract LoggerInterface getLogger();
-	public abstract boolean wantsDevelopmentMode(); 
+	public abstract boolean isSecureMode();
 
 	public static final int DEVELOPMENT_MODE_PORT_DELTA = 9000;
 }
