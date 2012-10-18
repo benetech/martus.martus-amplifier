@@ -318,15 +318,23 @@ public class MartusAmplifier implements LoggerInterface
 		isSyncing = false;
 	}
 
-	public void pullNewDataFromServers() 
+	public void pullNewDataFromNextServer() 
 	{
-		for(int i=0; i < backupServersList.size(); ++i)
-		{
-			if(coreServer.isShutdownRequested())
-				return;
-			BackupServerInfo backupServerToCall = (BackupServerInfo)backupServersList.get(i);
-			pullNewDataFromOneServer(backupServerToCall);
-		}
+		if(coreServer.isShutdownRequested())
+			return;
+
+		int numberOfServersToPullFrom = backupServersList.size();
+		if(numberOfServersToPullFrom <= 0)
+			return;
+		
+		if(nextServerToPullFrom >= numberOfServersToPullFrom)
+			nextServerToPullFrom = 0;
+		
+		BackupServerInfo backupServerToCall = (BackupServerInfo)backupServersList.get(nextServerToPullFrom);
+		getLogger().logInfo("Pulling amplifier data from: " + backupServerToCall.getName() + "(" + backupServerToCall.getAddress() + ")");
+		pullNewDataFromOneServer(backupServerToCall);
+		
+		++nextServerToPullFrom;
 	}
 
 	private void pullNewDataFromOneServer(BackupServerInfo backupServerToCall)
@@ -595,4 +603,6 @@ public class MartusAmplifier implements LoggerInterface
 	private static MartusCrypto staticSecurity;
 	private static String webAuthorizedUser;
 	private static String webAuthorizedPassword;
+	
+	private int nextServerToPullFrom;
 }
