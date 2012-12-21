@@ -28,11 +28,13 @@ package org.martus.amplifier.main.test;
 import java.io.File;
 import java.util.List;
 
+import org.martus.amplifier.ServerCallbackInterface;
 import org.martus.amplifier.datasynch.BackupServerInfo;
 import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.common.LoggerToNull;
 import org.martus.common.MartusUtilities;
 import org.martus.common.crypto.MockMartusSecurity;
+import org.martus.common.utilities.MartusServerUtilities;
 import org.martus.util.DirectoryUtils;
 import org.martus.util.TestCaseEnhanced;
 import org.martus.util.UnicodeWriter;
@@ -72,7 +74,10 @@ public class TestMartusAmplifier extends TestCaseEnhanced
 		assertEquals("name", ip, result);
 		
 		int intResult = info.getPort();
-		assertEquals(985, intResult);
+		int port = 985;
+		if(!server.isSecureMode())
+			port += ServerCallbackInterface.DEVELOPMENT_MODE_PORT_DELTA;
+		assertEquals(port, intResult);
 		
 		keyFile.delete();
 		DirectoryUtils.deleteEntireDirectoryTree(dir);

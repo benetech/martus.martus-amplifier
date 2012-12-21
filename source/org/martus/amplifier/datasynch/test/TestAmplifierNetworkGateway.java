@@ -138,7 +138,7 @@ public class TestAmplifierNetworkGateway extends TestAbstractAmplifierDataSynch
 
 			Vector rawData = new Vector();
 			rawData.add(NetworkInterfaceConstants.OK);
-			rawData.add(ids);
+			rawData.add(ids.toArray());
 
 			return new NetworkResponse(rawData);
 		}
@@ -149,7 +149,7 @@ public class TestAmplifierNetworkGateway extends TestAbstractAmplifierDataSynch
 			
 			Vector rawData = new Vector();
 			rawData.add(NetworkInterfaceConstants.OK);
-			rawData.add(contactInfo);
+			rawData.add(contactInfo.toArray());
 		
 			return new NetworkResponse(rawData);
 		}
@@ -162,7 +162,7 @@ public class TestAmplifierNetworkGateway extends TestAbstractAmplifierDataSynch
 
 			Vector rawData = new Vector();
 			rawData.add(NetworkInterfaceConstants.OK);
-			rawData.add(ids);
+			rawData.add(ids.toArray());
 
 			return new NetworkResponse(rawData);
 		}
