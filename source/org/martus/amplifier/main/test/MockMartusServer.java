@@ -67,7 +67,6 @@ public class MockMartusServer implements ServerCallbackInterface
 		return logger;
 	}
 	
-	@Override
 	public boolean isSecureMode() 
 	{
 		return false;
