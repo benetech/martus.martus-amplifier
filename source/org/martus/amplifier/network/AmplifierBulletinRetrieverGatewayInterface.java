@@ -26,22 +26,16 @@ Boston, MA 02111-1307, USA.
 package org.martus.amplifier.network;
 
 
-import java.io.IOException;
-
 import org.martus.common.crypto.MartusCrypto;
 import org.martus.common.network.BulletinRetrieverGatewayInterface;
 import org.martus.common.network.NetworkResponse;
 
-public interface AmplifierBulletinRetrieverGatewayInterface extends BulletinRetrieverGatewayInterface {
+public interface AmplifierBulletinRetrieverGatewayInterface extends BulletinRetrieverGatewayInterface 
+{
+	public NetworkResponse getAccountIds(MartusCrypto signer) throws Exception;
 
-
-	public NetworkResponse getAccountIds(MartusCrypto signer) throws 
-			MartusCrypto.MartusSignatureException, IOException;
-
-	public NetworkResponse getContactInfo(String accountId, MartusCrypto signer) throws 
-			MartusCrypto.MartusSignatureException, IOException;
+	public NetworkResponse getContactInfo(String accountId, MartusCrypto signer) throws Exception; 
 			
-	public NetworkResponse getPublicBulletinLocalIds(MartusCrypto signer, String accountId) throws 
-			MartusCrypto.MartusSignatureException, IOException;
+	public NetworkResponse getPublicBulletinLocalIds(MartusCrypto signer, String accountId) throws Exception; 
 			
 }
