@@ -27,6 +27,7 @@ Boston, MA 02111-1307, USA.
 package org.martus.amplifier.network;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Vector;
 
 import org.martus.common.CallerSideAmplifierNetworkInterface;
@@ -82,7 +83,9 @@ public class AmplifierClientSideXmlrpcHandler extends MartusXmlrpcClient
 	{
 		String serverObjectName = "MartusAmplifierServer";
 		
-		return callserver(serverObjectName, method, params);
+		Object result = callserver(serverObjectName, method, params);
+		Object[] resultAsArray = (Object[]) result;
+		return new Vector(Arrays.asList(resultAsArray));
 	}
 
 }
