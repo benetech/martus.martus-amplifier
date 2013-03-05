@@ -25,9 +25,9 @@ Boston, MA 02111-1307, USA.
 */
 package org.martus.amplifier.network;
 
-import java.io.IOException;
 import java.util.Vector;
 
+import org.martus.common.AmplifierNetworkInterface;
 import org.martus.common.crypto.MartusCrypto;
 import org.martus.common.network.NetworkResponse;
 
@@ -39,15 +39,14 @@ public class AmplifierClientSideNetworkGateway implements AmplifierBulletinRetri
 	}
 	
 	//to check if we need signature even for no parameters
-	public NetworkResponse getAccountIds(MartusCrypto signer) throws 
-			MartusCrypto.MartusSignatureException, IOException
+	public NetworkResponse getAccountIds(MartusCrypto signer) throws Exception
 	{
 		Vector parameters = new Vector();
 		String signature = signer.createSignatureOfVectorOfStrings(parameters);
 		return new NetworkResponse(server.getAccountIds(signer.getPublicKeyString(), parameters, signature));
 	}
 	
-	public NetworkResponse getContactInfo(String accountId, MartusCrypto signer) throws MartusCrypto.MartusSignatureException, IOException 
+	public NetworkResponse getContactInfo(String accountId, MartusCrypto signer) throws Exception 
 	{
 		Vector parameters = new Vector();
 		parameters.add(accountId);
@@ -57,8 +56,7 @@ public class AmplifierClientSideNetworkGateway implements AmplifierBulletinRetri
 	}
 	
 
-	public NetworkResponse getPublicBulletinLocalIds(MartusCrypto signer, String accountId) throws 
-			MartusCrypto.MartusSignatureException, IOException
+	public NetworkResponse getPublicBulletinLocalIds(MartusCrypto signer, String accountId) throws Exception
 	{
 		Vector parameters = new Vector();
 		parameters.add(accountId);
@@ -68,8 +66,7 @@ public class AmplifierClientSideNetworkGateway implements AmplifierBulletinRetri
 	}
 					
 	public NetworkResponse getBulletinChunk(MartusCrypto signer, String authorAccountId, String bulletinLocalId, 
-					int chunkOffset, int maxChunkSize) throws 
-			MartusCrypto.MartusSignatureException, IOException
+					int chunkOffset, int maxChunkSize) throws Exception
 	{
 		Vector parameters = new Vector();
 		parameters.add(authorAccountId);
@@ -77,7 +74,7 @@ public class AmplifierClientSideNetworkGateway implements AmplifierBulletinRetri
 		parameters.add(new Integer(chunkOffset));
 		parameters.add(new Integer(maxChunkSize));
 		String signature = signer.createSignatureOfVectorOfStrings(parameters);
-		return new NetworkResponse(server.getBulletinChunk(signer.getPublicKeyString(), parameters, signature));
+		return new NetworkResponse(server.getAmplifierBulletinChunk(signer.getPublicKeyString(), parameters, signature));
 	}
 
 	

@@ -47,7 +47,6 @@ import org.martus.common.LoggerInterface;
 import org.martus.common.LoggerToNull;
 import org.martus.common.MartusUtilities;
 import org.martus.common.MiniLocalization;
-import org.martus.common.Version;
 import org.martus.common.crypto.MartusCrypto;
 import org.martus.common.crypto.MartusCrypto.CryptoInitializationException;
 import org.martus.common.network.MartusXmlrpcClient.SSLSocketSetupException;
@@ -480,18 +479,19 @@ public class MartusAmplifier implements LoggerInterface
 	public static String getPresentationBasePath()
 	{
 		String presentationBasePath = null;
-		if(Version.isRunningUnderWindows())
+//		if(Version.isRunningUnderWindows())
 		{	
 			File amplifierPath = new File(MartusAmplifier.class.getResource("MartusAmplifier.class").getPath());
 			File amplifierBasePath = amplifierPath.getParentFile().getParentFile().getParentFile().getParentFile().getParentFile();
 			if(amplifierBasePath.getPath().endsWith("classes"))
 				amplifierBasePath = amplifierBasePath.getParentFile();
 			presentationBasePath = amplifierBasePath.getPath();
-			if(!presentationBasePath.endsWith("\\"))
+			if(!presentationBasePath.endsWith("\\") && !presentationBasePath.endsWith("//"))
 				presentationBasePath += "\\";
+			presentationBasePath = presentationBasePath.replace('\\', '/');
 		}
-		else
-			presentationBasePath = "/usrlocal/martus/www/MartusAmplifier/";
+//		else
+//			presentationBasePath = "/usrlocal/martus/www/MartusAmplifier/";
 		return presentationBasePath;
 		
 	}
