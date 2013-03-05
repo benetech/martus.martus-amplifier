@@ -36,17 +36,18 @@ import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.amplifier.network.AmplifierBulletinRetrieverGatewayInterface;
 import org.martus.amplifier.network.AmplifierClientSideNetworkGateway;
 import org.martus.amplifier.network.AmplifierClientSideXmlrpcHandler;
-import org.martus.amplifier.network.AmplifierNetworkInterface;
 import org.martus.amplifier.search.BulletinIndexer;
+import org.martus.common.AmplifierNetworkInterface;
 import org.martus.common.ContactInfo;
 import org.martus.common.LoggerInterface;
+import org.martus.common.MartusLogger;
 import org.martus.common.MartusUtilities.ServerErrorException;
 import org.martus.common.bulletin.BulletinZipUtilities;
 import org.martus.common.crypto.MartusCrypto;
 import org.martus.common.crypto.MartusCrypto.DecryptionException;
+import org.martus.common.network.MartusXmlrpcClient.SSLSocketSetupException;
 import org.martus.common.network.NetworkInterfaceConstants;
 import org.martus.common.network.NetworkResponse;
-import org.martus.common.network.MartusXmlrpcClient.SSLSocketSetupException;
 import org.martus.common.packet.UniversalId;
 import org.martus.util.LoggerUtil;
 
@@ -100,8 +101,8 @@ public class AmplifierNetworkGateway implements LoggerInterface
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
 			logError("getAllAccountIds(): " + e.getMessage());
+			MartusLogger.logException(e);
 		}
 		return result;
 	}
