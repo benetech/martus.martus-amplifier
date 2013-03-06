@@ -38,6 +38,8 @@ public interface ServerCallbackInterface extends LoggerInterface
 	public abstract String getAmpIpAddress();
 	public abstract LoggerInterface getLogger();
 	public abstract boolean isSecureMode();
+	public abstract boolean useEmbeddedPresentationFiles();
 
 	public static final int DEVELOPMENT_MODE_PORT_DELTA = 9000;
+
 }

@@ -72,6 +72,10 @@ public class MockMartusServer implements ServerCallbackInterface
 		return false;
 	}
 	
+	public boolean useEmbeddedPresentationFiles() 
+	{
+		return true;
+	}
 
 	public void logError(String message)
 	{
