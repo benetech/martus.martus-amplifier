@@ -48,6 +48,7 @@ public class AmplifierLocalization extends MiniLocalization
 		setCurrentDateFormatCode(new DatePreference("ymd", '-').getDateTemplate());
 		setAdjustPersianLegacyDates(true);
 		setAdjustThaiLegacyDates(true);
+        setUseZawgyi(false);
 	}
 
 	public static String getLanguageString(String code)
