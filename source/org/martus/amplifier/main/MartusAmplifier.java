@@ -480,15 +480,16 @@ public class MartusAmplifier implements LoggerInterface
 	public static String getPresentationBasePath()
 	{
 		String presentationBasePath = null;
-		if(Version.isRunningUnderWindows())
+		if(coreServer.useEmbeddedPresentationFiles() || Version.isRunningUnderWindows())
 		{	
 			File amplifierPath = new File(MartusAmplifier.class.getResource("MartusAmplifier.class").getPath());
 			File amplifierBasePath = amplifierPath.getParentFile().getParentFile().getParentFile().getParentFile().getParentFile();
 			if(amplifierBasePath.getPath().endsWith("classes"))
 				amplifierBasePath = amplifierBasePath.getParentFile();
 			presentationBasePath = amplifierBasePath.getPath();
-			if(!presentationBasePath.endsWith("\\"))
+			if(!presentationBasePath.endsWith("\\") && !presentationBasePath.endsWith("//"))
 				presentationBasePath += "\\";
+			presentationBasePath = presentationBasePath.replace('\\', '/');
 		}
 		else
 			presentationBasePath = "/usrlocal/martus/www/MartusAmplifier/";

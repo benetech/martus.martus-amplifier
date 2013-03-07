@@ -27,13 +27,15 @@ Boston, MA 02111-1307, USA.
 package org.martus.amplifier.network;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Vector;
 
-import org.martus.common.network.*;
+import org.martus.common.CallerSideAmplifierNetworkInterface;
+import org.martus.common.network.MartusXmlrpcClient;
 
 
 public class AmplifierClientSideXmlrpcHandler extends MartusXmlrpcClient
-	implements AmplifierNetworkInterfaceXmlRpcConstants, AmplifierNetworkInterface
+	implements AmplifierNetworkInterfaceXmlRpcConstants, CallerSideAmplifierNetworkInterface
 {
 	public AmplifierClientSideXmlrpcHandler(String serverName, int portToUse) throws SSLSocketSetupException
 	{
@@ -68,7 +70,7 @@ public class AmplifierClientSideXmlrpcHandler extends MartusXmlrpcClient
 		
 	}
 
-	public Vector getBulletinChunk(String myAccountId, Vector parameters, String signature) throws IOException
+	public Vector getAmplifierBulletinChunk(String myAccountId, Vector parameters, String signature) throws Exception 
 	{
 		Vector params = new Vector();
 		params.add(myAccountId);
@@ -81,7 +83,9 @@ public class AmplifierClientSideXmlrpcHandler extends MartusXmlrpcClient
 	{
 		String serverObjectName = "MartusAmplifierServer";
 		
-		return callserver(serverObjectName, method, params);
+		Object result = callserver(serverObjectName, method, params);
+		Object[] resultAsArray = (Object[]) result;
+		return new Vector(Arrays.asList(resultAsArray));
 	}
 
 }
