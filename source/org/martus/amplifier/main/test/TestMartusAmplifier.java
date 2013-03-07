@@ -34,7 +34,6 @@ import org.martus.amplifier.main.MartusAmplifier;
 import org.martus.common.LoggerToNull;
 import org.martus.common.MartusUtilities;
 import org.martus.common.crypto.MockMartusSecurity;
-import org.martus.common.utilities.MartusServerUtilities;
 import org.martus.util.DirectoryUtils;
 import org.martus.util.TestCaseEnhanced;
 import org.martus.util.UnicodeWriter;
