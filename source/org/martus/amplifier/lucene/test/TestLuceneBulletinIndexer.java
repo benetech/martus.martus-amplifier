@@ -31,6 +31,7 @@ import org.martus.amplifier.search.BulletinSearcher;
 import org.martus.common.packet.BulletinHistory;
 import org.martus.common.packet.FieldDataPacket;
 import org.martus.common.packet.UniversalId;
+import org.martus.common.test.UniversalIdForTesting;
 
 
 public class TestLuceneBulletinIndexer  extends CommonSearchTest
@@ -42,7 +43,7 @@ public class TestLuceneBulletinIndexer  extends CommonSearchTest
 
 	public void testClearIndex() throws Exception
 	{
-		UniversalId bulletinId = UniversalId.createDummyUniversalId();
+		UniversalId bulletinId = UniversalIdForTesting.createDummyUniversalId();
 		FieldDataPacket fdp = generateEmptyFieldDataPacket(bulletinId);
 		BulletinIndexer indexer = openBulletinIndexer();
 		try 

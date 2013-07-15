@@ -40,6 +40,7 @@ import org.martus.amplifier.search.BulletinInfo;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
 import org.martus.common.crypto.MockMartusSecurity;
 import org.martus.common.packet.UniversalId;
+import org.martus.common.test.UniversalIdForTesting;
 import org.martus.util.DirectoryUtils;
 import org.martus.util.TestCaseEnhanced;
 
@@ -116,9 +117,9 @@ public class TestContactInfo extends TestCaseEnhanced
 		context.put("totalBulletins", null);
 	}
 
-	final UniversalId uid1 = UniversalId.createDummyUniversalId();
-	final UniversalId uid2 = UniversalId.createDummyUniversalId();
-	final UniversalId uid3 = UniversalId.createDummyUniversalId();
+	final UniversalId uid1 = UniversalIdForTesting.createDummyUniversalId();
+	final UniversalId uid2 = UniversalIdForTesting.createDummyUniversalId();
+	final UniversalId uid3 = UniversalIdForTesting.createDummyUniversalId();
 	final String bulletin1Title = "title 1";
 	final String bulletin2Title = "title 2";
 	final String bulletin3Title = "title 3";

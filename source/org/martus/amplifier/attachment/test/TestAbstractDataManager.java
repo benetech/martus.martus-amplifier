@@ -36,6 +36,7 @@ import org.martus.amplifier.attachment.AttachmentStorageException;
 import org.martus.amplifier.attachment.DataManager;
 import org.martus.amplifier.test.AbstractAmplifierTestCase;
 import org.martus.common.packet.UniversalId;
+import org.martus.common.test.UniversalIdForTesting;
 import org.martus.util.DirectoryUtils;
 import org.martus.util.inputstreamwithseek.StringInputStreamWithSeek;
 
@@ -58,7 +59,7 @@ public abstract class TestAbstractDataManager
 		throws AttachmentStorageException, IOException
 	{
 		DataManager attachmentManager = getAttachmentManager();
-		UniversalId id = UniversalId.createDummyUniversalId();
+		UniversalId id = UniversalIdForTesting.createDummyUniversalId();
 		String testString = "ClearAll";
 		InputStream sin = new StringInputStreamWithSeek(testString);
 		try {
@@ -95,7 +96,7 @@ public abstract class TestAbstractDataManager
 	{
 		DataManager attachmentManager = getAttachmentManager();
 		attachmentManager.clearAllAttachments();
-		UniversalId id = UniversalId.createDummyUniversalId();
+		UniversalId id = UniversalIdForTesting.createDummyUniversalId();
 		String testString = "SimplePutAndGet";
 		InputStream sin = new StringInputStreamWithSeek(testString);
 		try {
@@ -119,7 +120,7 @@ public abstract class TestAbstractDataManager
 	{
 		DataManager attachmentManager = getAttachmentManager();
 		attachmentManager.clearAllAttachments();
-		UniversalId id = UniversalId.createDummyUniversalId();
+		UniversalId id = UniversalIdForTesting.createDummyUniversalId();
 		String testString = "PutAndGetTwoSameAccount";
 		InputStream sin = new StringInputStreamWithSeek(testString);
 		try {
@@ -137,7 +138,7 @@ public abstract class TestAbstractDataManager
 			}
 		}
 		
-		UniversalId id2 = UniversalId.createDummyUniversalId();
+		UniversalId id2 = UniversalIdForTesting.createDummyUniversalId();
 		String testString2 = "PutAndGetTwoSameAccount2";
 		sin = new StringInputStreamWithSeek(testString2);
 		try {
@@ -226,7 +227,7 @@ public abstract class TestAbstractDataManager
 	{
 		DataManager attachmentManager = getAttachmentManager();
 		attachmentManager.clearAllAttachments();
-		UniversalId id = UniversalId.createDummyUniversalId();
+		UniversalId id = UniversalIdForTesting.createDummyUniversalId();
 		String testString = "OverwriteExisting";
 		InputStream sin = new StringInputStreamWithSeek(testString);
 		try {

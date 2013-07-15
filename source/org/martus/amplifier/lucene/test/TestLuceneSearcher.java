@@ -55,6 +55,7 @@ import org.martus.common.packet.BulletinHistory;
 import org.martus.common.packet.FieldDataPacket;
 import org.martus.common.packet.UniversalId;
 import org.martus.common.test.UnicodeConstants;
+import org.martus.common.test.UniversalIdForTesting;
 import org.martus.common.utilities.DateUtilities;
 import org.martus.util.MultiCalendar;
 
@@ -70,10 +71,10 @@ public class TestLuceneSearcher extends CommonSearchTest
 		super.setUp();
 		MartusAmplifier.localization = new AmplifierLocalization();
 		
-		bulletinId1 = UniversalId.createDummyUniversalId();
-		bulletinId2 = UniversalId.createDummyUniversalId();
-		bulletinIdForeign = UniversalId.createDummyUniversalId();
-		oldVersionId = UniversalId.createDummyUniversalId();
+		bulletinId1 = UniversalIdForTesting.createDummyUniversalId();
+		bulletinId2 = UniversalIdForTesting.createDummyUniversalId();
+		bulletinIdForeign = UniversalIdForTesting.createDummyUniversalId();
+		oldVersionId = UniversalIdForTesting.createDummyUniversalId();
 
 		fdp1 	= generateSampleData(bulletinId1);		
 		fdp2 	= generateSampleFlexiData(bulletinId2);
