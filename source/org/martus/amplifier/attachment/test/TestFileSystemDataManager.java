@@ -122,7 +122,7 @@ public class TestFileSystemDataManager
 	public void testFileSystemClearAllAttachments() 
 		throws AttachmentStorageException, IOException
 	{
-		UniversalId id = UniversalId.createDummyUniversalId();
+		UniversalId id = UniversalIdForTesting.createDummyUniversalId();
 		String testString = "FileSystemClearAll";
 		InputStream sin = new StringInputStreamWithSeek(testString);
 		try {

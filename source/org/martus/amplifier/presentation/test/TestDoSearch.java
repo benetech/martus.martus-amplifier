@@ -39,6 +39,7 @@ import org.martus.amplifier.search.BulletinInfo;
 import org.martus.amplifier.velocity.AmplifierServletRequest;
 import org.martus.amplifier.velocity.AmplifierServletSession;
 import org.martus.common.packet.UniversalId;
+import org.martus.common.test.UniversalIdForTesting;
 import org.martus.util.DirectoryUtils;
 import org.martus.util.TestCaseEnhanced;
 
@@ -169,9 +170,9 @@ public class TestDoSearch extends TestCaseEnhanced
 		return context;
 	}
 */
-	final UniversalId uid1 = UniversalId.createDummyUniversalId();
-	final UniversalId uid2 = UniversalId.createDummyUniversalId();
-	final UniversalId uid3 = UniversalId.createDummyUniversalId();
+	final UniversalId uid1 = UniversalIdForTesting.createDummyUniversalId();
+	final UniversalId uid2 = UniversalIdForTesting.createDummyUniversalId();
+	final UniversalId uid3 = UniversalIdForTesting.createDummyUniversalId();
 	final String bulletin1Title = "title 1";
 	final String bulletin2Title = "title 2";
 	final String bulletin3Title = "title 3";
